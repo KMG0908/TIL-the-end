@@ -4,8 +4,8 @@ class Statistics extends React.Component {
   
   render() {
     
-    const userId = this.props.match.params.userId
-    return <div>{userId}님의 통계</div>;
+    const user_id = this.props.match.params.user_id
+    return <div>{user_id}님의 통계</div>;
   }
 }
 
