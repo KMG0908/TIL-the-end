@@ -20,10 +20,10 @@ const App = () => {
           <div>
             <Route path="/" exact component={Main} />
             <Route path="/calendar" exact component={Calendar} />
-            <Route path="/statistics/:userId" exact component={Statistics} />
-            <Route path="/search/:userId" exact component={Search} />
+            <Route path="/statistics/:user_id" exact component={Statistics} />
+            <Route path="/search/:user_id" exact component={Search} />
             <Route path="/tags" exact component={Tags} />{" "}
-            {/* 추후 /tags/:userId 로 변환 */}
+            {/* 추후 /tags/:user_id 로 변환 */}
             <Route path="/todo" exact component={Todo} />
           </div>
         </Navigation>
