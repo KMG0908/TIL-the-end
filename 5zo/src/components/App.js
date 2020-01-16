@@ -19,7 +19,7 @@ const App = () => {
         <Navigation>
           <div>
             <Route path="/" exact component={Main} />
-            <Route path="/Calendar" exact component={Calendar} />
+            <Route path="/calendar" exact component={Calendar} />
             <Route path="/statistics/:userId" exact component={Statistics} />
             <Route path="/search/:userId" exact component={Search} />
             <Route path="/tags" exact component={Tags} />{" "}
