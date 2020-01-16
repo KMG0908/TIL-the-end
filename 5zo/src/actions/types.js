@@ -1,0 +1,2 @@
+
+export const FETCH_MEMBERS= 'FETCH_MEMBERS'
