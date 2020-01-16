@@ -11,14 +11,66 @@ import com.ssafy.project.dto.MemberException;
 
 @Service
 public class MemberServiceImpl implements MemberService {
+
 	@Autowired
 	private MemberDao dao;
 
+	@Override
+	public void insertMember(Member member) {
+		try {
+			dao.insertMember(member);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException("회원 정보 등록 중 오류 발생");
+		}
+
+	}
+
+	@Override
 	public List<Member> searchAll() {
 		try {
 			return dao.searchAll();
-		}catch (Exception e) {
-			throw new MemberException("사원 정보 목록 검색 중 오류 발생");
+		} catch (Exception e) {
+			throw new MemberException("회원 목록 조회 중 오류 발생");
+		}
+	}
+
+	@Override
+	public Member search(String user_id) {
+		try {
+			Member member = dao.search(user_id);
+			if (member == null) {
+				throw new MemberException("등록되지 않은 회원입니다.");
+			}
+			return member;
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (e instanceof MemberException) {
+				throw (MemberException) e;
+			} else {
+				throw new MemberException("회원 정보 조회 중 오류 발생");
+			}
+		}
+	}
+
+	@Override
+	public void updateMember(Member member) {
+		try {
+			dao.updateMember(member);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException("회원 정보 수정 중 오류 발생");
+		}
+
+	}
+
+	@Override
+	public void deleteMember(String user_id) {
+		try {
+			dao.deleteMember(user_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException("회원 정보 삭제 중 오류 발생");
 		}
 	}
 }
