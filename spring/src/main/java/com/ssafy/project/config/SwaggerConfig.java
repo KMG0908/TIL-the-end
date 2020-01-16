@@ -27,7 +27,7 @@ public class SwaggerConfig {
 				.apiInfo(info())
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.ssafy.project.controller"))
-				.paths(PathSelectors.ant("/**/**"))	// 서비스할 경로 phone으로 통일, 서비스 구분은 요청 method로 구분
+				.paths(PathSelectors.ant("/api/**"))	// 서비스할 경로 phone으로 통일, 서비스 구분은 요청 method로 구분
 				//.paths(PathSelectors.any())				// 서비스할 경로를 통일하지 않고 경로명으로 구분해서 사용
 				.build();
 	}
