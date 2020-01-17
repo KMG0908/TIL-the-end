@@ -58,14 +58,14 @@ public class MemberRESTController {
 	// READ
 	@GetMapping("/api/member")
 	@ApiOperation("회원 목록을 조회하는 기능")
-	public ResponseEntity<Map<String, Object>> members() {
+	public ResponseEntity<Map<String, Object>> searchAll() {
 		return handleSuccess(service.searchAll());
 	}
 
-	@GetMapping("/api/member/{id}")
+	@GetMapping("/api/member/{mem_id}")
 	@ApiOperation("회원 한명을 조회 하는 기능")
-	public ResponseEntity<Map<String, Object>> members(@PathVariable String user_id) {
-		return handleSuccess(service.search(user_id));
+	public ResponseEntity<Map<String, Object>> search(@PathVariable String mem_id) {
+		return handleSuccess(service.search(mem_id));
 	}
 
 	// UPDATE
@@ -77,25 +77,12 @@ public class MemberRESTController {
 	}
 
 	// DELETE
-	@DeleteMapping("/api/member/{id}")
+	@DeleteMapping("/api/member/{mem_id}")
 	@ApiOperation("member 정보 삭제")
-	public ResponseEntity<Map<String, Object>> delete(@PathVariable String user_id) {
-		service.deleteMember(user_id);
+	public ResponseEntity<Map<String, Object>> delete(@PathVariable String mem_id) {
+		service.deleteMember(mem_id);
 		return handleSuccess("삭제 완료");
 	}
 
-	// 그 외 추가 기능
-//	@ApiOperation(value = "헬로우 테스트", httpMethod = "GET", notes = "헬로우 테스트입니다")
-//    @ApiResponses(value = {
-//        @ApiResponse(code = 400, message = "Invalid input:…"),
-//        @ApiResponse(code = 200, message = "Ok" )
-//        })  
-//	@ApiImplicitParams({
-//        @ApiImplicitParam(name = "Authorization", value = "authorization header", required = true,
-//                dataType = "string", paramType = "header", defaultValue = "bearer cbbb1a6e-8614-4a4d-a967-b0a42924e7ca")
-//        })
-//    @RequestMapping(value="/hello", method=RequestMethod.POST )
-//    public String hello(@ApiParam(value ="키값", required = true, defaultValue = "기본값") String value) {
-//            return "Blind Interview Server Running\n";
-//    }
+	
 }

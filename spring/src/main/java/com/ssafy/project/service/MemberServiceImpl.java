@@ -36,9 +36,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Member search(String user_id) {
+	public Member search(String mem_id) {
 		try {
-			Member member = dao.search(user_id);
+			Member member = dao.search(mem_id);
 			if (member == null) {
 				throw new MemberException("등록되지 않은 회원입니다.");
 			}
@@ -65,9 +65,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void deleteMember(String user_id) {
+	public void deleteMember(String mem_id) {
 		try {
-			dao.deleteMember(user_id);
+			dao.deleteMember(mem_id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MemberException("회원 정보 삭제 중 오류 발생");

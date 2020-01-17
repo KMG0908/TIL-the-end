@@ -4,34 +4,34 @@
 <mapper namespace="com.ssafy.project.dao.MemberDao" >
    	
    	<insert id="insertMember" parameterType="member">
-   		insert into member(user_id, email, password, nickname, reg_date)
-   		values(#{user_id},#{email},#{password},#{nickname},#{reg_date})
+   		insert into mem_info(mem_id, mem_email, mem_pw, mem_nick, mem_reg_date)
+   		values(#{mem_id},#{mem_email},#{mem_pw},#{mem_nick},#{mem_reg_date})
    	</insert>
    	
    	<select id="searchAll" resultType="member">
-  		select * from member
+  		select * from mem_info
   	</select>
   	
   	<select id="search" parameterType="string" resultType="member">
 		select * 
-		from member
-		where user_id = #{user_id}
+		from mem_info
+		where mem_id = #{mem_id}
 	</select>
 	
-	<update id="update" parameterType="member">
-		update member
+	<update id="updateMember" parameterType="member">
+		update mem_info
 		set
-		email = #{email}, 
-		password = #{password},
-		nickname = #{nickname},
-		reg_date = #{reg_date}
-		where user_id = #{user_id}		
+		mem_email = #{mem_email}, 
+		mem_pw = #{mem_pw},
+		mem_nick = #{mem_nick},
+		mem_reg_date = #{mem_reg_date}
+		where mem_id = #{mem_id}		
 	</update>
   	
-  	<delete id="delete" parameterType="string">
+  	<delete id="deleteMember" parameterType="string">
 		delete
-		from member
-		where user_id = #{user_id}
+		from mem_info
+		where mem_id = #{mem_id}
 	</delete>
   	
 </mapper>
