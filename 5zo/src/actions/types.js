@@ -1,2 +1,4 @@
 
 export const FETCH_MEMBERS= 'FETCH_MEMBERS'
+export const FETCH_LISTS = "FETCH_LISTS"
+export const FETCH_TESKS = "FETCH_ITEMS"

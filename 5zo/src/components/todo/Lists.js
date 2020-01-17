@@ -5,6 +5,9 @@ import Grid from "@material-ui/core/Grid";
 
 import List from "./List";
 
+import { Container, Draggable } from "react-smooth-dnd";
+import { applyDrag, generateItems } from "./utils";
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
@@ -17,6 +20,14 @@ const useStyles = makeStyles(theme => ({
     width: "300px"
   }
 }));
+
+function onColumnDrop(dropResult) {
+  const scene = Object.assign({}, this.state.scene);
+  scene.children = applyDrag(scene.children, dropResult);
+  this.setState({
+    scene
+  });
+}
 
 function Lists() {
   const classes = useStyles();
