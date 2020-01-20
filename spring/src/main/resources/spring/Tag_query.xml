@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.project.dao.TagDao" >
+   	
+   	<insert id="insertTag" 
+   		parameterType="tag" 
+		useGeneratedKeys="true"
+		keyProperty="tag_id">
+   		insert into tag(tag_name)
+   		values(#{tag_name})
+   	</insert>
+   	
+   	<select id="searchAll" resultType="tag">
+  		select * from tag
+  	</select>
+  	  	
+  	<select id="search" parameterType="int" resultType="tag">
+		select tag_name
+		from tag
+		where tag_id = #{tag_id}
+	</select>
+	
+	<update id="updateTag" parameterType="tag">
+		update tag
+		set	
+		tag_name = #{tag_name}
+		where tag_id = #{tag_id}
+	</update>
+  	
+  	<delete id="deleteTag" parameterType="int">
+		delete
+		from tag
+		where tag_id = #{tag_id}
+	</delete>
+  	
+</mapper>

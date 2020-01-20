@@ -18,11 +18,11 @@
 		</tr>
 		<c:forEach var="member" items="${list }">
 			<tr>
-				<td>${member.user_id }</td>
-				<td>${member.email }</td>
-				<td>${member.password }</td>
-				<td>${member.nickname }</td>
-				<td>${member.reg_date }</td>
+				<td>${member.mem_id }</td>
+				<td>${member.mem_email }</td>
+				<td>${member.mem_pw }</td>
+				<td>${member.mem_nick }</td>
+				<td>${member.mem_reg_date }</td>
 			</tr>
 		</c:forEach>
 	</table>	

@@ -4,8 +4,14 @@
 <configuration>
    	<typeAliases>
 	  	<typeAlias type="com.ssafy.project.dto.Member" alias="member"/>
+	  	<typeAlias type="com.ssafy.project.dto.Cardlist" alias="cardlist"/>
+	  	<typeAlias type="com.ssafy.project.dto.Card" alias="card"/>
+	  	<typeAlias type="com.ssafy.project.dto.Tag" alias="tag"/>
   	</typeAliases>
 	<mappers>
 		<mapper resource="spring/Member_query.xml"/>
+		<mapper resource="spring/Cardlist_query.xml"/>
+		<mapper resource="spring/Card_query.xml"/>
+		<mapper resource="spring/Tag_query.xml"/>
 	</mappers>
 </configuration>
