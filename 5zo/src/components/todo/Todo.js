@@ -1,59 +1,80 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 
-import DailyTodo from "./DailyTodo";
-import Lists from "./Lists";
+import DailyBoard from "./DailyBoard";
+import Board from "./Board";
+import { render } from "@testing-library/react";
+import { connect } from "react-redux";
+import { fetchDailyLists, fetchTodoLists } from "../../actions";
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   root: {
     flexGrow: 1
   },
   daily: {
     padding: theme.spacing(1),
     textAlign: "center",
-    backgroundColor: theme.palette.error.main,
-    color: theme.palette.error.contrastText,
+    color: theme.palette.text.secondary,
     minHeight: "300px",
-    height:"100%"
+    height: "100%"
   },
   lists: {
     padding: theme.spacing(1),
     color: theme.palette.text.secondary,
-    minHeight: "300px"
+    minHeight: "300px",
+    height: "100%"
   }
-}));
+});
 
-function Todo() {
-  const classes = useStyles();
+class Todo extends React.Component {
+  componentDidMount() {
+    this.props.fetchTodoLists("user1");
+    // console.log(this.props.boards);
+  }
+  FormRow() {
+    const { classes } = this.props;
+    if (this.props.boards) {
+      console.log(this.props.boards)
+      return (
+        <React.Fragment>
+          <Grid item sm={4} xs={12}>
+            <Paper className={classes.daily}>
+              <DailyBoard />
+              {/* {this.props.boards[0]} */}
+            </Paper>
+          </Grid>
+          <Grid item sm={8} xs={12}>
+            <Paper className={classes.lists}>
+              <Board />
+            </Paper>
+          </Grid>
+        </React.Fragment>
+      );
+    }
+  }
+  render() {
+    const { classes } = this.props;
 
-  function FormRow() {
     return (
-      <React.Fragment>
-        <Grid item sm={4} xs={12}>
-          <Paper className={classes.daily}>
-            <DailyTodo />
-          </Paper>
+      <div className={classes.root}>
+        <Grid container spacing={1}>
+          <Grid container item xs={12} spacing={3}>
+            {this.FormRow()}
+          </Grid>
         </Grid>
-        <Grid item sm={8} xs={12}>
-          <Paper className={classes.lists}>
-            <Lists />
-          </Paper>
-        </Grid>
-      </React.Fragment>
+      </div>
     );
   }
-
-  return (
-    <div className={classes.root}>
-      <Grid container spacing={1}>
-        <Grid container item xs={12} spacing={3}>
-          <FormRow />
-        </Grid>
-      </Grid>
-    </div>
-  );
 }
 
-export default Todo;
+const mapStateToProps = state => {
+  return {
+    boards: state.boards
+  };
+};
+
+export default withStyles(styles, { withTheme: true })(
+  connect(mapStateToProps, { fetchDailyLists, fetchTodoLists })(Todo)
+);

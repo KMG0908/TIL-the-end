@@ -5,7 +5,7 @@ import _ from "lodash";
 export default (state = {}, action) =>{
     switch (action.type){
         case FETCH_MEMBERS:
-            return {...state, ..._.mapKeys(action.payload,"user_id")}
+            return {...state, ..._.mapKeys(action.payload,"mem_id")}
         default:
             return state
     }

@@ -8,8 +8,8 @@ class Main extends React.Component {
   users() {
     if (this.props.members) {
       return this.props.members.map(member => (
-        <div key={member.user_id}>
-          {member.user_id}님, 닉네임은 {member.nickname}, 이메일은 {member.email}
+        <div key={member.mem_id}>
+          {member.mem_id}님, 닉네임은 {member.mem_nick}, 이메일은 {member.mem_email}
         </div>
       ));
     }
