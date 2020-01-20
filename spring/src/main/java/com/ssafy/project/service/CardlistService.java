@@ -16,4 +16,6 @@ public interface CardlistService {
 
 	void deleteCardlist(int cardlist_id);
 
+	Object postAll(String mem_id);
+
 }

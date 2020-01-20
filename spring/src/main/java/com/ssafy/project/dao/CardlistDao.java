@@ -17,6 +17,8 @@ public interface CardlistDao {
 	public void updateCardlist(Cardlist cardlist);
 
 	public void deleteCardlist(int cardlist_id);
+
+	public List<Cardlist> postAll(String mem_id);
 }
 
 

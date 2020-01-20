@@ -12,7 +12,11 @@
    	</insert>
    	
    	<select id="searchAll" parameterType = "string" resultType="cardlist">
-  		select * from cardlist where mem_id = #{mem_id}
+  		select * from cardlist where mem_id = #{mem_id} and cardlist_instock=true
+  	</select>
+  	
+  	<select id="postAll" parameterType = "string" resultType="cardlist">
+  		select * from cardlist where mem_id = #{mem_id} and cardlist_instock=false
   	</select>
   	
   	<select id="search" parameterType="int" resultType="cardlist">
@@ -24,6 +28,10 @@
 	<update id="updateCardlist" parameterType="cardlist">
 		update cardlist
 		set	
+		cardlist_name = #{cardlist_name},
+		cardlist_date = now(),
+		cardlist_order = #{cardlist_order}
+		where cardlist_id = #{cardlist_id}
 	</update>
   	
   	<delete id="deleteCardlist" parameterType="int">

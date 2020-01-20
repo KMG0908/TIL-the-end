@@ -57,9 +57,15 @@ public class CardlistRESTController {
 
 	// READ
 	@GetMapping("/api/cardlist/of/{mem_id}")
-	@ApiOperation("회원 한 명의 아직 발행하지 않은 카드리스트를 조회하는 기능")
+	@ApiOperation("회원 한 명의 아직 발행하지 않은 카드리스트 목록를 조회하는 기능")
 	public ResponseEntity<Map<String, Object>> searchAll(@PathVariable String mem_id) {
 		return handleSuccess(service.searchAll(mem_id));
+	}
+	
+	@GetMapping("/api/cardlist/post/{mem_id}")
+	@ApiOperation("회원 한 명의 발행된 카드리스트를 조회하는 기능")
+	public ResponseEntity<Map<String, Object>> postAll(@PathVariable String mem_id) {
+		return handleSuccess(service.postAll(mem_id));
 	}
 
 	@GetMapping("/api/cardlist/{cardlist_id}")
@@ -70,7 +76,7 @@ public class CardlistRESTController {
 
 	// UPDATE
 	@PutMapping("/api/cardlist")
-	@ApiOperation("cardlist 정보 수정")
+	@ApiOperation("cardlist 정보 수정, 수정이 가능한 정보는 name, order 두가지이다")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Cardlist cardlist) {
 		service.updateCardlist(cardlist);
 		return handleSuccess("수정 완료");

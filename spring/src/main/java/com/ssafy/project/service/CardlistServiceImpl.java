@@ -35,6 +35,16 @@ public class CardlistServiceImpl implements CardlistService {
 		}
 	}
 
+	
+	@Override
+	public List<Cardlist> postAll(String mem_id) {
+		try {
+			return dao.postAll(mem_id);
+		} catch (Exception e) {
+			throw new CardlistException(mem_id + "의 포스트 조회 중 오류 발생");
+		}
+	}
+	
 	@Override
 	public Cardlist search(int cardlist_id) {
 		try {
