@@ -49,19 +49,13 @@ public class CardRESTController {
 
 	// CREATE
 	@PostMapping("/api/card")
-	@ApiOperation("card 신규 생성, 권한에 따라 비공개 설정이 기본일 경우 true를 주어야 하고, front에서 빈칸이 있으면 post를 막아야한다")
+	@ApiOperation("card 신규 생성, 권한에 따라 비공개 설정이 기본일 경우 true를 주어야 함, name과 contents가 비어있지 않도록 해주세요")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Card card) {
 		service.insertCard(card);
 		return handleSuccess("생성 완료");
 	}
 
 	// READ
-	@GetMapping("/api/card/of/{cardlist_id}")
-	@ApiOperation("카드 리스트 하나의 카드들을 조회하는 기능")
-	public ResponseEntity<Map<String, Object>> searchAll(@PathVariable int cardlist_id) {
-		return handleSuccess(service.searchAll(cardlist_id));
-	}
-
 	@GetMapping("/api/card/{card_id}")
 	@ApiOperation("카드 하나를 조회하는 기능")
 	public ResponseEntity<Map<String, Object>> search(@PathVariable int card_id) {
@@ -70,7 +64,7 @@ public class CardRESTController {
 
 	// UPDATE
 	@PutMapping("/api/card")
-	@ApiOperation("card 정보 수정, 수정이 가능한 정보는 cardlist_id, name, contents, secret, order 다섯 가지이다")
+	@ApiOperation("card 정보 수정, 수정이 가능한 정보는 name, contents, secret 세가지입니다")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Card card) {
 		service.updateCard(card);
 		return handleSuccess("수정 완료");

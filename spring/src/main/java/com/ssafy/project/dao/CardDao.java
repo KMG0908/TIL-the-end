@@ -10,8 +10,6 @@ public interface CardDao {
 
 	public void insertCard(Card card);
 
-	public List<Card> searchAll(int cardlist_id);
-
 	public Card search(int card_id);
 
 	public void updateCard(Card card);

@@ -25,14 +25,6 @@ public class CardServiceImpl implements CardService {
 		}
 	}
 
-	@Override
-	public List<Card> searchAll(int cardlist_id) {
-		try {
-			return dao.searchAll(cardlist_id);
-		} catch (Exception e) {
-			throw new CardException(cardlist_id + "번 리스트의 카드 조회 중 오류 발생");
-		}
-	}
 
 	@Override
 	public Card search(int card_id) {
