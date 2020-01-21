@@ -20,15 +20,3 @@ public interface CardlistDao {
 
 	public List<Cardlist> postAll(String mem_id);
 }
-
-
-
-
-
-
-
-
-
-
-
-

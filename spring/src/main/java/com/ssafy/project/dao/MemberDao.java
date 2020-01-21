@@ -18,15 +18,3 @@ public interface MemberDao {
 
 	public void deleteMember(String mem_id);
 }
-
-
-
-
-
-
-
-
-
-
-
-

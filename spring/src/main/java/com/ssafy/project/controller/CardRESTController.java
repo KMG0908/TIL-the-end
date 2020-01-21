@@ -61,7 +61,7 @@ public class CardRESTController {
 	public ResponseEntity<Map<String, Object>> searchAll(@PathVariable int cardlist_id) {
 		return handleSuccess(service.searchAll(cardlist_id));
 	}
-	
+
 	@GetMapping("/api/card/{card_id}")
 	@ApiOperation("카드 하나를 조회하는 기능")
 	public ResponseEntity<Map<String, Object>> search(@PathVariable int card_id) {
@@ -84,5 +84,4 @@ public class CardRESTController {
 		return handleSuccess("삭제 완료");
 	}
 
-	
 }

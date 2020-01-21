@@ -61,7 +61,7 @@ public class CommentRESTController {
 	public ResponseEntity<Map<String, Object>> searchAll(@PathVariable int cardlist_id) {
 		return handleSuccess(service.searchAll(cardlist_id));
 	}
-	
+
 	// UPDATE
 	@PutMapping("/api/comment")
 	@ApiOperation("comment 수정")
@@ -78,5 +78,4 @@ public class CommentRESTController {
 		return handleSuccess("삭제 완료");
 	}
 
-	
 }

@@ -8,15 +8,13 @@ import org.springframework.stereotype.Service;
 import com.ssafy.project.dao.CardDao;
 import com.ssafy.project.dto.Card;
 import com.ssafy.project.dto.CardException;
-import com.ssafy.project.dto.CardlistException;
 
 @Service
 public class CardServiceImpl implements CardService {
 
-	
 	@Autowired
 	private CardDao dao;
-	
+
 	@Override
 	public void insertCard(Card card) {
 		try {
@@ -46,11 +44,7 @@ public class CardServiceImpl implements CardService {
 			return card;
 		} catch (Exception e) {
 			e.printStackTrace();
-			if (e instanceof CardException) {
-				throw (CardException) e;
-			} else {
-				throw new CardException(card_id + "번 카드 조회 중 오류 발생");
-			}
+			throw new CardException(card_id + "번 카드 조회 중 오류 발생");
 		}
 	}
 

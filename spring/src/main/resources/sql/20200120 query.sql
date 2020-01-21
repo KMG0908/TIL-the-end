@@ -9,6 +9,148 @@ drop database til;
 create database til;
 use til;
 
+CREATE TABLE `mem_info` (
+	`mem_id`	varchar(30)	NOT NULL,
+	`mem_pw`	varchar(255)	NULL,
+	`mem_email`	varchar(100)	NOT NULL,
+	`mem_nick`	varchar(30)	NULL,
+	`mem_reg_date`	date	NULL
+);
+
+CREATE TABLE `mem_option` (
+	`mem_id`	varchar(30)	NOT NULL,
+	`mem_auth`	boolean	NULL,
+	`mem_post_def`	boolean	NULL,
+	`mem_secret`	boolean	NULL
+);
+
+CREATE TABLE `cardlist` (
+	`cardlist_id`	int	NOT NULL auto_increment,
+	`mem_id`	varchar(30)	NOT NULL,
+	`cardlist_name`	varchar(50)	NULL,
+	`cardlist_date`	datetime	NULL,
+	`cardlist_order`	int	NULL,
+	`cardlist_instock`	boolean	NULL
+);
+
+CREATE TABLE `card` (
+	`card_id`	int	NOT NULL auto_increment,
+	`cardlist_id`	int	NOT NULL,
+	`card_name`	varchar(50)	NULL,
+	`card_contents`	text	NULL,
+	`card_secret`	boolean	NULL,
+	`card_order`	int	NULL
+);
+
+CREATE TABLE `comment` (
+	`comment_id`	int	NOT NULL auto_increment,
+	`mem_id`	varchar(30)	NOT NULL,
+	`cardlist_id`	int	NOT NULL,
+	`comment_author`	varchar(30)	NULL,
+	`comment_time`	datetime	NULL,
+	`comment_contents`	text	NULL,
+	`comment_modified`	boolean	NULL,
+	`comment_deleted`	boolean	NULL
+);
+
+CREATE TABLE `tag` (
+	`tag_id`	int	NOT NULL auto_increment,
+	`tag_name`	varchar(255)	NULL
+);
+
+CREATE TABLE `card_tag` (
+	`card_tag_id`	int	NOT NULL auto_increment,
+	`card_id`	int	NOT NULL,
+	`tag_id`	int	NOT NULL
+);
+
+ALTER TABLE `mem_info` ADD CONSTRAINT `PK_MEM_INFO` PRIMARY KEY (
+	`mem_id`
+);
+
+ALTER TABLE `mem_option` ADD CONSTRAINT `PK_MEM_OPTION` PRIMARY KEY (
+	`mem_id`
+);
+
+ALTER TABLE `cardlist` ADD CONSTRAINT `PK_CARDLIST` PRIMARY KEY (
+	`cardlist_id`,
+	`mem_id`
+);
+
+ALTER TABLE `card` ADD CONSTRAINT `PK_CARD` PRIMARY KEY (
+	`card_id`,
+	`cardlist_id`
+);
+
+ALTER TABLE `comment` ADD CONSTRAINT `PK_COMMENT` PRIMARY KEY (
+	`comment_id`,
+	`mem_id`,
+	`cardlist_id`
+);
+
+ALTER TABLE `tag` ADD CONSTRAINT `PK_TAG` PRIMARY KEY (
+	`tag_id`
+);
+
+ALTER TABLE `card_tag` ADD CONSTRAINT `PK_CARD_TAG` PRIMARY KEY (
+	`card_tag_id`,
+	`card_id`,
+	`tag_id`
+);
+
+ALTER TABLE `mem_option` ADD CONSTRAINT `FK_mem_info_TO_mem_option_1` FOREIGN KEY (
+	`mem_id`
+)
+REFERENCES `mem_info` (
+	`mem_id`
+);
+
+ALTER TABLE `cardlist` ADD CONSTRAINT `FK_mem_info_TO_cardlist_1` FOREIGN KEY (
+	`mem_id`
+)
+REFERENCES `mem_info` (
+	`mem_id`
+);
+
+ALTER TABLE `card` ADD CONSTRAINT `FK_cardlist_TO_card_1` FOREIGN KEY (
+	`cardlist_id`
+)
+REFERENCES `cardlist` (
+	`cardlist_id`
+);
+
+ALTER TABLE `comment` ADD CONSTRAINT `FK_mem_info_TO_comment_1` FOREIGN KEY (
+	`mem_id`
+)
+REFERENCES `mem_info` (
+	`mem_id`
+);
+
+ALTER TABLE `comment` ADD CONSTRAINT `FK_cardlist_TO_comment_1` FOREIGN KEY (
+	`cardlist_id`
+)
+REFERENCES `cardlist` (
+	`cardlist_id`
+);
+
+ALTER TABLE `card_tag` ADD CONSTRAINT `FK_card_TO_card_tag_1` FOREIGN KEY (
+	`card_id`
+)
+REFERENCES `card` (
+	`card_id`
+);
+
+ALTER TABLE `card_tag` ADD CONSTRAINT `FK_tag_TO_card_tag_1` FOREIGN KEY (
+	`tag_id`
+)
+REFERENCES `tag` (
+	`tag_id`
+);
+
+
+
+
+
 insert into mem_info(mem_id, mem_pw, mem_email, mem_nick, mem_reg_date)
 values 
 ('test', 'test', 'test@test.com', 'test', now()),

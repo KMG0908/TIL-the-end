@@ -35,9 +35,6 @@ public class CommentServiceImpl implements CommentService {
 		}
 	}
 
-	
-	
-
 	@Override
 	public void updateComment(Comment comment) {
 		try {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.project.dao.TagDao;
+import com.ssafy.project.dto.Card_TagException;
 import com.ssafy.project.dto.Tag;
 import com.ssafy.project.dto.TagException;
 
@@ -71,6 +72,16 @@ public class TagServiceImpl implements TagService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new TagException(tag_id + "번 태그 삭제 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Tag> tagcloud(String mem_id) {
+		try {
+			return dao.tagcloud(mem_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Card_TagException(mem_id + "의 태그 조회 중 오류 발생");
 		}
 	}
 

@@ -84,5 +84,4 @@ public class MemberRESTController {
 		return handleSuccess("삭제 완료");
 	}
 
-	
 }

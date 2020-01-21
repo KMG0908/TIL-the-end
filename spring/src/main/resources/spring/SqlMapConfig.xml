@@ -2,20 +2,20 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-   	<typeAliases>
-	  	<typeAlias type="com.ssafy.project.dto.Member" alias="member"/>
-	  	<typeAlias type="com.ssafy.project.dto.Cardlist" alias="cardlist"/>
-	  	<typeAlias type="com.ssafy.project.dto.Card" alias="card"/>
-	  	<typeAlias type="com.ssafy.project.dto.Tag" alias="tag"/>
-	  	<typeAlias type="com.ssafy.project.dto.CardTag" alias="cardtag"/>
-	  	<typeAlias type="com.ssafy.project.dto.Comment" alias="comment"/>
-  	</typeAliases>
+	<typeAliases>
+		<typeAlias type="com.ssafy.project.dto.Member" alias="member" />
+		<typeAlias type="com.ssafy.project.dto.Cardlist" alias="cardlist" />
+		<typeAlias type="com.ssafy.project.dto.Card" alias="card" />
+		<typeAlias type="com.ssafy.project.dto.Tag" alias="tag" />
+		<typeAlias type="com.ssafy.project.dto.Card_Tag" alias="card_tag" />
+		<typeAlias type="com.ssafy.project.dto.Comment" alias="comment" />
+	</typeAliases>
 	<mappers>
-		<mapper resource="spring/Member_query.xml"/>
-		<mapper resource="spring/Cardlist_query.xml"/>
-		<mapper resource="spring/Card_query.xml"/>
-		<mapper resource="spring/Tag_query.xml"/>
-		<mapper resource="spring/CardTag_query.xml"/>
-		<mapper resource="spring/Comment_query.xml"/>
+		<mapper resource="spring/Member_query.xml" />
+		<mapper resource="spring/Cardlist_query.xml" />
+		<mapper resource="spring/Card_query.xml" />
+		<mapper resource="spring/Tag_query.xml" />
+		<mapper resource="spring/Card_Tag_query.xml" />
+		<mapper resource="spring/Comment_query.xml" />
 	</mappers>
 </configuration>

@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.project.dto.CardTag;
-import com.ssafy.project.service.CardTagService;
+import com.ssafy.project.dto.Card_Tag;
+import com.ssafy.project.service.Card_TagService;
 
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
-public class CardTagRESTController {
+public class Card_TagRESTController {
 
 	@Autowired
-	private CardTagService service;
+	private Card_TagService service;
 
 	public ResponseEntity<Map<String, Object>> handleSuccess(Object data) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -47,28 +47,26 @@ public class CardTagRESTController {
 	}
 
 	// CREATE
-	@PostMapping("/api/cardtag")
+	@PostMapping("/api/card_tag")
 	@ApiOperation("cardtag 신규 생성, card_id와, tag_id가 있어야 한다")
-	public ResponseEntity<Map<String, Object>> insert(@RequestBody CardTag cardtag) {
-		service.insertCardTag(cardtag);
+	public ResponseEntity<Map<String, Object>> insert(@RequestBody Card_Tag card_tag) {
+		service.insertCard_Tag(card_tag);
 		return handleSuccess("생성 완료");
 	}
 
 	// READ
-	@GetMapping("/api/cardtag/{card_id}")
+	@GetMapping("/api/card_tag/of/{card_id}")
 	@ApiOperation("카드 하나의 태그들을 조회하는 기능")
 	public ResponseEntity<Map<String, Object>> searchAll(@PathVariable int card_id) {
 		return handleSuccess(service.searchAll(card_id));
 	}
-	
 
 	// DELETE
-	@DeleteMapping("/api/cardtag/{card_tag_id}")
+	@DeleteMapping("/api/card_tag/{card_tag_id}")
 	@ApiOperation("cardtag 정보 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int card_tag_id) {
-		service.deleteCardTag(card_tag_id);
+		service.deleteCard_Tag(card_tag_id);
 		return handleSuccess("삭제 완료");
 	}
 
-	
 }
