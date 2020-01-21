@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Lists() {
+function Board() {
   const classes = useStyles();
   const lists = [
     { id: 1, title: "lists1" },
@@ -39,4 +39,4 @@ function Lists() {
   return <Grid container spacing={2}>{RenderList()}</Grid>;
 }
 
-export default Lists;
+export default Board;
