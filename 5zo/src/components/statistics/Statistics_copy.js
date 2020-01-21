@@ -1,6 +1,5 @@
 import React from "react";
 
-<<<<<<< HEAD
 import moment from "moment";
 import Period from "./Period"
 import TagFrequencyChart from "./TagFrequencyChart"
@@ -23,26 +22,12 @@ class Statistics extends React.Component {
       focusedInput:null
     }
   }
-  pre(e){
-    console.log('aaa')
-  }
-  next(e){
-    
-  }
   render() {
     const user_id = this.props.match.params.user_id
-    const today_ = moment().format('YYYY[-]MM[-]DD');
-    
-    console.log(today_)
 
     return (
       <div>
         <div>{user_id}님의 통계</div>
-        <div>
-          <input type="button" value="<" onClick={this.pre}/>
-          <span>{today_}</span>
-          <input type="button" value=">"/>
-        </div>
         <div><Period data={this.state}></Period></div>
         <div>
           <div>
@@ -54,14 +39,6 @@ class Statistics extends React.Component {
         </div>
       </div>
     );
-=======
-class Statistics extends React.Component {
-  
-  render() {
-    
-    const user_id = this.props.match.params.user_id
-    return <div>{user_id}님의 통계</div>;
->>>>>>> 42cb57e79d51ee6ba8cbf6f4e351c2fd3f74aed3
   }
 }
 

@@ -17,6 +17,7 @@ import {
 } from "./types";
 
 export const fetchMembers = () => async dispatch => {
+<<<<<<< HEAD
   const response = await apis.get("/mem_info");
   dispatch({ type: FETCH_MEMBERS, payload: response.data.data });
 };
@@ -106,4 +107,12 @@ export const sort = (
 ) => async (dispatch, getState) => {
   console.log("앞으로 테스트 해볼 것들");
   dispatch({ type: DRAG_HAPPENED, payload: "" });
+=======
+  const response = await apis.get("/member");
+<<<<<<< HEAD
+  dispatch({ type: FETCH_MEMBERS, payload: response.data.data });
+=======
+  dispatch({ type: FETCH_MEMBERS, payload: response.data });
+>>>>>>> 42cb57e79d51ee6ba8cbf6f4e351c2fd3f74aed3
+>>>>>>> 8a0185afde10a8c61d22aafb1065179c1883f074
 };
