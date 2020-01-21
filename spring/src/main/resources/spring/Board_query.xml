@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.project.dao.BoardDao">
+
+	<insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="board_id">
+		insert into board(mem_id, board_type, board_date, board_lists)
+		values(#{mem_id}, #{board_type}, #{board_date}, #{board_lists})
+	</insert>
+
+	<select id="searchAllUserDate" parameterType="string" resultType="board">
+		select * from board where mem_id = #{mem_id} and board_date = #{board_date}
+	</select>
+
+	<select id="searchAllUserToDo" parameterType="string" resultType="board">
+		select * from board where mem_id = #{mem_id} and board_type = 'todo'
+	</select>
+
+
+	<select id="searchAllCardLists" parameterType="int" resultType="string">
+		select board_lists
+		from board
+		where board_id = #{board_id}
+	</select>
+
+	<update id="updateBoard" parameterType="board">
+		update board
+		set
+		board_type = #{board_type},
+		board_date = #{board_date},
+		board_lists = #{board_lists}
+		where board_id = #{board_id}
+	</update>
+
+	<delete id="deleteBoard" parameterType="int">
+		delete
+		from board
+		where board_id = #{board_id}
+	</delete>
+
+</mapper>
