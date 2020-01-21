@@ -106,4 +106,6 @@ export const sort = (
 ) => async (dispatch, getState) => {
   console.log("앞으로 테스트 해볼 것들");
   dispatch({ type: DRAG_HAPPENED, payload: "" });
+  const response = await apis.get("/member");
+  dispatch({ type: FETCH_MEMBERS, payload: response.data });
 };
