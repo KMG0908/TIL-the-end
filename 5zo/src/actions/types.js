@@ -4,6 +4,9 @@ export const FETCH_MEMBERS= 'FETCH_MEMBERS'
 
 export const DRAG_HAPPENED = "DRAG_HAPPENED"
 
+
+
+export const ADD_BOARD = 'ADD_BOARD'
 export const FETCH_DAILY_LIST = 'FETCH_DAILY_LIST'
 export const FETCH_TODO_LIST = 'FETCH_TODO_LIST'
 

@@ -5,8 +5,6 @@ import Grid from "@material-ui/core/Grid";
 
 import DailyBoard from "./DailyBoard";
 import Board from "./Board";
-import { connect } from "react-redux";
-import { fetchDailyLists, fetchTodoLists } from "../../actions";
 
 const styles = theme => ({
   root: {
@@ -28,15 +26,10 @@ const styles = theme => ({
 });
 
 class Todo extends React.Component {
-  componentDidMount() {
-    this.props.fetchTodoLists("user1");
-    this.props.fetchDailyLists("user1","20200121");
-  
-  }
   FormRow() {
     const { classes } = this.props;
     if (this.props.boards) {
-      console.log(this.props.boards)
+      console.log(this.props.boards);
       return (
         <React.Fragment>
           <Grid item sm={4} xs={12}>
@@ -69,12 +62,4 @@ class Todo extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    boards: state.boards
-  };
-};
-
-export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { fetchDailyLists, fetchTodoLists })(Todo)
-);
+export default withStyles(styles, { withTheme: true })(Todo);
