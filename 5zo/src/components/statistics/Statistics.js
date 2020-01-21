@@ -1,5 +1,6 @@
 import React from "react";
 
+<<<<<<< HEAD
 import moment from "moment";
 import Period from "./Period"
 import TagFrequencyChart from "./TagFrequencyChart"
@@ -53,6 +54,14 @@ class Statistics extends React.Component {
         </div>
       </div>
     );
+=======
+class Statistics extends React.Component {
+  
+  render() {
+    
+    const user_id = this.props.match.params.user_id
+    return <div>{user_id}님의 통계</div>;
+>>>>>>> 42cb57e79d51ee6ba8cbf6f4e351c2fd3f74aed3
   }
 }
 
