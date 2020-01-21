@@ -7,9 +7,10 @@ export const DRAG_HAPPENED = "DRAG_HAPPENED"
 export const FETCH_DAILY_LIST = 'FETCH_DAILY_LIST'
 export const FETCH_TODO_LIST = 'FETCH_TODO_LIST'
 
+
 export const FETCH_LIST = 'FETCH_LIST'
 export const ADD_LIST = 'ADD_LIST'
-export const EDIT_LIST_TITLE = 'EDIT_LIST_TITLE'
+export const EDIT_LIST = 'EDIT_LIST'
 export const DELETE_LIST = 'DELETE_LIST'
 
 

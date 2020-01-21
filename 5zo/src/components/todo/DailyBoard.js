@@ -1,10 +1,12 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import List from "./List";
+import { fetchList } from "../../actions";
 
-const useStyles = makeStyles(theme => ({
+import { connect } from "react-redux";
+const styles = theme => ({
   root: {
     flexGrow: 1
   },
@@ -16,30 +18,44 @@ const useStyles = makeStyles(theme => ({
     minHeight: "200px",
     width: "100%"
   }
-}));
-
-const DailyTodo = () => {
-  const classes = useStyles();
-  const lists = [
-    { id: 1, title: "lists1" },
-    { id: 2, title: "lists2" },
-    { id: 3, title: "lists3" },
-    { id: 4, title: "lists3" }
-  ];
-  function RenderList() {
+});
+const lists = [
+  { id: 1, title: "lists1" },
+  { id: 2, title: "lists2" },
+  { id: 3, title: "lists3" },
+  { id: 4, title: "lists3" }
+];
+class DailyTodo extends React.Component {
+  RenderList() {
+    if (this.props.board) {
+      console.log(this.props.board);
+    }
+    const { classes } = this.props;
     return lists.map(list => (
       <Paper className={classes.list} spacing={2}>
         <List title={list.title} />
       </Paper>
     ));
   }
+  render() {
+    if (this.props.board){
+      this.props.board.lists.map(list=>{fetchList(list)})
+    }
+    return (
+      <Grid container spacing={2}>
+        <div>Daily Todo</div>
+        {this.RenderList()}
+      </Grid>
+    );
+  }
+}
 
-  return (
-    <Grid container spacing={2}>
-      <div>Daily Todo</div>
-      {RenderList()}
-    </Grid>
-  );
+const mapStateToProps = state => {
+  return {
+    board: state.boards["daily"]
+  };
 };
 
-export default DailyTodo;
+export default withStyles(styles, { withTheme: true })(
+  connect(mapStateToProps,{fetchList})(DailyTodo)
+);

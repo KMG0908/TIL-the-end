@@ -1,11 +1,10 @@
 import React from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 
 import DailyBoard from "./DailyBoard";
 import Board from "./Board";
-import { render } from "@testing-library/react";
 import { connect } from "react-redux";
 import { fetchDailyLists, fetchTodoLists } from "../../actions";
 
@@ -31,7 +30,8 @@ const styles = theme => ({
 class Todo extends React.Component {
   componentDidMount() {
     this.props.fetchTodoLists("user1");
-    // console.log(this.props.boards);
+    this.props.fetchDailyLists("user1","20200121");
+  
   }
   FormRow() {
     const { classes } = this.props;
