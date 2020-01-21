@@ -12,21 +12,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.project.dto.Member;
-import com.ssafy.project.service.MemberService;
+import com.ssafy.project.dto.Card_Tag;
+import com.ssafy.project.service.Card_TagService;
 
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
-public class MemberRESTController {
+public class Card_TagRESTController {
 
 	@Autowired
-	private MemberService service;
+	private Card_TagService service;
 
 	public ResponseEntity<Map<String, Object>> handleSuccess(Object data) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -48,39 +47,25 @@ public class MemberRESTController {
 	}
 
 	// CREATE
-	@PostMapping("/api/member")
-	@ApiOperation("member 정보 등록")
-	public ResponseEntity<Map<String, Object>> insert(@RequestBody Member member) {
-		service.insertMember(member);
+	@PostMapping("/api/card_tag")
+	@ApiOperation("cardtag 신규 생성, card_id와, tag_id가 있어야 한다")
+	public ResponseEntity<Map<String, Object>> insert(@RequestBody Card_Tag card_tag) {
+		service.insertCard_Tag(card_tag);
 		return handleSuccess("생성 완료");
 	}
 
 	// READ
-	@GetMapping("/api/member")
-	@ApiOperation("회원 목록을 조회하는 기능")
-	public ResponseEntity<Map<String, Object>> searchAll() {
-		return handleSuccess(service.searchAll());
-	}
-
-	@GetMapping("/api/member/{mem_id}")
-	@ApiOperation("회원 한명을 조회 하는 기능")
-	public ResponseEntity<Map<String, Object>> search(@PathVariable String mem_id) {
-		return handleSuccess(service.search(mem_id));
-	}
-
-	// UPDATE
-	@PutMapping("/api/member")
-	@ApiOperation("member 정보 수정")
-	public ResponseEntity<Map<String, Object>> update(@RequestBody Member member) {
-		service.updateMember(member);
-		return handleSuccess("수정 완료");
+	@GetMapping("/api/card_tag/of/{card_id}")
+	@ApiOperation("카드 하나의 태그들을 조회하는 기능")
+	public ResponseEntity<Map<String, Object>> searchAll(@PathVariable int card_id) {
+		return handleSuccess(service.searchAll(card_id));
 	}
 
 	// DELETE
-	@DeleteMapping("/api/member/{mem_id}")
-	@ApiOperation("member 정보 삭제")
-	public ResponseEntity<Map<String, Object>> delete(@PathVariable String mem_id) {
-		service.deleteMember(mem_id);
+	@DeleteMapping("/api/card_tag/{card_tag_id}")
+	@ApiOperation("cardtag 정보 삭제")
+	public ResponseEntity<Map<String, Object>> delete(@PathVariable int card_tag_id) {
+		service.deleteCard_Tag(card_tag_id);
 		return handleSuccess("삭제 완료");
 	}
 

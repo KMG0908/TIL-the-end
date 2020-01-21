@@ -12,21 +12,9 @@ public interface MemberDao {
 
 	public List<Member> searchAll();
 
-	public Member search(String user_id);
+	public Member search(String mem_id);
 
 	public void updateMember(Member member);
 
-	public void deleteMember(String user_id);
+	public void deleteMember(String mem_id);
 }
-
-
-
-
-
-
-
-
-
-
-
-

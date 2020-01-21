@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.project.dao.CardDao" >
+   	
+   	<insert id="insertCard" 
+   		parameterType="card" 
+		useGeneratedKeys="true"
+		keyProperty="card_id">
+   		insert into card(cardlist_id, card_name, card_contents, card_order, card_secret)
+   		values(#{cardlist_id}, #{card_name}, #{card_contents}, #{card_order}, #{card_secret})
+   	</insert>
+   	
+   	<select id="searchAll" parameterType = "int" resultType="card">
+  		select * from card where cardlist_id = #{cardlist_id}
+  	</select>
+  	  	
+  	<select id="search" parameterType="int" resultType="card">
+		select * 
+		from card
+		where card_id = #{card_id}
+	</select>
+	
+	<update id="updateCard" parameterType="card">
+		update card
+		set	
+		cardlist_id = #{cardlist_id},
+		card_name = #{card_name},
+		card_contents = #{card_contents},
+		card_secret = #{card_secret},
+		card_order = #{card_order}
+		where card_id = #{card_id}
+	</update>
+  	
+  	<delete id="deleteCard" parameterType="int">
+		delete
+		from card
+		where card_id = #{card_id}
+	</delete>
+  	
+</mapper>

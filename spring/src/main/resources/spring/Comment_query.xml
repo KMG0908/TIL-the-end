@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.project.dao.CommentDao" >
+   	
+   	<insert id="insertComment" 
+   		parameterType="comment" 
+		useGeneratedKeys="true"
+		keyProperty="comment_id">
+   		insert into comment(mem_id, cardlist_id, comment_author, comment_contents, comment_time)
+   		values(#{mem_id}, #{cardlist_id}, #{comment_author}, #{comment_contents}, now())
+   	</insert>
+   	
+   	<select id="searchAll" parameterType = "int" resultType="comment">
+  		select * 
+  		from comment 
+  		where cardlist_id = #{cardlist_id}
+  	</select>  	  	
+	
+	<update id="updateComment" parameterType="comment">
+		update comment
+		set	
+		comment_time = #{comment_time},
+		comment_contents = #{comment_contents},
+		comment_modified = true
+		where comment_id = #{comment_id}
+	</update>
+  	
+  	
+  	<!-- delete 하지 않고 update로 처리합니다 -->
+  	<!-- <delete id="deleteComment" parameterType="int">
+		delete
+		from comment
+		where comment_id = #{comment_id}
+	</delete> -->
+	
+	<update id="deleteComment" parameterType="int">
+		update comment
+		set	
+		comment_deleted = true
+		where comment_id = #{comment_id}
+	</update>
+  	
+</mapper>

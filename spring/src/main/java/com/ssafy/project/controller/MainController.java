@@ -11,11 +11,11 @@ import com.ssafy.project.service.MemberService;
 public class MainController {
 	@Autowired
 	MemberService service;
-	
+
 	@GetMapping("/")
 	public String index(Model model) {
 		model.addAttribute("list", service.searchAll());
-		
+
 		return "index";
 	}
 }

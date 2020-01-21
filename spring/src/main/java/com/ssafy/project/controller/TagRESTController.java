@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.project.dto.Member;
-import com.ssafy.project.service.MemberService;
+import com.ssafy.project.dto.Tag;
+import com.ssafy.project.service.TagService;
 
 import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
-public class MemberRESTController {
+public class TagRESTController {
 
 	@Autowired
-	private MemberService service;
+	private TagService service;
 
 	public ResponseEntity<Map<String, Object>> handleSuccess(Object data) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -48,40 +48,46 @@ public class MemberRESTController {
 	}
 
 	// CREATE
-	@PostMapping("/api/member")
-	@ApiOperation("member 정보 등록")
-	public ResponseEntity<Map<String, Object>> insert(@RequestBody Member member) {
-		service.insertMember(member);
+	@PostMapping("/api/tag")
+	@ApiOperation("tag 신규 생성, 이미 존재할 경우 오류발생 & 생성하지 못한다")
+	public ResponseEntity<Map<String, Object>> insert(@RequestBody Tag tag) {
+		service.insertTag(tag);
 		return handleSuccess("생성 완료");
 	}
 
 	// READ
-	@GetMapping("/api/member")
-	@ApiOperation("회원 목록을 조회하는 기능")
+	@GetMapping("/api/tag")
+	@ApiOperation("공개 게시글의 태그를 전부 조회하는 기능")
 	public ResponseEntity<Map<String, Object>> searchAll() {
 		return handleSuccess(service.searchAll());
 	}
 
-	@GetMapping("/api/member/{mem_id}")
-	@ApiOperation("회원 한명을 조회 하는 기능")
-	public ResponseEntity<Map<String, Object>> search(@PathVariable String mem_id) {
-		return handleSuccess(service.search(mem_id));
+	@GetMapping("/api/tag/{tag_id}")
+	@ApiOperation("태그 하나를 조회하는 기능")
+	public ResponseEntity<Map<String, Object>> search(@PathVariable int tag_id) {
+		return handleSuccess(service.search(tag_id));
 	}
 
 	// UPDATE
-	@PutMapping("/api/member")
-	@ApiOperation("member 정보 수정")
-	public ResponseEntity<Map<String, Object>> update(@RequestBody Member member) {
-		service.updateMember(member);
+	@PutMapping("/api/tag")
+	@ApiOperation("tag 정보 수정, 수정가능한 정보는 이름뿐이다")
+	public ResponseEntity<Map<String, Object>> update(@RequestBody Tag tag) {
+		service.updateTag(tag);
 		return handleSuccess("수정 완료");
 	}
 
 	// DELETE
-	@DeleteMapping("/api/member/{mem_id}")
-	@ApiOperation("member 정보 삭제")
-	public ResponseEntity<Map<String, Object>> delete(@PathVariable String mem_id) {
-		service.deleteMember(mem_id);
+	@DeleteMapping("/api/tag/{tag_id}")
+	@ApiOperation("tag 정보 삭제")
+	public ResponseEntity<Map<String, Object>> delete(@PathVariable int tag_id) {
+		service.deleteTag(tag_id);
 		return handleSuccess("삭제 완료");
+	}
+
+	@GetMapping("/api/tag/who/{mem_id}")
+	@ApiOperation("회원의 태그를 목록으로 조회하는 기능, tag_id가 공개글에서의 태그 사용횟수입니다")
+	public ResponseEntity<Map<String, Object>> tagcloud(@PathVariable String mem_id) {
+		return handleSuccess(service.tagcloud(mem_id));
 	}
 
 }

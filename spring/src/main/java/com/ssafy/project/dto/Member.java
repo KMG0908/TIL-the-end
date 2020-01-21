@@ -3,66 +3,70 @@ package com.ssafy.project.dto;
 import java.io.Serializable;
 
 public class Member implements Serializable {
-	private String user_id;
-	private String email;
-	private String password;
-	private String nickname;
-	private String reg_date;
-	
-	public Member() {}
-	
-	public Member(String user_id, String email, String password, String nickname, String reg_date) {
+	private String mem_id;
+	private String mem_email;
+	private String mem_pw;
+	private String mem_nick;
+	private String mem_reg_date;
+
+	public Member() {
+	}
+
+	public Member(String mem_id, String mem_email, String mem_pw, String mem_nick, String mem_reg_date) {
 		super();
-		this.user_id = user_id;
-		this.email = email;
-		this.password = password;
-		this.nickname = nickname;
-		this.reg_date = reg_date;
+		this.mem_id = mem_id;
+		this.mem_email = mem_email;
+		this.mem_pw = mem_pw;
+		this.mem_nick = mem_nick;
+		this.mem_reg_date = mem_reg_date;
 	}
 
-	public String getUser_id() {
-		return user_id;
+	public String getMem_id() {
+		return mem_id;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setMem_id(String mem_id) {
+		this.mem_id = mem_id;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getMem_email() {
+		return mem_email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setMem_email(String mem_email) {
+		this.mem_email = mem_email;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getMem_pw() {
+		return mem_pw;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setMem_pw(String mem_pw) {
+		this.mem_pw = mem_pw;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getMem_nick() {
+		return mem_nick;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setMem_nick(String mem_nick) {
+		this.mem_nick = mem_nick;
 	}
 
-	public String getReg_date() {
-		return reg_date;
+	public String getMem_reg_date() {
+		return mem_reg_date;
 	}
 
-	public void setReg_date(String reg_date) {
-		this.reg_date = reg_date;
+	public void setMem_reg_date(String mem_reg_date) {
+		this.mem_reg_date = mem_reg_date;
 	}
 
 	@Override
 	public String toString() {
-		return "Member [user_id=" + user_id + ", email=" + email + ", password=" + password + ", nickname=" + nickname
-				+ ", reg_date=" + reg_date + "]";
+		return "Member [mem_id=" + mem_id + ", mem_email=" + mem_email + ", mem_pw=" + mem_pw + ", mem_nick=" + mem_nick
+				+ ", mem_reg_date=" + mem_reg_date + "]";
 	}
+
+	
+	
 }

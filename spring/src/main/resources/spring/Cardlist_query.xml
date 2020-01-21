@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.project.dao.CardlistDao" >
+   	
+   	<insert id="insertCardlist" 
+   		parameterType="cardlist" 
+		useGeneratedKeys="true"
+		keyProperty="cardlist_id">
+   		insert into cardlist(mem_id, cardlist_name, cardlist_date, cardlist_order, cardlist_instock)
+   		values(#{mem_id}, #{cardlist_name}, now(), #{cardlist_order}, true)
+   	</insert>
+   	
+   	<select id="searchAll" parameterType = "string" resultType="cardlist">
+  		select * from cardlist where mem_id = #{mem_id} and cardlist_instock=true
+  	</select>
+  	
+  	<select id="postAll" parameterType = "string" resultType="cardlist">
+  		select * from cardlist where mem_id = #{mem_id} and cardlist_instock=false
+  	</select>
+  	
+  	<select id="search" parameterType="int" resultType="cardlist">
+		select * 
+		from cardlist
+		where cardlist_id = #{cardlist_id}
+	</select>
+	
+	<update id="updateCardlist" parameterType="cardlist">
+		update cardlist
+		set	
+		cardlist_name = #{cardlist_name},
+		cardlist_date = now(),
+		cardlist_order = #{cardlist_order}
+		where cardlist_id = #{cardlist_id}
+	</update>
+  	
+  	<delete id="deleteCardlist" parameterType="int">
+		delete
+		from cardlist
+		where cardlist_id = #{cardlist_id}
+	</delete>
+  	
+</mapper>
