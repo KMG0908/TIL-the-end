@@ -74,15 +74,15 @@ public class TagServiceImpl implements TagService {
 			throw new TagException(tag_id + "번 태그 삭제 중 오류 발생");
 		}
 	}
-	
-	@Override
-	public List<Tag> tagcloud(String mem_id) {
-		try {
-			return dao.tagcloud(mem_id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new Card_TagException(mem_id + "의 태그 조회 중 오류 발생");
-		}
-	}
+//	
+//	@Override
+//	public List<Tag> tagcloud(String mem_id) {
+//		try {
+//			return dao.tagcloud(mem_id);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			throw new Card_TagException(mem_id + "의 태그 조회 중 오류 발생");
+//		}
+//	}
 
 }

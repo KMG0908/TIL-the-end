@@ -18,6 +18,6 @@ public interface TagDao {
 
 	public void deleteTag(int tag_id);
 
-	public List<Tag> tagcloud(String mem_id);
+//	public List<Tag> tagcloud(String mem_id);
 
 }

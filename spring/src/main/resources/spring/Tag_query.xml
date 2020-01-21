@@ -34,7 +34,7 @@
 		where tag_id = #{tag_id}
 	</delete>
 	
-	<select id="tagcloud" parameterType="string" resultType="tag">
+	<!-- <select id="tagcloud" parameterType="string" resultType="tag">
   		select t.tag_name, count(ct.tag_id) as tag_id
 		from tag t,
 		(select ct.tag_id as tag_id
@@ -50,6 +50,6 @@
 		where c.card_id = ct.card_id) ct
 		where ct.tag_id = t.tag_id
 		group by t.tag_id
-  	</select>
+  	</select> -->
   	
 </mapper>

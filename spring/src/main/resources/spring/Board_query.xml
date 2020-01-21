@@ -5,7 +5,7 @@
 
 	<insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="board_id">
 		insert into board(mem_id, board_type, board_date, board_lists)
-		values(#{mem_id}, #{board_type}, #{board_date}, #{board_lists})
+		values(#{mem_id}, #{board_type}, now(), #{board_lists})
 	</insert>
 
 	<select id="searchAllUserDate" parameterType="string" resultType="board">

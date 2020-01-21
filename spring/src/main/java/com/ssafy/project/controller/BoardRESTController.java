@@ -49,7 +49,7 @@ public class BoardRESTController {
 
 	// CREATE
 	@PostMapping("/api/board")
-	@ApiOperation("board 신규 생성, board_id 빼고 전부 필요")
+	@ApiOperation("board 신규 생성, board_id, date 빼고 전부 필요")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Board board) {
 		service.insertBoard(board);
 		return handleSuccess("생성 완료");
