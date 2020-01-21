@@ -5,7 +5,7 @@
    	
    	<insert id="insertMember" parameterType="member">
    		insert into mem_info(mem_id, mem_email, mem_pw, mem_nick, mem_reg_date)
-   		values(#{mem_id},#{mem_email},#{mem_pw},#{mem_nick},#{mem_reg_date})
+   		values(#{mem_id},#{mem_email},#{mem_pw},#{mem_nick}, now())
    	</insert>
    	
    	<select id="searchAll" resultType="member">
@@ -23,8 +23,7 @@
 		set
 		mem_email = #{mem_email}, 
 		mem_pw = #{mem_pw},
-		mem_nick = #{mem_nick},
-		mem_reg_date = #{mem_reg_date}
+		mem_nick = #{mem_nick}
 		where mem_id = #{mem_id}		
 	</update>
   	

@@ -49,7 +49,7 @@ public class MemberRESTController {
 
 	// CREATE
 	@PostMapping("/api/member")
-	@ApiOperation("member 정보 등록")
+	@ApiOperation("member 생성, id 필수입니다")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Member member) {
 		service.insertMember(member);
 		return handleSuccess("생성 완료");
@@ -70,7 +70,7 @@ public class MemberRESTController {
 
 	// UPDATE
 	@PutMapping("/api/member")
-	@ApiOperation("member 정보 수정")
+	@ApiOperation("member 정보 수정, 가입일 수정 불가, 비번 변경 가능합니다. 나중에 수정")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Member member) {
 		service.updateMember(member);
 		return handleSuccess("수정 완료");
