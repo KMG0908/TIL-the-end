@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const tagButtons = (tags) => tags.map((tag) =>
+
   <Link to={'/searchTag/'+tag.name} key={'link'+tag.id}>
     <Button
       variant="contained"
