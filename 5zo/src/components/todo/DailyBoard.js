@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import List from "./List";
-import { fetchList } from "../../actions";
+import { fetchList, fetchDailyLists } from "../../actions";
 
 import { connect } from "react-redux";
 const styles = theme => ({
@@ -26,8 +26,12 @@ const lists = [
   { id: 4, title: "lists3" }
 ];
 class DailyTodo extends React.Component {
+  componentDidMount(){
+    this.props.fetchDailyLists("user1","20200121")
+  }
+
   RenderList() {
-    if (this.props.board) {
+    if (this.props.board.filter()) {
       console.log(this.props.board);
     }
     const { classes } = this.props;
@@ -38,9 +42,6 @@ class DailyTodo extends React.Component {
     ));
   }
   render() {
-    if (this.props.board){
-      this.props.board.lists.map(list=>{fetchList(list)})
-    }
     return (
       <Grid container spacing={2}>
         <div>Daily Todo</div>
@@ -52,10 +53,10 @@ class DailyTodo extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    board: state.boards["daily"]
+    boards: Object.values(state.boards)
   };
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps,{fetchList})(DailyTodo)
+  connect(mapStateToProps,{fetchDailyLists})(DailyTodo)
 );
