@@ -103,3 +103,12 @@ REFERENCES `mem_info` (
 	`mem_id`
 );
 
+alter table `card` 
+add column `cardlist_id` INT NOT NULL AFTER `card_id`;
+
+ALTER TABLE `card` ADD CONSTRAINT `FK_cardlist_TO_card_1` FOREIGN KEY (
+	`cardlist_id`
+)
+REFERENCES `cardlist` (
+	`cardlist_id`
+);
