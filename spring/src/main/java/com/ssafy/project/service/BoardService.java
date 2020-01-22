@@ -14,8 +14,11 @@ public interface BoardService {
 
 	String searchAllCardLists(int board_id);
 
-	void updateBoard(Board board);
+	void patchBoard(Board board);
+
+	void updateBoard();
 
 	void deleteBoard(int board_id);
-	
+
+	int getMaxBoardId();
 }

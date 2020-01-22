@@ -23,13 +23,19 @@
 		where board_id = #{board_id}
 	</select>
 
-	<update id="updateBoard" parameterType="board">
+	<update id="patchBoard" parameterType="board">
 		update board
 		set
-		board_type = #{board_type},
-		board_date = #{board_date},
 		board_lists = #{board_lists}
 		where board_id = #{board_id}
+	</update>
+
+	<update id="updateBoard">
+		update board
+		set
+		board_type = 'daily',
+		board_date = now()-1
+		where board_type = 'todo'
 	</update>
 
 	<delete id="deleteBoard" parameterType="int">
@@ -37,5 +43,10 @@
 		from board
 		where board_id = #{board_id}
 	</delete>
+		
+	<select id="getMaxBoardId" resultType="int">
+		select max(board_id)
+		from board
+	</select>
 
 </mapper>

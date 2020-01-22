@@ -18,8 +18,12 @@ public interface BoardDao {
 	
 	public String searchAllCardLists(int board_id);
 
-	public void updateBoard(Board board);
+	public void updateBoard();
 
 	public void deleteBoard(int board_id);
+
+	public void patchBoard(Board board);
+
+	public int getMaxBoardId();
 
 }

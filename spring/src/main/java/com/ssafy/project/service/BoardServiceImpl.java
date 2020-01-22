@@ -17,11 +17,11 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public void insertBoard(Board board) {
-		try {
-			dao.insertBoard(board);
+		try {			
+			dao.insertBoard(board);			
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new BoardException("카드 생성 중 오류 발생");
+			throw new BoardException("보드 생성 중 오류 발생, board_lists의 json 형식은 [\"1\",2] 또는 {\"key\" : \"value\"}입니다.");
 		}
 	}
 
@@ -47,11 +47,8 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public String searchAllCardLists(int board_id) {
 		try {
-			String lists = dao.searchAllCardLists(board_id);
-			if (lists == null) {
-				throw new BoardException("존재하지 않는 보드 번호입니다");
-			}
-			return lists;
+			// null로 존재여부를 거를 수 없어서 부득이하게 exception을 던짐
+			return dao.searchAllCardLists(board_id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new BoardException(board_id + "번 보드 조회 중 오류 발생");
@@ -59,12 +56,23 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void updateBoard(Board board) {
+	public void patchBoard(Board board) {
 		try {
-			dao.updateBoard(board);
+			dao.patchBoard(board);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new BoardException(board.getBoard_id() + "번 보드 수정 중 오류 발생");
+			throw new BoardException("보드 패치 중 오류 발생");
+		}
+		
+	}
+	
+	@Override
+	public void updateBoard() {
+		try {
+			dao.updateBoard();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new BoardException("보드 업데이트 중 오류 발생");
 		}
 
 	}
@@ -76,6 +84,17 @@ public class BoardServiceImpl implements BoardService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new BoardException(board_id + "번 보드 삭제 중 오류 발생");
+		}
+	}
+
+
+	@Override
+	public int getMaxBoardId() {
+		try {
+			return dao.getMaxBoardId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new BoardException("보드 테이블에 어떤 보드도 없습니다");
 		}
 	}
 
