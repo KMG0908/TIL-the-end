@@ -52,8 +52,8 @@ public class CardlistRESTController {
 	@ApiOperation("cardlist 신규 생성, board_id는 필수, cards는 ,로 구분합니다")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Cardlist cardlist) {
 		service.insertCardlist(cardlist);
-		int cardlist_id = service.getMaxServiceId();
-		return handleSuccess(cardlist_id + "번 카드 리스트 생성 완료");
+		int cardlist_id = service.getMaxCardlistId();
+		return handleSuccess(cardlist_id);
 	}
 
 	// READ

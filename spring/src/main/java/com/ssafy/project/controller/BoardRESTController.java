@@ -66,7 +66,7 @@ public class BoardRESTController {
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Board board) {
 		service.insertBoard(board);
 		int board_id = service.getMaxBoardId();
-		return handleSuccess(board_id + "번 보드 생성 완료");
+		return handleSuccess(board_id);
 	}
 
 	// READ

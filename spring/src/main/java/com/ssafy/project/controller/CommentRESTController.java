@@ -53,7 +53,7 @@ public class CommentRESTController {
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Comment comment) {
 		service.insertComment(comment);
 		int comment_id = service.getMaxCommentId();
-		return handleSuccess(comment_id + "번 코멘트 생성 완료");
+		return handleSuccess(comment_id);
 	}
 
 	// READ

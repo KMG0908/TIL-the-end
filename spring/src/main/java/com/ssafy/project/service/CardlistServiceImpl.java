@@ -65,9 +65,9 @@ public class CardlistServiceImpl implements CardlistService {
 	}
 	
 	@Override
-	public int getMaxServiceId() {
+	public int getMaxCardlistId() {
 		try {
-			return dao.getMaxServiceId();
+			return dao.getMaxCardlistId();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new CardlistException("카드 리스트 id 조회 중 오류 발생.");

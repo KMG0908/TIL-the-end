@@ -52,7 +52,7 @@ public class TagRESTController {
 	@ApiOperation("tag 신규 생성, 이미 존재할 경우 오류발생 & 생성하지 못한다")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Tag tag) {
 		service.insertTag(tag);
-		return handleSuccess("생성 완료");
+		return handleSuccess(tag.getTag_id());
 	}
 
 	// READ

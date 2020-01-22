@@ -51,7 +51,8 @@ public class Card_TagRESTController {
 	@ApiOperation("cardtag 신규 생성, card_id와, tag_id가 있어야 한다")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Card_Tag card_tag) {
 		service.insertCard_Tag(card_tag);
-		return handleSuccess("생성 완료");
+		int card_tag_id = service.getMaxCardTagId();
+		return handleSuccess(card_tag_id);
 	}
 
 	// READ

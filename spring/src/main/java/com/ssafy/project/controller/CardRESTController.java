@@ -53,7 +53,7 @@ public class CardRESTController {
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Card card) {
 		service.insertCard(card);
 		int card_id = service.getMaxCardId();
-		return handleSuccess(card_id + "번 카드 생성 완료");
+		return handleSuccess(card_id);
 	}
 
 	// READ

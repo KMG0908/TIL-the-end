@@ -15,6 +15,6 @@ public interface CardlistDao {
 
 	public void deleteCardlist(int cardlist_id);
 
-	public int getMaxServiceId();
+	public int getMaxCardlistId();
 
 }

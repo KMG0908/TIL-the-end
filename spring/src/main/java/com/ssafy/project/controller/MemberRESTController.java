@@ -53,7 +53,7 @@ public class MemberRESTController {
 	@ApiOperation("member 생성, id 필수입니다")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Member member) {
 		service.insertMember(member);
-		return handleSuccess("생성 완료");
+		return handleSuccess(member.getMem_id());
 	}
 
 	// READ
