@@ -11,10 +11,10 @@ import _ from "lodash";
 export default (state = {}, action) => {
   switch (action.type) {
     case ADD_CARD: {
-      const { list_id, data } = action.payload;
-      const cardlist = state[list_id];
+      const { cardlist_id, data } = action.payload;
+      const cardlist = state[cardlist_id];
       cardlist.cards.push(data.card_id);
-      return { ...state, [list_id]: cardlist };
+      return { ...state, [cardlist_id]: cardlist };
     }
 
     case DELETE_CARD: {

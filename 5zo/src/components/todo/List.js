@@ -11,15 +11,14 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2),
     padding: theme.spacing(1),
     color: theme.palette.text.secondary,
-    minHeight: "80px",
+    minHeight: "60px",
   }
 }));
 
 const List = props => {
   const classes = useStyles();
   const cards = [
-    { id: 1, title: "card1" },
-    { id: 2, title: "card2" }
+    { id: 1, title: "card1" }
   ];
 
   const renderCard = () => {
