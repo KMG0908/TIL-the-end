@@ -55,4 +55,14 @@ public class CommentServiceImpl implements CommentService {
 			throw new CommentException(comment_id + "번 코멘트 삭제 중 오류 발생");
 		}
 	}
+	
+	@Override
+	public int getMaxCommentId() {
+		try {
+			return dao.getMaxCommentId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CommentException("코멘트 테이블 id 조회 중 오류 발생");
+		}
+	}
 }

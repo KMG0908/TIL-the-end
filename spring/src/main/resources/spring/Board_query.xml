@@ -13,8 +13,7 @@
 		from board 
 		where mem_id = #{mem_id} 
 		and board_date = #{board_date}
-		and board_type = 'daily'
-		
+		and board_type = 'daily'		
 	</select>
 
 	<select id="searchAllUserToDo" parameterType="string" resultType="board">

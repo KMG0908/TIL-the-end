@@ -63,4 +63,14 @@ public class CardlistServiceImpl implements CardlistService {
 			throw new CardlistException(cardlist_id + "번 카드 리스트 삭제 중 오류 발생");
 		}
 	}
+	
+	@Override
+	public int getMaxServiceId() {
+		try {
+			return dao.getMaxServiceId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardlistException("카드 리스트 id 조회 중 오류 발생.");
+		}
+	}
 }

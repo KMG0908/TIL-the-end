@@ -98,7 +98,7 @@ public class BoardServiceImpl implements BoardService {
 			return dao.getMaxBoardId();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new BoardException("보드 테이블에 어떤 보드도 없습니다");
+			throw new BoardException("보드 테이블 id 조회 중 오류 발생");
 		}
 	}
 

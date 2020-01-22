@@ -71,7 +71,7 @@ public class BoardRESTController {
 
 	// READ
 	@GetMapping("/api/board/member/{mem_id}/date/{board_date}")
-	@ApiOperation("보드 유저 - 날짜 조회")
+	@ApiOperation("보드 유저 - 날짜 조회(type이 daily만 조회됩니다)")
 	public ResponseEntity<Map<String, Object>> searchAllUserDate(@PathVariable String mem_id,
 			@PathVariable String board_date) {
 		return handleSuccess(service.searchAllUserDate(mem_id, board_date));

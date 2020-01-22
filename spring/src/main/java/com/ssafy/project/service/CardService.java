@@ -14,4 +14,6 @@ public interface CardService {
 
 	void deleteCard(int card_id);
 
+	int getMaxCardId();
+
 }

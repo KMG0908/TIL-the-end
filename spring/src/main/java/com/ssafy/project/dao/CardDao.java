@@ -16,4 +16,6 @@ public interface CardDao {
 
 	public void deleteCard(int card_id);
 
+	public int getMaxCardId();
+
 }

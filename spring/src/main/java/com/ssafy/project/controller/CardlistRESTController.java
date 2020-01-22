@@ -52,7 +52,8 @@ public class CardlistRESTController {
 	@ApiOperation("cardlist 신규 생성, board_id는 필수, cards는 ,로 구분합니다")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Cardlist cardlist) {
 		service.insertCardlist(cardlist);
-		return handleSuccess("생성 완료");
+		int cardlist_id = service.getMaxServiceId();
+		return handleSuccess(cardlist_id + "번 카드 리스트 생성 완료");
 	}
 
 	// READ
@@ -64,7 +65,7 @@ public class CardlistRESTController {
 
 	// UPDATE
 	@PutMapping("/api/cardlist")
-	@ApiOperation("cardlist 정보 수정, 수정이 가능한 정보는 name, cards 두가지입니다.")
+	@ApiOperation("cardlist 정보 수정, board_id는 입력하지 않아도 됩니다. 수정이 가능한 정보는 name, cards 두가지입니다.")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Cardlist cardlist) {
 		service.updateCardlist(cardlist);
 		return handleSuccess("수정 완료");

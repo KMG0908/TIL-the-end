@@ -52,7 +52,8 @@ public class CardRESTController {
 	@ApiOperation("card 신규 생성, cardlist_id 필수, 권한에 따라 비공개 설정이 기본일 경우 true를 주어야 함")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Card card) {
 		service.insertCard(card);
-		return handleSuccess("생성 완료");
+		int card_id = service.getMaxCardId();
+		return handleSuccess(card_id + "번 카드 생성 완료");
 	}
 
 	// READ

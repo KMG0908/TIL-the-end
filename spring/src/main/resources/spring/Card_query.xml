@@ -31,5 +31,10 @@
 		from card
 		where card_id = #{card_id}
 	</delete>
+	
+	<select id="getMaxCardId" resultType="int">
+		select max(card_id)
+		from card
+	</select>
   	
 </mapper>

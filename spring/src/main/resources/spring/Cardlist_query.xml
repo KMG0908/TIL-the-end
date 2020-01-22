@@ -30,5 +30,11 @@
 		from cardlist
 		where cardlist_id = #{cardlist_id}
 	</delete>
+	
+	<select id="getMaxCardlistId" resultType="int">
+		select max(cardlist_id)
+		from board
+	</select>
+	
   	
 </mapper>

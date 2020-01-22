@@ -52,7 +52,8 @@ public class CommentRESTController {
 	@ApiOperation("comment 신규 생성")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Comment comment) {
 		service.insertComment(comment);
-		return handleSuccess("생성 완료");
+		int comment_id = service.getMaxCommentId();
+		return handleSuccess(comment_id + "번 코멘트 생성 완료");
 	}
 
 	// READ

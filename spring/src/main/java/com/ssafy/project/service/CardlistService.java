@@ -12,5 +12,7 @@ public interface CardlistService {
 
 	void deleteCardlist(int cardlist_id);
 
+	int getMaxServiceId();
+
 
 }

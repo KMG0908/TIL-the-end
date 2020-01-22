@@ -60,5 +60,15 @@ public class CardServiceImpl implements CardService {
 			throw new CardException(card_id + "번 카드 삭제 중 오류 발생");
 		}
 	}
+	
+	@Override
+	public int getMaxCardId() {
+		try {
+			return dao.getMaxCardId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException("카드 테이블 id 조회 중 오류 발생");
+		}
+	}
 
 }
