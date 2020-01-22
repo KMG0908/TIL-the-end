@@ -175,7 +175,7 @@ const config = {
   }]
 };
 
-class CardCountChart extends React.Component{
+class CardCountChartSelect extends React.Component{
 	render() {
     return (
       <LineChart config={config}></LineChart>
@@ -183,4 +183,4 @@ class CardCountChart extends React.Component{
 	}
 }
 
-export default CardCountChart;
+export default CardCountChartSelect;

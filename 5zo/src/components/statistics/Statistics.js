@@ -1,55 +1,95 @@
 import React from "react";
 
 import moment from "moment";
-import Period from "./Period"
+import PeriodWeek from "./PeriodWeek"
+import PeriodMonth from "./PeriodMonth"
+import PeriodSelect from "./PeriodSelect"
 import TagFrequencyChart from "./TagFrequencyChart"
-import CardCountChart from "./CardCountChart"
+import CardCountChartWeek from "./CardCountChartWeek"
+import CardCountChartMonth from "./CardCountChartMonth"
+import CardCountChartSelect from "./CardCountChartSelect"
 
 class Statistics extends React.Component {
   constructor(props){
     super(props);
 
-    var date = '2020/01/11'
+    var date = '2019/01/05'
     var joinedDate = moment(date);
     var calendarStartDate = moment().subtract(7, 'day');
     if(new Date(joinedDate) > new Date(calendarStartDate)) calendarStartDate = joinedDate;
     
     this.state = {
-      joinedDate: moment(date).subtract(1, 'day'),  // 가입일 => isInclusively~ 함수는 기준 날짜를 포함해서 제외하기 때문에 -1 해줘야 함
-      today: moment(),
+      joinedDate: moment(date),  // 가입일
+      availableDate: moment(),
       startDate: calendarStartDate,                 // 달력 시작 날짜
       endDate: moment().subtract(1, 'day'),         // 달력 종료 날짜
-      focusedInput:null
+      focusedInput:null,
+      date:moment().format('YYYY[-]MM[-]dd'),
+      format:'YYYY[-]MM[-]dd',
+      standard:'week'
     }
+
+    this.setStandard = this.setStandard.bind(this);
   }
-  pre(e){
-    console.log('aaa')
-  }
-  next(e){
-    
+  setStandard(e){
+    switch(e.target.name){
+      case 'week':
+        this.setState({
+          // date: moment(this.state.date).format('YYYY[-]MM'),
+          // format: 'YYYY[-]MM[-]dd',
+          standard: 'week'
+        })
+        break;
+      case 'month':
+        this.setState({
+          standard: 'month'
+        })
+        break;
+      case 'select':
+        this.setState({
+          standard: 'select'
+        })
+        break;
+      default:
+    }
   }
   render() {
     const user_id = this.props.match.params.user_id
-    const today_ = moment().format('YYYY[-]MM[-]DD');
-    
-    console.log(today_)
+    const today_ = this.state.date;
+
+    let calendar;
+    let linechart;
+
+    switch(this.state.standard){
+      case 'week':
+        calendar = <div><span>week</span><PeriodWeek data={this.state}></PeriodWeek></div>
+        linechart = <div><CardCountChartWeek></CardCountChartWeek></div>
+        break;
+      case 'month':
+        calendar = <div><span>month</span><PeriodMonth data={this.state}></PeriodMonth></div>
+        linechart = <div><CardCountChartMonth></CardCountChartMonth></div>
+        break;
+      case 'select':
+        calendar = <div><span>select</span><PeriodSelect data={this.state}></PeriodSelect></div>
+        linechart = <div><CardCountChartSelect></CardCountChartSelect></div>
+        break;
+      default:
+    }
 
     return (
       <div>
         <div>{user_id}님의 통계</div>
         <div>
-          <input type="button" value="<" onClick={this.pre}/>
-          <span>{today_}</span>
-          <input type="button" value=">"/>
+          <input type="button" value="주간" name="week" onClick={this.setStandard}/>
+          <input type="button" value="월간" name="month" onClick={this.setStandard}/>
+          <input type="button" value="기간 선택" name="select" onClick={this.setStandard}/>
         </div>
-        <div><Period data={this.state}></Period></div>
+        {calendar}
         <div>
           <div>
             <TagFrequencyChart></TagFrequencyChart>
           </div>
-          <div>
-            <CardCountChart></CardCountChart>
-          </div>
+          {linechart}
         </div>
       </div>
     );
