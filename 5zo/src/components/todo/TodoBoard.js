@@ -2,66 +2,65 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import { fetchTodoLists } from "../../actions";
 import List from "./List";
-import { fetchDailyLists } from "../../actions";
 import TrelloCreate from "./TrelloCreate";
 
 import { connect } from "react-redux";
+
 const styles = theme => ({
   root: {
     flexGrow: 1
   },
   list: {
-    margin: theme.spacing(1),
     padding: theme.spacing(1),
     backgroundColor: theme.palette.error.main,
     color: theme.palette.error.contrastText,
     minHeight: "200px",
-    width: "100%"
+    width: "300px"
   },
-  addList:{
+  addList: {
     margin: theme.spacing(1),
     padding: theme.spacing(1),
-    width: "100%"
+    width: "300px"
   }
 });
-const date = "20200122"
-class DailyBoard extends React.Component {
+class TodoBoard extends React.Component {
   componentDidMount() {
-    this.props.fetchDailyLists("dsbang", date);
+    this.props.fetchTodoLists("dsbang");
   }
 
   RenderList() {
-    if (this.props.boardDict[date]) {
-      const { classes } = this.props;
+    const { classes } = this.props;
+    if (this.props.boards && this.props.boardDict["todo"]) {
       return JSON.parse(
-        this.props.boards[this.props.boardDict[date]].board_lists
+        this.props.boards[this.props.boardDict["todo"]].board_lists
       ).map(list => {
         if (this.props.cardLists[list]) {
           return (
-            <Paper className={classes.list} spacing={2}>
-              <List
-                  board_id={this.props.boardDict[date]}
+            <Grid item spacing={2}>
+              <Paper className={classes.list}>
+                <List
+                  board_id={this.props.boardDict["todo"]}
                   cardlist_id={this.props.cardLists[list].cardlist_id}
                   title={this.props.cardLists[list].cardlist_name}
-              />
-            </Paper>
+                />
+              </Paper>
+            </Grid>
           );
-        }else{
-          return <></>
         }
       });
     }
   }
+
   render() {
     const { classes } = this.props;
     return (
       <Grid container spacing={2}>
-        <div>Daily Todo 2020-01-22</div>
         {this.RenderList()}
-        <Paper className={classes.addList} elevation={0} spacing={2}>
-          <TrelloCreate board_id="20200122"/>
-        </Paper>
+        <Grid item className={classes.addList} elevation={0} spacing={2}>
+            <TrelloCreate board_id="todo" />
+        </Grid>
       </Grid>
     );
   }
@@ -76,5 +75,5 @@ const mapStateToProps = state => {
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { fetchDailyLists })(DailyBoard)
+  connect(mapStateToProps, { fetchTodoLists })(TodoBoard)
 );

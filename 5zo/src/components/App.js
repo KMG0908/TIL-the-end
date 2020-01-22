@@ -5,13 +5,14 @@ import Navigation from "./navigation/Navigation";
 
 import Main from "./main/Main";
 import Calendar from "./calendar/Calendar";
+import HeatMap from "./heatmap/Heatmap";
 import Statistics from "./statistics/Statistics";
 import Search from "./serach/Search";
 import Tags from "./tags/Tags";
 import Todo from "./todo/Todo";
-
-import { Auth } from 'pages';
 import history from "../history";
+import Register from "./Auth/Register";
+import Login from "./Auth/Login";
 
 const App = () => {
   return (
@@ -20,13 +21,15 @@ const App = () => {
         <Navigation>
           <div>
             <Route path="/" exact component={Main} />
-            <Route path="/calendar" exact component={Calendar} />
+            <Route path="/calendar" exact component={HeatMap} />
             <Route path="/statistics/:user_id" exact component={Statistics} />
             <Route path="/search/:user_id" exact component={Search} />
             <Route path="/tags" exact component={Tags} />{" "}
             {/* 추후 /tags/:user_id 로 변환 */}
             <Route path="/todo" exact component={Todo} />
-            <Route path="/auth" exact component= {Auth}/>
+            <Route path="/login" exact component= {Login}/>
+            <Route path="/register" exact component= {Register}/>
+
           </div>
         </Navigation>
       </Router>
