@@ -84,10 +84,10 @@ public class TagRESTController {
 		return handleSuccess("삭제 완료");
 	}
 
-//	@GetMapping("/api/tag/who/{mem_id}")
-//	@ApiOperation("회원의 태그를 목록으로 조회하는 기능, tag_id가 공개글에서의 태그 사용횟수입니다")
-//	public ResponseEntity<Map<String, Object>> tagcloud(@PathVariable String mem_id) {
-//		return handleSuccess(service.tagcloud(mem_id));
-//	}
+	@GetMapping("/api/tag/who/{mem_id}")
+	@ApiOperation("회원의 태그를 목록으로 조회하는 기능, tag_id가 공개글에서의 태그 사용횟수입니다")
+	public ResponseEntity<Map<String, Object>> tagcloud(@PathVariable String mem_id) {
+		return handleSuccess(service.tagcloud(mem_id));
+	}
 
 }

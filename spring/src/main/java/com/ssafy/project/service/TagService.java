@@ -16,6 +16,6 @@ public interface TagService {
 
 	void deleteTag(int tag_id);
 
-//	List<Tag> tagcloud(String mem_id);
+	List<Tag> tagcloud(String mem_id);
 
 }
