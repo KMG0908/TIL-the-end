@@ -4,10 +4,12 @@ import memberReducer from "./memberReducer";
 import boardReducer from "./boardReducer";
 import cardListReducer from "./cardListReducer";
 import cardReducer from "./cardReducer";
+import boardDictReducer from "./boardDictReducer"
 
 export default combineReducers({
   members: memberReducer,
   boards : boardReducer,
-  cardlists : cardListReducer,
-  cards : cardReducer
+  cardLists : cardListReducer,
+  cards : cardReducer,
+  boardDict : boardDictReducer
 });

@@ -17,30 +17,41 @@ import {
 } from "./types";
 
 export const fetchMembers = () => async dispatch => {
-  const response = await apis.get("/mem_info");
+  const response = await apis.get("/member");
   dispatch({ type: FETCH_MEMBERS, payload: response.data.data });
 };
 
 export const addBoard = (mem_id, board_date, board_type) => async dispatch => {
+  const board_lists = "[]";
   const response = await apis.post("/board", {
     mem_id,
     board_date,
-    board_type
+    board_type,
+    board_lists
   });
   dispatch({ type: ADD_BOARD, payload: response.data.data });
 };
 
 export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
-  const response = await apis.get(
-    `/board?mem_id=${mem_id}&board_date=${board_date}`
-  );
+  const response = await apis.get(`/board/member/${mem_id}/date/${board_date}`);
+  console.log(response.data.data);
+  dispatch({ type: FETCH_DAILY_LIST, payload: response.data.data[0] });
 
-  dispatch({ type: FETCH_DAILY_LIST, payload: response.data.data });
+  JSON.parse(response.data.data[0].board_lists).map(async cardlist_id => {
+    let res = await apis.get(`/cardlist/${cardlist_id}`);
+    dispatch({ type: FETCH_LIST, payload: [res.data.data] });
+  });
 };
 
 export const fetchTodoLists = mem_id => async dispatch => {
-  const response = await apis.get(`/board?mem_id=${mem_id}&board_type="todo"`);
-  dispatch({ type: FETCH_TODO_LIST, payload: response.data.data });
+  const response = await apis.get(`/board/member/${mem_id}`);
+  console.log(response)
+  dispatch({ type: FETCH_TODO_LIST, payload: response.data.data[0] });
+
+  JSON.parse(response.data.data[0].board_lists).map(async cardlist_id => {
+    let res = await apis.get(`/cardlist/${cardlist_id}`);
+    dispatch({ type: FETCH_LIST, payload: [res.data.data] });
+  });
 };
 
 export const fetchList = board_id => async dispatch => {
@@ -48,8 +59,13 @@ export const fetchList = board_id => async dispatch => {
   dispatch({ type: FETCH_LIST, payload: response.data.data });
 };
 
-export const addList = (board_id, formValues) => async dispatch => {
-  const response = await apis.post(`/board/${board_id}/`, { ...formValues });
+export const addList = (board_id, cardist_name) => async dispatch => {
+  const cardlist_cards="[]"
+  const response = await apis.post(`/board/${board_id}/`, {
+    board_id,
+    cardist_name,
+    cardlist_cards
+  });
   const data = response.data.data;
   dispatch({ type: ADD_LIST, payload: { board_id, data } });
 };
@@ -76,10 +92,10 @@ export const fetchCards = list_id => async dispatch => {
   dispatch({ type: FETCH_CARDS, payload: response.data.data });
 };
 
-export const addCard = (list_id, formValues) => async dispatch => {
-  const response = await apis.post(`/card`, { ...formValues });
+export const addCard = (cardlist_id, card_name) => async dispatch => {
+  const response = await apis.post(`/card`, { card_name, cardlist_id });
   const data = response.data.data;
-  dispatch({ type: ADD_CARD, payload: { list_id, data } });
+  dispatch({ type: ADD_CARD, payload: { cardlist_id, data } });
 };
 
 export const editCard = (card_id, formValues) => async dispatch => {

@@ -4,7 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 
 import DailyBoard from "./DailyBoard";
-import Board from "./Board";
+import TodoBoard from "./TodoBoard";
 
 const styles = theme => ({
   root: {
@@ -28,24 +28,20 @@ const styles = theme => ({
 class Todo extends React.Component {
   FormRow() {
     const { classes } = this.props;
-    if (this.props.boards) {
-      console.log(this.props.boards);
-      return (
-        <React.Fragment>
-          <Grid item sm={4} xs={12}>
-            <Paper className={classes.daily}>
-              <DailyBoard />
-              {/* {this.props.boards[0]} */}
-            </Paper>
-          </Grid>
-          <Grid item sm={8} xs={12}>
-            <Paper className={classes.lists}>
-              <Board />
-            </Paper>
-          </Grid>
-        </React.Fragment>
-      );
-    }
+    return (
+      <React.Fragment>
+        <Grid item md={4} sm={12}>
+          <Paper className={classes.daily}>
+            <DailyBoard />
+          </Paper>
+        </Grid>
+        <Grid item md={8} sm={12}>
+          <Paper className={classes.lists}>
+            <TodoBoard />
+          </Paper>
+        </Grid>
+      </React.Fragment>
+    );
   }
   render() {
     const { classes } = this.props;
