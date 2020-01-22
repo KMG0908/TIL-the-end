@@ -9,8 +9,9 @@ import Statistics from "./statistics/Statistics";
 import Search from "./serach/Search";
 import Tags from "./tags/Tags";
 import Todo from "./todo/Todo";
-
 import history from "../history";
+import Register from "./Auth/Register";
+import Login from "./Auth/Login";
 
 const App = () => {
   return (
@@ -25,6 +26,9 @@ const App = () => {
             <Route path="/tags" exact component={Tags} />{" "}
             {/* 추후 /tags/:user_id 로 변환 */}
             <Route path="/todo" exact component={Todo} />
+            <Route path="/login" exact component= {Login}/>
+            <Route path="/register" exact component= {Register}/>
+
           </div>
         </Navigation>
       </Router>
