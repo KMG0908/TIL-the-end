@@ -10,6 +10,12 @@ public class Card implements Serializable {
 	 * 카드 리스트와 1:N 매칭이고 auto increment 속성입니다
 	 */
 	private int card_id;	
+	
+	/**
+	 * 외래키 연결용
+	 */
+	private int cardlist_id;
+	
 	/**
 	 * 카드의 제목으로 소제목에 해당합니다
 	 */
@@ -22,4 +28,7 @@ public class Card implements Serializable {
 	 * 카드의 개별 공개 여부입니다. 비공개일경우 true 입니다
 	 */
 	private boolean card_secret;
+	
+	
+	
 }

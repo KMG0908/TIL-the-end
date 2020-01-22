@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.project.dto.Board;
@@ -84,6 +85,7 @@ public class BoardRESTController {
 
 	@GetMapping("/api/board/{board_id}")
 	@ApiOperation("보드 유저 - 카드 리스트 조회")
+	@ResponseBody
 	public ResponseEntity<Map<String, Object>> searchAllCardLists(@PathVariable int board_id) {
 		return handleSuccess(service.searchAllCardLists(board_id));
 	}

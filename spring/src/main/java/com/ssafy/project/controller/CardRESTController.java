@@ -49,7 +49,7 @@ public class CardRESTController {
 
 	// CREATE
 	@PostMapping("/api/card")
-	@ApiOperation("card 신규 생성, 권한에 따라 비공개 설정이 기본일 경우 true를 주어야 함, name과 contents가 비어있지 않도록 해주세요")
+	@ApiOperation("card 신규 생성, cardlist_id 필수, 권한에 따라 비공개 설정이 기본일 경우 true를 주어야 함")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Card card) {
 		service.insertCard(card);
 		return handleSuccess("생성 완료");

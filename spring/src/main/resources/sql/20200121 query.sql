@@ -1,3 +1,6 @@
+
+-- mysql 설치 후 mysqld.cnf 파일 변경
+-- default charset utf8
 drop database if exists til;
 create database til;
 use til;
@@ -20,8 +23,19 @@ CREATE TABLE `mem_option` (
 CREATE TABLE `cardlist` (
 	`cardlist_id`	int	NOT NULL primary key auto_increment,
 	`cardlist_name`	varchar(50)	NULL,
-	`cardlist_cards`	json	NULL
+	`cardlist_cards`	varchar(255)	NULL
 );
+
+alter table `cardlist` 
+add column `board_id` INT NOT NULL AFTER `cardlist_id`;
+
+ALTER TABLE `cardlist` ADD CONSTRAINT `FK_board_TO_cardlist_1` FOREIGN KEY (
+	`board_id`
+)
+REFERENCES `board` (
+	`board_id`
+);
+
 
 CREATE TABLE `card` (
 	`card_id`	int	NOT NULL primary key auto_increment,
@@ -68,7 +82,7 @@ CREATE TABLE `board` (
 	`mem_id`	varchar(30)	NOT NULL,
 	`board_type`	varchar(20)	NULL,
 	`board_date`	datetime	NULL,
-	`board_lists`	json	NULL
+	`board_lists`	varchar(255)	NULL
 );
 
 ALTER TABLE `til`.`board` 

@@ -7,8 +7,8 @@
    		parameterType="card" 
 		useGeneratedKeys="true"
 		keyProperty="card_id">
-   		insert into card(card_name, card_contents, card_secret)
-   		values(#{card_name}, #{card_contents}, #{card_secret})
+   		insert into card(cardlist_id, card_name, card_contents, card_secret)
+   		values(#{cardlist_id}, #{card_name}, #{card_contents}, #{card_secret})
    	</insert>
    	  	  	
   	<select id="search" parameterType="int" resultType="card">
