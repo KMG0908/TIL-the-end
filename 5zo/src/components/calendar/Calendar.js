@@ -5,12 +5,11 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import axios from 'axios';
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import events from './event'
-import evdata from './evdata'
+
 const localizer = momentLocalizer(moment)
 
 const myEventsList =[]
-var data = require('./evdata.json');
+var data = require('./evadata.json');
 class Event extends React.Component{
   constructor(props){
       super(props)

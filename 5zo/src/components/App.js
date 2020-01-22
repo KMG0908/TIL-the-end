@@ -5,6 +5,7 @@ import Navigation from "./navigation/Navigation";
 
 import Main from "./main/Main";
 import Calendar from "./calendar/Calendar";
+import HeatMap from "./heatmap/Heatmap";
 import Statistics from "./statistics/Statistics";
 import Search from "./serach/Search";
 import Tags from "./tags/Tags";
@@ -19,7 +20,7 @@ const App = () => {
         <Navigation>
           <div>
             <Route path="/" exact component={Main} />
-            <Route path="/calendar" exact component={Calendar} />
+            <Route path="/calendar" exact component={HeatMap} />
             <Route path="/statistics/:user_id" exact component={Statistics} />
             <Route path="/search/:user_id" exact component={Search} />
             <Route path="/tags" exact component={Tags} />{" "}
