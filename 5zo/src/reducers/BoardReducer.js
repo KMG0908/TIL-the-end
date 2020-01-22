@@ -11,10 +11,11 @@ export default (state = {}, action) => {
   switch (action.type) {
     case ADD_BOARD:
       return { ...state, ..._.mapKeys(action.payload, "board_id") };
+
     case FETCH_DAILY_LIST:
-      return { ...state, ..._.mapKeys(action.payload, "board_id") };
+      return { ...state, [action.payload.board_id] : action.payload };
     case FETCH_TODO_LIST:
-      return { ...state, ..._.mapKeys(action.payload, "board_id") };
+      return { ...state, [action.payload.board_id] : action.payload };
 
     case ADD_LIST:{
       const { board_id, data } = action.payload;
