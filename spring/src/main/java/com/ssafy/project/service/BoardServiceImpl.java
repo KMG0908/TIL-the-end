@@ -48,10 +48,14 @@ public class BoardServiceImpl implements BoardService {
 	public String searchAllCardLists(int board_id) {
 		try {
 			// null로 존재여부를 거를 수 없어서 부득이하게 exception을 던짐
-			return dao.searchAllCardLists(board_id);
+			String lists = dao.searchAllCardLists(board_id);
+			if(lists == null) {
+				throw new BoardException();
+			}
+			return lists;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new BoardException(board_id + "번 보드 조회 중 오류 발생");
+			throw new BoardException(board_id + "번 보드가 없습니다.");
 		}
 	}
 

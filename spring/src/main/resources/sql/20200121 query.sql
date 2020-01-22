@@ -30,6 +30,17 @@ CREATE TABLE `card` (
 	`card_secret`	boolean	NULL
 );
 
+
+alter table `card` 
+add column `cardlist_id` INT NOT NULL AFTER `card_id`;
+
+ALTER TABLE `card` ADD CONSTRAINT `FK_cardlist_TO_card_1` FOREIGN KEY (
+	`cardlist_id`
+)
+REFERENCES `cardlist` (
+	`cardlist_id`
+);
+
 CREATE TABLE `comment` (
 	`comment_id`	int	NOT NULL primary key auto_increment,
 	`mem_id`	varchar(30)	NOT NULL,
@@ -59,6 +70,9 @@ CREATE TABLE `board` (
 	`board_date`	datetime	NULL,
 	`board_lists`	json	NULL
 );
+
+ALTER TABLE `til`.`board` 
+CHANGE COLUMN `board_date` `board_date` DATE NULL DEFAULT NULL ;
 
 
 ALTER TABLE `mem_option` ADD CONSTRAINT `FK_mem_info_TO_mem_option_1` FOREIGN KEY (
@@ -101,14 +115,4 @@ ALTER TABLE `board` ADD CONSTRAINT `FK_mem_info_TO_board_1` FOREIGN KEY (
 )
 REFERENCES `mem_info` (
 	`mem_id`
-);
-
-alter table `card` 
-add column `cardlist_id` INT NOT NULL AFTER `card_id`;
-
-ALTER TABLE `card` ADD CONSTRAINT `FK_cardlist_TO_card_1` FOREIGN KEY (
-	`cardlist_id`
-)
-REFERENCES `cardlist` (
-	`cardlist_id`
 );
