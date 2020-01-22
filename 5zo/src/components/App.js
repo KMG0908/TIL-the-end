@@ -10,6 +10,7 @@ import Search from "./serach/Search";
 import Tags from "./tags/Tags";
 import Todo from "./todo/Todo";
 
+import { Auth } from 'pages';
 import history from "../history";
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="/tags" exact component={Tags} />{" "}
             {/* 추후 /tags/:user_id 로 변환 */}
             <Route path="/todo" exact component={Todo} />
+            <Route path="/auth" exact component= {Auth}/>
           </div>
         </Navigation>
       </Router>
