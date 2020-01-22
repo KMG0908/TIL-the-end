@@ -73,4 +73,16 @@ public class MemberServiceImpl implements MemberService {
 			throw new MemberException("회원 정보 삭제 중 오류 발생");
 		}
 	}
+	
+	@Override
+	public boolean hasAuth(String mem_id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public void patchAuth(String mem_id) {
+		// TODO Auto-generated method stub
+		
+	}
 }

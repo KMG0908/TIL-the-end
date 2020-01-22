@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.project.dao.CardDao;
+import com.ssafy.project.dto.Board;
+import com.ssafy.project.dto.BoardException;
 import com.ssafy.project.dto.Card;
 import com.ssafy.project.dto.CardException;
 
@@ -68,6 +70,24 @@ public class CardServiceImpl implements CardService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new CardException("카드 테이블 id 조회 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Board> countAllDailyCard(String mem_id) {
+		try {
+			return dao.countAllDailyCard(mem_id);
+		} catch (Exception e) {
+			throw new CardException(mem_id + "의 전체 카드 조회 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Board> countPublicDailyCard(String mem_id) {
+		try {
+			return dao.countPublicDailyCard(mem_id);
+		} catch (Exception e) {
+			throw new CardException(mem_id + "의 공개된 카드 조회 중 오류 발생");
 		}
 	}
 

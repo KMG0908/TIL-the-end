@@ -2,71 +2,48 @@ package com.ssafy.project.dto;
 
 import java.io.Serializable;
 
+import lombok.Data;
+
+
+@Data
 public class Member implements Serializable {
+	/**
+	 * 운영자를 admin으로, pk
+	 */
 	private String mem_id;
+	/**
+	 * 이메일정보 null
+	 */
 	private String mem_email;
+	/**
+	 * 아직 암호화하지 않았습니다 NN
+	 */
 	private String mem_pw;
+	/**
+	 * 닉네임은 ... 굳이 필요한지 모르겠는데 좀 더 생각해보겠습니다
+	 */
 	private String mem_nick;
+	/**
+	 * 가입일(date)
+	 */
 	private String mem_reg_date;
-
-	public Member() {
-	}
-
-	public Member(String mem_id, String mem_email, String mem_pw, String mem_nick, String mem_reg_date) {
-		super();
-		this.mem_id = mem_id;
-		this.mem_email = mem_email;
-		this.mem_pw = mem_pw;
-		this.mem_nick = mem_nick;
-		this.mem_reg_date = mem_reg_date;
-	}
-
-	public String getMem_id() {
-		return mem_id;
-	}
-
-	public void setMem_id(String mem_id) {
-		this.mem_id = mem_id;
-	}
-
-	public String getMem_email() {
-		return mem_email;
-	}
-
-	public void setMem_email(String mem_email) {
-		this.mem_email = mem_email;
-	}
-
-	public String getMem_pw() {
-		return mem_pw;
-	}
-
-	public void setMem_pw(String mem_pw) {
-		this.mem_pw = mem_pw;
-	}
-
-	public String getMem_nick() {
-		return mem_nick;
-	}
-
-	public void setMem_nick(String mem_nick) {
-		this.mem_nick = mem_nick;
-	}
-
-	public String getMem_reg_date() {
-		return mem_reg_date;
-	}
-
-	public void setMem_reg_date(String mem_reg_date) {
-		this.mem_reg_date = mem_reg_date;
-	}
-
-	@Override
-	public String toString() {
-		return "Member [mem_id=" + mem_id + ", mem_email=" + mem_email + ", mem_pw=" + mem_pw + ", mem_nick=" + mem_nick
-				+ ", mem_reg_date=" + mem_reg_date + "]";
-	}
-
-	
+	/*
+	 * 아래는 회원 권한 테이블로 별도 관리하고 있습니다.
+	 */
+	/**
+	 * 글쓰기 권한이 있으면 true(tinyint 1)
+	 * 운영자만 이 권한을 수정할 수 있습니다.
+	 */
+	private boolean mem_auth;
+	/**
+	 * 카드 생성시 기본적으로 공개 설정이면 true
+	 */
+	private boolean mem_post_def;
+	/**
+	 * 회원이 전체 비공개 설정일 경우 true
+	 * 즉, 전체 비공개일 때는 mem_post_def 수정이 불가능해야하고 
+	 * false 값이어야 합니다.
+	 */
+	private boolean mem_secret;
 	
 }

@@ -36,5 +36,34 @@
 		select max(card_id)
 		from card
 	</select>
+	
+	<select id="countPublicDailyCard" parameterType="string" resultType="board">
+		select count(card_id) as board_id, d.board_date
+		from card e,
+			(select cardlist_id, b.board_date
+			from cardlist c, 
+				(select board_id, board_date
+				from board
+				where mem_id = #{mem_id}
+				and board_type = 'daily') b
+			where c.board_id = b.board_id) d
+		where e.cardlist_id = d.cardlist_id
+		and card_secret = false
+		group by d.board_date
+	</select>
+	
+	<select id="countAllDailyCard" parameterType="string" resultType="board">
+		select count(card_id) as board_id, d.board_date
+		from card e,
+			(select cardlist_id, b.board_date
+			from cardlist c, 
+				(select board_id, board_date
+				from board
+				where mem_id = #{mem_id}
+				and board_type = 'daily') b
+			where c.board_id = b.board_id) d
+		where e.cardlist_id = d.cardlist_id
+		group by d.board_date
+	</select>
   	
 </mapper>

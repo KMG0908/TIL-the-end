@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -82,6 +83,23 @@ public class MemberRESTController {
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable String mem_id) {
 		service.deleteMember(mem_id);
 		return handleSuccess("삭제 완료");
+	}
+	
+	/*
+	 * 권한 설정 
+	 */
+	@GetMapping("/api/member/auth/{mem_id}")
+	@ApiOperation("회원아이디를 넣으면 글쓰기 권한이 있는지 알려주는 api입니다.")
+	public ResponseEntity<Map<String, Object>> hasAuth(@PathVariable String mem_id) {
+		return handleSuccess(service.hasAuth(mem_id));
+	}
+	
+	@PatchMapping("/api/member/auth/{mem_id}")
+	@ApiOperation("글쓰기 권한 설정, 운영자가 회원 목록 또는 회원 관리창에서 설정할 수 있습니다. "
+			+ "누를때마다 true<->false 가 변경되도록 설정되어있습니다. 수정이 필요하면 말해주세요")
+	public ResponseEntity<Map<String, Object>> patchAuth(@PathVariable String mem_id) {
+		service.patchAuth(mem_id);
+		return handleSuccess(mem_id + "의 글쓰기 권한이 변경되었습니다.");
 	}
 
 }
