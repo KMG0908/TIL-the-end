@@ -109,9 +109,15 @@ public class MemberRESTController {
 	 * state 가 ok 이고 data가 true면 admin, data가 false면 일반회원
 	 * 아니면 data로 id를 돌려줘야 하나?
 	 */
-	@PostMapping("/api/member/login")
-	@ApiOperation("아이디와 패스워드로 로그인, 패스워드가 null로 처리되어 리턴됩니다")
-	public ResponseEntity<Map<String,Object>> login(@RequestParam String id, @RequestParam String password){
-		return handleSuccess(service.login(id, password));
+	@PostMapping("/api/member/login/")
+	@ApiOperation("전달 인자 data : {\"id\" : \"test\", \"pw\" : \"test\" }, 참고 : https://zzznara2.tistory.com/761,  패스워드가 null로 처리되어 리턴됩니다")
+	public ResponseEntity<Map<String,Object>> login(@RequestBody Map<String, Object> payload){
+		return handleSuccess(service.login((String)payload.get("id"), (String)payload.get("pw")));
+	}
+	
+	@PostMapping("/api/member/login/{mem_id}")
+	@ApiOperation("id와 pw로 로그인")
+	public ResponseEntity<Map<String, Object>> login(@PathVariable String mem_id, @RequestBody String mem_pw){
+		return handleSuccess(service.login(mem_id, mem_pw));
 	}
 }

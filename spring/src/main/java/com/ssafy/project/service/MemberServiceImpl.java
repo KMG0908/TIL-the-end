@@ -96,13 +96,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public Member login(String id, String password) {
+	public Member login(String mem_id, String mem_pw) {
 		try {
-			Member member = dao.search(id);
+			Member member = dao.search(mem_id);
 			if(member == null) {
 				throw new MemberException("등록되지 않은 회원입니다.");			
 			} 
-			if(!member.getMem_pw().equals(password)) {
+			if(!member.getMem_pw().equals(mem_pw)) {
 				throw new MemberException("비밀번호 오류");
 			} else {
 				member.setMem_pw(null);
