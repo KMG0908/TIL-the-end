@@ -3,6 +3,7 @@ package com.ssafy.project.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.project.dto.Member;
@@ -122,14 +122,20 @@ public class MemberRESTController {
 	 * 아니면 data로 id를 돌려줘야 하나?
 	 */
 	@PostMapping("/api/member/login/")
-	@ApiOperation("전달 인자 data : {\"id\" : \"test\", \"pw\" : \"test\" }, 참고 : https://zzznara2.tistory.com/761,  패스워드가 null로 처리되어 리턴됩니다")
+	@ApiOperation("전달 인자 data : {\"mem_id\" : \"test\", \"mem_pw\" : \"test\" }, 참고 : https://zzznara2.tistory.com/761,  패스워드가 null로 처리되어 리턴됩니다")
 	public ResponseEntity<Map<String,Object>> login(@RequestBody Map<String, Object> payload){
-		return handleSuccess(service.login((String)payload.get("id"), (String)payload.get("pw")));
+		return handleSuccess(service.login((String)payload.get("mem_id"), (String)payload.get("mem_pw")));
 	}
 	
 	@PostMapping("/api/member/login/{mem_id}")
 	@ApiOperation("id와 pw로 로그인")
 	public ResponseEntity<Map<String, Object>> login(@PathVariable String mem_id, @RequestBody Object mem_pw){
+		System.out.println("mem_pw : " + mem_pw);
+		/* 디버그 코드 */
+		JSONParser jsonparser = new JSONParser((String)mem_pw);
+		System.out.println(jsonparser.toString());
+		
+		System.out.println("mem_pw : " + mem_pw);
 		return handleSuccess(service.login(mem_id, (String)mem_pw));
 	}
 }
