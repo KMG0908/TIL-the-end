@@ -5,11 +5,12 @@ import boardReducer from "./boardReducer";
 import cardListReducer from "./cardListReducer";
 import cardReducer from "./cardReducer";
 import boardDictReducer from "./boardDictReducer"
-
+import auth from "redux/modules/auth";
 export default combineReducers({
   members: memberReducer,
   boards : boardReducer,
   cardLists : cardListReducer,
   cards : cardReducer,
-  boardDict : boardDictReducer
+  boardDict : boardDictReducer,
+  auth
 });

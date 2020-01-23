@@ -4,29 +4,33 @@ import { Map } from 'immutable';
 
 const CHANGE_INPUT = 'auth/CHANGE_INPUT'; // input 값 변경
 const INITIALIZE_FORM = 'auth/INITIALIZE_FORM'; // form 초기화
+const LOGIN_ACTION = 'auth/LOGIN_ACTION'; // 로그인 액션
+
 
 export const changeInput = createAction(CHANGE_INPUT); // { form, name, value }
 export const initializeForm = createAction(INITIALIZE_FORM); // form
+export const loginAction = createAction(LOGIN_ACTION); // 
 
 const initialState = Map({
     register : Map({
         form : Map({
+            loginId : '',
+            loginPw : '',
             email : '',
-            username : '',
-            password : '',
-            passwordConfirm : ''
+            nick : ''
         })
     }),
     login : Map({
         form : Map({
-            email : '',
-            password : ''
+            loginId : '',
+            loginPw : ''
         })
     })
 });
 
 export default handleActions({
     [CHANGE_INPUT] : (state, action) => {
+        console.log(state);
         const { form, name, value } = action.payload;
         return state.setIn([form, 'form', name], value);
     },
