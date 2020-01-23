@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.project.dto.Member;
@@ -101,5 +102,16 @@ public class MemberRESTController {
 		service.patchAuth(mem_id);
 		return handleSuccess(mem_id + "의 글쓰기 권한이 변경되었습니다.");
 	}
-
+	
+	/**
+	 * 로그인 설정
+	 * state 가 fail 이면 로그인 실패
+	 * state 가 ok 이고 data가 true면 admin, data가 false면 일반회원
+	 * 아니면 data로 id를 돌려줘야 하나?
+	 */
+	@PostMapping("/api/member/login")
+	@ApiOperation("member 정보 등록")
+	public ResponseEntity<Map<String,Object>> login(@RequestParam String id, @RequestParam String password){
+		return handleSuccess(service.login(id, password));
+	}
 }

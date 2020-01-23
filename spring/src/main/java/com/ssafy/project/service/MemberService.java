@@ -20,4 +20,6 @@ public interface MemberService {
 
 	public void patchAuth(String mem_id);
 
+	public Member login(String id, String password);
+
 }
