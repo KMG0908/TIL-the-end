@@ -8,6 +8,10 @@
 # testing
 /coverage
 
+# package.json
+package.json
+package-logck.json
+
 # production
 /build
 

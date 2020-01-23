@@ -13,7 +13,8 @@ import {
   FETCH_CARDS,
   ADD_CARD,
   EDIT_CARD,
-  DELETE_CARD
+  DELETE_CARD,
+  LOGIN_MEMBER
 } from "./types";
 
 export const fetchMembers = () => async dispatch => {
@@ -125,3 +126,4 @@ export const sort = (
   const response = await apis.get("/member");
   dispatch({ type: FETCH_MEMBERS, payload: response.data });
 };
+
