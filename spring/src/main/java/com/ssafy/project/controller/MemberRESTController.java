@@ -110,7 +110,7 @@ public class MemberRESTController {
 	 * 아니면 data로 id를 돌려줘야 하나?
 	 */
 	@PostMapping("/api/member/login")
-	@ApiOperation("member 정보 등록")
+	@ApiOperation("아이디와 패스워드로 로그인, 패스워드가 null로 처리되어 리턴됩니다")
 	public ResponseEntity<Map<String,Object>> login(@RequestParam String id, @RequestParam String password){
 		return handleSuccess(service.login(id, password));
 	}
