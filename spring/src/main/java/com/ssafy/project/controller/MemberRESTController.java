@@ -104,7 +104,7 @@ public class MemberRESTController {
 	}
 	
 	/**
-	 * 로그인 설정
+	 * 로그인 설정 
 	 * state 가 fail 이면 로그인 실패
 	 * state 가 ok 이고 data가 true면 admin, data가 false면 일반회원
 	 * 아니면 data로 id를 돌려줘야 하나?
@@ -117,7 +117,7 @@ public class MemberRESTController {
 	
 	@PostMapping("/api/member/login/{mem_id}")
 	@ApiOperation("id와 pw로 로그인")
-	public ResponseEntity<Map<String, Object>> login(@PathVariable String mem_id, @RequestBody String mem_pw){
-		return handleSuccess(service.login(mem_id, mem_pw));
+	public ResponseEntity<Map<String, Object>> login(@PathVariable String mem_id, @RequestBody Object mem_pw){
+		return handleSuccess(service.login(mem_id, (String)mem_pw));
 	}
 }
