@@ -127,10 +127,3 @@ export const sort = (
   dispatch({ type: FETCH_MEMBERS, payload: response.data });
 };
 
-
-
-// 인제 
-export const login = ( loginId, loginPw ) => async dispatch => {
-  const response = await apis.post('/member/login');
-  dispatch({ type : LOGIN_MEMBER, payload : response.data });
-}
