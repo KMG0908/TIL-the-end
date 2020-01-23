@@ -20,16 +20,12 @@ export default (state = {}, action) => {
     case DELETE_CARD: {
       const { list_id, card_id } = action.payload;
       const cardlist = state[list_id];
-      cardlist.cards = cardlist.cards.filter(id => id!==card_id)
-      return {...state, [list_id]: cardlist}
-
+      cardlist.cards = cardlist.cards.filter(id => id !== card_id);
+      return { ...state, [list_id]: cardlist };
     }
 
     case ADD_LIST:
-      return {
-        ...state,
-        [action.payload.data.cardlist_id]: action.payload.data
-      };
+      return { ...state, ..._.mapKeys(action.payload, "cardlist_id") };
     case FETCH_LIST:
       return { ...state, ..._.mapKeys(action.payload, "cardlist_id") };
     case EDIT_LIST:

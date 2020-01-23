@@ -18,7 +18,7 @@ import {
 
 export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
-  dispatch({ type: FETCH_MEMBERS, payload: response.data.data });
+  await dispatch({ type: FETCH_MEMBERS, payload: response.data.data });
 };
 
 export const addBoard = (mem_id, board_date, board_type) => async dispatch => {
@@ -34,8 +34,9 @@ export const addBoard = (mem_id, board_date, board_type) => async dispatch => {
 
 export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}/date/${board_date}`);
-  console.log(response.data.data);
-  dispatch({ type: FETCH_DAILY_LIST, payload: response.data.data[0] });
+  const res= JSON.parse((JSON.stringify(response)))
+
+  dispatch({ type: FETCH_DAILY_LIST, payload: res.data.data[0] });
 
   JSON.parse(response.data.data[0].board_lists).map(async cardlist_id => {
     let res = await apis.get(`/cardlist/${cardlist_id}`);
@@ -45,7 +46,7 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
 
 export const fetchTodoLists = mem_id => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}`);
-  console.log(response)
+  console.log(response);
   dispatch({ type: FETCH_TODO_LIST, payload: response.data.data[0] });
 
   JSON.parse(response.data.data[0].board_lists).map(async cardlist_id => {
@@ -59,15 +60,31 @@ export const fetchList = board_id => async dispatch => {
   dispatch({ type: FETCH_LIST, payload: response.data.data });
 };
 
-export const addList = (board_id, cardist_name) => async dispatch => {
-  const cardlist_cards="[]"
-  const response = await apis.post(`/board/${board_id}/`, {
+export const addList = (board_id, cardlist_name) => async (
+  dispatch,
+  getState
+) => {
+  const cardlist_cards = "[]";
+  const response = await apis.post(`/cardlist`, {
     board_id,
-    cardist_name,
+    cardlist_name,
     cardlist_cards
   });
-  const data = response.data.data;
-  dispatch({ type: ADD_LIST, payload: { board_id, data } });
+  if (response.data.state == "ok") {
+    const cardlist_id = response.data.data;
+
+    const card = await apis.get(`/cardlist/${cardlist_id}`);
+    dispatch({ type: ADD_LIST, payload: [card.data.data] });
+
+    const board = getState().boards[board_id];
+    board.board_lists = JSON.parse(board.board_lists);
+    board.board_lists.push(cardlist_id);
+    const board_lists = JSON.stringify(board.board_lists);
+    let form = new FormData();
+    form.append("board_id", board_id);
+    form.append("board_lists", board_lists);
+    await apis.patch(`board/${board_id}`, form);
+  }
 };
 
 export const editList = (list_id, formValues) => async dispatch => {

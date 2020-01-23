@@ -25,7 +25,6 @@ const App = () => {
             <Route path="/statistics/:user_id" exact component={Statistics} />
             <Route path="/search/:user_id" exact component={Search} />
             <Route path="/tags" exact component={Tags} />{" "}
-            {/* 추후 /tags/:user_id 로 변환 */}
             <Route path="/todo" exact component={Todo} />
             <Route path="/login" exact component= {Login}/>
             <Route path="/register" exact component= {Register}/>
