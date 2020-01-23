@@ -55,22 +55,21 @@ class Statistics extends React.Component {
   }
   render() {
     const user_id = this.props.match.params.user_id
-    const today_ = this.state.date;
 
     let calendar;
     let linechart;
 
     switch(this.state.standard){
       case 'week':
-        calendar = <div><span>week</span><PeriodWeek data={this.state}></PeriodWeek></div>
+        calendar = <div><PeriodWeek data={this.state}></PeriodWeek></div>
         linechart = <div><CardCountChartWeek></CardCountChartWeek></div>
         break;
       case 'month':
-        calendar = <div><span>month</span><PeriodMonth data={this.state}></PeriodMonth></div>
+        calendar = <div><PeriodMonth data={this.state}></PeriodMonth></div>
         linechart = <div><CardCountChartMonth></CardCountChartMonth></div>
         break;
       case 'select':
-        calendar = <div><span>select</span><PeriodSelect data={this.state}></PeriodSelect></div>
+        calendar = <div><PeriodSelect data={this.state}></PeriodSelect></div>
         linechart = <div><CardCountChartSelect></CardCountChartSelect></div>
         break;
       default:
