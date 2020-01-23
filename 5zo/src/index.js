@@ -5,6 +5,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import reduxThunk from 'redux-thunk'
 
 import App from "./components/App";
+import LandingPage from "./components/landing/LandingPage"
 import reducers from './reducers'
 
 
