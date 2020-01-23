@@ -9,9 +9,16 @@
    	</insert>
    	
    	<select id="searchAll" resultType="member">
-  		select * from mem_info
+  		select * 
+  		from mem_info
   	</select>
   	
+  	<select id="search" parameterType="string" resultType="member">
+		select *
+		from mem_info
+		where mem_id = LIKE '%'||#{mem_id}||'%'
+	</select>
+	  	
   	<select id="search" parameterType="string" resultType="member">
 		select * 
 		from mem_info

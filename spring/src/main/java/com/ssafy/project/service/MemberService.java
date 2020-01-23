@@ -22,4 +22,6 @@ public interface MemberService {
 
 	public Member login(String mem_id, String mem_pw);
 
+	public List<Member> searchIdLike(String mem_id);
+
 }

@@ -17,4 +17,6 @@ public interface MemberDao {
 	public void updateMember(Member member);
 
 	public void deleteMember(String mem_id);
+
+	public List<Member> searchIdLike(String mem_id);
 }

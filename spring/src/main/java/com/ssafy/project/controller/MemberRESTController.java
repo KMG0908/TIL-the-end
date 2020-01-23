@@ -63,9 +63,15 @@ public class MemberRESTController {
 	public ResponseEntity<Map<String, Object>> searchAll() {
 		return handleSuccess(service.searchAll());
 	}
+	
+	@GetMapping("/api/member/search/{mem_id}")
+	@ApiOperation("회원 아이디로 조회하는 기능, like % 사용으로 검색")
+	public ResponseEntity<Map<String, Object>> searchIdLike(@PathVariable String mem_id) {
+		return handleSuccess(service.searchIdLike(mem_id));
+	}
 
 	@GetMapping("/api/member/{mem_id}")
-	@ApiOperation("회원 한명을 조회 하는 기능")
+	@ApiOperation("회원 한명을 정확히 조회 하는 기능")
 	public ResponseEntity<Map<String, Object>> search(@PathVariable String mem_id) {
 		return handleSuccess(service.search(mem_id));
 	}
