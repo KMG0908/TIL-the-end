@@ -24,4 +24,6 @@ public interface MemberService {
 
 	public List<Member> searchIdLike(String mem_id);
 
+	public List<Member> searchNickLike(String mem_nick);
+
 }

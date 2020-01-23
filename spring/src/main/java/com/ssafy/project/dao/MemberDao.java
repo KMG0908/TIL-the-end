@@ -19,4 +19,6 @@ public interface MemberDao {
 	public void deleteMember(String mem_id);
 
 	public List<Member> searchIdLike(String mem_id);
+
+	public List<Member> searchNickLike(String mem_nick);
 }

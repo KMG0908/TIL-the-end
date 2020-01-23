@@ -13,10 +13,16 @@
   		from mem_info
   	</select>
   	
-  	<select id="search" parameterType="string" resultType="member">
+  	<select id="searchIdLike" parameterType="string" resultType="member">
 		select *
 		from mem_info
 		where mem_id = LIKE '%'||#{mem_id}||'%'
+	</select>
+	
+	<select id="searchNickLike" parameterType="string" resultType="member">
+		select *
+		from mem_info
+		where mem_nick = LIKE '%'||#{mem_nick}||'%'
 	</select>
 	  	
   	<select id="search" parameterType="string" resultType="member">

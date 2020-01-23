@@ -52,6 +52,16 @@ public class MemberServiceImpl implements MemberService {
 			throw new MemberException("회원 아이디 검색 중 오류 발생");
 		}
 	}
+	
+	@Override
+	public List<Member> searchNickLike(String mem_nick) {
+		try {
+			return dao.searchNickLike(mem_nick);
+		} catch (Exception e) {
+			throw new MemberException("회원 닉네임 검색 중 오류 발생");
+		}
+	}
+	
 
 	@Override
 	public Member search(String mem_id) {
