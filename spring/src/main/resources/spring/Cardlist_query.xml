@@ -7,18 +7,10 @@
    		parameterType="cardlist" 
 		useGeneratedKeys="true"
 		keyProperty="cardlist_id">
-   		insert into cardlist(mem_id, cardlist_name, cardlist_date, cardlist_order, cardlist_instock)
-   		values(#{mem_id}, #{cardlist_name}, now(), #{cardlist_order}, true)
+   		insert into cardlist(board_id, cardlist_name, cardlist_cards)
+   		values(#{board_id}, #{cardlist_name}, #{cardlist_cards})
    	</insert>
-   	
-   	<select id="searchAll" parameterType = "string" resultType="cardlist">
-  		select * from cardlist where mem_id = #{mem_id} and cardlist_instock=true
-  	</select>
-  	
-  	<select id="postAll" parameterType = "string" resultType="cardlist">
-  		select * from cardlist where mem_id = #{mem_id} and cardlist_instock=false
-  	</select>
-  	
+   	  	
   	<select id="search" parameterType="int" resultType="cardlist">
 		select * 
 		from cardlist
@@ -29,8 +21,7 @@
 		update cardlist
 		set	
 		cardlist_name = #{cardlist_name},
-		cardlist_date = now(),
-		cardlist_order = #{cardlist_order}
+		cardlist_cards = #{cardlist_cards}
 		where cardlist_id = #{cardlist_id}
 	</update>
   	
@@ -39,5 +30,11 @@
 		from cardlist
 		where cardlist_id = #{cardlist_id}
 	</delete>
+	
+	<select id="getMaxCardlistId" resultType="int">
+		select max(cardlist_id)
+		from board
+	</select>
+	
   	
 </mapper>

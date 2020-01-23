@@ -35,21 +35,7 @@
 	</delete>
 	
 	<select id="tagcloud" parameterType="string" resultType="tag">
-  		select t.tag_name, count(ct.tag_id) as tag_id
-		from tag t,
-		(select ct.tag_id as tag_id
-		from card_tag ct,
-		(select c.card_id as card_id
-		from card c, 
-		(select cardlist_id
-		from cardlist
-		where mem_id = #{mem_id}
-		and cardlist_instock = false) cl
-		where c.cardlist_id = cl.cardlist_id
-		and c.card_secret = false) c
-		where c.card_id = ct.card_id) ct
-		where ct.tag_id = t.tag_id
-		group by t.tag_id
+  		
   	</select>
   	
 </mapper>

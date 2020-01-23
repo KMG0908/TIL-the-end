@@ -14,4 +14,6 @@ public interface CommentService {
 
 	void deleteComment(int comment_id);
 
+	int getMaxCommentId();
+
 }

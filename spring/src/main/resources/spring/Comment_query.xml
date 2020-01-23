@@ -40,5 +40,11 @@
 		comment_deleted = true
 		where comment_id = #{comment_id}
 	</update>
+	
+	<select id="getMaxCommentId" resultType="int">
+  		select max(comment_id)
+  		from comment
+  	</select>  	 
+	
   	
 </mapper>

@@ -16,4 +16,10 @@ public interface MemberService {
 
 	public void deleteMember(String mem_id);
 
+	public boolean hasAuth(String mem_id);
+
+	public void patchAuth(String mem_id);
+
+	public Member login(String id, String password);
+
 }

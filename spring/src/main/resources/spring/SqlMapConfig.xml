@@ -9,11 +9,13 @@
 		<typeAlias type="com.ssafy.project.dto.Tag" alias="tag" />
 		<typeAlias type="com.ssafy.project.dto.Card_Tag" alias="card_tag" />
 		<typeAlias type="com.ssafy.project.dto.Comment" alias="comment" />
+		<typeAlias type="com.ssafy.project.dto.Board" alias="board" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="spring/Member_query.xml" />
 		<mapper resource="spring/Cardlist_query.xml" />
 		<mapper resource="spring/Card_query.xml" />
+		<mapper resource="spring/Board_query.xml" />
 		<mapper resource="spring/Tag_query.xml" />
 		<mapper resource="spring/Card_Tag_query.xml" />
 		<mapper resource="spring/Comment_query.xml" />

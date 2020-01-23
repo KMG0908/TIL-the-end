@@ -49,34 +49,23 @@ public class CardlistRESTController {
 
 	// CREATE
 	@PostMapping("/api/cardlist")
-	@ApiOperation("cardlist 신규 생성")
+	@ApiOperation("cardlist 신규 생성, board_id는 필수, cards는 ,로 구분합니다")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Cardlist cardlist) {
 		service.insertCardlist(cardlist);
-		return handleSuccess("생성 완료");
+		int cardlist_id = service.getMaxCardlistId();
+		return handleSuccess(cardlist_id);
 	}
 
 	// READ
-	@GetMapping("/api/cardlist/of/{mem_id}")
-	@ApiOperation("회원 한 명의 아직 발행하지 않은 카드리스트 목록를 조회하는 기능")
-	public ResponseEntity<Map<String, Object>> searchAll(@PathVariable String mem_id) {
-		return handleSuccess(service.searchAll(mem_id));
-	}
-
-	@GetMapping("/api/cardlist/post/{mem_id}")
-	@ApiOperation("회원 한 명의 발행된 카드리스트를 조회하는 기능")
-	public ResponseEntity<Map<String, Object>> postAll(@PathVariable String mem_id) {
-		return handleSuccess(service.postAll(mem_id));
-	}
-
 	@GetMapping("/api/cardlist/{cardlist_id}")
-	@ApiOperation("카드리스트 하나를 조회하는 기능")
+	@ApiOperation("카드리스트 하나를 조회하는 기능, 아이디(숫자)를 넘기면 이름과 카드들(string)이 반환됩니다")
 	public ResponseEntity<Map<String, Object>> search(@PathVariable int cardlist_id) {
 		return handleSuccess(service.search(cardlist_id));
 	}
 
 	// UPDATE
 	@PutMapping("/api/cardlist")
-	@ApiOperation("cardlist 정보 수정, 수정이 가능한 정보는 name, order 두가지이다")
+	@ApiOperation("cardlist 정보 수정, board_id는 입력하지 않아도 됩니다. 수정이 가능한 정보는 name, cards 두가지입니다.")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Cardlist cardlist) {
 		service.updateCardlist(cardlist);
 		return handleSuccess("수정 완료");

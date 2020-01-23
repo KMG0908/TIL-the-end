@@ -1,14 +1,10 @@
 package com.ssafy.project.service;
 
-import java.util.List;
-
 import com.ssafy.project.dto.Cardlist;
 
 public interface CardlistService {
 
 	void insertCardlist(Cardlist cardlist);
-
-	List<Cardlist> searchAll(String mem_id);
 
 	Cardlist search(int cardlist_id);
 
@@ -16,6 +12,7 @@ public interface CardlistService {
 
 	void deleteCardlist(int cardlist_id);
 
-	Object postAll(String mem_id);
+	int getMaxCardlistId();
+
 
 }

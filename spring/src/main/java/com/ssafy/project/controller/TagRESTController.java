@@ -52,7 +52,7 @@ public class TagRESTController {
 	@ApiOperation("tag 신규 생성, 이미 존재할 경우 오류발생 & 생성하지 못한다")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Tag tag) {
 		service.insertTag(tag);
-		return handleSuccess("생성 완료");
+		return handleSuccess(tag.getTag_id());
 	}
 
 	// READ
@@ -85,7 +85,7 @@ public class TagRESTController {
 	}
 
 	@GetMapping("/api/tag/who/{mem_id}")
-	@ApiOperation("회원의 태그를 목록으로 조회하는 기능, tag_id가 공개글에서의 태그 사용횟수입니다")
+	@ApiOperation("(수정중) 회원의 태그를 목록으로 조회하는 기능, tag_id가 공개글에서의 태그 사용횟수입니다")
 	public ResponseEntity<Map<String, Object>> tagcloud(@PathVariable String mem_id) {
 		return handleSuccess(service.tagcloud(mem_id));
 	}
