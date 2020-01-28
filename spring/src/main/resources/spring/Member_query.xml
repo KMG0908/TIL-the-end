@@ -21,13 +21,13 @@
   	<select id="searchIdLike" parameterType="string" resultType="member">
 		select *
 		from mem_info
-		where mem_id LIKE '%'||#{mem_id}||'%'
+		where mem_id LIKE concat('%',#{mem_id},'%')
 	</select>
 	
 	<select id="searchNickLike" parameterType="string" resultType="member">
 		select *
 		from mem_info
-		where mem_nick LIKE '%'||#{mem_nick}||'%'
+		where mem_nick LIKE concat('%',#{mem_nick},'%')
 	</select>
 	  	
   	<select id="search" parameterType="string" resultType="member">
@@ -63,6 +63,33 @@
 		update mem_option
 		set 
 		mem_auth = 3
+		where mem_id = #{mem_id}
+	</update>
+	
+	
+	<select id="getAuth" parameterType="string" resultType="int">
+		select mem_auth
+		from mem_option
+		where mem_id = #{mem_id}
+	</select>
+	
+	<select id="getpostdef" parameterType="string" resultType="int">
+		select mem_post_def
+		from mem_option
+		where mem_id = #{mem_id}
+	</select>
+	
+	<update id="patchAuth" parameterType="string">
+		update mem_option
+		set
+		mem_auth = case when mem_auth = 1 then 2 else 1 end
+		where mem_id = #{mem_id}
+	</update>
+	
+	<update id="patchpostdef" parameterType="string">
+		update mem_option
+		set
+		mem_post_def = case when mem_post_def = 0 then 1 else 0 end
 		where mem_id = #{mem_id}
 	</update>
   	

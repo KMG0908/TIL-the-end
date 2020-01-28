@@ -91,7 +91,7 @@ public class MemberRESTController {
 
 	// DELETE
 	@DeleteMapping("/api/member/{mem_id}")
-	@ApiOperation("member 정보 삭제")
+	@ApiOperation("member 정보 삭제, (1)권한 3(탈퇴)으로 수정, (2)등록된 이메일로 탈퇴 안내 발송, 일주일 후 전체 게시글 삭제, (3) 기타 ")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable String mem_id) {
 		service.deleteMember(mem_id);
 		return handleSuccess("삭제 완료");
@@ -101,18 +101,37 @@ public class MemberRESTController {
 	 * 권한 설정 
 	 */
 	@GetMapping("/api/member/auth/{mem_id}")
-	@ApiOperation("회원아이디를 넣으면 글쓰기 권한이 있는지 알려주는 api입니다.")
-	public ResponseEntity<Map<String, Object>> hasAuth(@PathVariable String mem_id) {
-		return handleSuccess(service.hasAuth(mem_id));
+	@ApiOperation("회원아이디를 넣으면 권한을 확인할 수 있는 api, 0이면 운영자, 1이면 일반유저, 2면 정지, 3이면 탈퇴한 유저.")
+	public ResponseEntity<Map<String, Object>> getAuth(@PathVariable String mem_id) {
+		return handleSuccess(service.getAuth(mem_id));
 	}
 	
 	@PatchMapping("/api/member/auth/{mem_id}")
-	@ApiOperation("글쓰기 권한 설정, 운영자가 회원 목록 또는 회원 관리창에서 설정할 수 있습니다. "
-			+ "누를때마다 true<->false 가 변경되도록 설정되어있습니다. 수정이 필요하면 말해주세요")
+	@ApiOperation("글쓰기 권한 설정, 운영자가 회원 목록 또는 회원 관리창에서 설정할 수 있습니다."
+			+ "누를때마다 일반<->정지 회원으로 변경되도록 설정되어있습니다. 수정이 필요하면 말해주세요")
 	public ResponseEntity<Map<String, Object>> patchAuth(@PathVariable String mem_id) {
 		service.patchAuth(mem_id);
 		return handleSuccess(mem_id + "의 글쓰기 권한이 변경되었습니다.");
 	}
+	
+	
+	@GetMapping("/api/member/postdef/{mem_id}")
+	@ApiOperation("회원아이디를 넣으면 앞으로 쓸 카드의 기본 설정을 확인할 수 있는 api, 기본적으로 공개 설정이면 true")
+	public ResponseEntity<Map<String, Object>> getpostdef(@PathVariable String mem_id) {
+		return handleSuccess(service.getpostdef(mem_id));
+	}
+	
+	@PatchMapping("/api/member/postdef/{mem_id}")
+	@ApiOperation("카드 공개 설정 변경 권한은 사용자가 가집니다. 권한이 1인 일반 유저만 변경 가능"
+			+ "누를때마다 기본 공개<->기본 비공개로 변경되도록 설정되어있습니다. 수정이 필요하면 말해주세요")
+	public ResponseEntity<Map<String, Object>> patchpostdef(@PathVariable String mem_id) {
+		service.patchpostdef(mem_id);
+		return handleSuccess(mem_id + "의 공개 설정이 변경되었습니다.");
+	}
+	
+	
+	
+	
 	
 	/**
 	 * 로그인 설정 

@@ -16,14 +16,17 @@ public interface MemberService {
 
 	public void deleteMember(String mem_id);
 
-	public boolean hasAuth(String mem_id);
-
-	public void patchAuth(String mem_id);
-
 	public Member login(String mem_id, String mem_pw);
 
 	public List<Member> searchIdLike(String mem_id);
 
 	public List<Member> searchNickLike(String mem_nick);
 
+	public int getAuth(String mem_id);
+
+	public void patchAuth(String mem_id);
+
+	public boolean getpostdef(String mem_id);
+
+	public void patchpostdef(String mem_id);
 }

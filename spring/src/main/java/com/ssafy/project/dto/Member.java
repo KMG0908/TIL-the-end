@@ -31,8 +31,10 @@ public class Member implements Serializable {
 	 * 아래는 회원 권한 테이블로 별도 관리하고 있습니다.
 	 */
 	/**
-	 * 글쓰기 권한이 있으면 true(tinyint 1)
-	 * 운영자만 이 권한을 수정할 수 있습니다.
+	 * 0 : 운영자 권한
+	 * 1 : 일반 유저
+	 * 2 : 정지당한 유저
+	 * 3 : 탈퇴한 유저
 	 */
 	private boolean mem_auth;
 	/**
