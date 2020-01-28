@@ -33,11 +33,19 @@ class DailyBoard extends React.Component {
 
   RenderList() {
     if (this.props.boardDict[date]) {
-      console.log(this.props.boards)
       const { classes } = this.props;
-      return JSON.parse(
+
+
+      const board_lists = Array.isArray(
         this.props.boards[this.props.boardDict[date]].board_lists
-      ).map(list => {
+      )
+        ? this.props.boards[this.props.boardDict[date]].board_lists
+        : JSON.parse(
+            this.props.boards[this.props.boardDict[date]].board_lists
+          );
+
+      
+      return board_lists.map(list => {
         if (this.props.cardLists[list]) {
           return (
             <Paper className={classes.list} spacing={2}>
