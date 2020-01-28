@@ -12,7 +12,11 @@ public class MyConfiguration {
 		return new WebMvcConfigurer() {
 		@Override
 		public void addCorsMappings(CorsRegistry registry) {
-			registry.addMapping("/**");
+			registry.addMapping("/**").allowedOrigins("http://13.124.67.187" , "*").allowedMethods("GET", "POST", "OPTIONS", "PUT", "PATCH", "DELETE")
+            .allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
+                    "Access-Control-Request-Headers")
+            .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
+            .allowCredentials(true).maxAge(3600);
 		}
 			 
 		};

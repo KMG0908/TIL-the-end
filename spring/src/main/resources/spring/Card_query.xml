@@ -45,7 +45,8 @@
 				(select board_id, board_date
 				from board
 				where mem_id = #{mem_id}
-				and board_type = 'daily') b
+				and board_type = 'daily'
+				and board_date between #{from} and #{to}) b
 			where c.board_id = b.board_id) d
 		where e.cardlist_id = d.cardlist_id
 		and card_secret = false
@@ -60,7 +61,8 @@
 				(select board_id, board_date
 				from board
 				where mem_id = #{mem_id}
-				and board_type = 'daily') b
+				and board_type = 'daily'
+				and board_date between #{from} and #{to}) b
 			where c.board_id = b.board_id) d
 		where e.cardlist_id = d.cardlist_id
 		group by d.board_date

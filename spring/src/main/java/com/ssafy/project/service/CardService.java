@@ -17,8 +17,8 @@ public interface CardService {
 
 	int getMaxCardId();
 	
-	public List<Board> countPublicDailyCard(String mem_id);
+	public List<Board> countPublicDailyCard(String mem_id, String from, String to);
 	
-	public List<Board> countAllDailyCard(String mem_id);
+	public List<Board> countAllDailyCard(String mem_id, String from, String to);
 
 }

@@ -2,6 +2,7 @@ package com.ssafy.project.dao;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.project.dto.Tag;
 
@@ -18,6 +19,8 @@ public interface TagDao {
 
 	public void deleteTag(int tag_id);
 
-	public List<Tag> tagcloud(String mem_id);
+	public List<Tag> privatetagcloud(@Param("mem_id") String mem_id, @Param("from") String from, @Param("to") String to);
+
+	public List<Tag> publictagcloud(@Param("mem_id") String mem_id, @Param("from") String from, @Param("to") String to);
 
 }

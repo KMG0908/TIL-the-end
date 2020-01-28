@@ -3,6 +3,7 @@ package com.ssafy.project.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.project.dto.Board;
 import com.ssafy.project.dto.Card;
@@ -20,8 +21,8 @@ public interface CardDao {
 
 	public int getMaxCardId();
 	
-	public List<Board> countPublicDailyCard(String mem_id);
+	public List<Board> countPublicDailyCard(@Param("mem_id") String mem_id, @Param("from") String from, @Param("to") String to);
 	
-	public List<Board> countAllDailyCard(String mem_id);
+	public List<Board> countAllDailyCard(@Param("mem_id") String mem_id, @Param("from") String from, @Param("to") String to);
 
 }

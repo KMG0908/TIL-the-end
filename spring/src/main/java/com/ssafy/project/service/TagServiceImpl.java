@@ -13,10 +13,9 @@ import com.ssafy.project.dto.TagException;
 @Service
 public class TagServiceImpl implements TagService {
 
-	
 	@Autowired
 	private TagDao dao;
-	
+
 	@Override
 	public void insertTag(Tag tag) {
 		try {
@@ -74,14 +73,24 @@ public class TagServiceImpl implements TagService {
 			throw new TagException(tag_id + "번 태그 삭제 중 오류 발생");
 		}
 	}
-	
+
 	@Override
-	public List<Tag> tagcloud(String mem_id) {
+	public List<Tag> privatetagcloud(String mem_id, String from, String to) {
 		try {
-			return dao.tagcloud(mem_id);
+			return dao.privatetagcloud(mem_id, from, to);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Card_TagException(mem_id + "의 태그 조회 중 오류 발생");
+			throw new Card_TagException(mem_id + "의 " + from + " ~ " + to + "간의 private 태그 조회 중 오류 발생");
+		}
+	}
+
+	@Override
+	public List<Tag> publictagcloud(String mem_id, String from, String to) {
+		try {
+			return dao.publictagcloud(mem_id, from, to);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Card_TagException(mem_id + "의 " + from + " ~ " + to + "간의 public 태그 조회 중 오류 발생");
 		}
 	}
 
