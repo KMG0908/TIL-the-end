@@ -17,24 +17,23 @@ const month = '12';
 
 const overviewSeries = []
 
-var days = new Array(32 - new Date(Number(year), Number(month) - 1, 32).getDate())
-for(var i=0; i<days.length; i++){
-  var time = Math.floor(new Date(Number(year), Number(month) - 1, i + 2).getTime() / 86400000) * 86400000
+let days = new Array(32 - new Date(Number(year), Number(month) - 1, 32).getDate())
+for(let i=0; i<days.length; i++){
+  let time = Math.floor(new Date(Number(year), Number(month) - 1, i + 2).getTime() / 86400000) * 86400000
   days[i] = [time, 0];
 }
 
-for(i=0; i<dates.length; i++){
-  var data = dates[i].split('-')
-  days[Number(data[2]) - 1][1] = dailyTask[i];
+for(let i=0; i<dates.length; i++){
+  let date = dates[i].split('-')
+  days[Number(date[2]) - 1][1] = dailyTask[i];
 }
 
-for(i=0; i<days.length; i++){
+for(let i=0; i<days.length; i++){
   overviewSeries.push({
     x: days[i][0],
     y: days[i][1]
   })
 }
-console.log(overviewSeries)
 
 const config = {
   chart:{
@@ -81,8 +80,8 @@ const config = {
   }],
   tooltip: {
     formatter: function(){
-      var weekdays = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-      var date = new Date(this.x);
+      let weekdays = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+      let date = new Date(this.x);
       return "<text data-z-index='1' style='font-size:12px;color:#333333;cursor:default;fill:#333333;'>"
         + "<span style='font-size: 10px'>" + date.getDate() + "일, " + weekdays[date.getDay()] + "</span><br/>"
         + "<span style='fill:#7cb5ec'>● </span><span>" + this.series.userOptions.name + ": </span>"
