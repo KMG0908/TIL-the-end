@@ -18,10 +18,19 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void insertMember(Member member) {
 		try {
-			dao.insertMember(member);
+			Member find = dao.search(member.getMem_id());
+			if(find == null) {
+				dao.insertMember(member);				
+			} else {
+				throw new MemberException("동일한 아이디가 존재합니다");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new MemberException("회원 정보 등록 중 오류 발생");
+			if(e instanceof MemberException) {
+				throw (MemberException)e;
+			} else {
+				throw new MemberException("회원 가입 중 오류 발생");
+			}
 		}
 
 	}
@@ -72,5 +81,40 @@ public class MemberServiceImpl implements MemberService {
 			e.printStackTrace();
 			throw new MemberException("회원 정보 삭제 중 오류 발생");
 		}
+	}
+	
+	@Override
+	public boolean hasAuth(String mem_id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public void patchAuth(String mem_id) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public Member login(String id, String password) {
+		try {
+			Member member = dao.search(id);
+			if(member == null) {
+				throw new MemberException("등록되지 않은 회원입니다.");			
+			} 
+			if(!member.getMem_pw().equals(password)) {
+				throw new MemberException("비밀번호 오류");
+			} else {
+				member.setMem_pw(null);
+				return member;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			if(e instanceof MemberException) {
+				throw (MemberException)e;
+			} else {
+				throw new MemberException("회원 로그인 중 오류 발생");
+			}
+		}		
 	}
 }

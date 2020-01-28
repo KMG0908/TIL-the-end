@@ -1,7 +1,5 @@
 package com.ssafy.project.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,23 +24,6 @@ public class CardlistServiceImpl implements CardlistService {
 
 	}
 
-	@Override
-	public List<Cardlist> searchAll(String mem_id) {
-		try {
-			return dao.searchAll(mem_id);
-		} catch (Exception e) {
-			throw new CardlistException(mem_id + "의 카드 리스트 조회 중 오류 발생");
-		}
-	}
-
-	@Override
-	public List<Cardlist> postAll(String mem_id) {
-		try {
-			return dao.postAll(mem_id);
-		} catch (Exception e) {
-			throw new CardlistException(mem_id + "의 포스트 조회 중 오류 발생");
-		}
-	}
 
 	@Override
 	public Cardlist search(int cardlist_id) {
@@ -80,6 +61,16 @@ public class CardlistServiceImpl implements CardlistService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new CardlistException(cardlist_id + "번 카드 리스트 삭제 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public int getMaxCardlistId() {
+		try {
+			return dao.getMaxCardlistId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardlistException("카드 리스트 id 조회 중 오류 발생.");
 		}
 	}
 }

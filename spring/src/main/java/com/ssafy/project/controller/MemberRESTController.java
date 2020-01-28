@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.project.dto.Member;
@@ -49,10 +51,10 @@ public class MemberRESTController {
 
 	// CREATE
 	@PostMapping("/api/member")
-	@ApiOperation("member 정보 등록")
+	@ApiOperation("member 생성, id 필수입니다")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Member member) {
 		service.insertMember(member);
-		return handleSuccess("생성 완료");
+		return handleSuccess(member.getMem_id());
 	}
 
 	// READ
@@ -70,7 +72,7 @@ public class MemberRESTController {
 
 	// UPDATE
 	@PutMapping("/api/member")
-	@ApiOperation("member 정보 수정")
+	@ApiOperation("member 정보 수정, 가입일 수정 불가, 비번 변경 가능합니다. 나중에 수정")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Member member) {
 		service.updateMember(member);
 		return handleSuccess("수정 완료");
@@ -83,5 +85,33 @@ public class MemberRESTController {
 		service.deleteMember(mem_id);
 		return handleSuccess("삭제 완료");
 	}
-
+	
+	/*
+	 * 권한 설정 
+	 */
+	@GetMapping("/api/member/auth/{mem_id}")
+	@ApiOperation("회원아이디를 넣으면 글쓰기 권한이 있는지 알려주는 api입니다.")
+	public ResponseEntity<Map<String, Object>> hasAuth(@PathVariable String mem_id) {
+		return handleSuccess(service.hasAuth(mem_id));
+	}
+	
+	@PatchMapping("/api/member/auth/{mem_id}")
+	@ApiOperation("글쓰기 권한 설정, 운영자가 회원 목록 또는 회원 관리창에서 설정할 수 있습니다. "
+			+ "누를때마다 true<->false 가 변경되도록 설정되어있습니다. 수정이 필요하면 말해주세요")
+	public ResponseEntity<Map<String, Object>> patchAuth(@PathVariable String mem_id) {
+		service.patchAuth(mem_id);
+		return handleSuccess(mem_id + "의 글쓰기 권한이 변경되었습니다.");
+	}
+	
+	/**
+	 * 로그인 설정
+	 * state 가 fail 이면 로그인 실패
+	 * state 가 ok 이고 data가 true면 admin, data가 false면 일반회원
+	 * 아니면 data로 id를 돌려줘야 하나?
+	 */
+	@PostMapping("/api/member/login")
+	@ApiOperation("아이디와 패스워드로 로그인, 패스워드가 null로 처리되어 리턴됩니다")
+	public ResponseEntity<Map<String,Object>> login(@RequestParam String id, @RequestParam String password){
+		return handleSuccess(service.login(id, password));
+	}
 }

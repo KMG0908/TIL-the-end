@@ -43,5 +43,15 @@ public class Card_TagServiceImpl implements Card_TagService {
 			throw new Card_TagException(card_tag_id + "번 카드 태그 삭제 중 오류 발생");
 		}
 	}
+	
+	@Override
+	public int getMaxCardTagId() {
+		try {
+			return dao.getMaxCardTagId();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Card_TagException("카드 태그 id 조회 중 오류 발생");
+		}
+	}
 
 }

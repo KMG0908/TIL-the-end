@@ -11,4 +11,6 @@ public interface Card_TagService {
 	List<Card_Tag> searchAll(int card_id);
 
 	void deleteCard_Tag(int card_tag_id);
+
+	int getMaxCardTagId();
 }

@@ -17,4 +17,6 @@ public interface Card_TagDao {
 	public void deleteCard_Tag(int card_tag_id);
 
 	public List<Tag> tagcloud(String mem_id);
+
+	public int getMaxCardTagId();
 }

@@ -18,5 +18,10 @@
 		from card_tag
 		where card_tag_id = #{card_tag_id}
 	</delete>
+	
+	<select id="getMaxCardTagId" resultType = "int">
+		select max(card_tag_id)
+		from card_tag
+	</select>
 
 </mapper>
