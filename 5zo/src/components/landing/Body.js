@@ -7,25 +7,25 @@ import {
 import {
     Hero
 } from 'react-landing-page'
+import "./FontIndex.css"
 
+  
 class Body extends React.Component {
     render() {
         return (
-            <Provider>
-                <Hero color="hotpink" bg="white">
-                    <Flex mt={3}>
-                        <Container>
-                        </Container>
-                    </Flex>
-                    <Flex mt={3}>
-                        <Box width={[1, 1, 1]} p={4} >
-                            <Heading textAlign='center'>Til the end</Heading>
-                            <Subhead textAlign='center'>Today I leanred</Subhead>
+            <Provider >
+                <Hero backgroundImage='https://cdn.pixabay.com/photo/2015/12/01/15/43/black-1072366_1280.jpg' >
+                    <Flex  mt={3}>
+                        <Box width= "500px" p={4}>
+                            <br /><br /><br /><br /><br /><br />
+                            <Heading color="white" textAlign='left'>TIL lets you work more effectively and get more done</Heading>
+                            <Subhead  color="white" textAlign='left'>TIL's boards, lists, and cards enable you to organize and prioritize your learing process in effective, flexible, and showable way.</Subhead>
                         </Box>
-                        <Box width={[1, 1, 1]} p={4} >
+                        <Box width={[1, 1, 1/2]} p={4}>
                             <Register />
                         </Box>
                     </Flex>
+
                 </Hero>
                 <Hero color="hotpink" bg="white">
                     <Heading>TIL THE END </Heading>

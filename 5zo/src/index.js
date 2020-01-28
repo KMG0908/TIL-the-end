@@ -8,11 +8,10 @@ import App from "./components/App";
 import LandingPage from "./components/landing/LandingPage"
 import reducers from './reducers'
 
-
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(reducers,
     composeEnhancers(applyMiddleware(reduxThunk)))
 
 
-ReactDOM.render(<Provider store={store}><App /></Provider>
+ReactDOM.render(<Provider store={store} ><App /></Provider>
     , document.querySelector("#root"));
