@@ -34,9 +34,7 @@ export const addBoard = (mem_id, board_date, board_type) => async dispatch => {
 
 export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}/date/${board_date}`);
-  const res= JSON.parse((JSON.stringify(response)))
-
-  dispatch({ type: FETCH_DAILY_LIST, payload: res.data.data[0] });
+  dispatch({ type: FETCH_DAILY_LIST, payload: response.data.data[0] });
 
   JSON.parse(response.data.data[0].board_lists).map(async cardlist_id => {
     let res = await apis.get(`/cardlist/${cardlist_id}`);
@@ -46,7 +44,6 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
 
 export const fetchTodoLists = mem_id => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}`);
-  console.log(response);
   dispatch({ type: FETCH_TODO_LIST, payload: response.data.data[0] });
 
   JSON.parse(response.data.data[0].board_lists).map(async cardlist_id => {
@@ -54,6 +51,7 @@ export const fetchTodoLists = mem_id => async dispatch => {
     dispatch({ type: FETCH_LIST, payload: [res.data.data] });
   });
 };
+
 
 export const fetchList = board_id => async dispatch => {
   const response = await apis.get(`/board/${board_id}/cardlist`);

@@ -11,25 +11,30 @@ export default (state = {}, action) => {
   switch (action.type) {
     case ADD_BOARD:
       return { ...state, ..._.mapKeys(action.payload, "board_id") };
-    case FETCH_DAILY_LIST:
-      const board = action.payload
-      board.board_lists= JSON.stringify(board.board_lists)
+    case FETCH_DAILY_LIST: {
+      const board =action.payload;
+    board.board_lists = JSON.parse(board.board_lists)
+    console.log(board)
       return { ...state, [action.payload.board_id]: board };
+    }
 
-    case FETCH_TODO_LIST:
-      return { ...state, [action.payload.board_id]: action.payload };
+    case FETCH_TODO_LIST: {
+      const board = action.payload;
+      return { ...state, [action.payload.board_id]: board };
+    }
 
     case ADD_LIST: {
       const { board_id, cardlist_id } = action.payload[0];
       const board = state[board_id];
-      console.log(board.board_lists)
-      const lists = JSON.parse(board.board_lists)
-      lists.push(cardlist_id)
-      const string_list = String(JSON.stringify(lists))
-      board.board_lists = string_list;
-      console.log(board)
+      console.log(board.board_lists);
+      const lists = JSON.parse(board.board_lists);
+      lists.push(cardlist_id);
+      console.log(JSON.stringify(lists))
 
-      return { ...state, [board_id]: {...board, "board_lists": String(string_list)} };
+      return {
+        ...state,
+        [board_id]: { ...board, board_lists: JSON.stringify(lists) }
+      };
     }
 
     case DELETE_LIST: {
