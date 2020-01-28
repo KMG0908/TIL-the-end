@@ -21,7 +21,6 @@ import com.ssafy.project.service.TagService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 public class TagRESTController {
 

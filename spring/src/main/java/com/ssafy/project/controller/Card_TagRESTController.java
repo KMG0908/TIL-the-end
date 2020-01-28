@@ -20,7 +20,6 @@ import com.ssafy.project.service.Card_TagService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 public class Card_TagRESTController {
 

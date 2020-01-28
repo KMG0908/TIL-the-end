@@ -21,7 +21,6 @@ import com.ssafy.project.service.CardlistService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 public class CardlistRESTController {
 

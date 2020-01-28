@@ -23,7 +23,6 @@ import com.ssafy.project.service.MemberService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 public class MemberRESTController {
 
@@ -121,21 +120,20 @@ public class MemberRESTController {
 	 * state 가 ok 이고 data가 true면 admin, data가 false면 일반회원
 	 * 아니면 data로 id를 돌려줘야 하나?
 	 */
-	@PostMapping("/api/member/login/")
+	@PostMapping("/api/member/login")
 	@ApiOperation("전달 인자 data : {\"mem_id\" : \"test\", \"mem_pw\" : \"test\" }, 참고 : https://zzznara2.tistory.com/761,  패스워드가 null로 처리되어 리턴됩니다")
 	public ResponseEntity<Map<String,Object>> login(@RequestBody Map<String, Object> payload){
 		return handleSuccess(service.login((String)payload.get("mem_id"), (String)payload.get("mem_pw")));
 	}
 	
-	@PostMapping("/api/member/login/{mem_id}")
-	@ApiOperation("id와 pw로 로그인")
-	public ResponseEntity<Map<String, Object>> login(@PathVariable String mem_id, @RequestBody Object mem_pw){
-		System.out.println("mem_pw : " + mem_pw);
-		/* 디버그 코드 */
-		JSONParser jsonparser = new JSONParser((String)mem_pw);
-		System.out.println(jsonparser.toString());
-		
-		System.out.println("mem_pw : " + mem_pw);
-		return handleSuccess(service.login(mem_id, (String)mem_pw));
-	}
+//	@PostMapping("/api/member/login/")
+//	@ApiOperation("id와 pw로 로그인")
+//	public ResponseEntity<Map<String, Object>> login(@RequestBody Member member){
+//		
+//		/* 디버그 코드 */
+//		System.out.println("member : " + member);
+//		
+//		
+//		return handleSuccess(service.login(member.getMem_id(), member.getMem_pw()));
+//	}
 }

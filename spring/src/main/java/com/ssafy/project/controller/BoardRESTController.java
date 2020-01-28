@@ -24,7 +24,7 @@ import com.ssafy.project.service.BoardService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
+
 @RestController
 public class BoardRESTController {
 
