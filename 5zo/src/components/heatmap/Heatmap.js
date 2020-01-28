@@ -19,7 +19,6 @@ class Heatmap extends React.Component{
                      { date: '2016-01-22', count: 122 },
                      { date: '2016-01-30', count: 38 },
                  ]}
-                 
              />
           </div>
         )

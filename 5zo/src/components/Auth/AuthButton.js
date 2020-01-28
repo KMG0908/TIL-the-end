@@ -7,7 +7,7 @@ const Wrapper = styled.div`
     margin-top : 1rem;
     padding-top : 0.6rem;
     padding-bottom : 0.5rem;
-
+    border-radius: 10px;
     background : ${oc.teal[6]};
     color : white;
 
