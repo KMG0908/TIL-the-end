@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 // 화면의 중앙에 위치시킨다.
 const Positioner = styled.div`
-    position : absolute;
+    position : relative;
     top : 50%;
     left : 50%;
     transform : translate(-50%, -50%);
@@ -14,7 +14,8 @@ const Positioner = styled.div`
 
 // 너비, 그림자 설정
 const ShadowedBox = styled.div`
-    width : 500px;
+    width : auto;
+    
     ${shadow(2)}
 `;
 

@@ -13,8 +13,11 @@ import {
   FETCH_CARDS,
   ADD_CARD,
   EDIT_CARD,
-  DELETE_CARD
+  DELETE_CARD,
+  FETCH_STATISTICS_MEMBER,
+  FETCH_STATISTICS_DATA
 } from "./types";
+import moment from "moment";
 
 export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
@@ -163,3 +166,85 @@ export const sort = (
   const response = await apis.get("/member");
   dispatch({ type: FETCH_MEMBERS, payload: response.data });
 };
+
+export const fetchStatisticsMember = mem_id => async(dispatch, getState) => {
+  if(!getState().statistics.mem_info){
+    const response = await apis.get(`/member/${mem_id}`);
+    //const joinedDate = moment(response.data.data.mem_reg_date.replace(/-/gi, '/'));
+    const joinedDate = moment('2019/02/03')
+    var isAvailableWeek = true;
+    var isAvailableMonth = true;
+  
+    if(new Date(joinedDate) > new Date(moment().subtract(7, 'days'))) isAvailableWeek = false;
+    if(new Date(joinedDate) > new Date(moment().startOf('month').subtract(1, 'month'))) isAvailableMonth = false;
+  
+    const mem_info = {
+      mem_id : mem_id,
+      joinedDate : joinedDate,
+      isAvailableWeek : isAvailableWeek,
+      isAvailableMonth : isAvailableMonth
+    }
+  
+    dispatch({ type: FETCH_STATISTICS_MEMBER, payload: mem_info});
+  }
+}
+
+export const fetchStatisticsData = (startDate, endDate, availableDate) => async (dispatch, getState) => {
+  const joinedDate = getState().statistics.mem_info.joinedDate;
+  //const joinedDate = moment('2019/02/03')
+  var calendarStartDate = startDate;
+  if(new Date(joinedDate) > new Date(calendarStartDate)) calendarStartDate = joinedDate;
+  
+  const date = {
+    startDate : calendarStartDate,
+    endDate : endDate,
+    availableDate : availableDate,
+    joinedDate : joinedDate
+  }
+  
+  if(!availableDate){
+    date['availableDate'] = getState().statistics.info.date.availableDate
+  }
+
+  const dates = []
+  const dailyTask = []
+
+  // const response = await apis.get(`/card/daily/all/${getState().statistics.mem_info.mem_id}`);
+  // const responseData = response.data.data;
+
+  // for(let i=0; i<responseData.length; i++){
+  //   console.log(responseData[i].board_date + " " + responseData[i].board_id)
+  //   dates.push(date_to_str(new Date(moment(responseData[i].board_date)), "-"))
+  //   dailyTask.push(responseData[i].board_id);
+  // }
+
+  let cnt = 0;
+  const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
+  while(true){
+    let date_ = date_to_str(new Date(moment(date['startDate']).add(cnt, 'days')), "-");
+    if(date_ === date_to_str(new Date(date['endDate']), "-")) break;
+    dates.push(date_);
+    dailyTask.push(getRandom(0, 10))
+    cnt++;
+  }
+
+  const data = {
+    dates: dates,
+    dailyTask: dailyTask
+  }
+  
+  const info = {
+    date : date,
+    data : data
+  }
+
+  dispatch({ type: FETCH_STATISTICS_DATA, payload: info});
+};
+
+function date_to_str(format, separator){
+  let year = format.getFullYear();
+  let month = format.getMonth() + 1;
+  let date = format.getDate();
+
+  return year + separator + ("0" + month).slice(-2) + separator + ("0" + date).slice(-2);
+}
