@@ -8,6 +8,11 @@
    		values(#{mem_id},#{mem_email},#{mem_pw},#{mem_nick}, now())
    	</insert>
    	
+   	<insert id="grantMember" parameterType="string">
+   		insert into mem_option(mem_id, mem_auth, mem_post_def, mem_secret)
+   		values(#{mem_id}, 1, 1, 0)
+   	</insert>
+   	
    	<select id="searchAll" resultType="member">
   		select * 
   		from mem_info
@@ -39,11 +44,26 @@
 		mem_nick = #{mem_nick}
 		where mem_id = #{mem_id}		
 	</update>
-  	
-  	<delete id="deleteMember" parameterType="string">
-		delete
-		from mem_info
+	
+	<update id="releaseMember" parameterType="string">
+		update mem_option
+		set 
+		mem_auth = 1
 		where mem_id = #{mem_id}
-	</delete>
+	</update>
+  	
+  	<update id="freezeMember" parameterType="string">
+		update mem_option
+		set 
+		mem_auth = 2
+		where mem_id = #{mem_id}
+	</update>
+  	
+  	<update id="deleteMember" parameterType="string">
+		update mem_option
+		set 
+		mem_auth = 3
+		where mem_id = #{mem_id}
+	</update>
   	
 </mapper>
