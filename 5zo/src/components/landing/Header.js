@@ -3,12 +3,7 @@ import {
    Relative, Absolute, Flex, NavLink, Button
 } from 'rebass'
 import styled, { css } from 'styled-components'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-const theme = createMuiTheme({
-    typography: {
-      fontFamily: 'CookieRun Bold',
-    },
-  });
+
 class Header extends React.Component {
     render() {
         return (
