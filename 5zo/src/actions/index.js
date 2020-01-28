@@ -18,7 +18,7 @@ import {
 
 export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
-  dispatch({ type: FETCH_MEMBERS, payload: response.data.data });
+  await dispatch({ type: FETCH_MEMBERS, payload: response.data.data });
 };
 
 export const addBoard = (mem_id, board_date, board_type) => async dispatch => {
@@ -34,23 +34,29 @@ export const addBoard = (mem_id, board_date, board_type) => async dispatch => {
 
 export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}/date/${board_date}`);
-  console.log(response.data.data);
   dispatch({ type: FETCH_DAILY_LIST, payload: response.data.data[0] });
 
   JSON.parse(response.data.data[0].board_lists).map(async cardlist_id => {
-    let res = await apis.get(`/cardlist/${cardlist_id}`);
-    dispatch({ type: FETCH_LIST, payload: [res.data.data] });
+    let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
+    dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
+    JSON.parse(cardlist.data.data.cardlist_cards).map(async card_id => {
+      let card = await apis.get(`/card/${card_id}`);
+      dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
+    });
   });
 };
 
 export const fetchTodoLists = mem_id => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}`);
-  console.log(response)
   dispatch({ type: FETCH_TODO_LIST, payload: response.data.data[0] });
 
   JSON.parse(response.data.data[0].board_lists).map(async cardlist_id => {
-    let res = await apis.get(`/cardlist/${cardlist_id}`);
-    dispatch({ type: FETCH_LIST, payload: [res.data.data] });
+    let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
+    dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
+    JSON.parse(cardlist.data.data.cardlist_cards).map(async card_id => {
+      let card = await apis.get(`/card/${card_id}`);
+      dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
+    });
   });
 };
 
@@ -59,15 +65,29 @@ export const fetchList = board_id => async dispatch => {
   dispatch({ type: FETCH_LIST, payload: response.data.data });
 };
 
-export const addList = (board_id, cardist_name) => async dispatch => {
-  const cardlist_cards="[]"
-  const response = await apis.post(`/board/${board_id}/`, {
+export const addList = (board_id, cardlist_name) => async (
+  dispatch,
+  getState
+) => {
+  const cardlist_cards = "[]";
+  const response = await apis.post(`/cardlist`, {
     board_id,
-    cardist_name,
+    cardlist_name,
     cardlist_cards
   });
-  const data = response.data.data;
-  dispatch({ type: ADD_LIST, payload: { board_id, data } });
+  if (response.data.state == "ok") {
+    const cardlist_id = response.data.data;
+
+    const card = await apis.get(`/cardlist/${cardlist_id}`);
+    dispatch({ type: ADD_LIST, payload: [card.data.data] });
+
+    const board = getState().boards[board_id];
+    const board_lists = String(board.board_lists);
+    let form = new FormData();
+    form.append("board_id", board_id);
+    form.append("board_lists", board_lists);
+    await apis.patch(`board/${board_id}`, form);
+  }
 };
 
 export const editList = (list_id, formValues) => async dispatch => {
@@ -92,10 +112,28 @@ export const fetchCards = list_id => async dispatch => {
   dispatch({ type: FETCH_CARDS, payload: response.data.data });
 };
 
-export const addCard = (cardlist_id, card_name) => async dispatch => {
-  const response = await apis.post(`/card`, { card_name, cardlist_id });
-  const data = response.data.data;
-  dispatch({ type: ADD_CARD, payload: { cardlist_id, data } });
+export const addCard = (cardlist_id, card_name) => async (
+  dispatch,
+  getState
+) => {
+  const card_secret = 0;
+  const card_contents = "";
+  const response = await apis.post(`/card`, {
+    card_name,
+    cardlist_id,
+    card_secret
+  });
+  const card_id = response.data.data;
+  if (response.data.state === "ok") {
+    dispatch({
+      type: ADD_CARD,
+      payload: { cardlist_id, card_id, card_secret, card_contents, card_name }
+    });
+    const cardList = getState().cardLists[cardlist_id];
+    const cardlist_cards = String(cardList.cardlist_cards);
+    const cardlist_name = cardList.cardlist_name;
+    await apis.put("/cardlist", { cardlist_cards, cardlist_id, cardlist_name });
+  }
 };
 
 export const editCard = (card_id, formValues) => async dispatch => {

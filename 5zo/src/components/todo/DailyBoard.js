@@ -34,9 +34,18 @@ class DailyBoard extends React.Component {
   RenderList() {
     if (this.props.boardDict[date]) {
       const { classes } = this.props;
-      return JSON.parse(
+
+
+      const board_lists = Array.isArray(
         this.props.boards[this.props.boardDict[date]].board_lists
-      ).map(list => {
+      )
+        ? this.props.boards[this.props.boardDict[date]].board_lists
+        : JSON.parse(
+            this.props.boards[this.props.boardDict[date]].board_lists
+          );
+
+      
+      return board_lists.map(list => {
         if (this.props.cardLists[list]) {
           return (
             <Paper className={classes.list} spacing={2}>
@@ -58,9 +67,10 @@ class DailyBoard extends React.Component {
     return (
       <Grid container spacing={2}>
         <div>Daily Todo 2020-01-22</div>
+
         {this.RenderList()}
         <Paper className={classes.addList} elevation={0} spacing={2}>
-          <TrelloCreate board_id="20200122"/>
+          <TrelloCreate board_id={this.props.boardDict["20200122"]}/>
         </Paper>
       </Grid>
     );

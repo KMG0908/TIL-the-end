@@ -12,22 +12,33 @@ export default (state = {}, action) => {
     case ADD_BOARD:
       return { ...state, ..._.mapKeys(action.payload, "board_id") };
 
-    case FETCH_DAILY_LIST:
-      return { ...state, [action.payload.board_id] : action.payload };
-    case FETCH_TODO_LIST:
-      return { ...state, [action.payload.board_id] : action.payload };
+    case FETCH_DAILY_LIST: {
+      const board = action.payload;
+      return { ...state, [action.payload.board_id]: board };
+    }
 
-    case ADD_LIST:{
-      const { board_id, data } = action.payload;
+    case FETCH_TODO_LIST: {
+      const board = action.payload;
+      return { ...state, [action.payload.board_id]: board };
+    }
+
+    case ADD_LIST: {
+      const { board_id, cardlist_id } = action.payload[0];
       const board = state[board_id];
-      board.cardlists.push(data.cardlist_id);
-      return { ...state, [board_id]: board };}
+      const lists =  Array.isArray(board.board_lists)?board.board_lists:JSON.parse(board.board_lists);
+      lists.push(cardlist_id)
+      board.board_lists = JSON.stringify(lists)
+      return {
+        ...state, [board_id]: board
+      };
+    }
 
-    case DELETE_LIST:{
+    case DELETE_LIST: {
       const { list_id, board_id } = action.payload;
       const board = state[board_id];
-      board.lists = board.lists.filter(id => id !== list_id)
-      return { ...state, [board_id] : board };}
+      board.lists = board.lists.filter(id => id !== list_id);
+      return { ...state, [board_id]: board };
+    }
 
     default:
       return state;

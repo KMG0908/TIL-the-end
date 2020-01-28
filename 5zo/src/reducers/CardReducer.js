@@ -12,7 +12,7 @@ export default (state = {}, action) => {
       return { ...state, ..._.mapKeys(action.payload, "card_id") };
 
     case ADD_CARD:
-      return {...state,[action.payload.data.card_id]:action.payload.data}
+      return {...state,[action.payload.card_id]:action.payload}
 
     case DELETE_CARD:
       return _.omit(state, action.payload.card_id)

@@ -11,25 +11,23 @@ import _ from "lodash";
 export default (state = {}, action) => {
   switch (action.type) {
     case ADD_CARD: {
-      const { cardlist_id, data } = action.payload;
+      const { cardlist_id, card_id } = action.payload;
       const cardlist = state[cardlist_id];
-      cardlist.cards.push(data.card_id);
+      const lists =  Array.isArray(cardlist.cardlist_cards)?cardlist.cardlist_cards:JSON.parse(cardlist.cardlist_cards)
+      lists.push(card_id);
+      cardlist.cardlist_cards = JSON.stringify(lists)
       return { ...state, [cardlist_id]: cardlist };
     }
 
     case DELETE_CARD: {
       const { list_id, card_id } = action.payload;
       const cardlist = state[list_id];
-      cardlist.cards = cardlist.cards.filter(id => id!==card_id)
-      return {...state, [list_id]: cardlist}
-
+      cardlist.cards = cardlist.cards.filter(id => id !== card_id);
+      return { ...state, [list_id]: cardlist };
     }
 
     case ADD_LIST:
-      return {
-        ...state,
-        [action.payload.data.cardlist_id]: action.payload.data
-      };
+      return { ...state, ..._.mapKeys(action.payload, "cardlist_id") };
     case FETCH_LIST:
       return { ...state, ..._.mapKeys(action.payload, "cardlist_id") };
     case EDIT_LIST:

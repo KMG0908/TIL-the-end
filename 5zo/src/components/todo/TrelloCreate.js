@@ -34,13 +34,13 @@ class TrelloCreate extends React.PureComponent {
   handleAddList = () => {
     const {board_id } = this.props;
     const { text } = this.state;
-    const cardist_name = text
+    const cardlist_name = text
 
     if (text) {
       this.setState({
         text: ""
       });
-      addList(board_id, cardist_name);
+      this.props.addList(board_id, cardlist_name);
     }
 
     return;
@@ -61,7 +61,6 @@ class TrelloCreate extends React.PureComponent {
 
   renderOpenForm = () => {
     const { board_id } = this.props;
-
     const buttonText = board_id ? "Add another list" : "Add another card";
     const buttonTextOpacity = board_id ? 1 : 0.5;
     const buttonTextColor = board_id ? "white" : "inherit";
@@ -98,6 +97,7 @@ class TrelloCreate extends React.PureComponent {
         text={text}
         onChange={this.handleInputChange}
         closeForm={this.closeForm}
+        board_id={board_id}
       >
         <TrelloButton onClick={board_id ? this.handleAddList : this.handleAddCard}>
           {board_id ? "Add List" : "Add Card"}

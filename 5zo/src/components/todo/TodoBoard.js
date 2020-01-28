@@ -33,9 +33,15 @@ class TodoBoard extends React.Component {
   RenderList() {
     const { classes } = this.props;
     if (this.props.boards && this.props.boardDict["todo"]) {
-      return JSON.parse(
+      const board_lists = Array.isArray(
         this.props.boards[this.props.boardDict["todo"]].board_lists
-      ).map(list => {
+      )
+        ? this.props.boards[this.props.boardDict["todo"]].board_lists
+        : JSON.parse(
+            this.props.boards[this.props.boardDict["todo"]].board_lists
+          );
+
+      return board_lists.map(list => {
         if (this.props.cardLists[list]) {
           return (
             <Grid item spacing={2}>
@@ -59,7 +65,7 @@ class TodoBoard extends React.Component {
       <Grid container spacing={2}>
         {this.RenderList()}
         <Grid item className={classes.addList} elevation={0} spacing={2}>
-            <TrelloCreate board_id="todo" />
+          <TrelloCreate board_id={this.props.boardDict['todo']} />
         </Grid>
       </Grid>
     );
