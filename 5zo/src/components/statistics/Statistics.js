@@ -1,6 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
+import { fetchStatisticsMember } from "../../actions";
 
-import moment from "moment";
 import PeriodWeek from "./PeriodWeek"
 import PeriodMonth from "./PeriodMonth"
 import PeriodSelect from "./PeriodSelect"
@@ -9,24 +10,17 @@ import CardCountChartWeek from "./CardCountChartWeek"
 import CardCountChartMonth from "./CardCountChartMonth"
 import CardCountChartSelect from "./CardCountChartSelect"
 
+import "./statistics.css"
+
 class Statistics extends React.Component {
+  componentDidMount(){
+    this.props.fetchStatisticsMember("kkk")  // mem_id
+  }
   constructor(props){
     super(props);
 
-    var date = '2019/01/05'
-    var joinedDate = moment(date);
-    var calendarStartDate = moment().subtract(7, 'day');
-    if(new Date(joinedDate) > new Date(calendarStartDate)) calendarStartDate = joinedDate;
-    
     this.state = {
-      joinedDate: moment(date),  // 가입일
-      availableDate: moment(),
-      startDate: calendarStartDate,                 // 달력 시작 날짜
-      endDate: moment().subtract(1, 'day'),         // 달력 종료 날짜
-      focusedInput:null,
-      date:moment().format('YYYY[-]MM[-]dd'),
-      format:'YYYY[-]MM[-]dd',
-      standard:'week'
+      standard:'select'
     }
 
     this.setStandard = this.setStandard.bind(this);
@@ -35,8 +29,6 @@ class Statistics extends React.Component {
     switch(e.target.name){
       case 'week':
         this.setState({
-          // date: moment(this.state.date).format('YYYY[-]MM'),
-          // format: 'YYYY[-]MM[-]dd',
           standard: 'week'
         })
         break;
@@ -53,6 +45,45 @@ class Statistics extends React.Component {
       default:
     }
   }
+  setStandardButton(){
+    if(this.props.mem_info){
+      var weekButton, monthButton, selectButton;
+      if(this.props.mem_info.isAvailableWeek){
+        if(this.state.standard === 'week'){
+          weekButton = <input type="button" value="주간" name="week" onClick={this.setStandard} className="active"/>
+        }
+        else{
+          weekButton = <input type="button" value="주간" name="week" onClick={this.setStandard} className="inactive"/>
+        }
+      }
+
+      if(this.props.mem_info.isAvailableMonth){
+        if(this.state.standard === 'month'){
+          monthButton = <input type="button" value="월간" name="month" onClick={this.setStandard} className="active"/>
+        }
+        else{
+          monthButton = <input type="button" value="월간" name="month" onClick={this.setStandard} className="inactive"/>
+        }
+      }
+
+      if(this.props.mem_info.isAvailableWeek || this.props.mem_info.isAvailableMonth){
+        if(this.state.standard === 'select'){
+          selectButton = <input type="button" value="기간 선택" name="select" onClick={this.setStandard} className="active"/>
+        }
+        else{
+          selectButton = <input type="button" value="기간 선택" name="select" onClick={this.setStandard} className="inactive"/>
+        }
+      }
+
+      return (
+        <div className="btn_wrap">
+          {weekButton}
+          {monthButton}
+          {selectButton}
+        </div>
+      );
+    }
+  }
   render() {
     const user_id = this.props.match.params.user_id
 
@@ -61,16 +92,16 @@ class Statistics extends React.Component {
 
     switch(this.state.standard){
       case 'week':
-        calendar = <div><PeriodWeek data={this.state}></PeriodWeek></div>
-        linechart = <div><CardCountChartWeek></CardCountChartWeek></div>
+        calendar = <PeriodWeek></PeriodWeek>
+        linechart = <CardCountChartWeek></CardCountChartWeek>
         break;
       case 'month':
-        calendar = <div><PeriodMonth data={this.state}></PeriodMonth></div>
-        linechart = <div><CardCountChartMonth></CardCountChartMonth></div>
+        calendar = <PeriodMonth></PeriodMonth>
+        linechart = <CardCountChartMonth></CardCountChartMonth>
         break;
       case 'select':
-        calendar = <div><PeriodSelect data={this.state}></PeriodSelect></div>
-        linechart = <div><CardCountChartSelect></CardCountChartSelect></div>
+        calendar = <PeriodSelect></PeriodSelect>
+        linechart = <CardCountChartSelect></CardCountChartSelect>
         break;
       default:
     }
@@ -78,16 +109,10 @@ class Statistics extends React.Component {
     return (
       <div>
         <div>{user_id}님의 통계</div>
-        <div>
-          <input type="button" value="주간" name="week" onClick={this.setStandard}/>
-          <input type="button" value="월간" name="month" onClick={this.setStandard}/>
-          <input type="button" value="기간 선택" name="select" onClick={this.setStandard}/>
-        </div>
+        {this.setStandardButton()}
         {calendar}
-        <div>
-          <div>
-            <TagFrequencyChart></TagFrequencyChart>
-          </div>
+        <div className="charts">
+          <TagFrequencyChart></TagFrequencyChart>
           {linechart}
         </div>
       </div>
@@ -95,4 +120,10 @@ class Statistics extends React.Component {
   }
 }
 
-export default Statistics;
+const mapStatetoProps = state => {
+  return {
+    mem_info: state.statistics.mem_info
+  };
+};
+
+export default connect(mapStatetoProps, { fetchStatisticsMember })(Statistics);

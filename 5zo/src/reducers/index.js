@@ -5,11 +5,13 @@ import boardReducer from "./boardReducer";
 import cardListReducer from "./cardListReducer";
 import cardReducer from "./cardReducer";
 import boardDictReducer from "./boardDictReducer"
+import statisticsReducer from "./statisticsReducer"
 
 export default combineReducers({
   members: memberReducer,
   boards : boardReducer,
   cardLists : cardListReducer,
   cards : cardReducer,
-  boardDict : boardDictReducer
+  boardDict : boardDictReducer,
+  statistics : statisticsReducer
 });

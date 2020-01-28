@@ -57,7 +57,10 @@ const config = {
         name: 'Other',
         y: 7.05
     }],
-  }]
+  }],
+  credits: {
+    enabled: false
+  }
 }
 
 class TagFrequencyChart extends React.Component{
