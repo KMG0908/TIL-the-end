@@ -10,17 +10,53 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-
-
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+import {App} from '../App';
 import Divider from "@material-ui/core/Divider";
+import { fade } from '@material-ui/core/styles';
 
-
-import SidebarList from "./SidebarList"
+import {SidebarList, WithTitle} from "./SidebarList"
 
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    width: theme.spacing(7),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 7),
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: 200,
+    },
+  },
   root: {
     display: "flex"
   },
@@ -77,6 +113,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Navigation(props) {
+  var currentLocation = window.location.pathname;
+  
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -88,9 +126,6 @@ export default function Navigation(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  console.log(props);
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -111,7 +146,23 @@ export default function Navigation(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Today I Learn
+            Today I Learn   --- <WithTitle/>
+            
+          </Typography>
+          <Typography variant="h6" noWrap>
+            <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
           </Typography>
         </Toolbar>
       </AppBar>

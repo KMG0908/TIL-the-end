@@ -10,14 +10,37 @@ import EventIcon from '@material-ui/icons/Event';
 import SearchIcon from '@material-ui/icons/Search';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-
+import TitleComponent from "./TitleComponent";
 import { Link } from "react-router-dom";
 
+
+
+const WithTitle = ({ component: Component, title}) => {
+  console.log("withTitle.....", title)
+  return class Title extends React.Component {
+    
+    render() {
+      return (
+        <React.Fragment>
+          <TitleComponent title={title}/>
+          <Component {...this.props}/>
+        </React.Fragment>
+      );
+    }
+  };
+};
+
+const CalendarComponent = WithTitle({ component : Link, title: 'Calendar'});
+const TodoComponent = WithTitle({ component : Link, title: 'Todo'});
+const StatisticsComponent = WithTitle({ component : Link, title: 'Statistics'});
 const SidebarList = () => {
+  
+  
   return (
+    
     <>
       <List>
-        <ListItem button component={Link} to={"/todo"}>
+        <ListItem button component={Link}  to={"/todo"}>
           <ListItemIcon>
             <TodayIcon />
           </ListItemIcon>
@@ -25,7 +48,7 @@ const SidebarList = () => {
         </ListItem>
       </List>
       <List>
-        <ListItem button component={Link} to={"/calendar"}>
+        <ListItem button component={CalendarComponent}  to={"/calendar"}>
           <ListItemIcon>
             <EventIcon />
           </ListItemIcon>
@@ -33,7 +56,7 @@ const SidebarList = () => {
         </ListItem>
       </List>
       <List>
-        <ListItem button component={Link} to={"/statistics/1"}>
+        <ListItem button component={Link}  to={"/statistics/1"}>
           <ListItemIcon>
             <EqualizerIcon />
           </ListItemIcon>
@@ -62,4 +85,4 @@ const SidebarList = () => {
   );
 };
 
-export default SidebarList;
+export {SidebarList,  WithTitle};
