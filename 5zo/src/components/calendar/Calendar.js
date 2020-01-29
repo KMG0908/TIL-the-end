@@ -50,5 +50,7 @@ class Event extends React.Component{
    )
  }
 }
-
+Event.defaultProps = {
+  title: 'Calendar'
+}
 export default Event

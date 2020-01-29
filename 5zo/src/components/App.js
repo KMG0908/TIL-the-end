@@ -13,15 +13,31 @@ import Todo from "./todo/Todo";
 import history from "../history";
 import Register from "./Auth/Register";
 import Login from "./Auth/Login";
+import TitleComponent from "./navigation/TitleComponent";
+import List from "@material-ui/core/List";
+
+  const withTitle = ({ component: Component, title}) => {
+    return class Title extends React.Component {
+      render() {
+        return (
+          <List>
+            <TitleComponent title={title}/>
+            <Component {...this.props}/>
+          </List>
+        );
+      }
+    };
+  };
 
 const App = () => {
+  const CalendarComponent = withTitle({ component : Calendar, title: 'Calendar'});
   return (
     <div>
       <Router history={history}>
         <Navigation>
           <div>
             <Route path="/" exact component={Main} />
-            <Route path="/calendar" exact component={HeatMap} />
+            <Route path="/calendar" exact component={CalendarComponent} />
             <Route path="/statistics/:user_id" exact component={Statistics} />
             <Route path="/search/:user_id" exact component={Search} />
             <Route path="/tags" exact component={Tags} />{" "}
@@ -29,7 +45,6 @@ const App = () => {
             <Route path="/todo" exact component={Todo} />
             <Route path="/login" exact component= {Login}/>
             <Route path="/register" exact component= {Register}/>
-
           </div>
         </Navigation>
       </Router>
@@ -37,4 +52,4 @@ const App = () => {
   );
 };
 
-export default App;
+export {App, withTitle};
