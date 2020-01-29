@@ -18,11 +18,15 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void insertMember(Member member) {
 		try {
-			Member find = dao.search(member.getMem_id());
-			if (find == null) {
-				dao.insertMember(member);
-			} else {
+			if(dao.searchId(member.getMem_id())) {
 				throw new MemberException("동일한 아이디가 존재합니다");
+			} else if(dao.searchEmail(member.getMem_email())) {
+				throw new MemberException("동일한 이메일이 존재합니다");
+			} else if(dao.searchNick(member.getMem_nick())) {
+				throw new MemberException("동일한 닉네임이 존재합니다");
+			} else {
+				dao.insertMember(member);	
+				dao.grantMember(member.getMem_id());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

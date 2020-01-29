@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.project.dao.Cardlist_TagDao">
+
+	<insert id="insertCardlist_Tag" parameterType="cardlist_tag"
+		useGeneratedKeys="true" keyProperty="cardlist_tag_id">
+		insert into cardlist_tag(cardlist_id, tag_id)
+		values(#{cardlist_id}, #{tag_id})
+	</insert>
+
+	<select id="searchAll" parameterType="int" resultType="cardlist_tag">
+		select * from cardlist_tag where cardlist_id = #{cardlist_id}
+	</select>
+
+	<delete id="deleteCardlist_Tag" parameterType="int">
+		delete
+		from cardlist_tag
+		where cardlist_tag_id = #{cardlist_tag_id}
+	</delete>
+	
+	<select id="getMaxCardlistTagId" resultType = "int">
+		select max(cardlist_tag_id)
+		from cardlist_tag
+	</select>
+
+</mapper>

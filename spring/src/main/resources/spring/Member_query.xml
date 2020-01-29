@@ -1,96 +1,117 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="com.ssafy.project.dao.MemberDao" >
-   	
-   	<insert id="insertMember" parameterType="member">
-   		insert into mem_info(mem_id, mem_email, mem_pw, mem_nick, mem_reg_date)
-   		values(#{mem_id},#{mem_email},#{mem_pw},#{mem_nick}, now())
-   	</insert>
-   	
-   	<insert id="grantMember" parameterType="string">
-   		insert into mem_option(mem_id, mem_auth, mem_post_def, mem_secret)
-   		values(#{mem_id}, 1, 1, 0)
-   	</insert>
-   	
-   	<select id="searchAll" resultType="member">
-  		select * 
-  		from mem_info
-  	</select>
-  	
-  	<select id="searchIdLike" parameterType="string" resultType="member">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.project.dao.MemberDao">
+
+	<insert id="insertMember" parameterType="member">
+		insert into mem_info(mem_id, mem_email, mem_pw, mem_nick, mem_reg_date)
+		values(#{mem_id},#{mem_email},#{mem_pw},#{mem_nick}, now())
+	</insert>
+
+	<insert id="grantMember" parameterType="string">
+		insert into mem_option(mem_id, mem_auth, mem_post_def_secret)
+		values(#{mem_id}, 1, 1)
+	</insert>
+
+	<select id="searchId" parameterType="string" resultType="int">
+		select count(*)
+		from mem_info
+		where mem_id = #{mem_id}
+	</select>
+
+	<select id="searchEmail" parameterType="string" resultType="int">
+		select count(*)
+		from mem_info
+		where mem_email = #{mem_email}
+	</select>
+
+	<select id="searchNick" parameterType="string" resultType="int">
+		select count(*)
+		from mem_info
+		where mem_nick = #{mem_nick}
+	</select>
+
+
+	<select id="searchAll" resultType="member">
+		select *
+		from mem_info
+	</select>
+
+
+
+	<select id="searchIdLike" parameterType="string" resultType="member">
 		select *
 		from mem_info
 		where mem_id LIKE concat('%',#{mem_id},'%')
 	</select>
-	
+
 	<select id="searchNickLike" parameterType="string" resultType="member">
 		select *
 		from mem_info
 		where mem_nick LIKE concat('%',#{mem_nick},'%')
 	</select>
-	  	
-  	<select id="search" parameterType="string" resultType="member">
-		select * 
+
+	<select id="search" parameterType="string" resultType="member">
+		select *
 		from mem_info
 		where mem_id = #{mem_id}
 	</select>
-	
+
 	<update id="updateMember" parameterType="member">
 		update mem_info
 		set
-		mem_email = #{mem_email}, 
+		mem_email = #{mem_email},
 		mem_pw = #{mem_pw},
 		mem_nick = #{mem_nick}
-		where mem_id = #{mem_id}		
+		where mem_id = #{mem_id}
 	</update>
-	
+
 	<update id="releaseMember" parameterType="string">
 		update mem_option
-		set 
+		set
 		mem_auth = 1
 		where mem_id = #{mem_id}
 	</update>
-  	
-  	<update id="freezeMember" parameterType="string">
+
+	<update id="freezeMember" parameterType="string">
 		update mem_option
-		set 
+		set
 		mem_auth = 2
 		where mem_id = #{mem_id}
 	</update>
-  	
-  	<update id="deleteMember" parameterType="string">
+
+	<update id="deleteMember" parameterType="string">
 		update mem_option
-		set 
+		set
 		mem_auth = 3
 		where mem_id = #{mem_id}
 	</update>
-	
-	
+
+
 	<select id="getAuth" parameterType="string" resultType="int">
 		select mem_auth
 		from mem_option
 		where mem_id = #{mem_id}
 	</select>
-	
+
 	<select id="getpostdef" parameterType="string" resultType="int">
-		select mem_post_def
+		select mem_post_def_secret
 		from mem_option
 		where mem_id = #{mem_id}
 	</select>
-	
+
 	<update id="patchAuth" parameterType="string">
 		update mem_option
 		set
 		mem_auth = case when mem_auth = 1 then 2 else 1 end
 		where mem_id = #{mem_id}
 	</update>
-	
+
 	<update id="patchpostdef" parameterType="string">
 		update mem_option
 		set
-		mem_post_def = case when mem_post_def = 0 then 1 else 0 end
+		mem_post_def_secret = case when mem_post_def_secret = 0 then 1 else 0 end
 		where mem_id = #{mem_id}
 	</update>
-  	
+
 </mapper>

@@ -25,22 +25,24 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 
-	
 	@Override
-	public List<Board> searchAllUserDate(String mem_id, String board_date) {
+	public List<Board> searchUserBoardDaily(String mem_id, String from, String to) {
 		try {
-			return dao.searchAllUserDate(mem_id, board_date);
+			return dao.searchUserBoardDaily(mem_id, from, to);
 		} catch (Exception e) {
-			throw new BoardException(mem_id + "의 " + board_date + "날짜의 보드 조회 중 오류 발생");
+			e.printStackTrace();
+			throw new BoardException(from + "에서 " + to + "까지의 보드 목록 조회 중 오류가 발생하였습니다.");			
 		}
+		
 	}
 	
 	@Override
-	public List<Board> searchAllUserToDo(String mem_id) {
+	public List<Board> searchUserBoardDate(String mem_id, String board_date) {
 		try {
-			return dao.searchAllUserToDo(mem_id);
+			return dao.searchUserBoardDate(mem_id, board_date);
 		} catch (Exception e) {
-			throw new BoardException(mem_id + "의 todo 보드 조회 중 오류 발생");
+			e.printStackTrace();
+			throw new BoardException(board_date + "날짜 보드 조회 중 오류가 발생하였습니다.");			
 		}
 	}
 	
@@ -71,12 +73,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public void updateBoard() {
+	public void updateBoard(Board board) {
 		try {
-			dao.updateBoard();
+			dao.updateBoard(board);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new BoardException("보드 업데이트 중 오류 발생");
+			throw new BoardException(board.getBoard_id() + "번 보드 업데이트 중 오류 발생");
 		}
 
 	}

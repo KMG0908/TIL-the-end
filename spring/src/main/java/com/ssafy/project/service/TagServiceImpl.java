@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.project.dao.TagDao;
-import com.ssafy.project.dto.Card_TagException;
+import com.ssafy.project.dto.Cardlist_TagException;
 import com.ssafy.project.dto.Tag;
 import com.ssafy.project.dto.TagException;
 
@@ -80,7 +80,7 @@ public class TagServiceImpl implements TagService {
 			return dao.privatetagcloud(mem_id, from, to);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Card_TagException(mem_id + "의 " + from + " ~ " + to + "간의 private 태그 조회 중 오류 발생");
+			throw new Cardlist_TagException(mem_id + "의 " + from + " ~ " + to + "간의 private 태그 조회 중 오류 발생");
 		}
 	}
 
@@ -90,7 +90,7 @@ public class TagServiceImpl implements TagService {
 			return dao.publictagcloud(mem_id, from, to);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Card_TagException(mem_id + "의 " + from + " ~ " + to + "간의 public 태그 조회 중 오류 발생");
+			throw new Cardlist_TagException(mem_id + "의 " + from + " ~ " + to + "간의 public 태그 조회 중 오류 발생");
 		}
 	}
 

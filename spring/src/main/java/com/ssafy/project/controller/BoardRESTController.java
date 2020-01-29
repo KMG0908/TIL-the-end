@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +61,7 @@ public class BoardRESTController {
 	 * @return ResponseEntity<Void>
 	 */
 	@PostMapping("/api/board")
-	@ApiOperation("board 신규 생성, board_id, date 빼고 전부 필요, 생성 성공시 board_id 반환")
+	@ApiOperation("board 신규 생성, 사용자 사용 불가, 개발시에만 사용해 주세요, board_id 이외 전체 지정 가능, 생성 성공시 board_id 반환")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Board board) {
 		service.insertBoard(board);
 		int board_id = service.getMaxBoardId();
@@ -71,20 +70,21 @@ public class BoardRESTController {
 
 	// READ
 	@GetMapping("/api/board/member/{mem_id}/date/{board_date}")
-	@ApiOperation("보드 유저 - 날짜 조회(type이 daily만 조회됩니다)")
-	public ResponseEntity<Map<String, Object>> searchAllUserDate(@PathVariable String mem_id,
+	@ApiOperation("보드 유저 - 특정 날짜 조회 (오늘 이전 날짜, 오늘 날짜, 이후 날짜 (9999-12-31) 이 셋만 가능합니다")
+	public ResponseEntity<Map<String, Object>> searchUserBoardDate(@PathVariable String mem_id,
 			@PathVariable String board_date) {
-		return handleSuccess(service.searchAllUserDate(mem_id, board_date));
+		return handleSuccess(service.searchUserBoardDate(mem_id, board_date));
 	}
-
-	@GetMapping("/api/board/member/{mem_id}")
-	@ApiOperation("보드 유저 - todo 조회")
-	public ResponseEntity<Map<String, Object>> searchAllUserToDo(@PathVariable String mem_id) {
-		return handleSuccess(service.searchAllUserToDo(mem_id));
+	
+	@GetMapping("/api/board/member/{mem_id}/from/{from}/to/{to}")
+	@ApiOperation("보드 유저 - 날짜 조회")
+	public ResponseEntity<Map<String, Object>> searchUserBoardDaily(@PathVariable String mem_id,
+			@PathVariable String from ,@PathVariable String to) {
+		return handleSuccess(service.searchUserBoardDaily(mem_id, from, to));
 	}
 
 	@GetMapping("/api/board/{board_id}")
-	@ApiOperation("보드 유저 - 카드 리스트 조회")
+	@ApiOperation("보드의 카드 리스트 조회")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> searchAllCardLists(@PathVariable int board_id) {
 		return handleSuccess(service.searchAllCardLists(board_id));
@@ -92,7 +92,7 @@ public class BoardRESTController {
 
 	// UPDATE
 	@PatchMapping("/api/board/{board_id}")
-	@ApiOperation("board 정보 수정, board_lists 만 수정 가능")
+	@ApiOperation("board 정보 수정, board_lists 만 패치 가능, RequestParam이라서 주소에 lists가 노출됩니다")
 	public ResponseEntity<Map<String, Object>> patch(@PathVariable("board_id") int board_id,
 			@RequestParam("board_lists") String lists) {
 		Board board = new Board();
@@ -102,16 +102,17 @@ public class BoardRESTController {
 		return handleSuccess(board_id + "번 보드 수정 완료");
 	}
 
+	
+	/* 사용자 사용 불가 */	
 	@PutMapping("/api/board/")
-	@ApiOperation("board 업데이트, 사용자 사용 불가, 일괄적으로 date, type 업데이트")
-	public ResponseEntity<Map<String, Object>> updateBoard() {
-		service.updateBoard();
-		return handleSuccess("todo => daily 업데이트 완료");
+	@ApiOperation("board 업데이트, 사용자 사용 불가, 개발시에만 사용해 주세요")
+	public ResponseEntity<Map<String, Object>> updateBoard(@RequestBody Board board) {
+		service.updateBoard(board);
+		return handleSuccess(board.getBoard_id() + "번 보드 수정 완료");
 	}
 
-	// DELETE
 	@DeleteMapping("/api/board/{board_id}")
-	@ApiOperation("board 정보 삭제")
+	@ApiOperation("board 정보 삭제, 사용자 사용 불가, 개발시에만 사용해 주세요")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int board_id) {
 		service.deleteBoard(board_id);
 		return handleSuccess(board_id + "번 보드 삭제 완료");

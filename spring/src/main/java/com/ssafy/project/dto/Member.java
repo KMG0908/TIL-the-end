@@ -40,12 +40,7 @@ public class Member implements Serializable {
 	/**
 	 * 카드 생성시 기본적으로 공개 설정이면 true
 	 */
-	private boolean mem_post_def;
-	/**
-	 * 회원이 전체 비공개 설정일 경우 true
-	 * 즉, 전체 비공개일 때는 mem_post_def 수정이 불가능해야하고 
-	 * false 값이어야 합니다.
-	 */
-	private boolean mem_secret;
+	private boolean mem_post_def_secret;
+	
 	
 }

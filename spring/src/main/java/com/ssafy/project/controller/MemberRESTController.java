@@ -58,10 +58,12 @@ public class MemberRESTController {
 
 	// READ
 	@GetMapping("/api/member")
-	@ApiOperation("회원 목록을 조회하는 기능")
+	@ApiOperation("회원 목록을 조회하는 기능, 운영자 사용 용도")
 	public ResponseEntity<Map<String, Object>> searchAll() {
 		return handleSuccess(service.searchAll());
 	}
+	
+	
 	
 	@GetMapping("/api/member/searchById/{mem_id}")
 	@ApiOperation("회원 아이디로 조회하는 기능, like % 사용으로 검색")
