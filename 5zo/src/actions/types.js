@@ -1,5 +1,12 @@
 
 export const FETCH_MEMBERS= 'FETCH_MEMBERS'
+export const LOGIN = 'LOGIN'
+export const LOGIN_ERR = 'LOGIN_ERR'
+export const REGISTER = 'REGISTER'
+export const REGISTER_ERR = 'REGISTER_ERR'
+export const REGISTER_RESET = "REGISTER_RESET"
+export const SET_LOGGED_INFO = 'SET_LOGGED_INFO'
+export const GET_LOGGED_INFO = 'GET_LOGGED_INFO'
 
 
 export const DRAG_HAPPENED = "DRAG_HAPPENED"

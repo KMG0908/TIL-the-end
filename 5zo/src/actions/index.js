@@ -2,6 +2,13 @@ import apis from "../apis/apis";
 // import history from "../history";
 import {
   FETCH_MEMBERS,
+  LOGIN,
+  LOGIN_ERR,
+  REGISTER,
+  REGISTER_ERR,
+  REGISTER_RESET,
+  SET_LOGGED_INFO,
+  GET_LOGGED_INFO,
   DRAG_HAPPENED,
   ADD_BOARD,
   FETCH_DAILY_LIST,
@@ -23,6 +30,68 @@ export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
   await dispatch({ type: FETCH_MEMBERS, payload: response.data.data });
 };
+
+export const login = (loginId, loginPw) => async dispatch => {
+  const response = await apis.post(`/member/login`, {
+    "mem_id": loginId,
+    "mem_pw": loginPw
+  });
+  const data = response.data.data;
+  
+  if(data.mem_id){
+    const response = await apis.get(`/member/${data.mem_id}`);
+    //const joinedDate = response.data.data.mem_reg_date.replace(/-/gi, '/');
+    const joinedDate = '2019/02/03'
+    var isAvailableWeek = true;
+    var isAvailableMonth = true;
+    
+    if(new Date(joinedDate) > new Date(moment().subtract(7, 'days'))) isAvailableWeek = false;
+    if(new Date(joinedDate) > new Date(moment().startOf('month').subtract(1, 'month'))) isAvailableMonth = false;
+
+    data.joinedDate = joinedDate;
+    data.isAvailableWeek = isAvailableWeek;
+    data.isAvailableMonth = isAvailableMonth;
+
+    dispatch({ type: LOGIN, payload: data })
+  }
+  else{
+    dispatch({ type: LOGIN_ERR, payload: data })
+  }
+}
+
+export const loginErrReset = () => async (dispatch, getState) => {
+  if(getState().members.login_err){
+    dispatch({ type: LOGIN_ERR, payload: "" })
+  }
+}
+
+export const register = (loginId, loginPw, email, nick) => async dispatch => {
+  const response = await apis.post(`/member`, {
+    "mem_id": loginId,
+    "mem_pw": loginPw,
+    "mem_email": email,
+    "mem_nick": nick
+  })
+
+  if(response.data.data !== loginId){
+    dispatch({ type: REGISTER_ERR, payload: response.data.data })
+  }
+  else{
+    dispatch({ type: REGISTER, payload: response.data.data })
+  }
+}
+
+export const registerReset = () => async dispatch => {
+  dispatch({ type: REGISTER_RESET })
+}
+
+export const setLoggedInfo = (loggedInfo) => async dispatch => {
+  dispatch({ type: SET_LOGGED_INFO, payload: loggedInfo})
+}
+
+export const getLoggedInfo = () => async dispatch => {
+  dispatch({ type: GET_LOGGED_INFO })
+}
 
 export const addBoard = (mem_id, board_date, board_type) => async dispatch => {
   const board_lists = "[]";
@@ -190,7 +259,8 @@ export const fetchStatisticsMember = mem_id => async(dispatch, getState) => {
 }
 
 export const fetchStatisticsData = (startDate, endDate, availableDate) => async (dispatch, getState) => {
-  const joinedDate = getState().statistics.mem_info.joinedDate;
+  console.log(getState())
+  const joinedDate = getState().members.mem_info.joinedDate;
   //const joinedDate = moment('2019/02/03')
   var calendarStartDate = startDate;
   if(new Date(joinedDate) > new Date(calendarStartDate)) calendarStartDate = joinedDate;
