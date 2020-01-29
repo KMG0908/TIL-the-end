@@ -1,6 +1,5 @@
 import React from "react";
 import Icon from "@material-ui/core/Icon";
-import TrelloButton from "./TrelloButton";
 import { connect } from "react-redux";
 import { addList, addCard } from "../../actions";
 import styled from "styled-components";
@@ -32,9 +31,9 @@ class TrelloCreate extends React.PureComponent {
   };
 
   handleAddList = () => {
-    const {board_id } = this.props;
+    const { board_id } = this.props;
     const { text } = this.state;
-    const cardlist_name = text
+    const cardlist_name = text;
 
     if (text) {
       this.setState({
@@ -49,7 +48,7 @@ class TrelloCreate extends React.PureComponent {
   handleAddCard = () => {
     const { cardlist_id } = this.props;
     const { text } = this.state;
-    const card_name = text
+    const card_name = text;
 
     if (text) {
       this.setState({
@@ -98,10 +97,9 @@ class TrelloCreate extends React.PureComponent {
         onChange={this.handleInputChange}
         closeForm={this.closeForm}
         board_id={board_id}
+        submit={board_id ? this.handleAddList : this.handleAddCard}
       >
-        <TrelloButton onClick={board_id ? this.handleAddList : this.handleAddCard}>
-          {board_id ? "Add List" : "Add Card"}
-        </TrelloButton>
+        {board_id ? "Add List" : "Add Card"}
       </TrelloForm>
     ) : (
       <TrelloOpenForm board_id={board_id} onClick={this.openForm}>
@@ -111,4 +109,4 @@ class TrelloCreate extends React.PureComponent {
   }
 }
 
-export default connect(null,{addCard,addList})(TrelloCreate);
+export default connect(null, { addCard, addList })(TrelloCreate);

@@ -108,13 +108,15 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}/date/${board_date}`);
   dispatch({ type: FETCH_DAILY_LIST, payload: response.data.data[0] });
 
-  JSON.parse(response.data.data[0].board_lists).map(async cardlist_id => {
+  response.data.data[0].board_lists.map(async cardlist_id => {
     let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
-    dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
-    JSON.parse(cardlist.data.data.cardlist_cards).map(async card_id => {
-      let card = await apis.get(`/card/${card_id}`);
-      dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
-    });
+    if (cardlist.data.state === "ok") {
+      dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
+      cardlist.data.data.cardlist_cards.map(async card_id => {
+        let card = await apis.get(`/card/${card_id}`);
+        dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
+      });
+    }
   });
 };
 
@@ -122,13 +124,16 @@ export const fetchTodoLists = mem_id => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}`);
   dispatch({ type: FETCH_TODO_LIST, payload: response.data.data[0] });
 
-  JSON.parse(response.data.data[0].board_lists).map(async cardlist_id => {
+  response.data.data[0].board_lists.map(async cardlist_id => {
     let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
-    dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
-    JSON.parse(cardlist.data.data.cardlist_cards).map(async card_id => {
-      let card = await apis.get(`/card/${card_id}`);
-      dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
-    });
+    if (cardlist.data.state === "ok") {
+      dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
+      console.log(cardlist.data.data.cardlist_cards);
+      cardlist.data.data.cardlist_cards.map(async card_id => {
+        let card = await apis.get(`/card/${card_id}`);
+        dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
+      });
+    }
   });
 };
 
@@ -154,7 +159,7 @@ export const addList = (board_id, cardlist_name) => async (
     dispatch({ type: ADD_LIST, payload: [card.data.data] });
 
     const board = getState().boards[board_id];
-    const board_lists = String(board.board_lists);
+    const board_lists = JSON.stringify(board.board_lists);
     let form = new FormData();
     form.append("board_id", board_id);
     form.append("board_lists", board_lists);
@@ -162,21 +167,28 @@ export const addList = (board_id, cardlist_name) => async (
   }
 };
 
-export const editList = (list_id, formValues) => async dispatch => {
-  const response = await apis.patch(`/cardlist/${list_id}`, { ...formValues });
-  dispatch({ type: EDIT_LIST, payload: response.data.data });
+export const editList = cardlist => async dispatch => {
+  const response = await apis.put(`/cardlist`, {cardlist_id: cardlist.cardlist_id, cardlist_name: cardlist.cardlist_name, cardlist_cards:JSON.stringify(cardlist.cardlist_cards) });
+  if (response.data.state === "ok") {
+    dispatch({ type: EDIT_LIST, payload: cardlist });
+  }
 };
 
 export const deleteList = (list_id, board_id) => async (dispatch, getState) => {
   await apis.delete(`/cardlist/${list_id}`);
 
   const board = getState().boards[board_id];
-  const lists = board.lists.filter(listId => listId !== list_id);
+  console.log(board.board_lists)
+  board.board_lists = board.board_lists.filter(listId => listId !== list_id);
+  console.log(JSON.stringify(board.board_lists));
 
-  await apis.patch(`/board/${board_id}`, { lists: lists });
+  let form = new FormData();
+  form.append("board_id", board_id);
+  form.append("board_lists", JSON.stringify(board.board_lists));
+  await apis.patch(`/board/${board_id}`, form);
   await apis.delete(`/cardlist/${list_id}`);
 
-  dispatch({ type: DELETE_LIST, payload: { list_id, board_id } });
+  dispatch({ type: DELETE_LIST, payload: { list_id, board } });
 };
 
 export const fetchCards = list_id => async dispatch => {
@@ -202,24 +214,31 @@ export const addCard = (cardlist_id, card_name) => async (
       payload: { cardlist_id, card_id, card_secret, card_contents, card_name }
     });
     const cardList = getState().cardLists[cardlist_id];
-    const cardlist_cards = String(cardList.cardlist_cards);
+    const cardlist_cards = JSON.stringify(cardList.cardlist_cards);
     const cardlist_name = cardList.cardlist_name;
     await apis.put("/cardlist", { cardlist_cards, cardlist_id, cardlist_name });
   }
 };
 
-export const editCard = (card_id, formValues) => async dispatch => {
-  const response = await apis.patch(`/card/${card_id}`, { ...formValues });
-  dispatch({ type: EDIT_CARD, payload: response.data.data });
+export const editCard = card => async dispatch => {
+  const response = await apis.put(`/card`, { ...card });
+  if (response.data.state == "ok") {
+    dispatch({ type: EDIT_CARD, payload: card });
+  }
 };
 
 export const deleteCard = (list_id, card_id) => async (dispatch, getState) => {
-  const cardlist = getState().cardlists[list_id];
-  const cards = cardlist.cards.filter(cardID => cardID !== card_id);
+  const cardlist = getState().cardLists[list_id];
+  console.log(cardlist.cardlist_cards);
+  const cardlist_cards = cardlist.cardlist_cards.filter(
+    card => card !== card_id
+  );
+  cardlist.cardlist_cards = cardlist_cards;
 
-  await apis.patch(`cardlist/${list_id}`, { cards: cards });
+  await apis.put(`/cardlist`, { ...cardlist, cardlist_cards });
   await apis.delete(`/card/${card_id}`);
-  dispatch({ type: DELETE_CARD, payload: { list_id, card_id } });
+
+  dispatch({ type: DELETE_CARD, payload: { cardlist, card_id } });
 };
 
 export const sort = (
@@ -236,48 +255,58 @@ export const sort = (
   dispatch({ type: FETCH_MEMBERS, payload: response.data });
 };
 
-export const fetchStatisticsMember = mem_id => async(dispatch, getState) => {
-  if(!getState().statistics.mem_info){
+export const fetchStatisticsMember = mem_id => async (dispatch, getState) => {
+  if (!getState().statistics.mem_info) {
     const response = await apis.get(`/member/${mem_id}`);
     //const joinedDate = moment(response.data.data.mem_reg_date.replace(/-/gi, '/'));
-    const joinedDate = moment('2019/02/03')
+    const joinedDate = moment("2019/02/03");
     var isAvailableWeek = true;
     var isAvailableMonth = true;
-  
-    if(new Date(joinedDate) > new Date(moment().subtract(7, 'days'))) isAvailableWeek = false;
-    if(new Date(joinedDate) > new Date(moment().startOf('month').subtract(1, 'month'))) isAvailableMonth = false;
-  
+
+    if (new Date(joinedDate) > new Date(moment().subtract(7, "days")))
+      isAvailableWeek = false;
+    if (
+      new Date(joinedDate) >
+      new Date(
+        moment()
+          .startOf("month")
+          .subtract(1, "month")
+      )
+    )
+      isAvailableMonth = false;
+
     const mem_info = {
-      mem_id : mem_id,
-      joinedDate : joinedDate,
-      isAvailableWeek : isAvailableWeek,
-      isAvailableMonth : isAvailableMonth
-    }
-  
-    dispatch({ type: FETCH_STATISTICS_MEMBER, payload: mem_info});
+      mem_id: mem_id,
+      joinedDate: joinedDate,
+      isAvailableWeek: isAvailableWeek,
+      isAvailableMonth: isAvailableMonth
+    };
+
+    dispatch({ type: FETCH_STATISTICS_MEMBER, payload: mem_info });
   }
-}
+};
 
 export const fetchStatisticsData = (startDate, endDate, availableDate) => async (dispatch, getState) => {
   console.log(getState())
   const joinedDate = getState().members.mem_info.joinedDate;
   //const joinedDate = moment('2019/02/03')
   var calendarStartDate = startDate;
-  if(new Date(joinedDate) > new Date(calendarStartDate)) calendarStartDate = joinedDate;
-  
+  if (new Date(joinedDate) > new Date(calendarStartDate))
+    calendarStartDate = joinedDate;
+
   const date = {
-    startDate : calendarStartDate,
-    endDate : endDate,
-    availableDate : availableDate,
-    joinedDate : joinedDate
-  }
-  
-  if(!availableDate){
-    date['availableDate'] = getState().statistics.info.date.availableDate
+    startDate: calendarStartDate,
+    endDate: endDate,
+    availableDate: availableDate,
+    joinedDate: joinedDate
+  };
+
+  if (!availableDate) {
+    date["availableDate"] = getState().statistics.info.date.availableDate;
   }
 
-  const dates = []
-  const dailyTask = []
+  const dates = [];
+  const dailyTask = [];
 
   // const response = await apis.get(`/card/daily/all/${getState().statistics.mem_info.mem_id}`);
   // const responseData = response.data.data;
@@ -290,31 +319,40 @@ export const fetchStatisticsData = (startDate, endDate, availableDate) => async 
 
   let cnt = 0;
   const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
-  while(true){
-    let date_ = date_to_str(new Date(moment(date['startDate']).add(cnt, 'days')), "-");
-    if(date_ === date_to_str(new Date(date['endDate']), "-")) break;
+  while (true) {
+    let date_ = date_to_str(
+      new Date(moment(date["startDate"]).add(cnt, "days")),
+      "-"
+    );
+    if (date_ === date_to_str(new Date(date["endDate"]), "-")) break;
     dates.push(date_);
-    dailyTask.push(getRandom(0, 10))
+    dailyTask.push(getRandom(0, 10));
     cnt++;
   }
 
   const data = {
     dates: dates,
     dailyTask: dailyTask
-  }
-  
-  const info = {
-    date : date,
-    data : data
-  }
+  };
 
-  dispatch({ type: FETCH_STATISTICS_DATA, payload: info});
+  const info = {
+    date: date,
+    data: data
+  };
+
+  dispatch({ type: FETCH_STATISTICS_DATA, payload: info });
 };
 
-function date_to_str(format, separator){
+function date_to_str(format, separator) {
   let year = format.getFullYear();
   let month = format.getMonth() + 1;
   let date = format.getDate();
 
-  return year + separator + ("0" + month).slice(-2) + separator + ("0" + date).slice(-2);
+  return (
+    year +
+    separator +
+    ("0" + month).slice(-2) +
+    separator +
+    ("0" + date).slice(-2)
+  );
 }
