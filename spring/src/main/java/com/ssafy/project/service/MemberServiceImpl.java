@@ -18,15 +18,18 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void insertMember(Member member) {
 		try {
-			if(dao.searchId(member.getMem_id())) {
+			if(dao.searchId(member.getMem_id())==1) {
 				throw new MemberException("동일한 아이디가 존재합니다");
-			} else if(dao.searchEmail(member.getMem_email())) {
+			} else if(dao.searchEmail(member.getMem_email())==1) {
 				throw new MemberException("동일한 이메일이 존재합니다");
-			} else if(dao.searchNick(member.getMem_nick())) {
+			} else if(dao.searchNick(member.getMem_nick())==1) {
 				throw new MemberException("동일한 닉네임이 존재합니다");
 			} else {
-				dao.insertMember(member);	
+				dao.insertMember(member);
+				System.out.println("member 생성 통과");
 				dao.grantMember(member.getMem_id());
+				System.out.println("member 권한 통과");
+				dao.createBoard(member.getMem_id());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -152,7 +155,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean getpostdef(String mem_id) {
 		try {
-			return dao.getpostdef(mem_id);
+			return dao.getpostdef(mem_id)==1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MemberException(mem_id + "의 글쓰기 기본 설정 조회 중 오류 발생");

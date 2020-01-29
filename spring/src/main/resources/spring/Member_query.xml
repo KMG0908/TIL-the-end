@@ -7,6 +7,11 @@
 		insert into mem_info(mem_id, mem_email, mem_pw, mem_nick, mem_reg_date)
 		values(#{mem_id},#{mem_email},#{mem_pw},#{mem_nick}, now())
 	</insert>
+	
+	<insert id="createBoard" parameterType="member">
+		insert into board(mem_id, board_date)
+		values(#{mem_id},  now()), (#{mem_id}, '9999-12-31')
+	</insert>
 
 	<insert id="grantMember" parameterType="string">
 		insert into mem_option(mem_id, mem_auth, mem_post_def_secret)
