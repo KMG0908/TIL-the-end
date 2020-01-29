@@ -24,6 +24,13 @@
 		cardlist_cards = #{cardlist_cards}
 		where cardlist_id = #{cardlist_id}
 	</update>
+	
+	<update id="patch" parameterType="cardlist">
+		update cardlist
+		set
+		cardlist_cards = #{cardlist_cards}
+		where cardlist_id = #{cardlist_id}
+	</update>
   	
   	<delete id="deleteCardlist" parameterType="int">
 		delete

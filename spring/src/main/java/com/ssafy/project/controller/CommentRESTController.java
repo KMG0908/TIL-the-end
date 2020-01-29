@@ -48,7 +48,7 @@ public class CommentRESTController {
 
 	// CREATE
 	@PostMapping("/api/comment")
-	@ApiOperation("comment 신규 생성")
+	@ApiOperation("comment 신규 생성, 생성 성공 시 comment_id 반환")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Comment comment) {
 		service.insertComment(comment);
 		int comment_id = service.getMaxCommentId();
@@ -67,7 +67,7 @@ public class CommentRESTController {
 	@ApiOperation("comment 수정")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Comment comment) {
 		service.updateComment(comment);
-		return handleSuccess("수정 완료");
+		return handleSuccess(comment.getComment_id()  +"번 코멘트 수정 완료");
 	}
 
 	// DELETE
@@ -75,7 +75,7 @@ public class CommentRESTController {
 	@ApiOperation("comment 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int comment_id) {
 		service.deleteComment(comment_id);
-		return handleSuccess("삭제 완료");
+		return handleSuccess(comment_id + "번 코멘트 삭제 완료");
 	}
 
 }

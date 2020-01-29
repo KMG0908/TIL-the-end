@@ -14,5 +14,7 @@ public interface CardlistService {
 
 	int getMaxCardlistId();
 
+	void patch(Cardlist cardlist);
+
 
 }

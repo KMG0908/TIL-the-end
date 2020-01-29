@@ -50,7 +50,7 @@ public class MemberRESTController {
 
 	// CREATE
 	@PostMapping("/api/member")
-	@ApiOperation("member 생성, id 필수입니다")
+	@ApiOperation("member 생성, id 필수입니다, 생성 성공시 mem_id(String) 반환")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Member member) {
 		service.insertMember(member);
 		return handleSuccess(member.getMem_id());
@@ -86,7 +86,7 @@ public class MemberRESTController {
 	@ApiOperation("member 정보 수정, 가입일 수정 불가, 비번 변경 가능합니다. 나중에 수정")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Member member) {
 		service.updateMember(member);
-		return handleSuccess("수정 완료");
+		return handleSuccess(member.getMem_id() + "의 정보 수정 완료");
 	}
 
 	// DELETE
@@ -94,7 +94,7 @@ public class MemberRESTController {
 	@ApiOperation("member 정보 삭제, (1)권한 3(탈퇴)으로 수정, (2)등록된 이메일로 탈퇴 안내 발송, 일주일 후 전체 게시글 삭제, (3) 기타 ")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable String mem_id) {
 		service.deleteMember(mem_id);
-		return handleSuccess("삭제 완료");
+		return handleSuccess(mem_id + "의 탈퇴 처리 완료");
 	}
 	
 	/*

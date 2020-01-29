@@ -17,4 +17,6 @@ public interface CardlistDao {
 
 	public int getMaxCardlistId();
 
+	public void patch(Cardlist cardlist);
+
 }

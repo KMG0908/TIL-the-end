@@ -62,7 +62,7 @@ public class BoardRESTController {
 	 * @return ResponseEntity<Void>
 	 */
 	@PostMapping("/api/board")
-	@ApiOperation("board 신규 생성, board_id, date 빼고 전부 필요")
+	@ApiOperation("board 신규 생성, board_id, date 빼고 전부 필요, 생성 성공시 board_id 반환")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Board board) {
 		service.insertBoard(board);
 		int board_id = service.getMaxBoardId();

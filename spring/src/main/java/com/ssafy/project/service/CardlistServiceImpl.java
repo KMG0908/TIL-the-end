@@ -53,6 +53,17 @@ public class CardlistServiceImpl implements CardlistService {
 		}
 
 	}
+	
+	
+	@Override
+	public void patch(Cardlist cardlist) {
+		try {
+			dao.patch(cardlist);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardlistException(cardlist.getCardlist_id() + "번 카드 리스트 패치 중 오류 발생");
+		}
+	}
 
 	@Override
 	public void deleteCardlist(int cardlist_id) {

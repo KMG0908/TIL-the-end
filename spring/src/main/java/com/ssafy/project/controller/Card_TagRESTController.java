@@ -47,7 +47,7 @@ public class Card_TagRESTController {
 
 	// CREATE
 	@PostMapping("/api/card_tag")
-	@ApiOperation("cardtag 신규 생성, card_id와, tag_id가 있어야 한다")
+	@ApiOperation("cardtag 신규 생성, card_id와, tag_id가 있어야 한다, 생성 성공시 card_tag_id 반환")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Card_Tag card_tag) {
 		service.insertCard_Tag(card_tag);
 		int card_tag_id = service.getMaxCardTagId();
@@ -66,7 +66,7 @@ public class Card_TagRESTController {
 	@ApiOperation("cardtag 정보 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int card_tag_id) {
 		service.deleteCard_Tag(card_tag_id);
-		return handleSuccess("삭제 완료");
+		return handleSuccess(card_tag_id + "번 카드-태그 삭제 완료");
 	}
 
 }
