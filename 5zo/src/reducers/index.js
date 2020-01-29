@@ -6,6 +6,7 @@ import cardListReducer from "./cardListReducer";
 import cardReducer from "./cardReducer";
 import boardDictReducer from "./boardDictReducer"
 import statisticsReducer from "./statisticsReducer"
+import searchReducer from "./searchReducer";
 
 export default combineReducers({
   members: memberReducer,
@@ -13,5 +14,6 @@ export default combineReducers({
   cardLists : cardListReducer,
   cards : cardReducer,
   boardDict : boardDictReducer,
-  statistics : statisticsReducer
+  statistics : statisticsReducer,
+  search : searchReducer
 });

@@ -23,7 +23,8 @@ const App = () => {
             <Route path="/" exact component={Main} />
             <Route path="/calendar" exact component={LandingPage} />
             <Route path="/statistics/:user_id" exact component={Statistics} />
-            <Route path="/search/:user_id" exact component={Search} />
+            <Route path="/search" exact component={Search} />
+            <Route path="/search/:keyword" component={Search} />
             <Route path="/tags" exact component={Tags} />{" "}
             <Route path="/todo" exact component={Todo} />
             <Route path="/login" exact component= {Login}/>
