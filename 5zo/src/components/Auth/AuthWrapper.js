@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 
 // 화면의 중앙에 위치시킨다.
 const Positioner = styled.div`
-    position : relative;
-    top : 50%;
-    left : 50%;
-    transform : translate(-50%, -50%);
+    // position : relative;
+    // top : 50%;
+    // left : 50%;
+    // transform : translate(-50%, -50%);
 `;
 
 // 너비, 그림자 설정

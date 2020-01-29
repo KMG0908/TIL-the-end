@@ -89,6 +89,8 @@ export default function Navigation(props) {
     setOpen(false);
   };
 
+  console.log(props);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -123,7 +125,7 @@ export default function Navigation(props) {
         }}
       >
         <div className={classes.drawerHeader}>
-          ㅁㅁㅁ님 환영합니다
+          {props.nickname}님 환영합니다
           <IconButton onClick={handleDrawerClose}>
             
             {theme.direction === "ltr" ? (
