@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchStatisticsMember } from "../../actions";
+import { getLoggedInfo } from "../../actions";
 
 import PeriodWeek from "./PeriodWeek"
 import PeriodMonth from "./PeriodMonth"
@@ -13,20 +13,20 @@ import CardCountChartSelect from "./CardCountChartSelect"
 import "./statistics.css"
 
 class Statistics extends React.Component {
-  componentDidMount(){
-    this.props.fetchStatisticsMember("kkk")  // mem_id
+  componentDidMount() {
+    //this.props.fetchStatisticsMember("kkk")  // mem_id
   }
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
-      standard:'select'
+      standard: 'select'
     }
 
     this.setStandard = this.setStandard.bind(this);
   }
-  setStandard(e){
-    switch(e.target.name){
+  setStandard(e) {
+    switch (e.target.name) {
       case 'week':
         this.setState({
           standard: 'week'
@@ -45,33 +45,33 @@ class Statistics extends React.Component {
       default:
     }
   }
-  setStandardButton(){
-    if(this.props.mem_info){
+  setStandardButton() {
+    if (this.props.mem_info) {
       var weekButton, monthButton, selectButton;
-      if(this.props.mem_info.isAvailableWeek){
-        if(this.state.standard === 'week'){
-          weekButton = <input type="button" value="주간" name="week" onClick={this.setStandard} className="active"/>
+      if (this.props.mem_info.isAvailableWeek) {
+        if (this.state.standard === 'week') {
+          weekButton = <input type="button" value="주간" name="week" onClick={this.setStandard} className="active" />
         }
-        else{
-          weekButton = <input type="button" value="주간" name="week" onClick={this.setStandard} className="inactive"/>
-        }
-      }
-
-      if(this.props.mem_info.isAvailableMonth){
-        if(this.state.standard === 'month'){
-          monthButton = <input type="button" value="월간" name="month" onClick={this.setStandard} className="active"/>
-        }
-        else{
-          monthButton = <input type="button" value="월간" name="month" onClick={this.setStandard} className="inactive"/>
+        else {
+          weekButton = <input type="button" value="주간" name="week" onClick={this.setStandard} className="inactive" />
         }
       }
 
-      if(this.props.mem_info.isAvailableWeek || this.props.mem_info.isAvailableMonth){
-        if(this.state.standard === 'select'){
-          selectButton = <input type="button" value="기간 선택" name="select" onClick={this.setStandard} className="active"/>
+      if (this.props.mem_info.isAvailableMonth) {
+        if (this.state.standard === 'month') {
+          monthButton = <input type="button" value="월간" name="month" onClick={this.setStandard} className="active" />
         }
-        else{
-          selectButton = <input type="button" value="기간 선택" name="select" onClick={this.setStandard} className="inactive"/>
+        else {
+          monthButton = <input type="button" value="월간" name="month" onClick={this.setStandard} className="inactive" />
+        }
+      }
+
+      if (this.props.mem_info.isAvailableWeek || this.props.mem_info.isAvailableMonth) {
+        if (this.state.standard === 'select') {
+          selectButton = <input type="button" value="기간 선택" name="select" onClick={this.setStandard} className="active" />
+        }
+        else {
+          selectButton = <input type="button" value="기간 선택" name="select" onClick={this.setStandard} className="inactive" />
         }
       }
 
@@ -90,7 +90,7 @@ class Statistics extends React.Component {
     let calendar;
     let linechart;
 
-    switch(this.state.standard){
+    switch (this.state.standard) {
       case 'week':
         calendar = <PeriodWeek></PeriodWeek>
         linechart = <CardCountChartWeek></CardCountChartWeek>
@@ -122,8 +122,8 @@ class Statistics extends React.Component {
 
 const mapStatetoProps = state => {
   return {
-    mem_info: state.statistics.mem_info
+    mem_info: state.members.mem_info
   };
 };
 
-export default connect(mapStatetoProps, { fetchStatisticsMember })(Statistics);
+export default connect(mapStatetoProps, { getLoggedInfo })(Statistics);

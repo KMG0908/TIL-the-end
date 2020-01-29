@@ -15,7 +15,8 @@ export default (state = {}, action) => {
       return {...state,[action.payload.card_id]:action.payload}
 
     case DELETE_CARD:
-      return _.omit(state, action.payload.card_id)
+      const {card_id} = action.payload
+      return _.omit(state, card_id)
     
     case EDIT_CARD:
       return {...state, [action.payload.card_id]: action.payload }
