@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { fetchTodoLists } from "../../actions";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import List from "./List";
 import TrelloCreate from "./TrelloCreate";
 
@@ -14,7 +15,7 @@ const styles = theme => ({
   },
   list: {
     padding: theme.spacing(1),
-    backgroundColor: theme.palette.error.main,
+    backgroundColor: "#2C7873",
     color: theme.palette.error.contrastText,
     minHeight: "200px",
     width: "300px"
@@ -44,7 +45,7 @@ class TodoBoard extends React.Component {
       return board_lists.map(list => {
         if (this.props.cardLists[list]) {
           return (
-            <Grid item spacing={2}>
+            <Grid item spacing={2} key={this.props.cardLists[list].cardlist_id}>
               <Paper className={classes.list}>
                 <List
                   board_id={this.props.boardDict["todo"]}
@@ -65,7 +66,7 @@ class TodoBoard extends React.Component {
       <Grid container spacing={2}>
         {this.RenderList()}
         <Grid item className={classes.addList} elevation={0} spacing={2}>
-          <TrelloCreate board_id={this.props.boardDict['todo']} />
+          <TrelloCreate board_id={this.props.boardDict["todo"]} />
         </Grid>
       </Grid>
     );

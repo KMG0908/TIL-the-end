@@ -13,27 +13,31 @@ export default (state = {}, action) => {
     case ADD_CARD: {
       const { cardlist_id, card_id } = action.payload;
       const cardlist = state[cardlist_id];
-      const lists =  Array.isArray(cardlist.cardlist_cards)?cardlist.cardlist_cards:JSON.parse(cardlist.cardlist_cards)
+      const lists = Array.isArray(cardlist.cardlist_cards)
+        ? cardlist.cardlist_cards
+        : JSON.parse(cardlist.cardlist_cards);
       lists.push(card_id);
-      cardlist.cardlist_cards = JSON.stringify(lists)
       return { ...state, [cardlist_id]: cardlist };
     }
 
     case DELETE_CARD: {
-      const { list_id, card_id } = action.payload;
-      const cardlist = state[list_id];
-      cardlist.cards = cardlist.cards.filter(id => id !== card_id);
-      return { ...state, [list_id]: cardlist };
+      const { cardlist } = action.payload;
+      return { ...state, [cardlist.cardlist_id]: cardlist };
     }
 
     case ADD_LIST:
-      return { ...state, ..._.mapKeys(action.payload, "cardlist_id") };
+      const cardlist = action.payload[0]
+      console.log(cardlist)
+      return { ...state, [cardlist.cardlist_id] :{...cardlist, cardlist_cards:[]} };
     case FETCH_LIST:
-      return { ...state, ..._.mapKeys(action.payload, "cardlist_id") };
+      const card = action.payload[0];
+      console.log(card)
+      card.cardlist_cards = JSON.parse(card.cardlist_cards);
+      return { ...state, [card.cardlist_id]: card };
     case EDIT_LIST:
       return { ...state, [action.payload.cardlist_id]: action.payload };
     case DELETE_LIST:
-      return _.omit(state, action.payload.cardlist_id);
+      return _.omit(state, action.payload.list_id);
 
     default:
       return state;

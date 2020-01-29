@@ -11,7 +11,7 @@ const StyledButton = styled(Button)`
 
 const TrelloButton = ({ children, onClick }) => {
   return (
-    <StyledButton variant="contained" onMouseDown={onClick}>
+    <StyledButton type="submit" variant="contained" onMouseDown={onClick}>
       {children}
     </StyledButton>
   );
