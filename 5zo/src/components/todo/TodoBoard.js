@@ -3,17 +3,22 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { fetchTodoLists } from "../../actions";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 import List from "./List";
 import TrelloCreate from "./TrelloCreate";
+import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
 
+import styled from "styled-components";
 import { connect } from "react-redux";
 
 const styles = theme => ({
   root: {
     flexGrow: 1
   },
+
   list: {
+    margin: theme.spacing(1),
     padding: theme.spacing(1),
     backgroundColor: "#2C7873",
     color: theme.palette.error.contrastText,
@@ -26,9 +31,29 @@ const styles = theme => ({
     width: "300px"
   }
 });
+
+const ListsContainer = styled(Box)`
+  height: 100%;
+  display: flex;
+  justifycontent: space-around;
+  flex-direction: row;
+  flexwrap: wrap;
+`;
+
+const Contain = styled(Container)`
+  padding:0;  
+height: 100%;
+  display: flex;
+  overflow: auto;
+  justifycontent: space-around;
+  flexwrap: wrap;
+`;
+
 class TodoBoard extends React.Component {
   componentDidMount() {
-    this.props.fetchTodoLists("dsbang");
+    if (this.props.members.mem_info) {
+      this.props.fetchTodoLists(this.props.members.mem_info.mem_id);
+    }
   }
 
   RenderList() {
@@ -42,18 +67,31 @@ class TodoBoard extends React.Component {
             this.props.boards[this.props.boardDict["todo"]].board_lists
           );
 
-      return board_lists.map(list => {
+      return board_lists.map((list, index) => {
         if (this.props.cardLists[list]) {
           return (
-            <Grid item spacing={2} key={this.props.cardLists[list].cardlist_id}>
-              <Paper className={classes.list}>
-                <List
-                  board_id={this.props.boardDict["todo"]}
-                  cardlist_id={this.props.cardLists[list].cardlist_id}
-                  title={this.props.cardLists[list].cardlist_name}
-                />
-              </Paper>
-            </Grid>
+            <Draggable
+              draggableId={`list-${list}`}
+              index={index}
+              key={list}
+            >
+              {provided => (
+                <Grid spacing={2} key={this.props.cardLists[list].cardlist_id}>
+                  <Paper
+                    className={classes.list}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                  >
+                    <List
+                      board_id={this.props.boardDict["todo"]}
+                      cardlist_id={this.props.cardLists[list].cardlist_id}
+                      title={this.props.cardLists[list].cardlist_name}
+                    />
+                  </Paper>
+                </Grid>
+              )}
+            </Draggable>
           );
         }
       });
@@ -63,12 +101,28 @@ class TodoBoard extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid container spacing={2}>
-        {this.RenderList()}
-        <Grid item className={classes.addList} elevation={0} spacing={2}>
-          <TrelloCreate board_id={this.props.boardDict["todo"]} />
-        </Grid>
-      </Grid>
+      <Contain>
+        <Droppable
+          droppableId={String(this.props.boardDict["todo"])}
+          type="list2"
+          direction="horizontal"
+        >
+          {provided => (
+            <ListsContainer
+              container
+              spacing={2}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {this.RenderList()}
+              {provided.placeholder}
+              <Box item className={classes.addList} elevation={0}>
+                <TrelloCreate board_id={this.props.boardDict["todo"]} />
+              </Box>
+            </ListsContainer>
+          )}
+        </Droppable>
+      </Contain>
     );
   }
 }
@@ -77,7 +131,8 @@ const mapStateToProps = state => {
   return {
     boards: state.boards,
     boardDict: state.boardDict,
-    cardLists: state.cardLists
+    cardLists: state.cardLists,
+    members: state.members
   };
 };
 

@@ -37,65 +37,72 @@ export const fetchMembers = () => async dispatch => {
 
 export const login = (loginId, loginPw) => async dispatch => {
   const response = await apis.post(`/member/login`, {
-    "mem_id": loginId,
-    "mem_pw": loginPw
+    mem_id: loginId,
+    mem_pw: loginPw
   });
   const data = response.data.data;
-  
-  if(data.mem_id){
+
+  if (data.mem_id) {
     const response = await apis.get(`/member/${data.mem_id}`);
     //const joinedDate = response.data.data.mem_reg_date.replace(/-/gi, '/');
-    const joinedDate = '2019/02/03'
+    const joinedDate = "2019/02/03";
     var isAvailableWeek = true;
     var isAvailableMonth = true;
-    
-    if(new Date(joinedDate) > new Date(moment().subtract(7, 'days'))) isAvailableWeek = false;
-    if(new Date(joinedDate) > new Date(moment().startOf('month').subtract(1, 'month'))) isAvailableMonth = false;
+
+    if (new Date(joinedDate) > new Date(moment().subtract(7, "days")))
+      isAvailableWeek = false;
+    if (
+      new Date(joinedDate) >
+      new Date(
+        moment()
+          .startOf("month")
+          .subtract(1, "month")
+      )
+    )
+      isAvailableMonth = false;
 
     data.joinedDate = joinedDate;
     data.isAvailableWeek = isAvailableWeek;
     data.isAvailableMonth = isAvailableMonth;
 
-    dispatch({ type: LOGIN, payload: data })
+    dispatch({ type: LOGIN, payload: data });
+  } else {
+    dispatch({ type: LOGIN_ERR, payload: data });
   }
-  else{
-    dispatch({ type: LOGIN_ERR, payload: data })
-  }
-}
+};
 
 export const loginErrReset = () => async (dispatch, getState) => {
-  if(getState().members.login_err){
-    dispatch({ type: LOGIN_ERR, payload: "" })
+  if (getState().members.login_err) {
+    dispatch({ type: LOGIN_ERR, payload: "" });
   }
-}
+};
 
 export const register = (loginId, loginPw, email, nick) => async dispatch => {
   const response = await apis.post(`/member`, {
-    "mem_id": loginId,
-    "mem_pw": loginPw,
-    "mem_email": email,
-    "mem_nick": nick
-  })
+    mem_id: loginId,
+    mem_pw: loginPw,
+    mem_email: email,
+    mem_nick: nick
+  });
 
-  if(response.data.data !== loginId){
-    dispatch({ type: REGISTER_ERR, payload: response.data.data })
+  if (response.data.data !== loginId) {
+    dispatch({ type: REGISTER_ERR, payload: response.data.data });
+  } else {
+    dispatch({ type: REGISTER, payload: response.data.data });
   }
-  else{
-    dispatch({ type: REGISTER, payload: response.data.data })
-  }
-}
+};
 
 export const registerReset = () => async dispatch => {
-  dispatch({ type: REGISTER_RESET })
-}
+  dispatch({ type: REGISTER_RESET });
+};
 
-export const setLoggedInfo = (loggedInfo) => async dispatch => {
-  dispatch({ type: SET_LOGGED_INFO, payload: loggedInfo})
-}
+export const setLoggedInfo = loggedInfo => async dispatch => {
+  dispatch({ type: SET_LOGGED_INFO, payload: loggedInfo });
+};
 
 export const getLoggedInfo = () => async dispatch => {
-  dispatch({ type: GET_LOGGED_INFO })
-}
+  dispatch({ type: GET_LOGGED_INFO });
+};
 
 export const addBoard = (mem_id, board_date, board_type) => async dispatch => {
   const board_lists = "[]";
@@ -125,7 +132,9 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
 };
 
 export const fetchTodoLists = mem_id => async dispatch => {
-  const response = await apis.get(`/board/member/${mem_id}`);
+  console.log(mem_id);
+  const response = await apis.get(`/board/member/${mem_id}/date/9999-12-31`);
+  console.log(response);
   dispatch({ type: FETCH_TODO_LIST, payload: response.data.data[0] });
 
   response.data.data[0].board_lists.map(async cardlist_id => {
@@ -172,7 +181,11 @@ export const addList = (board_id, cardlist_name) => async (
 };
 
 export const editList = cardlist => async dispatch => {
-  const response = await apis.put(`/cardlist`, {cardlist_id: cardlist.cardlist_id, cardlist_name: cardlist.cardlist_name, cardlist_cards:JSON.stringify(cardlist.cardlist_cards) });
+  const response = await apis.put(`/cardlist`, {
+    cardlist_id: cardlist.cardlist_id,
+    cardlist_name: cardlist.cardlist_name,
+    cardlist_cards: JSON.stringify(cardlist.cardlist_cards)
+  });
   if (response.data.state === "ok") {
     dispatch({ type: EDIT_LIST, payload: cardlist });
   }
@@ -182,7 +195,7 @@ export const deleteList = (list_id, board_id) => async (dispatch, getState) => {
   await apis.delete(`/cardlist/${list_id}`);
 
   const board = getState().boards[board_id];
-  console.log(board.board_lists)
+  console.log(board.board_lists);
   board.board_lists = board.board_lists.filter(listId => listId !== list_id);
   console.log(JSON.stringify(board.board_lists));
 
@@ -233,7 +246,6 @@ export const editCard = card => async dispatch => {
 
 export const deleteCard = (list_id, card_id) => async (dispatch, getState) => {
   const cardlist = getState().cardLists[list_id];
-  console.log(cardlist.cardlist_cards);
   const cardlist_cards = cardlist.cardlist_cards.filter(
     card => card !== card_id
   );
@@ -253,10 +265,43 @@ export const sort = (
   draggableId,
   type
 ) => async (dispatch, getState) => {
-  console.log("앞으로 테스트 해볼 것들");
-  dispatch({ type: DRAG_HAPPENED, payload: "" });
-  const response = await apis.get("/member");
-  dispatch({ type: FETCH_MEMBERS, payload: response.data });
+  if (type === "card") {
+    const card_id = parseInt(draggableId.split("-")[1]);
+    if (droppableIdStart === droppableIdEnd) {
+      const cardlist = getState().cardLists[droppableIdStart];
+
+      cardlist.cardlist_cards.splice(droppableIndexStart, 1);
+      cardlist.cardlist_cards.splice(droppableIndexEnd, 0, card_id);
+      const cardlist_cards = JSON.stringify(cardlist.cardlist_cards);
+      apis.put(`/cardlist`, { ...cardlist, cardlist_cards });
+    } else {
+      const cardlistFrom = getState().cardLists[droppableIdStart];
+      const cardlistTo = getState().cardLists[droppableIdEnd];
+      const card = getState().cards[card_id];
+      card.cardlist_id = droppableIndexEnd;
+      cardlistFrom.cardlist_cards.splice(droppableIndexStart, 1);
+      cardlistTo.cardlist_cards.splice(droppableIndexEnd, 0, card_id);
+      apis.put("/card", { ...card });
+      apis.put(`/cardlist`, {
+        ...cardlistFrom,
+        cardlist_cards: JSON.stringify(cardlistFrom.cardlist_cards)
+      });
+      apis.put(`/cardlist`, {
+        ...cardlistTo,
+        cardlist_cards: JSON.stringify(cardlistTo.cardlist_cards)
+      });
+    }
+  } else {
+    const list_id = parseInt(draggableId.split("-")[1]);
+    const board = getState().boards[droppableIdStart];
+    board.board_lists.splice(droppableIndexStart, 1);
+    board.board_lists.splice(droppableIndexEnd, 0, list_id);
+
+    let form = new FormData();
+    form.append("board_id", droppableIdStart);
+    form.append("board_lists", JSON.stringify(board.board_lists));
+    apis.patch(`/board/${droppableIdStart}`, form);
+  }
 };
 
 export const fetchStatisticsMember = mem_id => async (dispatch, getState) => {
@@ -290,8 +335,12 @@ export const fetchStatisticsMember = mem_id => async (dispatch, getState) => {
   }
 };
 
-export const fetchStatisticsData = (startDate, endDate, availableDate) => async (dispatch, getState) => {
-  console.log(getState())
+export const fetchStatisticsData = (
+  startDate,
+  endDate,
+  availableDate
+) => async (dispatch, getState) => {
+  console.log(getState());
   const joinedDate = getState().members.mem_info.joinedDate;
   //const joinedDate = moment('2019/02/03')
   var calendarStartDate = startDate;
@@ -361,20 +410,19 @@ function date_to_str(format, separator) {
   );
 }
 
-
-export const searchCard = (searchKeyword) => async (dispatch, getState) => {
+export const searchCard = searchKeyword => async (dispatch, getState) => {
   const response = await apis.get(`/search/card/${searchKeyword}`);
-  dispatch({type : SEARCH_CARD, payload : response.data.data});
-}
-export const searchCardList = (searchKeyword) => async (dispatch, getState) => {
+  dispatch({ type: SEARCH_CARD, payload: response.data.data });
+};
+export const searchCardList = searchKeyword => async (dispatch, getState) => {
   const response = await apis.get(`/search/list/${searchKeyword}`);
-  dispatch({type : SEARCH_CARDLIST, payload : response.data.data});
-}
-export const searchTag = (searchKeyword) => async (dispatch, getState) => {
+  dispatch({ type: SEARCH_CARDLIST, payload: response.data.data });
+};
+export const searchTag = searchKeyword => async (dispatch, getState) => {
   const response = await apis.get(`/search/tag/${searchKeyword}`);
-  dispatch({type : SEARCH_TAG, payload : response.data.data});
-}
-export const searchUser = (searchKeyword) => async (dispatch, getState) => {
+  dispatch({ type: SEARCH_TAG, payload: response.data.data });
+};
+export const searchUser = searchKeyword => async (dispatch, getState) => {
   const response = await apis.get(`/search/user/${searchKeyword}`);
-  dispatch({type : SEARCH_USER, payload : response.data.data});
-}
+  dispatch({ type: SEARCH_USER, payload: response.data.data });
+};

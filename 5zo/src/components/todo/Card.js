@@ -5,6 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import Icon from "@material-ui/core/Icon";
 import { deleteCard, editCard } from "../../actions";
 import TrelloForm from "./TrelloForm";
+import { Draggable } from "react-beautiful-dnd";
 
 const styles = theme => ({
   paper: {
@@ -33,17 +34,14 @@ const styles = theme => ({
 });
 
 class Card extends React.Component {
-  componentDidMount() {
-    console.log(this.state.isEditing);
-  }
   state = {
     isEditing: false,
     cardText: this.props.card.card_name
   };
   saveCard = e => {
-    const card = this.props.card
-    card.card_name = this.state.cardText
-    this.props.editCard(card)
+    const card = this.props.card;
+    card.card_name = this.state.cardText;
+    this.props.editCard(card);
     this.setState({ isEditing: false });
   };
 
@@ -61,34 +59,41 @@ class Card extends React.Component {
 
   renderEditForm = () => {
     return (
-        <TrelloForm
-          text={this.state.cardText}
-          onChange={this.handleChange}
-          closeForm={this.closeForm}
-          submit={this.saveCard}
-        >
-          Save
-        </TrelloForm>
+      <TrelloForm
+        text={this.state.cardText}
+        onChange={this.handleChange}
+        closeForm={this.closeForm}
+        submit={this.saveCard}
+      >
+        Save
+      </TrelloForm>
     );
   };
 
   renderCard = () => {
     const { classes } = this.props;
     return (
-      <Paper
-        className={classes.paper}
-        onClick={() => this.setState({ isEditing: true })}
-      >
-        {this.props.card.card_name}
+      <Draggable draggableId={`card-${this.props.card_id}`} index={this.props.index}>
+        {provided => (
+          <Paper
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            className={classes.paper}
+            onDoubleClick={() => this.setState({ isEditing: true })}
+          >
+            {this.props.card.card_name}
 
-        <Icon
-          className={classes.delete}
-          fontSize="small"
-          onMouseDown={this.handleDeleteCard}
-        >
-          delete
-        </Icon>
-      </Paper>
+            <Icon
+              className={classes.delete}
+              fontSize="small"
+              onMouseDown={this.handleDeleteCard}
+            >
+              delete
+            </Icon>
+          </Paper>
+        )}
+      </Draggable>
     );
   };
 
