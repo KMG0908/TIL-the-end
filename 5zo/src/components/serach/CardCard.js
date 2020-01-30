@@ -22,21 +22,18 @@ const useStyles = makeStyles({
   });
 const CardCard = ({card}) => {
     const classes = useStyles();
-    
+    console.log('cardcard - card')
+    console.log(card)
     return (
         <div style={{textAlign:"center"}}>
           <Card className={classes.card} style={{maxWidth : 500}} >
               <CardContent >
                   <Typography variant="h4" component="h1" style={{textAlign:"center"}}>
-                      {card.title}
-                  </Typography>
-                  <br/>
-                  <Typography className={classes.pos} color="textSecondary" style={{textAlign:"right"}}>
-                      {card.tags.map(tag => <a>{'#'+tag.name+' '}</a>)}
+                      {card.card_name}
                   </Typography>
                   <br/>
                   <Typography variant="body2" component="p">
-                      {card.desc}
+                      {card.card_contents}
                   <br />
                   </Typography>
               </CardContent>

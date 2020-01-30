@@ -19,6 +19,8 @@ import Login from "./Auth/Login";
 import TitleComponent from "./navigation/TitleComponent";
 import List from "@material-ui/core/List";
 import storage from "lib/storage";
+import MyPage from "./Auth/MyPage";
+import MyPageEdit from "./Auth/MyPageEdit";
 
 
 class App extends React.Component {
@@ -48,11 +50,12 @@ class App extends React.Component {
             <Route path="/defLand" exact component={DefLand} />
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
+            <Route path="/mypage" exact component = {MyPage}/>  
+            <Route path="/mypage/edit" exact component = {MyPageEdit}/>  
           </div>
         </LandingPage>
       );
-      
-    } else {
+    } else { // 비로그인
       return (
         <Navigation>
           <div>
@@ -65,6 +68,9 @@ class App extends React.Component {
             <Route path="/todo" exact component={Todo} />
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
+            {/*  아래는 테스트 */}
+            <Route path="/mypage" exact component = {MyPage}/>
+            <Route path="/mypage/edit" exact component = {MyPageEdit}/>  
           </div>
         </Navigation>
       );

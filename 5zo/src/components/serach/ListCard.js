@@ -28,11 +28,11 @@ const ListCard = ({list}) => {
           <Card className={classes.card} style={{backgroundColor : "red", maxWidth : 500}}>
               <CardContent>
                   <Typography variant="h4" component="h1" style={{textAlign:"center", color:"white"}} >
-                      {list.title}
+                      {list.cardlist_name}
                   </Typography>
                   <br/>
                   <Typography className={classes.pos} color="textSecondary" style={{textAlign:"right", color:"white"}}>
-                      {list.tags.map(tag => <a>{'#'+tag.name+' '}</a>)}
+                      {/* {list.tags.map(tag => <a>{'#'+tag.name+' '}</a>)} */}
                   </Typography>
               </CardContent>
           </Card>

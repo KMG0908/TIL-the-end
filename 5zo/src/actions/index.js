@@ -23,12 +23,11 @@ import {
   DELETE_CARD,
   FETCH_STATISTICS_MEMBER,
   FETCH_STATISTICS_DATA,
-  SEARCH_CARD,
-  SEARCH_CARDLIST,
-  SEARCH_TAG,
-  SEARCH_USER
+  SEARCH_KEYWORD,
+  MEM_TAG,
 } from "./types";
 import moment from "moment";
+import { DisplayFormat } from "devextreme-react/date-box";
 
 export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
@@ -362,19 +361,23 @@ function date_to_str(format, separator) {
 }
 
 
-export const searchCard = (searchKeyword) => async (dispatch, getState) => {
-  const response = await apis.get(`/search/card/${searchKeyword}`);
-  dispatch({type : SEARCH_CARD, payload : response.data.data});
+export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
+  let response
+  console.log('searchKeyword');
+  console.log(`keyword : ${keyword} , type : ${type}`)
+  if(type === undefined) type = 'card'
+  if(type == 'member'){
+    response = await apis.get(`/member/searchById/${keyword}`);
+  }else{
+    response = await apis.get(`/search/global/${type}/by/${keyword}`);
+  }
+  const cards = response.data.data
+  console.log('cards')
+  console.log(cards)
+  dispatch({type : SEARCH_KEYWORD, payload : cards});
 }
-export const searchCardList = (searchKeyword) => async (dispatch, getState) => {
-  const response = await apis.get(`/search/list/${searchKeyword}`);
-  dispatch({type : SEARCH_CARDLIST, payload : response.data.data});
-}
-export const searchTag = (searchKeyword) => async (dispatch, getState) => {
-  const response = await apis.get(`/search/tag/${searchKeyword}`);
-  dispatch({type : SEARCH_TAG, payload : response.data.data});
-}
-export const searchUser = (searchKeyword) => async (dispatch, getState) => {
-  const response = await apis.get(`/search/user/${searchKeyword}`);
-  dispatch({type : SEARCH_USER, payload : response.data.data});
+
+export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
+  const response = await apis.get(`/tag/public/${mem_id}/from/${from}/to/${to}`);
+  dispatch({type : MEM_TAG, payload : response.data })
 }

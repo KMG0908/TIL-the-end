@@ -13,11 +13,7 @@ class SearchBar extends Component {
         })
     }
     render(){
-        const { searchText } = this.state 
-        const query = queryString.parse(this.props.location.search);
-        // const params = this.props.match.params
-        let type = query.type
-        console.log(type)
+        let type = this.props.type
         if(type === undefined){
             type = 'card' 
         }

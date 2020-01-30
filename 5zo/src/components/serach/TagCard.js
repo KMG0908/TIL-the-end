@@ -28,7 +28,7 @@ const CardCard = ({tag}) => {
           <Card className={classes.card} style={{maxWidth : 500}} >
               <CardContent>
                   <Typography variant="h4" component="h1" style={{textAlign:"center"}}>
-                      {'#' + tag.name}
+                      {'#' + tag.tag_name}
                   </Typography>
               </CardContent>
           </Card>
