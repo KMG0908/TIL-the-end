@@ -25,4 +25,10 @@ public interface CardDao {
 	
 	public List<Board> countAllDailyCard(@Param("mem_id") String mem_id, @Param("from") String from, @Param("to") String to);
 
+	public List<Card> searchPrivateCard(@Param("mem_id")String mem_id, @Param("keyword")String keyword);
+
+	public List<Card> searchPublicCard(@Param("mem_id")String mem_id, @Param("keyword")String keyword);
+
+	public List<Card> searchGlobalCard(String keyword);
+
 }

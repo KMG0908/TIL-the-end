@@ -31,42 +31,33 @@
 		where tag_id = #{tag_id}
 	</delete>
 
-	<select id="privatetagcloud" parameterType="string" resultType="tag">
+	<select id="publictagcloud" parameterType="string" resultType="tag">
 		select e.tag_name, count(e.tag_id) as tag_id
-		from card_tag c, tag e,
-			(select card_id
-			from card e,
+		from cardlist_tag c, tag e,
 				(select cardlist_id, b.board_date
 				from cardlist c,
-					(select board_id, board_date
-					from board
-					where mem_id = #{mem_id}
-					and board_type='daily'
-					and board_date between #{from} and #{to}) b
-				where c.board_id = b.board_id) d
-			where e.cardlist_id = d.cardlist_id
-			and card_secret = true) d
-		where c.card_id = d.card_id
+						(select board_id, board_date
+						from board
+						where mem_id = #{mem_id}
+						and board_date between #{from} and #{to}) b
+				where c.board_id = b.board_id
+				and cardlist_secret = false ) d
+		where c.cardlist_id = d.cardlist_id
 		and c.tag_id = e.tag_id
 		group by e.tag_id;
 	</select>
 
-	<select id="publictagcloud" parameterType="string" resultType="tag">
-select e.tag_name, count(e.tag_id) as tag_id
-		from card_tag c, tag e,
-		(select card_id
-		from card e,
-		(select cardlist_id, b.board_date
-		from cardlist c,
-		(select board_id, board_date
-		from board
-		where mem_id = #{mem_id}
-		and board_type='daily'
-		and board_date between #{from} and #{to}) b
-		where c.board_id = b.board_id) d
-		where e.cardlist_id = d.cardlist_id
-		and card_secret = false) d
-		where c.card_id = d.card_id
+	<select id="privatetagcloud" parameterType="string" resultType="tag">
+		select e.tag_name, count(e.tag_id) as tag_id
+		from cardlist_tag c, tag e,
+				(select cardlist_id, b.board_date
+				from cardlist c,
+						(select board_id, board_date
+						from board
+						where mem_id = #{mem_id}
+						and board_date between #{from} and #{to}) b
+				where c.board_id = b.board_id ) d
+		where c.cardlist_id = d.cardlist_id
 		and c.tag_id = e.tag_id
 		group by e.tag_id;
 	</select>

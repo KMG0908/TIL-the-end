@@ -21,4 +21,10 @@ public interface CardService {
 	
 	public List<Board> countAllDailyCard(String mem_id, String from, String to);
 
+	List<Card> searchPublicCard(String mem_id, String keyword);
+
+	List<Card> searchPrivateCard(String mem_id, String keyword);
+
+	List<Card> searchGlobalCard(String keyword);
+
 }
