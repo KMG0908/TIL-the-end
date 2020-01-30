@@ -18,18 +18,6 @@ import TitleComponent from "./navigation/TitleComponent";
 import List from "@material-ui/core/List";
 import storage from "lib/storage";
 
-const withTitle = ({ component: Component, title }) => {
-  return class Title extends React.Component {
-    render() {
-      return (
-        <List>
-          <TitleComponent title={title} />
-          <Component {...this.props} />
-        </List>
-      );
-    }
-  };
-};
 
 class App extends React.Component {
   initializeUserInfo = async () => {
@@ -50,16 +38,12 @@ class App extends React.Component {
     //this.initializeUserInfo();
   }
   drawRouter() {
-    const CalendarComponent = withTitle({
-      component: Calendar,
-      title: "Calendar"
-    });
     if (this.props.members.mem_info) {
       return (
         <Navigation nickname={this.props.members.mem_info.mem_nick}>
           <div>
             <Route path="/" exact component={Main} />
-            <Route path="/calendar" exact component={CalendarComponent} />
+            <Route path="/calendar" exact component={LandingPage} />
             <Route path="/statistics/:user_id" exact component={Statistics} />
             <Route path="/search/:user_id" exact component={Search} />
             <Route path="/tags" exact component={Tags} />{" "}
