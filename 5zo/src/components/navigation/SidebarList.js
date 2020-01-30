@@ -35,7 +35,6 @@ const StatisticsComponent = WithTitle({ component : Link, title: 'Statistics'});
 
 const SidebarList = () => {
   return (
-    
     <>
       <List>
         <ListItem button component={Link}  to={"/todo"}>

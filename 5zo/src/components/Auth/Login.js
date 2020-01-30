@@ -49,8 +49,9 @@ class Login extends Component {
       <div>
         <AuthWrapper>
           <AuthContent title="로그인">
-            <InputWithLabel label="아이디" name="loginId" placeholder="아이디" onChange={this.handleChange} />
-            <InputWithLabel label="비밀번호" name="loginPw" placeholder="비밀번호" type="password" onChange={this.handleChange} />
+            <InputWithLabel label="아이디" name="loginId" placeholder="아이디" onChange={this.handleChange} maxLength="20"/>
+            <InputWithLabel label="비밀번호" name="loginPw" placeholder="비밀번호" type="password" onChange={this.handleChange} maxLength="16" />
+            {this.state.loginErr}
             {this.props.login_err}
             <AuthButton onClick={this.login}> 로그인 </AuthButton>
             <RightAlignedLink to="/register"> 회원가입 </RightAlignedLink>

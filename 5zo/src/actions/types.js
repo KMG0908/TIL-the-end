@@ -7,6 +7,7 @@ export const REGISTER_ERR = 'REGISTER_ERR'
 export const REGISTER_RESET = "REGISTER_RESET"
 export const SET_LOGGED_INFO = 'SET_LOGGED_INFO'
 export const GET_LOGGED_INFO = 'GET_LOGGED_INFO'
+export const LOGOUT = 'LOGOUT'
 
 
 export const DRAG_HAPPENED = "DRAG_HAPPENED"

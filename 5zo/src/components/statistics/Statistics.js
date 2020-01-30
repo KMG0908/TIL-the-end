@@ -9,11 +9,9 @@ import CardCountChartWeek from "./CardCountChartWeek"
 import CardCountChartMonth from "./CardCountChartMonth"
 import CardCountChartSelect from "./CardCountChartSelect"
 import "./statistics.css"
+import storage from "lib/storage";
 
 class Statistics extends React.Component {
-  componentDidMount() {
-    //this.props.fetchStatisticsMember("kkk")  // mem_id
-  }
   constructor(props) {
     super(props);
 
@@ -83,38 +81,44 @@ class Statistics extends React.Component {
     }
   }
   render() {
-    const user_id = this.props.match.params.user_id
-
-    let calendar;
-    let linechart;
-
-    switch (this.state.standard) {
-      case 'week':
-        calendar = <PeriodWeek></PeriodWeek>
-        linechart = <CardCountChartWeek></CardCountChartWeek>
-        break;
-      case 'month':
-        calendar = <PeriodMonth></PeriodMonth>
-        linechart = <CardCountChartMonth></CardCountChartMonth>
-        break;
-      case 'select':
-        calendar = <PeriodSelect></PeriodSelect>
-        linechart = <CardCountChartSelect></CardCountChartSelect>
-        break;
-      default:
+    if(!storage.get('loggedInfo')){
+      this.props.history.replace("/login");
+      return(<div></div>)
     }
-
-    return (
-      <div>
-        <div>{user_id}님의 통계</div>
-        {this.setStandardButton()}
-        {calendar}
-        <div className="charts">
-          <TagFrequencyChart></TagFrequencyChart>
-          {linechart}
+    else{
+      const user_id = this.props.match.params.user_id
+  
+      let calendar;
+      let linechart;
+  
+      switch (this.state.standard) {
+        case 'week':
+          calendar = <PeriodWeek></PeriodWeek>
+          linechart = <CardCountChartWeek></CardCountChartWeek>
+          break;
+        case 'month':
+          calendar = <PeriodMonth></PeriodMonth>
+          linechart = <CardCountChartMonth></CardCountChartMonth>
+          break;
+        case 'select':
+          calendar = <PeriodSelect></PeriodSelect>
+          linechart = <CardCountChartSelect></CardCountChartSelect>
+          break;
+        default:
+      }
+  
+      return (
+        <div>
+          <div>{user_id}님의 통계</div>
+          {this.setStandardButton()}
+          {calendar}
+          <div className="charts">
+            <TagFrequencyChart></TagFrequencyChart>
+            {linechart}
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

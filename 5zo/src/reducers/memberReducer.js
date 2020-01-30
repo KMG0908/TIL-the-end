@@ -1,5 +1,6 @@
-import { FETCH_MEMBERS, LOGIN, LOGIN_ERR, LOGIN_ERR_RESET, REGISTER_ERR, REGISTER, REGISTER_RESET, SET_LOGGED_INFO, GET_LOGGED_INFO } from "../actions/types"
+import { FETCH_MEMBERS, LOGIN, LOGIN_ERR, REGISTER_ERR, REGISTER, REGISTER_RESET, SET_LOGGED_INFO, GET_LOGGED_INFO, LOGOUT } from "../actions/types"
 import _ from "lodash";
+import { combineReducers } from "redux";
 
 
 export default (state = {}, action) => {
@@ -20,6 +21,9 @@ export default (state = {}, action) => {
       return {...state, "mem_info" : action.payload}
     case GET_LOGGED_INFO:
       return state
+    case LOGOUT:
+      state = {}
+      return combineReducers({state: (state = {}) => state})
     default:
       return state
   }

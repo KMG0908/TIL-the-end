@@ -29,11 +29,11 @@ const Input = styled.input`
     }
 `;
 
-const InputWithLabel = ({label, ...rest}) => (
-    <Wrapper>
-        <Label> {label} </Label>
-        <Input {...rest} />
-    </Wrapper>
+const InputWithLabel = ({ label, ...rest }) => (
+  <Wrapper>
+    <Label> {label} </Label>
+    <Input {...rest} />
+  </Wrapper>
 )
 
 export default InputWithLabel;

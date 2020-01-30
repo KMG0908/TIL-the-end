@@ -1,4 +1,4 @@
-import {FETCH_STATISTICS_MEMBER} from "../actions/types"
+import {FETCH_STATISTICS_MEMBER, FETCH_STATISTICS_TAG_DATA} from "../actions/types"
 import {FETCH_STATISTICS_DATA} from "../actions/types"
 
 export default (state = {}, action) => {
