@@ -53,8 +53,8 @@ class Register extends Component {
     return (
       <AuthWrapper>
         <AuthContent title="회원가입">
-          <InputWithLabel label="아이디" name="loginId" placeholder="아이디" onChange={this.handleChange}/>
-          <InputWithLabel label="비밀번호" name="loginPw" placeholder="비밀번호" type="password" onChange={this.handleChange}/>
+          <InputWithLabel label="아이디" name="loginId" placeholder="아이디" onChange={this.handleChange} maxLength="20"/>
+          <InputWithLabel label="비밀번호" name="loginPw" placeholder="비밀번호" type="password" onChange={this.handleChange} maxLength="16"/>
           <InputWithLabel label="이메일" name="email" placeholder="이메일" type="email" onChange={this.handleChange}/>
           <InputWithLabel label="닉네임" name="nick" placeholder="닉네임" onChange={this.handleChange}/>
           {this.props.register_err}

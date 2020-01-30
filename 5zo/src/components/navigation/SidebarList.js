@@ -34,10 +34,7 @@ const CalendarComponent = WithTitle({ component : Link, title: 'Calendar'});
 const TodoComponent = WithTitle({ component : Link, title: 'Todo'});
 const StatisticsComponent = WithTitle({ component : Link, title: 'Statistics'});
 const SidebarList = () => {
-  
-  
   return (
-    
     <>
       <List>
         <ListItem button component={Link}  to={"/todo"}>

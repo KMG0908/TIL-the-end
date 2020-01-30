@@ -17,6 +17,10 @@ import Divider from "@material-ui/core/Divider";
 import { fade } from '@material-ui/core/styles';
 
 import {SidebarList, WithTitle} from "./SidebarList"
+import storage from "lib/storage";
+
+import { connect } from "react-redux";
+import { logout } from "../../actions";
 
 
 const drawerWidth = 240;
@@ -112,7 +116,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Navigation(props) {
+function Navigation(props) {
   var currentLocation = window.location.pathname;
   
   const classes = useStyles();
@@ -126,6 +130,13 @@ export default function Navigation(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const logout = () => {
+    storage.remove('loggedInfo');
+    props.logout();
+    window.location.href = "/"
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -164,6 +175,12 @@ export default function Navigation(props) {
             />
           </div>
           </Typography>
+          <Typography>
+            <input type="button" value="로그아웃" onClick={logout}/>
+          </Typography>
+          <Typography>
+            <input type="button" value="마이페이지"/>
+          </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -201,3 +218,9 @@ export default function Navigation(props) {
     </div>
   );
 }
+
+const mapStateToProps = function(state) {
+  return {}
+}
+
+export default connect(mapStateToProps, {logout})(Navigation);

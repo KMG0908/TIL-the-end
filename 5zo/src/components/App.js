@@ -35,16 +35,18 @@ class App extends React.Component {
     this.props.setLoggedInfo(loggedInfo);
   };
   componentDidMount() {
-    //this.initializeUserInfo();
+    this.initializeUserInfo();
   }
   drawRouter() {
     if (this.props.members.mem_info) {
       return (
         <Navigation nickname={this.props.members.mem_info.mem_nick}>
           <div>
-            <Route path="/" exact component={Main} />
+            <Route path="/" exact component={Main} />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
             <Route path="/calendar" exact component={LandingPage} />
             <Route path="/statistics/:user_id" exact component={Statistics} />
+            <Route path="/search" exact component={Search} />
+            <Route path="/search/:keyword" component={Search} />
             <Route path="/search/:user_id" exact component={Search} />
             <Route path="/tags" exact component={Tags} />{" "}
             <Route path="/todo" exact component={Todo} />
