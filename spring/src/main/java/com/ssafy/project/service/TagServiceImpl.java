@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.project.dao.TagDao;
+import com.ssafy.project.dto.Card;
+import com.ssafy.project.dto.CardException;
 import com.ssafy.project.dto.Cardlist_TagException;
 import com.ssafy.project.dto.Tag;
 import com.ssafy.project.dto.TagException;
@@ -91,6 +93,37 @@ public class TagServiceImpl implements TagService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Cardlist_TagException(mem_id + "의 " + from + " ~ " + to + "간의 public 태그 조회 중 오류 발생");
+		}
+	}
+	
+
+	@Override
+	public List<Tag> searchPrivateTag(String mem_id, String keyword) {
+		try {
+			return dao.searchPrivateTag(mem_id, keyword);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException(mem_id + "의 공개된 태그 검색 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Tag> searchPublicTag(String mem_id, String keyword) {
+		try {
+			return dao.searchPublicTag(mem_id, keyword);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException(mem_id + "의 전체 태그 검색 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Tag> searchGlobalTag(String keyword) {
+		try {
+			return dao.searchGlobalTag(keyword);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException("전체 태그 검색 중 오류 발생");
 		}
 	}
 

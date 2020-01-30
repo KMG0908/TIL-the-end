@@ -23,4 +23,10 @@ public interface TagDao {
 
 	public List<Tag> publictagcloud(@Param("mem_id") String mem_id, @Param("from") String from, @Param("to") String to);
 
+	public List<Tag> searchPrivateTag(@Param("mem_id")String mem_id, @Param("keyword")String keyword);
+
+	public List<Tag> searchPublicTag(@Param("mem_id")String mem_id, @Param("keyword")String keyword);
+
+	public List<Tag> searchGlobalTag(String keyword);
+
 }

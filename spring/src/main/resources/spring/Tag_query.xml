@@ -61,5 +61,51 @@
 		and c.tag_id = e.tag_id
 		group by e.tag_id;
 	</select>
+	
+	<select id="searchPrivateTag" parameterType="string" resultType="tag">
+		select e.tag_id, e.tag_name 
+		from cardlist_tag c, tag e,
+				(select cardlist_id
+				from cardlist c,
+						(select board_id
+						from board
+						where mem_id = #{mem_id}) b
+				where c.board_id = b.board_id ) d
+		where c.cardlist_id = d.cardlist_id
+		and c.tag_id = e.tag_id
+		and e.tag_name like concat('%',#{keyword},'%')
+		group by e.tag_id;
+	</select>
+
+	<select id="searchPublicTag" parameterType="string" resultType="tag">
+		select e.tag_id, e.tag_name 
+		from cardlist_tag c, tag e,
+				(select cardlist_id
+				from cardlist c,
+						(select board_id
+						from board
+						where mem_id = #{mem_id}) b
+				where c.board_id = b.board_id 
+				and c.cardlist_secret = false ) d
+		where c.cardlist_id = d.cardlist_id
+		and c.tag_id = e.tag_id
+		and e.tag_name like concat('%',#{keyword},'%')
+		group by e.tag_id;
+	</select>
+
+	<select id="searchGlobalTag" parameterType="string" resultType="tag">
+		select e.tag_id, e.tag_name 
+		from cardlist_tag c, tag e,
+				(select cardlist_id
+				from cardlist c						
+				where c.board_id = b.board_id
+				and c.cardlist_secret = false ) d
+		where c.cardlist_id = d.cardlist_id
+		and c.tag_id = e.tag_id
+		and e.tag_name like concat('%',#{keyword},'%')
+		group by e.tag_id;
+	</select>
+	
+	
 
 </mapper>

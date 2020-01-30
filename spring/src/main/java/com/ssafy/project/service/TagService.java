@@ -20,4 +20,10 @@ public interface TagService {
 
 	List<Tag> publictagcloud(String mem_id, String from, String to);
 
+	List<Tag> searchPublicTag(String mem_id, String keyword);
+
+	List<Tag> searchPrivateTag(String mem_id, String keyword);
+
+	List<Tag> searchGlobalTag(String keyword);
+
 }
