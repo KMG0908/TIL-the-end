@@ -34,7 +34,7 @@ export const FETCH_STATISTICS_DATA = 'FETCH_STATISTICS_DATA'
 
 
 // search action
-export const SEARCH_TAG = 'SEARCH_TAG'
-export const SEARCH_CARDLIST = 'SEARCH_CARDLIST'
-export const SEARCH_USER = 'SEARCH_USER'
-export const SEARCH_CARD = 'SEARCH_CARD'
+export const SEARCH_KEYWORD = 'SEARCH_KEYWORD'
+
+// tag action
+export const MEM_TAG = 'MEM_TAG'
