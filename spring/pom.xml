@@ -9,8 +9,8 @@
 	</parent>
 	<groupId>com.ssafy</groupId>
 	<artifactId>spring</artifactId>
-	<version>0.1.6</version>
-	<packaging>jar</packaging>
+	<version>0.1.7</version>
+	<packaging>war</packaging>
 	<name>spring</name>
 	<description>Demo project for Spring Boot</description>
 
