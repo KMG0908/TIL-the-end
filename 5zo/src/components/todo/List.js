@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import Card from "./Card";
 import Icon from "@material-ui/core/Icon";
 import { deleteList, editList } from "../../actions";
+import { Droppable } from "react-beautiful-dnd";
 
 const styles = theme => ({
   root: {
@@ -45,7 +46,10 @@ const styles = theme => ({
 });
 
 class List extends React.Component {
-  state = {isEditing: false, listTitle: this.props.cardLists[this.props.cardlist_id].cardlist_name}
+  state = {
+    isEditing: false,
+    listTitle: this.props.cardLists[this.props.cardlist_id].cardlist_name
+  };
 
   renderCard() {
     const { classes } = this.props;
@@ -55,14 +59,15 @@ class List extends React.Component {
     )
       ? this.props.cardLists[this.props.cardlist_id].cardlist_cards
       : JSON.parse(this.props.cardLists[this.props.cardlist_id].cardlist_cards);
-    // console.log(cards)
-    return cards.map(card_id => {
+    return cards.map((card_id, index) => {
       if (this.props.cards[card_id]) {
         return (
           <Card
+            card_id={card_id}
+            index={index}
             card={this.props.cards[card_id]}
             cardlist_id={this.props.cardlist_id}
-            key={this.props.cards[card_id].card_id}
+            key={card_id}
           />
         );
       } else {
@@ -75,51 +80,65 @@ class List extends React.Component {
     this.props.deleteList(this.props.cardlist_id, this.props.board_id);
   };
 
-  titleEditer = ()=>{
-    return <TrelloForm
-    text={this.state.listTitle}
-    onChange={this.handleChange}
-    closeForm={this.closeForm}
-    submit={this.saveList}
-  >
-    Save
-  </TrelloForm>
-  }
-  closeForm = () =>{
+  titleEditer = () => {
+    return (
+      <TrelloForm
+        text={this.state.listTitle}
+        onChange={this.handleChange}
+        closeForm={this.closeForm}
+        submit={this.saveList}
+      >
+        Save
+      </TrelloForm>
+    );
+  };
+  closeForm = () => {
     this.setState({ isEditing: false });
-  }
-  saveList = () =>{
-    const cardlist = this.props.cardLists[this.props.cardlist_id]
-    cardlist.cardlist_name = this.state.listTitle
+  };
+  saveList = () => {
+    const cardlist = this.props.cardLists[this.props.cardlist_id];
+    cardlist.cardlist_name = this.state.listTitle;
 
-    this.props.editList(cardlist)
+    this.props.editList(cardlist);
     this.setState({ isEditing: false });
+  };
 
-  }
-
-  handleChange = (e) =>{
-    e.preventDefault()
-    this.setState({listTitle:e.target.value})
-  }
+  handleChange = e => {
+    e.preventDefault();
+    this.setState({ listTitle: e.target.value });
+  };
   render() {
     const { classes } = this.props;
     return (
       <div>
-        {this.state.isEditing?this.titleEditer():
-        <div className={classes.titleContainer} onClick={()=>this.setState({isEditing:true})}>
-          {this.props.title}
-          <Icon
-            className={classes.delete}
-            fontSize="small"
-            onMouseDown={this.handleDeleteList}
+        {this.state.isEditing ? (
+          this.titleEditer()
+        ) : (
+          <div
+            className={classes.titleContainer}
+            onClick={() => this.setState({ isEditing: true })}
           >
-            delete
-          </Icon>
-        </div>}
-        {this.renderCard()}
-        <Box className={classes.create} elevation={0}>
-          <TrelloCreate cardlist_id={this.props.cardlist_id} />
-        </Box>
+            {this.props.title}
+            <Icon
+              className={classes.delete}
+              fontSize="small"
+              onMouseDown={this.handleDeleteList}
+            >
+              delete
+            </Icon>
+          </div>
+        )}
+        <Droppable droppableId={String(this.props.cardlist_id)} type="card">
+          {provided => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {this.renderCard()}
+              {provided.placeholder}
+              <Box className={classes.create} elevation={0}>
+                <TrelloCreate cardlist_id={this.props.cardlist_id} />
+              </Box>
+            </div>
+          )}
+        </Droppable>
       </div>
     );
   }
@@ -133,5 +152,5 @@ const mapStateToProps = state => {
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { deleteList,editList })(List)
+  connect(mapStateToProps, { deleteList, editList })(List)
 );

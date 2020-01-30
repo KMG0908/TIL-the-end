@@ -1,19 +1,20 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 import List from "./List";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 import { fetchDailyLists } from "../../actions";
 import TrelloCreate from "./TrelloCreate";
-
 import { connect } from "react-redux";
+
 const styles = theme => ({
   root: {
     flexGrow: 1
   },
   list: {
     margin: theme.spacing(1),
+    marginLeft: theme.spacing(0),
     padding: theme.spacing(1),
     backgroundColor: "#94C9A9",
     color: theme.palette.error.contrastText,
@@ -26,13 +27,15 @@ const styles = theme => ({
     width: "100%"
   }
 });
-const date = "20200122";
+const date = "20200130";
 class DailyBoard extends React.Component {
   componentDidMount() {
-    this.props.fetchDailyLists("dsbang", date);
+    if (this.props.members.mem_info) {
+      this.props.fetchDailyLists(this.props.members.mem_info.mem_id, date);
+    }
   }
 
-  RenderList(provided) {
+  RenderList() {
     if (this.props.boardDict[date]) {
       const { classes } = this.props;
 
@@ -46,26 +49,25 @@ class DailyBoard extends React.Component {
         if (this.props.cardLists[list]) {
           return (
             <Draggable
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              draggableId={String(this.props.cardLists[list].cardlist_id)}
+              draggableId={String(`list-${list}`)}
               index={index}
+              key={list}
             >
               {provided => (
-                <Paper
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className={classes.list}
-                  spacing={2}
-                  key={this.props.cardLists[list].cardlist_id}
-                >
-                  {provided.placeholder}
-                  <List
-                    board_id={this.props.boardDict[date]}
-                    cardlist_id={this.props.cardLists[list].cardlist_id}
-                    title={this.props.cardLists[list].cardlist_name}
-                  />
-                </Paper>
+                <div key={list}>
+                  <Paper
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                    className={classes.list}
+                  >
+                    <List
+                      board_id={this.props.boardDict[date]}
+                      cardlist_id={this.props.cardLists[list].cardlist_id}
+                      title={this.props.cardLists[list].cardlist_name}
+                    />
+                  </Paper>
+                </div>
               )}
             </Draggable>
           );
@@ -75,23 +77,27 @@ class DailyBoard extends React.Component {
       });
     }
   }
-  onDragEnd = () => {
-    console.log(1);
-  };
   render() {
     const { classes } = this.props;
     return (
-      <Grid container spacing={2}>
-        <div>Daily Todo 2020-01-22</div>
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId={date} direction="horizontal" type="list">
-            {provided => this.RenderList(provided)}
-          </Droppable>
-        </DragDropContext>
-        <Paper className={classes.addList} elevation={0} spacing={2}>
-          <TrelloCreate board_id={this.props.boardDict[date]} />
-        </Paper>
-      </Grid>
+      <Box>
+        <Droppable
+          droppableId={String(this.props.boardDict[date])}
+          direction="vertical"
+          type="list"
+        >
+          {provided => (
+            <Box container {...provided.droppableProps} ref={provided.innerRef}>
+              <div>Daily Todo 2020-01-30</div>
+              {this.RenderList()}
+              {provided.placeholder}
+              <Paper className={classes.addList} elevation={0}>
+                <TrelloCreate board_id={this.props.boardDict[date]} />
+              </Paper>
+            </Box>
+          )}
+        </Droppable>
+      </Box>
     );
   }
 }
@@ -100,7 +106,8 @@ const mapStateToProps = state => {
   return {
     boards: state.boards,
     boardDict: state.boardDict,
-    cardLists: state.cardLists
+    cardLists: state.cardLists,
+    members: state.members
   };
 };
 
