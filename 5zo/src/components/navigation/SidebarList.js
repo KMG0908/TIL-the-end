@@ -64,7 +64,7 @@ const SidebarList = () => {
         </ListItem>
       </List>
       <List>
-        <ListItem button component={Link} to={"/search/1"}>
+        <ListItem button component={Link} to={"/search"}>
           <ListItemIcon>
             <SearchIcon />
           </ListItemIcon>

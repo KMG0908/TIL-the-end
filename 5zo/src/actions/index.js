@@ -22,7 +22,11 @@ import {
   EDIT_CARD,
   DELETE_CARD,
   FETCH_STATISTICS_MEMBER,
-  FETCH_STATISTICS_DATA
+  FETCH_STATISTICS_DATA,
+  SEARCH_CARD,
+  SEARCH_CARDLIST,
+  SEARCH_TAG,
+  SEARCH_USER
 } from "./types";
 import moment from "moment";
 
@@ -355,4 +359,22 @@ function date_to_str(format, separator) {
     separator +
     ("0" + date).slice(-2)
   );
+}
+
+
+export const searchCard = (searchKeyword) => async (dispatch, getState) => {
+  const response = await apis.get(`/search/card/${searchKeyword}`);
+  dispatch({type : SEARCH_CARD, payload : response.data.data});
+}
+export const searchCardList = (searchKeyword) => async (dispatch, getState) => {
+  const response = await apis.get(`/search/list/${searchKeyword}`);
+  dispatch({type : SEARCH_CARDLIST, payload : response.data.data});
+}
+export const searchTag = (searchKeyword) => async (dispatch, getState) => {
+  const response = await apis.get(`/search/tag/${searchKeyword}`);
+  dispatch({type : SEARCH_TAG, payload : response.data.data});
+}
+export const searchUser = (searchKeyword) => async (dispatch, getState) => {
+  const response = await apis.get(`/search/user/${searchKeyword}`);
+  dispatch({type : SEARCH_USER, payload : response.data.data});
 }
