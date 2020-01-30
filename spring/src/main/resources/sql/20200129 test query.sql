@@ -42,16 +42,16 @@ select * from board;
 
 # test 멤버의 cardlist 생성 
 
-insert into cardlist(board_id, cardlist_name)
+insert into cardlist(board_id, cardlist_name, cardlist_secret)
 values
-(1, 'admin의 오늘 날짜 보드'),
-(2, 'admin의 todo  보드'),
-(3, 'test의 오늘 날짜 보드'),
-(4, 'test의 todo  보드'),
-(5, 'ssafy의 오늘 날짜 보드'),
-(6, 'ssafy의 todo  보드'),
-(7, 'aaa의 오늘 날짜 보드'),
-(8, 'aaa의 todo  보드');
+(1, 'admin의 오늘 날짜 보드', true),
+(2, 'admin의 todo  보드', true),
+(3, 'test의 오늘 날짜 보드', true),
+(4, 'test의 todo  보드', true),
+(5, 'ssafy의 오늘 날짜 보드', true),
+(6, 'ssafy의 todo  보드', true),
+(7, 'aaa의 오늘 날짜 보드', true),
+(8, 'aaa의 todo  보드', true);
 
 select * from cardlist;
 
@@ -92,16 +92,16 @@ select * from board;
 
 # test 멤버의 cardlist에 카드를 추가  
 
-insert into card(cardlist_id, card_name, card_contents)
+insert into card(cardlist_id, card_name, card_contents, card_secret)
 values
-(1, '카드 1번', '내용 1번'),
-(2, '카드 2번', '내용 2번'),
-(3, '카드 3번', '내용 3번'),
-(4, '카드 4번', '내용 4번'),
-(5, '카드 5번', '내용 5번'),
-(6, '카드 6번', '내용 6번'),
-(7, '카드 7번', '내용 7번'),
-(8, '카드 8번', '내용 8번');
+(1, '카드 1번', '내용 1번', true),
+(2, '카드 2번', '내용 2번', true),
+(3, '카드 3번', '내용 3번', true),
+(4, '카드 4번', '내용 4번', true),
+(5, '카드 5번', '내용 5번', true),
+(6, '카드 6번', '내용 6번', true),
+(7, '카드 7번', '내용 7번', true),
+(8, '카드 8번', '내용 8번', true);
 
 update cardlist
 set 

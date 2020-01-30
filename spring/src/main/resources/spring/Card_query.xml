@@ -64,18 +64,18 @@
 	</select>
 
 	<select id="searchPrivateCard" parameterType="string" resultType="card">
-		select c.card_id
+		select c.*
 		from board b, cardlist cl, card c
 		where
 		(card_name like concat('%',#{keyword},'%')
 		or card_contents like concat('%',#{keyword},'%'))
 		and b.board_id = cl.board_id
 		and b.mem_id = #{mem_id}
-		and cl.cardlist_id = c.cardlist_id;
+		and cl.cardlist_id = c.cardlist_id
 	</select>
 
 	<select id="searchPublicCard" parameterType="string" resultType="card">
-		select c.card_id
+		select c.*
 		from board b, cardlist cl, card c
 		where
 		(card_name like concat('%',#{keyword},'%')
@@ -84,11 +84,11 @@
 		and b.board_id = cl.board_id
 		and b.mem_id = #{mem_id}
 		and cl.cardlist_secret = false
-		and cl.cardlist_id = c.cardlist_id;
+		and cl.cardlist_id = c.cardlist_id
 	</select>
 
 	<select id="searchGlobalCard" parameterType="string" resultType="card">
-		select c.card_id
+		select c.*
 		from board b, cardlist cl, card c
 		where
 		(card_name like concat('%',#{keyword},'%')
@@ -96,6 +96,6 @@
 		and c.card_secret = false
 		and b.board_id = cl.board_id
 		and cl.cardlist_secret = false
-		and cl.cardlist_id = c.cardlist_id;
+		and cl.cardlist_id = c.cardlist_id
 	</select>
 </mapper>

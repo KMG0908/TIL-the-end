@@ -87,5 +87,25 @@ public class CardlistRESTController {
 		return handleSuccess(cardlist.getCardlist_id() + "번 카드리스트의 패치 완료");
 	}
 	
+	
+	@GetMapping("/api/search/public/cardlist/{mem_id}/by/{keyword}")
+	@ApiOperation("A유저가 B유저를 검색) 특정문자열을 cardlist_name 에서 포함여부를 찾아서 cardlist 배열 반환하는 쿼리문")
+	public ResponseEntity<Map<String, Object>> searchPublicCardlist(@PathVariable String mem_id,
+			@PathVariable String keyword) {
+		return handleSuccess(service.searchPublicCardlist(mem_id, keyword));
+	}
+	
+	@GetMapping("/api/search/private/cardlist/{mem_id}/by/{keyword}")
+	@ApiOperation("A유저가 A유저를 검색) 특정문자열을 cardlist_name 에서 포함여부를 찾아서 cardlist 배열 반환하는 쿼리문")
+	public ResponseEntity<Map<String, Object>> searchPrivateCardlist(@PathVariable String mem_id,
+			@PathVariable String keyword) {
+		return handleSuccess(service.searchPrivateCardlist(mem_id, keyword));
+	}
+	
+	@GetMapping("/api/search/global/cardlist/by/{keyword}")
+	@ApiOperation("키워드로 카드리스트 전체 검색) 특정문자열을 cardlist_name 에서 포함여부를 찾아서 cardlist 배열 반환하는 쿼리문")
+	public ResponseEntity<Map<String, Object>> searchGlobalCardlist(@PathVariable String keyword) {
+		return handleSuccess(service.searchGlobalCardlist(keyword));
+	}
 
 }
