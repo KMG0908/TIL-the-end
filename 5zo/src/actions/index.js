@@ -9,6 +9,7 @@ import {
   REGISTER_RESET,
   SET_LOGGED_INFO,
   GET_LOGGED_INFO,
+  LOGOUT,
   DRAG_HAPPENED,
   ADD_BOARD,
   FETCH_DAILY_LIST,
@@ -28,6 +29,7 @@ import {
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
+import {isEmail, isLength, isAlphanumeric, matches} from 'validator';
 
 export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
@@ -40,6 +42,16 @@ export const login = (loginId, loginPw) => async dispatch => {
     "mem_pw": loginPw
   });
   const data = response.data.data;
+
+  if(!loginId){
+    dispatch({ type: LOGIN_ERR, payload: '아이디를 입력해주세요.' })
+    return;
+  }
+
+  if(!loginPw){
+    dispatch({ type: LOGIN_ERR, payload: '비밀번호를 입력해주세요.' })
+    return;
+  }
   
   if(data.mem_id){
     const response = await apis.get(`/member/${data.mem_id}`);
@@ -76,6 +88,41 @@ export const register = (loginId, loginPw, email, nick) => async dispatch => {
     "mem_nick": nick
   })
 
+  if(!loginId){
+    dispatch({ type: REGISTER_ERR, payload: '아이디를 입력해주세요.' })
+    return;
+  }
+
+  if(!matches(loginId, /^[a-z0-9][a-z0-9_\-]{5,20}$/)){
+    dispatch({ type: REGISTER_ERR, payload: '올바르지 않은 아이디입니다. 5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.' })
+    return;
+  }
+
+  if(!loginPw){
+    dispatch({ type: REGISTER_ERR, payload: '비밀번호를 입력해주세요.' })
+    return;
+  }
+
+  if(!matches(loginPw, /^[a-zA-Z0-9!@#$%^&*()]{8,16}$/)){
+    dispatch({ type: REGISTER_ERR, payload: '올바르지 않은 비밀번호입니다. 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.' })
+    return;
+  }
+
+  if(!email){
+    dispatch({ type: REGISTER_ERR, payload: '이메일을 입력해주세요.' })
+    return;
+  }
+
+  if(!isEmail(email)){
+    dispatch({ type: REGISTER_ERR, payload: '잘못된 이메일 형식입니다.' })
+    return;
+  }
+
+  if(!nick){
+    dispatch({ type: REGISTER_ERR, payload: '닉네임을 입력해주세요.' })
+    return;
+  }
+
   if(response.data.data !== loginId){
     dispatch({ type: REGISTER_ERR, payload: response.data.data })
   }
@@ -94,6 +141,10 @@ export const setLoggedInfo = (loggedInfo) => async dispatch => {
 
 export const getLoggedInfo = () => async dispatch => {
   dispatch({ type: GET_LOGGED_INFO })
+}
+
+export const logout = () => async dispatch => {
+  dispatch({ type: LOGOUT })
 }
 
 export const addBoard = (mem_id, board_date, board_type) => async dispatch => {
@@ -311,7 +362,7 @@ export const fetchStatisticsData = (startDate, endDate, availableDate) => async 
   const dates = [];
   const dailyTask = [];
 
-  // const response = await apis.get(`/card/daily/all/${getState().statistics.mem_info.mem_id}`);
+  // const response = await apis.get(`/card/daily/all/${getState().members.mem_info.mem_id}`);
   // const responseData = response.data.data;
 
   // for(let i=0; i<responseData.length; i++){
@@ -338,9 +389,17 @@ export const fetchStatisticsData = (startDate, endDate, availableDate) => async 
     dailyTask: dailyTask
   };
 
+  
+  var start = date_to_str(new Date(startDate), "");
+  var end = date_to_str(new Date(endDate), "");
+  
+  const response = await apis.get(`/tag/public/${getState().members.mem_info.mem_id}/from/${start}/to/${end}`);
+  const tag_data = response.data.data;
+  
   const info = {
     date: date,
-    data: data
+    data: data,
+    tag_data: tag_data
   };
 
   dispatch({ type: FETCH_STATISTICS_DATA, payload: info });

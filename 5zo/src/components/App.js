@@ -39,7 +39,7 @@ class App extends React.Component {
     this.props.setLoggedInfo(loggedInfo);
   };
   componentDidMount() {
-    //this.initializeUserInfo();
+    this.initializeUserInfo();
   }
   drawRouter() {
     if (!this.props.members.mem_info) {
