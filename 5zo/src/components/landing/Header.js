@@ -1,4 +1,3 @@
-import { Router, Route } from "react-router-dom";
 import Register from "../Auth/Register";
 import Login from "../Auth/Login";
 import { Link } from "react-router-dom";
@@ -17,14 +16,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 
 class Header extends React.Component {
-    drawRouter() {
-        return (
-            <div>
-                <Route path="/login" exact component={Login} />
-                <Route path="/register" exact component={Register} />
-            </div>
-        );
-    }
     render() {
         return (
             <Relative pb={5} >

@@ -1,7 +1,5 @@
 import React from 'react';
-import Body from './Body';
-import Header from './Header';
-import Footer from './Footer';
+
 import "./FontIndex.css"
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -18,24 +16,10 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import { App } from '../App';
 import Divider from "@material-ui/core/Divider";
 import { fade } from '@material-ui/core/styles';
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import { Router, Route } from "react-router-dom";
-import Register from "../Auth/Register";
-import Login from "../Auth/Login";
-import { Link } from "react-router-dom";
+
 import { SidebarList } from "../navigation/SidebarList"
-import Navigation from "../navigation/Navigation"
-const theme = createMuiTheme({
-    typography: {
-        fontFamily: 'CookieRun Bold',
-    },
-});
 
 
 const drawerWidth = 240;
@@ -151,7 +135,7 @@ export default function LandigPage(props) {
                 }}
             >
                 <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
+                    <IconButton onClick={handleDrawerClose}>
                         {theme.direction === "ltr" ? (
                             <ChevronLeftIcon />
                         ) : (

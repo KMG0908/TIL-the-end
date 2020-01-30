@@ -113,7 +113,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Navigation(props) {
-  var currentLocation = window.location.pathname;
   
   const classes = useStyles();
   const theme = useTheme();

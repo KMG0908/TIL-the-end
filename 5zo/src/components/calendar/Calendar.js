@@ -22,9 +22,7 @@ class Event extends React.Component{
   }
   
   componentDidMount(){
-   
       let appointments = data;
-      
       for (let i = 0; i < appointments.length; i++) {
         appointments[i].start = moment.utc(appointments[i].start).toDate();
         appointments[i].end = moment.utc(appointments[i].end).toDate();

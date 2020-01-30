@@ -6,6 +6,7 @@ import { setLoggedInfo } from "actions";
 import Navigation from "./navigation/Navigation";
 import Main from "./main/Main";
 import Calendar from "./calendar/Calendar";
+import Heatmap from "./heatmap/Heatmap";
 import DefLand from "./landing/DefLand";
 import LandingPage from "./landing/LandingPage";
 import Statistics from "./statistics/Statistics";
@@ -39,7 +40,6 @@ class App extends React.Component {
     //this.initializeUserInfo();
   }
   drawRouter() {
-    const loggedInfo = storage.get("loggedInfo");
     if (!this.props.members.mem_info) {
       return (
         <LandingPage>
@@ -58,7 +58,6 @@ class App extends React.Component {
           <div>
             <Route path="/" exact component={Main} />
             <Route path="/calendar" exact component={Calendar} />
-            <Route path="/defLand" exact component={DefLand} />
             <Route path="/statistics/:user_id" exact component={Statistics} />
             <Route path="/search" exact component={Search} />
             <Route path="/search/:keyword" component={Search} />
