@@ -6,6 +6,8 @@ import { setLoggedInfo } from "actions";
 import Navigation from "./navigation/Navigation";
 import Main from "./main/Main";
 import Calendar from "./calendar/Calendar";
+import Heatmap from "./heatmap/Heatmap";
+import DefLand from "./landing/DefLand";
 import LandingPage from "./landing/LandingPage";
 import Statistics from "./statistics/Statistics";
 import Search from "./serach/Search";
@@ -22,7 +24,7 @@ import storage from "lib/storage";
 class App extends React.Component {
   initializeUserInfo = async () => {
     const loggedInfo = storage.get("loggedInfo"); // 로그인 정보를 로컬스토리지에서 가져옵니다.
-    if (!loggedInfo) return; // 로그인 정보가 없다면 여기서 멈춥니다.
+    //if (!loggedInfo) return; // 로그인 정보가 없다면 여기서 멈춥니다.
 
     // const { UserActions } = this.props;
     // UserActions.setLoggedInfo(loggedInfo);
@@ -38,27 +40,24 @@ class App extends React.Component {
     //this.initializeUserInfo();
   }
   drawRouter() {
-    if (this.props.members.mem_info) {
+    if (!this.props.members.mem_info) {
       return (
-        <Navigation nickname={this.props.members.mem_info.mem_nick}>
+        <LandingPage>
           <div>
-            <Route path="/" exact component={Main} />
-            <Route path="/calendar" exact component={LandingPage} />
-            <Route path="/statistics/:user_id" exact component={Statistics} />
-            <Route path="/search/:user_id" exact component={Search} />
-            <Route path="/tags" exact component={Tags} />{" "}
-            <Route path="/todo" exact component={Todo} />
+            <Route path="/" exact component={DefLand} />
+            <Route path="/defLand" exact component={DefLand} />
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
           </div>
-        </Navigation>
+        </LandingPage>
       );
+      
     } else {
       return (
         <Navigation>
           <div>
             <Route path="/" exact component={Main} />
-            <Route path="/calendar" exact component={LandingPage} />
+            <Route path="/calendar" exact component={Calendar} />
             <Route path="/statistics/:user_id" exact component={Statistics} />
             <Route path="/search" exact component={Search} />
             <Route path="/search/:keyword" component={Search} />

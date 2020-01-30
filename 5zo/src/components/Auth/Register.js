@@ -48,7 +48,7 @@ class Register extends Component {
   render() {
     if(this.props.register_id && this.props.register_id !== ""){
       this.props.registerReset();
-      this.props.history.push('/login')
+      this.props.history.push('/')
     }
     return (
       <AuthWrapper>

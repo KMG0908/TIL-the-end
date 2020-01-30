@@ -1,6 +1,8 @@
+import { Router, Route } from "react-router-dom";
+import Register from "../Auth/Register";
+import Login from "../Auth/Login";
 import React from 'react';
 import { Container } from '@material-ui/core';
-import Register from '../Auth/Register';
 import {
     Provider, Heading, Subhead, Flex, Box
 } from 'rebass'
@@ -11,6 +13,14 @@ import "./FontIndex.css"
 
   
 class Body extends React.Component {
+    drawRouter() {
+        return (
+            <div>
+                <Route path="/login" exact component={Login} />
+                <Route path="/register" exact component={Register} />
+            </div>
+        );
+    }
     render() {
         return (
             <Provider >

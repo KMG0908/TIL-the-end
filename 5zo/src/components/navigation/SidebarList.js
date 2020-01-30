@@ -16,9 +16,7 @@ import { Link } from "react-router-dom";
 
 
 const WithTitle = ({ component: Component, title}) => {
-  console.log("withTitle.....", title)
   return class Title extends React.Component {
-    
     render() {
       return (
         <React.Fragment>
@@ -33,9 +31,9 @@ const WithTitle = ({ component: Component, title}) => {
 const CalendarComponent = WithTitle({ component : Link, title: 'Calendar'});
 const TodoComponent = WithTitle({ component : Link, title: 'Todo'});
 const StatisticsComponent = WithTitle({ component : Link, title: 'Statistics'});
+
+
 const SidebarList = () => {
-  
-  
   return (
     
     <>
@@ -48,7 +46,7 @@ const SidebarList = () => {
         </ListItem>
       </List>
       <List>
-        <ListItem button component={CalendarComponent}  to={"/calendar"}>
+        <ListItem button component={Link}  to={"/calendar"}>
           <ListItemIcon>
             <EventIcon />
           </ListItemIcon>

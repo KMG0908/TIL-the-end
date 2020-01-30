@@ -113,7 +113,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Navigation(props) {
-  var currentLocation = window.location.pathname;
   
   const classes = useStyles();
   const theme = useTheme();
@@ -147,7 +146,6 @@ export default function Navigation(props) {
           </IconButton>
           <Typography variant="h6" noWrap>
             Today I Learn   --- <WithTitle/>
-            
           </Typography>
           <Typography variant="h6" noWrap>
             <div className={classes.search}>

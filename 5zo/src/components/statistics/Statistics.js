@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getLoggedInfo } from "../../actions";
-
 import PeriodWeek from "./PeriodWeek"
 import PeriodMonth from "./PeriodMonth"
 import PeriodSelect from "./PeriodSelect"
@@ -9,7 +8,6 @@ import TagFrequencyChart from "./TagFrequencyChart"
 import CardCountChartWeek from "./CardCountChartWeek"
 import CardCountChartMonth from "./CardCountChartMonth"
 import CardCountChartSelect from "./CardCountChartSelect"
-
 import "./statistics.css"
 
 class Statistics extends React.Component {
