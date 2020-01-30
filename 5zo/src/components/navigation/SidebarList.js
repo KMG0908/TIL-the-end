@@ -48,7 +48,7 @@ const SidebarList = () => {
         </ListItem>
       </List>
       <List>
-        <ListItem button component={CalendarComponent}  to={"/calendar"}>
+        <ListItem button component={Link}  to={"/login"}>
           <ListItemIcon>
             <EventIcon />
           </ListItemIcon>
