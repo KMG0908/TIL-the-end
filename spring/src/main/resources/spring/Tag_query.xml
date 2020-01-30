@@ -98,8 +98,7 @@
 		from cardlist_tag c, tag e,
 				(select cardlist_id
 				from cardlist c						
-				where c.board_id = b.board_id
-				and c.cardlist_secret = false ) d
+				where c.cardlist_secret = false ) d
 		where c.cardlist_id = d.cardlist_id
 		and c.tag_id = e.tag_id
 		and e.tag_name like concat('%',#{keyword},'%')
