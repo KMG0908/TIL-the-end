@@ -92,7 +92,7 @@ public class MemberServiceImpl implements MemberService {
 	public void updateMember(Member member) {
 		try {
 			Member diff = dao.search(member.getMem_id());
-			if(member.getMem_pw() != diff.getMem_pw()) {
+			if(!member.getMem_pw().equals(diff.getMem_pw())) {
 				throw new MemberException("비밀번호가 틀립니다");
 			}
 			dao.updateMember(member);
@@ -140,7 +140,7 @@ public class MemberServiceImpl implements MemberService {
 	public void patchpassword(String mem_id, String old_pw, String new_pw) {
 		try {
 			Member diff = dao.search(mem_id);
-			if(diff.getMem_pw() != old_pw) {
+			if(!diff.getMem_pw().equals(old_pw)) {
 				throw new MemberException("비밀번호가 틀립니다");
 			}
 			dao.updatePassword(mem_id, new_pw);
