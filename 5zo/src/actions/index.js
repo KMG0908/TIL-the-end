@@ -25,11 +25,11 @@ import {
   FETCH_STATISTICS_MEMBER,
   FETCH_STATISTICS_DATA,
   SEARCH_KEYWORD,
-  MEM_TAG,
+  MEM_TAG
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
-import {isEmail, isLength, isAlphanumeric, matches} from 'validator';
+import { isEmail, isLength, isAlphanumeric, matches } from "validator";
 
 export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
@@ -43,17 +43,17 @@ export const login = (loginId, loginPw) => async dispatch => {
   });
   const data = response.data.data;
 
-  if(!loginId){
-    dispatch({ type: LOGIN_ERR, payload: '아이디를 입력해주세요.' })
+  if (!loginId) {
+    dispatch({ type: LOGIN_ERR, payload: "아이디를 입력해주세요." });
     return;
   }
 
-  if(!loginPw){
-    dispatch({ type: LOGIN_ERR, payload: '비밀번호를 입력해주세요.' })
+  if (!loginPw) {
+    dispatch({ type: LOGIN_ERR, payload: "비밀번호를 입력해주세요." });
     return;
   }
-  
-  if(data.mem_id){
+
+  if (data.mem_id) {
     const response = await apis.get(`/member/${data.mem_id}`);
     //const joinedDate = response.data.data.mem_reg_date.replace(/-/gi, '/');
     const joinedDate = "2019/02/03";
@@ -90,52 +90,59 @@ export const loginErrReset = () => async (dispatch, getState) => {
 
 export const register = (loginId, loginPw, email, nick) => async dispatch => {
   const response = await apis.post(`/member`, {
-    "mem_id": loginId,
-    "mem_pw": loginPw,
-    "mem_email": email,
-    "mem_nick": nick
-  })
+    mem_id: loginId,
+    mem_pw: loginPw,
+    mem_email: email,
+    mem_nick: nick
+  });
 
-  if(!loginId){
-    dispatch({ type: REGISTER_ERR, payload: '아이디를 입력해주세요.' })
+  if (!loginId) {
+    dispatch({ type: REGISTER_ERR, payload: "아이디를 입력해주세요." });
     return;
   }
 
-  if(!matches(loginId, /^[a-z0-9][a-z0-9_\-]{5,20}$/)){
-    dispatch({ type: REGISTER_ERR, payload: '올바르지 않은 아이디입니다. 5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.' })
+  if (!matches(loginId, /^[a-z0-9][a-z0-9_\-]{5,20}$/)) {
+    dispatch({
+      type: REGISTER_ERR,
+      payload:
+        "올바르지 않은 아이디입니다. 5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다."
+    });
     return;
   }
 
-  if(!loginPw){
-    dispatch({ type: REGISTER_ERR, payload: '비밀번호를 입력해주세요.' })
+  if (!loginPw) {
+    dispatch({ type: REGISTER_ERR, payload: "비밀번호를 입력해주세요." });
     return;
   }
 
-  if(!matches(loginPw, /^[a-zA-Z0-9!@#$%^&*()]{8,16}$/)){
-    dispatch({ type: REGISTER_ERR, payload: '올바르지 않은 비밀번호입니다. 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.' })
+  if (!matches(loginPw, /^[a-zA-Z0-9!@#$%^&*()]{8,16}$/)) {
+    dispatch({
+      type: REGISTER_ERR,
+      payload:
+        "올바르지 않은 비밀번호입니다. 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
+    });
     return;
   }
 
-  if(!email){
-    dispatch({ type: REGISTER_ERR, payload: '이메일을 입력해주세요.' })
+  if (!email) {
+    dispatch({ type: REGISTER_ERR, payload: "이메일을 입력해주세요." });
     return;
   }
 
-  if(!isEmail(email)){
-    dispatch({ type: REGISTER_ERR, payload: '잘못된 이메일 형식입니다.' })
+  if (!isEmail(email)) {
+    dispatch({ type: REGISTER_ERR, payload: "잘못된 이메일 형식입니다." });
     return;
   }
 
-  if(!nick){
-    dispatch({ type: REGISTER_ERR, payload: '닉네임을 입력해주세요.' })
+  if (!nick) {
+    dispatch({ type: REGISTER_ERR, payload: "닉네임을 입력해주세요." });
     return;
   }
 
-  if(response.data.data !== loginId){
-    dispatch({ type: REGISTER_ERR, payload: response.data.data })
-  }
-  else{
-    dispatch({ type: REGISTER, payload: response.data.data })
+  if (response.data.data !== loginId) {
+    dispatch({ type: REGISTER_ERR, payload: response.data.data });
+  } else {
+    dispatch({ type: REGISTER, payload: response.data.data });
   }
 };
 
@@ -152,53 +159,58 @@ export const getLoggedInfo = () => async dispatch => {
 };
 
 export const logout = () => async dispatch => {
-  dispatch({ type: LOGOUT })
-}
+  dispatch({ type: LOGOUT });
+};
 
-export const addBoard = (mem_id, board_date, board_type) => async dispatch => {
+export const addBoard = (mem_id, board_date) => async dispatch => {
   const board_lists = "[]";
+  console.log(mem_id);
   const response = await apis.post("/board", {
     mem_id,
     board_date,
-    board_type,
     board_lists
   });
-  dispatch({ type: ADD_BOARD, payload: response.data.data });
+  dispatch({
+    type: ADD_BOARD,
+    payload: { mem_id, board_date, board_lists, board_id: response.data.data }
+  });
 };
 
 export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}/date/${board_date}`);
-  dispatch({ type: FETCH_DAILY_LIST, payload: response.data.data[0] });
+  console.log(response);
+  if (response.data.data.length) {
+    dispatch({ type: FETCH_DAILY_LIST, payload: response.data.data[0] });
 
-  response.data.data[0].board_lists.map(async cardlist_id => {
-    let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
-    if (cardlist.data.state === "ok") {
-      dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
-      cardlist.data.data.cardlist_cards.map(async card_id => {
-        let card = await apis.get(`/card/${card_id}`);
-        dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
-      });
-    }
-  });
+    response.data.data[0].board_lists.map(async cardlist_id => {
+      let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
+      if (cardlist.data.state === "ok") {
+        dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
+        cardlist.data.data.cardlist_cards.map(async card_id => {
+          let card = await apis.get(`/card/${card_id}`);
+          dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
+        });
+      }
+    });
+  }
 };
 
 export const fetchTodoLists = mem_id => async dispatch => {
-  console.log(mem_id);
   const response = await apis.get(`/board/member/${mem_id}/date/9999-12-31`);
-  console.log(response);
-  dispatch({ type: FETCH_TODO_LIST, payload: response.data.data[0] });
-
-  response.data.data[0].board_lists.map(async cardlist_id => {
-    let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
-    if (cardlist.data.state === "ok") {
-      dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
-      console.log(cardlist.data.data.cardlist_cards);
-      cardlist.data.data.cardlist_cards.map(async card_id => {
-        let card = await apis.get(`/card/${card_id}`);
-        dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
-      });
-    }
-  });
+  if (response.data.data.length) {
+    dispatch({ type: FETCH_TODO_LIST, payload: response.data.data[0] });
+    response.data.data[0].board_lists.map(async cardlist_id => {
+      let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
+      if (cardlist.data.state === "ok") {
+        dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
+        console.log(cardlist.data.data.cardlist_cards);
+        cardlist.data.data.cardlist_cards.map(async card_id => {
+          let card = await apis.get(`/card/${card_id}`);
+          dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
+        });
+      }
+    });
+  }
 };
 
 export const fetchList = board_id => async dispatch => {
@@ -206,10 +218,25 @@ export const fetchList = board_id => async dispatch => {
   dispatch({ type: FETCH_LIST, payload: response.data.data });
 };
 
-export const addList = (board_id, cardlist_name) => async (
+export const addList = (board_id, cardlist_name, board_date) => async (
   dispatch,
   getState
 ) => {
+  if (!board_id) {
+    const board_lists = "[]";
+    const mem_id = getState().members.mem_info.mem_id;
+    const res = await apis.post("/board", {
+      mem_id,
+      board_date,
+      board_lists
+    });
+    board_id = res.data.data
+    dispatch({
+      type: ADD_BOARD,
+      payload: { mem_id, board_date, board_lists, board_id }
+    });
+  }
+
   const cardlist_cards = "[]";
   const response = await apis.post(`/cardlist`, {
     board_id,
@@ -439,13 +466,14 @@ export const fetchStatisticsData = (
     dailyTask: dailyTask
   };
 
-  
   var start = date_to_str(new Date(startDate), "");
   var end = date_to_str(new Date(endDate), "");
-  
-  const response = await apis.get(`/tag/public/${getState().members.mem_info.mem_id}/from/${start}/to/${end}`);
+
+  const response = await apis.get(
+    `/tag/public/${getState().members.mem_info.mem_id}/from/${start}/to/${end}`
+  );
   const tag_data = response.data.data;
-  
+
   const info = {
     date: date,
     data: data,
@@ -469,24 +497,25 @@ function date_to_str(format, separator) {
   );
 }
 
-
 export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
-  let response
-  console.log('searchKeyword');
-  console.log(`keyword : ${keyword} , type : ${type}`)
-  if(type === undefined) type = 'card'
-  if(type == 'member'){
+  let response;
+  console.log("searchKeyword");
+  console.log(`keyword : ${keyword} , type : ${type}`);
+  if (type === undefined) type = "card";
+  if (type == "member") {
     response = await apis.get(`/member/searchById/${keyword}`);
-  }else{
+  } else {
     response = await apis.get(`/search/global/${type}/by/${keyword}`);
   }
-  const cards = response.data.data
-  console.log('cards')
-  console.log(cards)
-  dispatch({type : SEARCH_KEYWORD, payload : cards});
-}
+  const cards = response.data.data;
+  console.log("cards");
+  console.log(cards);
+  dispatch({ type: SEARCH_KEYWORD, payload: cards });
+};
 
 export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
-  const response = await apis.get(`/tag/public/${mem_id}/from/${from}/to/${to}`);
-  dispatch({type : MEM_TAG, payload : response.data })
-}
+  const response = await apis.get(
+    `/tag/public/${mem_id}/from/${from}/to/${to}`
+  );
+  dispatch({ type: MEM_TAG, payload: response.data });
+};
