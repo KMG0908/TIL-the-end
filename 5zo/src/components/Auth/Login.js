@@ -37,6 +37,9 @@ class Login extends Component {
   login() {
     this.props.login(this.state.loginId, this.state.loginPw);
   }
+  cancelLogin() {
+    window.location.href='/'
+  }
   render() {
     if(this.props.mem_info){
       const loggedInfo = this.props.mem_info;
@@ -51,9 +54,9 @@ class Login extends Component {
           <AuthContent title="로그인">
             <InputWithLabel label="아이디" name="loginId" placeholder="아이디" onChange={this.handleChange} maxLength="20"/>
             <InputWithLabel label="비밀번호" name="loginPw" placeholder="비밀번호" type="password" onChange={this.handleChange} maxLength="16" />
-            {this.state.loginErr}
             {this.props.login_err}
             <AuthButton onClick={this.login}> 로그인 </AuthButton>
+            <AuthButton onClick={this.cancelLogin}> 취소 </AuthButton>
             <RightAlignedLink to="/register"> 회원가입 </RightAlignedLink>
           </AuthContent>
         </AuthWrapper>

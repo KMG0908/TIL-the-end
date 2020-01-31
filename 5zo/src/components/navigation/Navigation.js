@@ -137,6 +137,10 @@ function Navigation(props) {
     window.location.href = "/"
   }
 
+  const myPage = () => {
+    window.location.href = "/mypage"
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -178,7 +182,7 @@ function Navigation(props) {
             <input type="button" value="로그아웃" onClick={logout}/>
           </Typography>
           <Typography>
-            <input type="button" value="마이페이지"/>
+            <input type="button" value="마이페이지" onClick={myPage}/>
           </Typography>
         </Toolbar>
       </AppBar>

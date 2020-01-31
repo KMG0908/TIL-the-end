@@ -16,28 +16,7 @@ class CardList extends Component {
         this.props.searchKeyword(keyword, type)
         console.log('마지막')
     }
-    // componentDidUpdate() {
-    //     let type = this.props.type
-    //     let keyword = this.props.keyword
-
-    //     if (keyword === undefined) return
-    //     this.props.searchKeyword(keyword, type)
-    //     console.log(`componentDidMount - params.keyword : ${keyword} , type : ${type}`)
-    //     console.log('마지막')
-    // }
-    state = {
-        type : this.props.type,
-        keyword : this.props.keyword
-    }
-    constructor(props){
-        super(props)
-    }
-    setState_ = (props) =>{
-        this.setState({
-            type : props.type,
-            keyword : props.keyword
-        })
-    }
+    
     render() {
         console.log('cardList----------------------------------')
         let type = this.props.type
@@ -46,7 +25,7 @@ class CardList extends Component {
         if(this.props.cards){
             switch (type) {
                 case 'member':
-                    return this.props.cards.map(member => <MemberCard member={member} key={member.id} />)
+                    return this.props.cards.map(member => <MemberCard member={member} key={member.id} style={{alignItems:'center'}} />)
                 case 'tag':
                     return this.props.cards.map(tag => <TagCard tag={tag} key={tag.id} />)
                 case 'cardlist':
