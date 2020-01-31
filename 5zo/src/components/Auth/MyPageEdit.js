@@ -52,6 +52,7 @@ class MyPageEdit extends Component {
       
       this.props.editMyinfoErrReset();
       this.props.memInfoChangeReset();
+      alert('회원정보 수정 완료')
       window.location.href = "/mypage"
     }
     console.log(this.state);
