@@ -16,6 +16,14 @@ public interface TagService {
 
 	void deleteTag(int tag_id);
 
-	List<Tag> tagcloud(String mem_id);
+	List<Tag> privatetagcloud(String mem_id, String from, String to);
+
+	List<Tag> publictagcloud(String mem_id, String from, String to);
+
+	List<Tag> searchPublicTag(String mem_id, String keyword);
+
+	List<Tag> searchPrivateTag(String mem_id, String keyword);
+
+	List<Tag> searchGlobalTag(String keyword);
 
 }

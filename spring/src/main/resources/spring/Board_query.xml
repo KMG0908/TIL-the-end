@@ -4,20 +4,22 @@
 <mapper namespace="com.ssafy.project.dao.BoardDao">
 
 	<insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="board_id">
-		insert into board(mem_id, board_type, board_date, board_lists)
-		values(#{mem_id}, #{board_type}, now(), #{board_lists})
+		insert into board(mem_id, board_date, board_lists)
+		values(#{mem_id}, #{board_date}, #{board_lists})
 	</insert>
 
-	<select id="searchAllUserDate" parameterType="string" resultType="board">
-		select * 
-		from board 
-		where mem_id = #{mem_id} 
+	<select id="searchUserBoardDate" parameterType="string" resultType="board">
+		select *
+		from board
+		where mem_id = #{mem_id}
 		and board_date = #{board_date}
-		and board_type = 'daily'		
 	</select>
 
-	<select id="searchAllUserToDo" parameterType="string" resultType="board">
-		select * from board where mem_id = #{mem_id} and board_type = 'todo'
+	<select id="searchUserBoardDaily" parameterType="string" resultType="board">
+		select *
+		from board
+		where mem_id = #{mem_id}
+		and board_date between #{from} and #{to}
 	</select>
 
 
@@ -37,9 +39,10 @@
 	<update id="updateBoard">
 		update board
 		set
-		board_type = 'daily',
-		board_date = now()-1
-		where board_type = 'todo'
+		mem_id = #{mem_id},
+		board_date = #{board_date},
+		board_lists = #{board_lists}
+		where board_id = #{board_id}
 	</update>
 
 	<delete id="deleteBoard" parameterType="int">
@@ -47,7 +50,7 @@
 		from board
 		where board_id = #{board_id}
 	</delete>
-		
+
 	<select id="getMaxBoardId" resultType="int">
 		select max(board_id)
 		from board

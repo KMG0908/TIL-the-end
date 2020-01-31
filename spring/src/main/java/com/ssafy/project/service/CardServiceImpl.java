@@ -74,21 +74,49 @@ public class CardServiceImpl implements CardService {
 	}
 	
 	@Override
-	public List<Board> countAllDailyCard(String mem_id) {
+	public List<Board> countAllDailyCard(String mem_id, String from, String to) {
 		try {
-			return dao.countAllDailyCard(mem_id);
+			return dao.countAllDailyCard(mem_id, from, to);
 		} catch (Exception e) {
 			throw new CardException(mem_id + "의 전체 카드 조회 중 오류 발생");
 		}
 	}
 	
 	@Override
-	public List<Board> countPublicDailyCard(String mem_id) {
+	public List<Board> countPublicDailyCard(String mem_id, String from, String to) {
 		try {
-			return dao.countPublicDailyCard(mem_id);
+			return dao.countPublicDailyCard(mem_id, from, to);
 		} catch (Exception e) {
 			throw new CardException(mem_id + "의 공개된 카드 조회 중 오류 발생");
 		}
 	}
+	
+	@Override
+	public List<Card> searchPrivateCard(String mem_id, String keyword) {
+		try {
+			return dao.searchPrivateCard(mem_id, keyword);
+		} catch (Exception e) {
+			throw new CardException(mem_id + "의 공개된 카드 검색 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Card> searchPublicCard(String mem_id, String keyword) {
+		try {
+			return dao.searchPublicCard(mem_id, keyword);
+		} catch (Exception e) {
+			throw new CardException(mem_id + "의 전체 카드 검색 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Card> searchGlobalCard(String keyword) {
+		try {
+			return dao.searchGlobalCard(keyword);
+		} catch (Exception e) {
+			throw new CardException("전체 카드 검색 중 오류 발생");
+		}
+	}
+	
 
 }

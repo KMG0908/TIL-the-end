@@ -9,6 +9,7 @@ import com.ssafy.project.service.MemberService;
 
 @Controller
 public class MainController {
+	
 	@Autowired
 	MemberService service;
 

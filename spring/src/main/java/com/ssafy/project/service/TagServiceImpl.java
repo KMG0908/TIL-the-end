@@ -6,17 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.project.dao.TagDao;
-import com.ssafy.project.dto.Card_TagException;
+import com.ssafy.project.dto.Card;
+import com.ssafy.project.dto.CardException;
+import com.ssafy.project.dto.Cardlist_TagException;
 import com.ssafy.project.dto.Tag;
 import com.ssafy.project.dto.TagException;
 
 @Service
 public class TagServiceImpl implements TagService {
 
-	
 	@Autowired
 	private TagDao dao;
-	
+
 	@Override
 	public void insertTag(Tag tag) {
 		try {
@@ -74,14 +75,55 @@ public class TagServiceImpl implements TagService {
 			throw new TagException(tag_id + "번 태그 삭제 중 오류 발생");
 		}
 	}
-	
+
 	@Override
-	public List<Tag> tagcloud(String mem_id) {
+	public List<Tag> privatetagcloud(String mem_id, String from, String to) {
 		try {
-			return dao.tagcloud(mem_id);
+			return dao.privatetagcloud(mem_id, from, to);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Card_TagException(mem_id + "의 태그 조회 중 오류 발생");
+			throw new Cardlist_TagException(mem_id + "의 " + from + " ~ " + to + "간의 private 태그 조회 중 오류 발생");
+		}
+	}
+
+	@Override
+	public List<Tag> publictagcloud(String mem_id, String from, String to) {
+		try {
+			return dao.publictagcloud(mem_id, from, to);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Cardlist_TagException(mem_id + "의 " + from + " ~ " + to + "간의 public 태그 조회 중 오류 발생");
+		}
+	}
+	
+
+	@Override
+	public List<Tag> searchPrivateTag(String mem_id, String keyword) {
+		try {
+			return dao.searchPrivateTag(mem_id, keyword);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException(mem_id + "의 공개된 태그 검색 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Tag> searchPublicTag(String mem_id, String keyword) {
+		try {
+			return dao.searchPublicTag(mem_id, keyword);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException(mem_id + "의 전체 태그 검색 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Tag> searchGlobalTag(String keyword) {
+		try {
+			return dao.searchGlobalTag(keyword);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException("전체 태그 검색 중 오류 발생");
 		}
 	}
 

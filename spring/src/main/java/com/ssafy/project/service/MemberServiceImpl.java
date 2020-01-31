@@ -18,16 +18,23 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void insertMember(Member member) {
 		try {
-			Member find = dao.search(member.getMem_id());
-			if(find == null) {
-				dao.insertMember(member);				
-			} else {
+			if(dao.searchId(member.getMem_id())==1) {
 				throw new MemberException("동일한 아이디가 존재합니다");
+			} else if(dao.searchEmail(member.getMem_email())==1) {
+				throw new MemberException("동일한 이메일이 존재합니다");
+			} else if(dao.searchNick(member.getMem_nick())==1) {
+				throw new MemberException("동일한 닉네임이 존재합니다");
+			} else {
+				dao.insertMember(member);
+				System.out.println("member 생성 통과");
+				dao.grantMember(member.getMem_id());
+				System.out.println("member 권한 통과");
+				dao.createBoard(member.getMem_id());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			if(e instanceof MemberException) {
-				throw (MemberException)e;
+			if (e instanceof MemberException) {
+				throw (MemberException) e;
 			} else {
 				throw new MemberException("회원 가입 중 오류 발생");
 			}
@@ -41,6 +48,24 @@ public class MemberServiceImpl implements MemberService {
 			return dao.searchAll();
 		} catch (Exception e) {
 			throw new MemberException("회원 목록 조회 중 오류 발생");
+		}
+	}
+
+	@Override
+	public List<Member> searchIdLike(String mem_id) {
+		try {
+			return dao.searchIdLike(mem_id);
+		} catch (Exception e) {
+			throw new MemberException("회원 아이디 검색 중 오류 발생");
+		}
+	}
+
+	@Override
+	public List<Member> searchNickLike(String mem_nick) {
+		try {
+			return dao.searchNickLike(mem_nick);
+		} catch (Exception e) {
+			throw new MemberException("회원 닉네임 검색 중 오류 발생");
 		}
 	}
 
@@ -82,27 +107,15 @@ public class MemberServiceImpl implements MemberService {
 			throw new MemberException("회원 정보 삭제 중 오류 발생");
 		}
 	}
-	
+
 	@Override
-	public boolean hasAuth(String mem_id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	@Override
-	public void patchAuth(String mem_id) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public Member login(String id, String password) {
+	public Member login(String mem_id, String mem_pw) {
 		try {
-			Member member = dao.search(id);
-			if(member == null) {
-				throw new MemberException("등록되지 않은 회원입니다.");			
-			} 
-			if(!member.getMem_pw().equals(password)) {
+			Member member = dao.search(mem_id);
+			if (member == null) {
+				throw new MemberException("등록되지 않은 회원입니다.");
+			}
+			if (!member.getMem_pw().equals(mem_pw)) {
 				throw new MemberException("비밀번호 오류");
 			} else {
 				member.setMem_pw(null);
@@ -110,11 +123,53 @@ public class MemberServiceImpl implements MemberService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			if(e instanceof MemberException) {
-				throw (MemberException)e;
+			if (e instanceof MemberException) {
+				throw (MemberException) e;
 			} else {
 				throw new MemberException("회원 로그인 중 오류 발생");
 			}
-		}		
+		}
 	}
+
+	@Override
+	public int getAuth(String mem_id) {
+		try {
+			return dao.getAuth(mem_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException(mem_id + "의 회원 권한 조회 중 오류 발생");
+		}
+	}
+
+	@Override
+	public void patchAuth(String mem_id) {
+		try {
+			dao.patchAuth(mem_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException(mem_id + "의 회원 권한 변경 중 오류 발생");
+		}
+
+	}
+
+	@Override
+	public boolean getpostdef(String mem_id) {
+		try {
+			return dao.getpostdef(mem_id)==1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException(mem_id + "의 글쓰기 기본 설정 조회 중 오류 발생");
+		}
+	}
+
+	@Override
+	public void patchpostdef(String mem_id) {
+		try {
+			dao.patchpostdef(mem_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException(mem_id + "의 글쓰기 기본 설정 변경 중 오류 발생");
+		}
+	}
+
 }

@@ -24,6 +24,13 @@
 		cardlist_cards = #{cardlist_cards}
 		where cardlist_id = #{cardlist_id}
 	</update>
+	
+	<update id="patch" parameterType="cardlist">
+		update cardlist
+		set
+		cardlist_cards = #{cardlist_cards}
+		where cardlist_id = #{cardlist_id}
+	</update>
   	
   	<delete id="deleteCardlist" parameterType="int">
 		delete
@@ -33,8 +40,37 @@
 	
 	<select id="getMaxCardlistId" resultType="int">
 		select max(cardlist_id)
-		from board
+		from cardlist
 	</select>
 	
+  	
+  	<select id="searchPrivateCardlist" parameterType="string" resultType="cardlist">
+		select cl.*
+		from board b, cardlist cl
+		where
+		cardlist_name like concat('%',#{keyword},'%')	
+		and b.board_id = cl.board_id
+		and b.mem_id = #{mem_id}
+	</select>
+
+	<select id="searchPublicCardlist" parameterType="string" resultType="cardlist">
+		select cl.*
+		from board b, cardlist cl
+		where
+		cardlist_name like concat('%',#{keyword},'%')	
+		and b.board_id = cl.board_id
+		and b.mem_id = #{mem_id}
+		and cl.cardlist_secret = false
+	</select>
+
+	<select id="searchGlobalCardlist" parameterType="string" resultType="cardlist">
+		select cl.*
+		from board b, cardlist cl
+		where
+		cardlist_name like concat('%',#{keyword},'%')	
+		and b.board_id = cl.board_id
+		and cl.cardlist_secret = false
+	</select>
+  	
   	
 </mapper>

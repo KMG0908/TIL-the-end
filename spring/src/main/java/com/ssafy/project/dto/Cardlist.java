@@ -25,4 +25,8 @@ public class Cardlist implements Serializable {
 	 */
 	private String cardlist_cards;
 	
+	private boolean cardlist_secret;
+	
+	private int cardlist_heart;
+	
 }

@@ -8,17 +8,20 @@ public interface BoardService {
 
 	void insertBoard(Board board);
 
-	List<Board> searchAllUserDate(String mem_id, String board_date);
+	int getMaxBoardId();
 
-	List<Board> searchAllUserToDo(String mem_id);
+	List<Board> searchUserBoardDate(String mem_id, String board_date);
+
+	List<Board> searchUserBoardDaily(String mem_id, String from, String to);
 
 	String searchAllCardLists(int board_id);
 
 	void patchBoard(Board board);
 
-	void updateBoard();
+	void updateBoard(Board board);
 
 	void deleteBoard(int board_id);
+	
+	
 
-	int getMaxBoardId();
 }

@@ -21,7 +21,6 @@ import com.ssafy.project.service.TagService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 public class TagRESTController {
 
@@ -84,10 +83,39 @@ public class TagRESTController {
 		return handleSuccess("삭제 완료");
 	}
 
-	@GetMapping("/api/tag/who/{mem_id}")
-	@ApiOperation("(수정중) 회원의 태그를 목록으로 조회하는 기능, tag_id가 공개글에서의 태그 사용횟수입니다")
-	public ResponseEntity<Map<String, Object>> tagcloud(@PathVariable String mem_id) {
-		return handleSuccess(service.tagcloud(mem_id));
+	@GetMapping("/api/tag/private/{mem_id}/from/{from}/to/{to}")
+	@ApiOperation("로그인한 본인이 자신의 태그를 목록으로 조회하는 기능, *주의* tag_id가 카드리스트에서의 태그 사용횟수입니다")
+	public ResponseEntity<Map<String, Object>> privatetagcloud(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
+		return handleSuccess(service.privatetagcloud(mem_id, from, to));
 	}
+	
+	@GetMapping("/api/tag/public/{mem_id}/from/{from}/to/{to}")
+	@ApiOperation("공개된 회원의 태그를 목록으로 조회하는 기능, *주의* tag_id가 공개된 카드리스트에서의 태그 사용횟수입니다")
+	public ResponseEntity<Map<String, Object>> publictagcloud(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
+		return handleSuccess(service.publictagcloud(mem_id, from, to));
+	}
+	
+	
+	
+	@GetMapping("/api/search/public/tag/{mem_id}/by/{keyword}")
+	@ApiOperation("A유저가 B유저를 검색) 특정문자열을 tag_name 에서 포함여부를 찾아서 tag 배열 반환하는 쿼리문")
+	public ResponseEntity<Map<String, Object>> searchPublicTag(@PathVariable String mem_id,
+			@PathVariable String keyword) {
+		return handleSuccess(service.searchPublicTag(mem_id, keyword));
+	}
+	
+	@GetMapping("/api/search/private/tag/{mem_id}/by/{keyword}")
+	@ApiOperation("A유저가 A유저를 검색) 특정문자열을 tag_name 에서 포함여부를 찾아서 tag 배열 반환하는 쿼리문")
+	public ResponseEntity<Map<String, Object>> searchPrivateTag(@PathVariable String mem_id,
+			@PathVariable String keyword) {
+		return handleSuccess(service.searchPrivateTag(mem_id, keyword));
+	}
+	
+	@GetMapping("/api/search/global/tag/by/{keyword}")
+	@ApiOperation("키워드로 카드 전체 검색) 특정문자열을 tag_name 에서 포함여부를 찾아서 tag 배열 반환하는 쿼리문")
+	public ResponseEntity<Map<String, Object>> searchGlobalTag(@PathVariable String keyword) {
+		return handleSuccess(service.searchGlobalTag(keyword));
+	}
+	
 
 }

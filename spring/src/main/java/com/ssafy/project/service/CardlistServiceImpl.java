@@ -1,9 +1,13 @@
 package com.ssafy.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.project.dao.CardlistDao;
+import com.ssafy.project.dto.Card;
+import com.ssafy.project.dto.CardException;
 import com.ssafy.project.dto.Cardlist;
 import com.ssafy.project.dto.CardlistException;
 
@@ -53,6 +57,17 @@ public class CardlistServiceImpl implements CardlistService {
 		}
 
 	}
+	
+	
+	@Override
+	public void patch(Cardlist cardlist) {
+		try {
+			dao.patch(cardlist);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardlistException(cardlist.getCardlist_id() + "번 카드 리스트 패치 중 오류 발생");
+		}
+	}
 
 	@Override
 	public void deleteCardlist(int cardlist_id) {
@@ -73,4 +88,32 @@ public class CardlistServiceImpl implements CardlistService {
 			throw new CardlistException("카드 리스트 id 조회 중 오류 발생.");
 		}
 	}
+	
+	@Override
+	public List<Cardlist> searchPrivateCardlist(String mem_id, String keyword) {
+		try {
+			return dao.searchPrivateCardlist(mem_id, keyword);
+		} catch (Exception e) {
+			throw new CardException(mem_id + "의 공개된 카드list 검색 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Cardlist> searchPublicCardlist(String mem_id, String keyword) {
+		try {
+			return dao.searchPublicCardlist(mem_id, keyword);
+		} catch (Exception e) {
+			throw new CardException(mem_id + "의 전체 카드list 검색 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public List<Cardlist> searchGlobalCardlist(String keyword) {
+		try {
+			return dao.searchGlobalCardlist(keyword);
+		} catch (Exception e) {
+			throw new CardException("전체 카드list 검색 중 오류 발생");
+		}
+	}
+	
 }
