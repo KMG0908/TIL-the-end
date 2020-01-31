@@ -78,6 +78,7 @@ public class CardServiceImpl implements CardService {
 		try {
 			return dao.countAllDailyCard(mem_id, from, to);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CardException(mem_id + "의 전체 카드 조회 중 오류 발생");
 		}
 	}
@@ -87,6 +88,7 @@ public class CardServiceImpl implements CardService {
 		try {
 			return dao.countPublicDailyCard(mem_id, from, to);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CardException(mem_id + "의 공개된 카드 조회 중 오류 발생");
 		}
 	}
@@ -96,6 +98,7 @@ public class CardServiceImpl implements CardService {
 		try {
 			return dao.searchPrivateCard(mem_id, keyword);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CardException(mem_id + "의 공개된 카드 검색 중 오류 발생");
 		}
 	}
@@ -105,6 +108,7 @@ public class CardServiceImpl implements CardService {
 		try {
 			return dao.searchPublicCard(mem_id, keyword);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CardException(mem_id + "의 전체 카드 검색 중 오류 발생");
 		}
 	}
@@ -114,7 +118,18 @@ public class CardServiceImpl implements CardService {
 		try {
 			return dao.searchGlobalCard(keyword);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CardException("전체 카드 검색 중 오류 발생");
+		}
+	}
+	
+	@Override
+	public void movecard(int card_id, int cardlist_id) {
+		try {
+			dao.movecard(card_id, cardlist_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException("전체 카드 이동 중 오류 발생");
 		}
 	}
 	

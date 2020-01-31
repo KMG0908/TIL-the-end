@@ -115,6 +115,14 @@
 		and cl.cardlist_id = c.cardlist_id ]]>		
 	</select>
 	
+	<update id="movecard" parameterType="int"> 
+		update card
+		set
+		cardlist_id = #{cardlist_id}
+		where card_id = #{card_id}
+	</update>
+	
+	
 </mapper>
 
 

@@ -73,4 +73,11 @@
 	</select>
   	
   	
+  	<update id="movecardlist" parameterType="int"> 
+		update cardlist
+		set
+		board_id = #{board_id}
+		where cardlist_id = #{cardlist_id}
+	</update>
+  	
 </mapper>

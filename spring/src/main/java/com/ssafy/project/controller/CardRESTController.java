@@ -6,10 +6,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -69,6 +69,14 @@ public class CardRESTController {
 		service.updateCard(card);
 		return handleSuccess("수정 완료");
 	}
+	
+	@PatchMapping("/api/card/{card_id}/to/{cardlist_id}")
+	@ApiOperation("card를 이동할 때 카드의 외래키를 바꾸는 api 입니다")
+	public ResponseEntity<Map<String, Object>> movecard(@PathVariable int card_id, @PathVariable int cardlist_id) {
+		service.movecard(card_id, cardlist_id);
+		return handleSuccess("이동 완료");
+	}
+	
 
 	// DELETE
 	@DeleteMapping("/api/card/{card_id}")

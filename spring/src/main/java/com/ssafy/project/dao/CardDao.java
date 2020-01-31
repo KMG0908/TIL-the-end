@@ -31,4 +31,6 @@ public interface CardDao {
 
 	public List<Card> searchGlobalCard(String keyword);
 
+	public void movecard(@Param("card_id")int card_id, @Param("cardlist_id")int cardlist_id);
+
 }
