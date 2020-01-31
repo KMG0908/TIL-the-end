@@ -1,7 +1,9 @@
 package com.ssafy.project.dao;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.project.dto.Member;
 
@@ -37,6 +39,8 @@ public interface MemberDao {
 	public int getpostdef(String mem_id);
 
 	public void patchpostdef(String mem_id);
+	
+	public void updatePassword(@Param("mem_id")String mem_id, @Param("new_pw")String new_pw);
 
 
 

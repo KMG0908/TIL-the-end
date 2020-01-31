@@ -85,10 +85,17 @@ public class MemberRESTController {
 
 	// UPDATE
 	@PutMapping("/api/member")
-	@ApiOperation("member 정보 수정, 가입일 수정 불가, 비번 변경 가능합니다. 변경 성공시 member를 리턴합니다")
+	@ApiOperation("member 정보 수정, 가입일 수정 불가, 비밀번호는 서버의 비밀번호와 비교해서 같으면 변경하는 용도입니다, 변경 성공시 member를 리턴합니다")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Member member) {	
 		service.updateMember(member);
 		return handleSuccess(service.search(member.getMem_id()));
+	}
+	
+	@PatchMapping("/api/member/password/{mem_id}")
+	@ApiOperation("member의 비밀번호 수정, 전달 인자 data : {\"old_pw\" : \"test\", \"new_pw\" : \"test\"} ")
+	public ResponseEntity<Map<String, Object>> patchpassword(@PathVariable String mem_id, @RequestBody Map<String, Object> payload) {	
+		service.patchpassword(mem_id, (String)payload.get("old_pw"), (String)payload.get("new_pw"));
+		return handleSuccess(service.search(mem_id));
 	}
 
 	// DELETE

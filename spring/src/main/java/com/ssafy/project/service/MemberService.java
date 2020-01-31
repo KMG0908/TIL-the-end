@@ -29,4 +29,6 @@ public interface MemberService {
 	public boolean getpostdef(String mem_id);
 
 	public void patchpostdef(String mem_id);
+
+	public void patchpassword(String mem_id, String old_pw, String new_pw);
 }

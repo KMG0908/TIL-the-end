@@ -66,10 +66,17 @@
 		update mem_info
 		set
 		mem_email = #{mem_email},
-		mem_pw = #{mem_pw},
 		mem_nick = #{mem_nick}
 		where mem_id = #{mem_id}
 	</update>
+	
+	<update id="updatePassword" parameterType="string">
+		update mem_info
+		set
+		mem_pw = #{new_pw}
+		where mem_id = #{mem_id}
+	</update>
+	
 
 	<update id="releaseMember" parameterType="string">
 		update mem_option
