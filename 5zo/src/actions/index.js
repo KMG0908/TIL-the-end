@@ -92,55 +92,47 @@ export const loginErrReset = () => async (dispatch, getState) => {
 };
 
 export const register = (loginId, loginPw, email, nick) => async dispatch => {
+  if(!loginId){
+    dispatch({ type: REGISTER_ERR, payload: '아이디를 입력해주세요.' })
+    return;
+  }
+  
+  if(!matches(loginId, /^[a-z0-9][a-z0-9_\-]{5,20}$/)){
+    dispatch({ type: REGISTER_ERR, payload: '올바르지 않은 아이디입니다. 5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.' })
+    return;
+  }
+  
+  if(!loginPw){
+    dispatch({ type: REGISTER_ERR, payload: '비밀번호를 입력해주세요.' })
+    return;
+  }
+  
+  if(!matches(loginPw, /^[a-zA-Z0-9!@#$%^&*()]{8,16}$/)){
+    dispatch({ type: REGISTER_ERR, payload: '올바르지 않은 비밀번호입니다. 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.' })
+    return;
+  }
+  
+  if(!email){
+    dispatch({ type: REGISTER_ERR, payload: '이메일을 입력해주세요.' })
+    return;
+  }
+  
+  if(!isEmail(email)){
+    dispatch({ type: REGISTER_ERR, payload: '잘못된 이메일 형식입니다.' })
+    return;
+  }
+  
+  if(!nick){
+    dispatch({ type: REGISTER_ERR, payload: '닉네임을 입력해주세요.' })
+    return;
+  }
+  
   const response = await apis.post(`/member`, {
-    mem_id: loginId,
-    mem_pw: loginPw,
-    mem_email: email,
-    mem_nick: nick
-  });
-
-  if (!loginId) {
-    dispatch({ type: REGISTER_ERR, payload: "아이디를 입력해주세요." });
-    return;
-  }
-
-  if (!matches(loginId, /^[a-z0-9][a-z0-9_\-]{5,20}$/)) {
-    dispatch({
-      type: REGISTER_ERR,
-      payload:
-        "올바르지 않은 아이디입니다. 5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다."
-    });
-    return;
-  }
-
-  if (!loginPw) {
-    dispatch({ type: REGISTER_ERR, payload: "비밀번호를 입력해주세요." });
-    return;
-  }
-
-  if (!matches(loginPw, /^[a-zA-Z0-9!@#$%^&*()]{8,16}$/)) {
-    dispatch({
-      type: REGISTER_ERR,
-      payload:
-        "올바르지 않은 비밀번호입니다. 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
-    });
-    return;
-  }
-
-  if (!email) {
-    dispatch({ type: REGISTER_ERR, payload: "이메일을 입력해주세요." });
-    return;
-  }
-
-  if (!isEmail(email)) {
-    dispatch({ type: REGISTER_ERR, payload: "잘못된 이메일 형식입니다." });
-    return;
-  }
-
-  if (!nick) {
-    dispatch({ type: REGISTER_ERR, payload: "닉네임을 입력해주세요." });
-    return;
-  }
+    "mem_id": loginId,
+    "mem_pw": loginPw,
+    "mem_email": email,
+    "mem_nick": nick
+  })
 
   if (response.data.data !== loginId) {
     dispatch({ type: REGISTER_ERR, payload: response.data.data });
