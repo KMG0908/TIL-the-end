@@ -97,7 +97,7 @@ export const register = (loginId, loginPw, email, nick) => async dispatch => {
     return;
   }
   
-  if(!matches(loginId, /^[a-z0-9][a-z0-9_\-]{5,20}$/)){
+  if(!matches(loginId, /^[a-z0-9_\-]{5,20}$/)){
     dispatch({ type: REGISTER_ERR, payload: '올바르지 않은 아이디입니다. 5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.' })
     return;
   }
