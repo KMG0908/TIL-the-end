@@ -50,14 +50,12 @@ class App extends React.Component {
             <Route path="/defLand" exact component={DefLand} />
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
-            <Route path="/mypage" exact component = {MyPage}/>  
-            <Route path="/mypage/edit" exact component = {MyPageEdit}/>  
           </div>
         </LandingPage>
       );
-    } else { // 비로그인
+    } else { // 로그인했을 때
       return (
-        <Navigation>
+        <Navigation nickname={this.props.members.mem_info.mem_nick}>
           <div>
             <Route path="/" exact component={Main} />
             <Route path="/calendar" exact component={Calendar} />
