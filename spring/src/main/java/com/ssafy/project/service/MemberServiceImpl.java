@@ -76,6 +76,7 @@ public class MemberServiceImpl implements MemberService {
 			if (member == null) {
 				throw new MemberException("등록되지 않은 회원입니다.");
 			}
+			member.setMem_pw(null);
 			return member;
 		} catch (Exception e) {
 			e.printStackTrace();

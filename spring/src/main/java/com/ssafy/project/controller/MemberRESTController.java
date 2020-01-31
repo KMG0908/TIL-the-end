@@ -85,10 +85,10 @@ public class MemberRESTController {
 
 	// UPDATE
 	@PutMapping("/api/member")
-	@ApiOperation("member 정보 수정, 가입일 수정 불가, 비번 변경 가능합니다. 나중에 수정")
-	public ResponseEntity<Map<String, Object>> update(@RequestBody Member member) {
+	@ApiOperation("member 정보 수정, 가입일 수정 불가, 비번 변경 가능합니다. 변경 성공시 member를 리턴합니다")
+	public ResponseEntity<Map<String, Object>> update(@RequestBody Member member) {	
 		service.updateMember(member);
-		return handleSuccess(member.getMem_id() + "의 정보 수정 완료");
+		return handleSuccess(service.search(member.getMem_id()));
 	}
 
 	// DELETE
