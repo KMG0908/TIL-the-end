@@ -1,7 +1,7 @@
 import React from "react";
 import Icon from "@material-ui/core/Icon";
 import { connect } from "react-redux";
-import { addList, addCard } from "../../actions";
+import { addList, addCard, addBoard } from "../../actions";
 import styled from "styled-components";
 import TrelloForm from "./TrelloForm";
 import TrelloOpenForm from "./TrelloOpenForm";
@@ -31,7 +31,7 @@ class TrelloCreate extends React.PureComponent {
   };
 
   handleAddList = () => {
-    const { board_id } = this.props;
+    const { board_id, date } = this.props;
     const { text } = this.state;
     const cardlist_name = text;
 
@@ -39,7 +39,7 @@ class TrelloCreate extends React.PureComponent {
       this.setState({
         text: ""
       });
-      this.props.addList(board_id, cardlist_name);
+      this.props.addList(board_id, cardlist_name,date);
     }
 
     return;
@@ -59,11 +59,11 @@ class TrelloCreate extends React.PureComponent {
   };
 
   renderOpenForm = () => {
-    const { board_id } = this.props;
-    const buttonText = board_id ? "Add another list" : "Add another card";
-    const buttonTextOpacity = board_id ? 1 : 0.5;
-    const buttonTextColor = board_id ? "white" : "inherit";
-    const buttonTextBackground = board_id ? "rgba(0,0,0,.15)" : "inherit";
+    const { date } = this.props;
+    const buttonText = date ? "Add another list" : "Add another card";
+    const buttonTextOpacity = date ? 1 : 0.5;
+    const buttonTextColor = date ? "white" : "inherit";
+    const buttonTextBackground = date ? "rgba(0,0,0,.15)" : "inherit";
 
     const OpenFormButton = styled.div`
       display: flex;
@@ -90,23 +90,33 @@ class TrelloCreate extends React.PureComponent {
 
   render() {
     const { text } = this.state;
-    const { board_id } = this.props;
+    const { board_id, date } = this.props;
     return this.state.formOpen ? (
       <TrelloForm
         text={text}
         onChange={this.handleInputChange}
         closeForm={this.closeForm}
         board_id={board_id}
-        submit={board_id ? this.handleAddList : this.handleAddCard}
+        submit={date ? this.handleAddList : this.handleAddCard}
       >
-        {board_id ? "Add List" : "Add Card"}
+        {date ? "Add List" : "Add Card"}
       </TrelloForm>
     ) : (
       <TrelloOpenForm board_id={board_id} onClick={this.openForm}>
-        {board_id ? "Add another list" : "Add another card"}
+        {date ? "Add another list" : "Add another card"}
       </TrelloOpenForm>
     );
   }
 }
 
-export default connect(null, { addCard, addList })(TrelloCreate);
+const mapStateToProps = state => {
+  return {
+    boards: state.boards,
+    boardDict: state.boardDict,
+    members: state.members
+  };
+};
+
+export default connect(mapStateToProps, { addCard, addList, addBoard })(
+  TrelloCreate
+);

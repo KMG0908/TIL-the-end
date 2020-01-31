@@ -2,7 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import { fetchTodoLists } from "../../actions";
+import { fetchDailyLists } from "../../actions";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import List from "./List";
 import TrelloCreate from "./TrelloCreate";
@@ -49,22 +49,23 @@ height: 100%;
   flexwrap: wrap;
 `;
 
+const date = "9999-12-31"
 class TodoBoard extends React.Component {
   componentDidMount() {
     if (this.props.members.mem_info) {
-      this.props.fetchTodoLists(this.props.members.mem_info.mem_id);
+      this.props.fetchDailyLists(this.props.members.mem_info.mem_id,date);
     }
   }
 
   RenderList() {
     const { classes } = this.props;
-    if (this.props.boards && this.props.boardDict["todo"]) {
+    if (this.props.boards && this.props.boardDict[date]) {
       const board_lists = Array.isArray(
-        this.props.boards[this.props.boardDict["todo"]].board_lists
+        this.props.boards[this.props.boardDict[date]].board_lists
       )
-        ? this.props.boards[this.props.boardDict["todo"]].board_lists
+        ? this.props.boards[this.props.boardDict[date]].board_lists
         : JSON.parse(
-            this.props.boards[this.props.boardDict["todo"]].board_lists
+            this.props.boards[this.props.boardDict[date]].board_lists
           );
 
       return board_lists.map((list, index) => {
@@ -84,7 +85,7 @@ class TodoBoard extends React.Component {
                     ref={provided.innerRef}
                   >
                     <List
-                      board_id={this.props.boardDict["todo"]}
+                      board_id={this.props.boardDict[date]}
                       cardlist_id={this.props.cardLists[list].cardlist_id}
                       title={this.props.cardLists[list].cardlist_name}
                     />
@@ -103,7 +104,7 @@ class TodoBoard extends React.Component {
     return (
       <Contain>
         <Droppable
-          droppableId={String(this.props.boardDict["todo"])}
+          droppableId={String(this.props.boardDict[date])}
           type="list2"
           direction="horizontal"
         >
@@ -117,7 +118,7 @@ class TodoBoard extends React.Component {
               {this.RenderList()}
               {provided.placeholder}
               <Box item className={classes.addList} elevation={0}>
-                <TrelloCreate board_id={this.props.boardDict["todo"]} />
+                <TrelloCreate date={date} board_id={this.props.boardDict[date]} />
               </Box>
             </ListsContainer>
           )}
@@ -137,5 +138,5 @@ const mapStateToProps = state => {
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { fetchTodoLists })(TodoBoard)
+  connect(mapStateToProps, { fetchDailyLists })(TodoBoard)
 );

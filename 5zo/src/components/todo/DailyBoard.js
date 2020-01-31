@@ -7,6 +7,7 @@ import { Droppable, Draggable } from "react-beautiful-dnd";
 import { fetchDailyLists } from "../../actions";
 import TrelloCreate from "./TrelloCreate";
 import { connect } from "react-redux";
+import DatePicker from "./DatePicker";
 
 const styles = theme => ({
   root: {
@@ -27,17 +28,26 @@ const styles = theme => ({
     width: "100%"
   }
 });
-const date = "20200130";
+// const date = "2020-02-10";
 class DailyBoard extends React.Component {
+  state = {
+    date: new Date()
+      .toISOString()
+      .split("T")[0]
+  };
+
   componentDidMount() {
+    const { date } = this.state;
     if (this.props.members.mem_info) {
       this.props.fetchDailyLists(this.props.members.mem_info.mem_id, date);
     }
   }
 
   RenderList() {
+    const { date } = this.state;
     if (this.props.boardDict[date]) {
       const { classes } = this.props;
+      console.log(this.props.boardDict[date]);
 
       const board_lists = Array.isArray(
         this.props.boards[this.props.boardDict[date]].board_lists
@@ -79,6 +89,7 @@ class DailyBoard extends React.Component {
   }
   render() {
     const { classes } = this.props;
+    const { date } = this.state;
     return (
       <Box>
         <Droppable
@@ -88,11 +99,22 @@ class DailyBoard extends React.Component {
         >
           {provided => (
             <Box container {...provided.droppableProps} ref={provided.innerRef}>
-              <div>Daily Todo 2020-01-30</div>
+              <DatePicker
+                onChangeDate={val => {
+                  this.setState({ date: val });
+                  this.props.fetchDailyLists(
+                    this.props.members.mem_info.mem_id,
+                    val
+                  );
+                }}
+              />
               {this.RenderList()}
               {provided.placeholder}
               <Paper className={classes.addList} elevation={0}>
-                <TrelloCreate board_id={this.props.boardDict[date]} />
+                <TrelloCreate
+                  date={date}
+                  board_id={this.props.boardDict[date]}
+                />
               </Paper>
             </Box>
           )}
