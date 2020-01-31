@@ -5,6 +5,7 @@ import SearchNav from "./SearchNav";
 import queryString from "query-string";
 import { connect } from "react-redux";
 import { searchKeyword } from 'actions';
+import { login, loginErrReset } from "../../actions";
 
 class SearchPage extends Component {
   constructor(props) {
@@ -22,8 +23,8 @@ class SearchPage extends Component {
     return (
 
       <div>
-        <SearchNav keyword={keyword} type = {type} history={this.props.history}/>
-        {(!params.keyword) ? null : <h1> {params.keyword} 검색결과</h1>}
+        <SearchNav keyword={keyword} type = {type}/>
+        {(!params.keyword || params.keyword ==='') ? null : <h1> {params.keyword} 검색결과</h1>}
         <div>
           <SearchBar type={type} />
           <br />
@@ -34,4 +35,11 @@ class SearchPage extends Component {
   }
 }
 
-export default SearchPage
+// const mapStatetoProps = state => {
+//   return {
+//     mem_info : state.members.mem_info,
+//     login_err : state.members.login_err
+//   };
+// };
+// export default connect(mapStatetoProps, { login, loginErrReset })(SearchPage);
+export default SearchPage;

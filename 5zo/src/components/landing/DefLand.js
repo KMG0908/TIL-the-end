@@ -15,7 +15,7 @@ class DefLand extends React.Component {
             <div className='Landing'>
                 <MuiThemeProvider>
                     <Header />
-                    <Body />
+                    <Body location = {this.props.location}/>
                     <Footer />
                 </MuiThemeProvider>
 

@@ -25,7 +25,7 @@ const ListCard = ({list}) => {
     
     return (
         <div>
-          <Card className={classes.card} style={{backgroundColor : "red", maxWidth : 500}}>
+          <Card className={classes.card} style={{backgroundColor : "#94C9A9", maxWidth : 500}}>
               <CardContent>
                   <Typography variant="h4" component="h1" style={{textAlign:"center", color:"white"}} >
                       {list.cardlist_name}

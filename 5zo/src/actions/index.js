@@ -10,6 +10,9 @@ import {
   SET_LOGGED_INFO,
   GET_LOGGED_INFO,
   LOGOUT,
+  EDIT_MYINFO,
+  EDIT_MYINFO_ERR,
+  EDIT_MYINFO_CHANGE_RESET,
   DRAG_HAPPENED,
   ADD_BOARD,
   FETCH_DAILY_LIST,
@@ -161,6 +164,44 @@ export const getLoggedInfo = () => async dispatch => {
 export const logout = () => async dispatch => {
   dispatch({ type: LOGOUT });
 };
+
+export const editMyinfo = (loginId, loginPw, email, nick) => async dispatch => {
+  if(!loginPw){
+    dispatch({type : EDIT_MYINFO_ERR, payload : '비밀번호를 입력해주세요.'})
+  }
+  if(!email){
+    dispatch({type : EDIT_MYINFO_ERR, payload : '이메일을 입력해주세요.'})
+  }
+  if(!nick){
+    dispatch({type : EDIT_MYINFO_ERR, payload : '닉네임을 입력해주세요.'})
+  }
+  const response = await apis.put(`/member`, {
+    'mem_id' : loginId,
+    'mem_pw' : loginPw,
+    'mem_email' : email,
+    'mem_nick' : nick
+  })
+
+  const data = response.data.data;
+
+  console.log('data');
+  console.log(data);
+  if(data.mem_id){
+    dispatch({type : EDIT_MYINFO, payload : data})
+  }else{
+    dispatch({type : EDIT_MYINFO_ERR, payload : data})
+  }
+}
+export const editMyinfoErrReset = () => async (dispatch, getState) => {
+  if (getState().members.edit_myinfo_err) {
+    dispatch({ type: EDIT_MYINFO_ERR, payload: "" });
+  }
+}
+export const memInfoChangeReset = () => async (dispatch, getState) => {
+  if(getState().members.mem_info_change){
+    dispatch({ type : EDIT_MYINFO_CHANGE_RESET})
+  }
+}
 
 export const addBoard = (mem_id, board_date) => async dispatch => {
   const board_lists = "[]";

@@ -45,6 +45,9 @@ class Register extends Component {
   register(){
     this.props.register(this.state.loginId, this.state.loginPw, this.state.email, this.state.nick)
   }
+  cancelRegister(){
+    window.location.href = "/"
+  }
   render() {
     if(this.props.register_id && this.props.register_id !== ""){
       this.props.registerReset();
@@ -59,6 +62,8 @@ class Register extends Component {
           <InputWithLabel label="닉네임" name="nick" placeholder="닉네임" onChange={this.handleChange}/>
           {this.props.register_err}
           <AuthButton onClick={this.register}> 회원가입 </AuthButton>
+
+          {this.props.location.pathname === "/" ? null :<AuthButton onClick={this.cancelRegister}> 취소 </AuthButton>}
         </AuthContent>
       </AuthWrapper>
     );
