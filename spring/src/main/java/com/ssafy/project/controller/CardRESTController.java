@@ -91,36 +91,16 @@ public class CardRESTController {
 		String sourceFileName = sourceFile.getOriginalFilename();
 //		System.out.println(sourceFileName);
 //        String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
-
+        
         File destinationFile;
         String destinationFileName;
-        
-        destinationFileName = card_id + "_" + sourceFileName;
-        destinationFile = new File("/upload/" + destinationFileName);
-        
-        // 경로상에 파일이 존재하지 않을 경우 부모 폴더를 File 형태로 반환한다..
-		if(!destinationFile.exists()) 
-		{
-			destinationFile.getParentFile().mkdirs();
-			
-			try
-			{
-				// 파일 생성
-				destinationFile.createNewFile(); 
-			}
-			catch(IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		try
-		{
-			sourceFile.transferTo(destinationFile);
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
+        do {
+            destinationFileName = card_id + "_" + sourceFileName;
+            destinationFile = new File("\\home\\ubuntu\\upload\\" + destinationFileName);
+//            destinationFile = new File("C:/uploads/" + destinationFileName);
+        } while (destinationFile.exists());
+        destinationFile.getParentFile().mkdirs();
+        sourceFile.transferTo(destinationFile);
         
         service.uploadFile(card_id, destinationFileName);       
         
@@ -138,12 +118,12 @@ public class CardRESTController {
     private static class UploadAttachmentResponse {
 
         private String fileName;
-
-        private long fileSize;
+        
+        private String attachmentUrl;
 
         private String fileContentType;
 
-        private String attachmentUrl;
+        private long fileSize;
     }
 	
 
