@@ -19,11 +19,11 @@ class TagPage extends Component {
   componentDidMount(){
     this.props.memTag(this.props.mem_info.mem_id, '20000101','20200203')
   }
+
   render(){
-    console.log(this.props.memTags)
     return (
       <>
-        {/* {tagButtons(this.props.memTags ? this.props.memTags : [])} */}
+        <h1> {this.props.mem_info.mem_nick}님의  Tag Cloud</h1>
         <MyCloud tags={this.props.memTags ? this.props.memTags : []}></MyCloud>
       </>
     );
