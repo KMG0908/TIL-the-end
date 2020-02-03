@@ -1,9 +1,12 @@
 package com.ssafy.project.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,8 @@ import com.ssafy.project.dto.Card;
 import com.ssafy.project.service.CardService;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @RestController
 public class CardRESTController {
@@ -67,7 +72,7 @@ public class CardRESTController {
 
 	// UPDATE
 	@PutMapping("/api/card")
-	@ApiOperation("card 정보 수정, 수정이 가능한 정보는 name, contents, secret 세가지입니다")
+	@ApiOperation("card 정보 수정, 수정이 가능한 정보는 name, contents, secret, cardlist_id 네가지입니다")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Card card) {
 		service.updateCard(card);
 		return handleSuccess("수정 완료");
@@ -80,16 +85,66 @@ public class CardRESTController {
 		return handleSuccess("이동 완료");
 	}
 	
-	@PostMapping("/api/fileupload/{card_id}")
+	@PostMapping("/api/file/upload/{card_id}")
 	@ApiOperation("(개발중, 사용X) card에 파일 추가, 파일은 서버의 upload 폴더에 카드번호 + _ + original 파일 이름으로 들어갑니다")
-	public ResponseEntity<Map<String, Object>> fileupload(@RequestParam("file") MultipartFile multipartFile) {
-		File targetFile = new File("/upload/" + multipartFile.getOriginalFilename());
-		
-		
-		
-		return handleSuccess("삭제 완료");
+	public ResponseEntity<Map<String, Object>> uploadFile(@PathVariable int card_id, @RequestParam("file") MultipartFile sourceFile) throws IOException {
+		String sourceFileName = sourceFile.getOriginalFilename();
+//		System.out.println(sourceFileName);
+//        String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
+
+        File destinationFile;
+        String destinationFileName;
+        
+        destinationFileName = card_id + "_" + sourceFileName;
+        destinationFile = new File("/upload/" + destinationFileName);
+        
+        // 경로상에 파일이 존재하지 않을 경우 부모 폴더를 File 형태로 반환한다..
+		if(!destinationFile.exists()) 
+		{
+			destinationFile.getParentFile().mkdirs();
+			
+			try
+			{
+				// 파일 생성
+				destinationFile.createNewFile(); 
+			}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		try
+		{
+			sourceFile.transferTo(destinationFile);
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+        
+        service.uploadFile(card_id, destinationFileName);       
+        
+
+        UploadAttachmentResponse response = new UploadAttachmentResponse();
+        response.setFileName(sourceFile.getOriginalFilename());
+        response.setFileSize(sourceFile.getSize());
+        response.setFileContentType(sourceFile.getContentType());
+        response.setAttachmentUrl("http://localhost:8080/upload/" + destinationFileName);
+		return handleSuccess(response);
 	}
 	
+	@NoArgsConstructor
+    @Data
+    private static class UploadAttachmentResponse {
+
+        private String fileName;
+
+        private long fileSize;
+
+        private String fileContentType;
+
+        private String attachmentUrl;
+    }
 	
 
 	// DELETE
@@ -97,6 +152,13 @@ public class CardRESTController {
 	@ApiOperation("card 정보 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int card_id) {
 		service.deleteCard(card_id);
+		return handleSuccess("삭제 완료");
+	}
+	
+	@DeleteMapping("/api/file/delete/{card_id}")
+	@ApiOperation("card 정보 삭제")
+	public ResponseEntity<Map<String, Object>> deleteFile(@PathVariable int card_id) {
+		service.deleteFile(card_id);
 		return handleSuccess("삭제 완료");
 	}
 	

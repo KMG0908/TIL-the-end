@@ -7,8 +7,8 @@
    		parameterType="cardlist" 
 		useGeneratedKeys="true"
 		keyProperty="cardlist_id">
-   		insert into cardlist(board_id, cardlist_name, cardlist_cards)
-   		values(#{board_id}, #{cardlist_name}, #{cardlist_cards})
+   		insert into cardlist(board_id, cardlist_name, cardlist_cards, cardlist_secret)
+   		values(#{board_id}, #{cardlist_name}, #{cardlist_cards}, #{cardlist_secret})
    	</insert>
    	  	
   	<select id="search" parameterType="int" resultType="cardlist">
@@ -21,7 +21,8 @@
 		update cardlist
 		set	
 		cardlist_name = #{cardlist_name},
-		cardlist_cards = #{cardlist_cards}
+		cardlist_cards = #{cardlist_cards},
+		board_id = #{board_id}
 		where cardlist_id = #{cardlist_id}
 	</update>
 	

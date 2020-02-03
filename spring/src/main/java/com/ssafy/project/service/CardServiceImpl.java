@@ -133,5 +133,28 @@ public class CardServiceImpl implements CardService {
 		}
 	}
 	
+	@Override
+	public void deleteFile(int card_id) {
+		try {
+			dao.deleteFile(card_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException("카드 첨부 파일 삭제 중 오류 발생");
+		}
+		
+	}
+	
+	
+	@Override
+	public void uploadFile(int card_id, String card_upload) {
+		try {
+			dao.uploadFile(card_id, card_upload);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException("카드 첨부 파일 업로드 중 오류 발생");
+		}
+	}
+	
+	
 
 }

@@ -21,11 +21,10 @@
 	<update id="updateCard" parameterType="card">
 		update card
 		set
-		card_name =
-		#{card_name},
+		card_name = #{card_name},
 		card_contents = #{card_contents},
-		card_secret =
-		#{card_secret}
+		card_secret = #{card_secret},
+		cardlist_id = #{cardlist_id}
 		where
 		card_id = #{card_id}
 	</update>
@@ -119,6 +118,23 @@
 		update card
 		set
 		cardlist_id = #{cardlist_id}
+		where card_id = #{card_id}
+	</update>
+	
+	
+	
+	
+	<update id="uploadFile">
+		update card
+		set 
+		card_upload = #{card_upload}
+		where card_id = #{card_id}
+	</update>
+	
+	<update id="deleteFile">
+		update card
+		set 
+		card_upload = null
 		where card_id = #{card_id}
 	</update>
 	

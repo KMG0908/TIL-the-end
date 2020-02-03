@@ -29,4 +29,8 @@ public interface CardService {
 
 	void movecard(int card_id, int cardlist_id);
 
+	void deleteFile(int card_id);
+
+	void uploadFile(int card_id, String destinationFileName);
+
 }
