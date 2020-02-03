@@ -21,6 +21,7 @@ import List from "@material-ui/core/List";
 import storage from "lib/storage";
 import MyPage from "./Auth/MyPage";
 import MyPageEdit from "./Auth/MyPageEdit";
+import Imgur from "./image_test/Imgur"
 
 
 class App extends React.Component {
@@ -68,7 +69,8 @@ class App extends React.Component {
             <Route path="/register" exact component={Register} />
             {/*  아래는 테스트 */}
             <Route path="/mypage" exact component = {MyPage}/>
-            <Route path="/mypage/edit" exact component = {MyPageEdit}/>  
+            <Route path="/mypage/edit" exact component = {MyPageEdit}/>
+            <Route path="/imgur" exact component={Imgur}></Route>
           </div>
         </Navigation>
       );
