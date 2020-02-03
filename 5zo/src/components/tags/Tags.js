@@ -1,47 +1,40 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-
-
-const dummy_tags = [
-  { id: 1, name: 'Node.js' },
-  { id: 2, name: 'React' },
-  { id: 3, name: 'Java' },
-  { id: 4, name: '어려어' },
-  { id: 5, name: '미췬' },
-  { id: 6, name: '의식의 흐름대로' },
-  { id: 7, name: '우오오오오' },
-]
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
-}));
+import { connect } from "react-redux";
+import { memTag } from 'actions';
+import MyCloud from "./MyCloud";
 
 const tagButtons = (tags) => tags.map((tag) =>
-
-  <Link to={'/searchTag/'+tag.name} key={'link'+tag.id}>
+  <Link to={`/search/${tag.tag_name}?type=tag`} key={'link_'+tag.tag_name+tag.tag_id}>
     <Button
       variant="contained"
-      key={tag.id}>
-      {tag.name}
+      key={'button_'+tag.tag_name}>
+      {tag.tag_name}
     </Button>
   </Link>
 );
 
-export default function ContainedButtons() {
-  const classes = useStyles();
-  console.log(classes);
-  return (
-    <div className={classes.root}>
-      해쉬태그예정
-      {tagButtons(dummy_tags)}
-    </div>
-  );
+class TagPage extends Component {
+  componentDidMount(){
+    this.props.memTag(this.props.mem_info.mem_id, '20000101','20200203')
+  }
+  render(){
+    console.log(this.props.memTags)
+    return (
+      <>
+        {/* {tagButtons(this.props.memTags ? this.props.memTags : [])} */}
+        <MyCloud tags={this.props.memTags ? this.props.memTags : []}></MyCloud>
+      </>
+    );
+  }
 }
 
+const mapStatetoProps = state => {
+  return {
+    mem_info : state.members.mem_info,
+    memTags : state.tag.mem_tags,
+  };
+};
 
+export default connect(mapStatetoProps, {memTag} )(TagPage)
