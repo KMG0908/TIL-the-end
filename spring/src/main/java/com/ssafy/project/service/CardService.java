@@ -33,4 +33,6 @@ public interface CardService {
 
 	void uploadFile(int card_id, String destinationFileName);
 
+	String getFileName(int card_id);
+
 }

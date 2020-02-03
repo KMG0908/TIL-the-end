@@ -2,9 +2,11 @@ package com.ssafy.project.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,21 +98,40 @@ public class CardRESTController {
         String destinationFileName;
         do {
             destinationFileName = card_id + "_" + sourceFileName;
-            destinationFile = new File("\\home\\ubuntu\\upload\\" + destinationFileName);
+            destinationFile = new File("/home/ubuntu/upload/" + destinationFileName);
+            System.out.println(destinationFile);
 //            destinationFile = new File("C:/uploads/" + destinationFileName);
         } while (destinationFile.exists());
         destinationFile.getParentFile().mkdirs();
         sourceFile.transferTo(destinationFile);
         
-        service.uploadFile(card_id, destinationFileName);       
-        
+        service.uploadFile(card_id, destinationFileName);               
 
         UploadAttachmentResponse response = new UploadAttachmentResponse();
         response.setFileName(sourceFile.getOriginalFilename());
         response.setFileSize(sourceFile.getSize());
         response.setFileContentType(sourceFile.getContentType());
-        response.setAttachmentUrl("http://localhost:8080/upload/" + destinationFileName);
+        response.setAttachmentUrl("http://13.124.67.187:8080/upload/" + destinationFileName);
 		return handleSuccess(response);
+	}
+	
+	@GetMapping("/api/file/download/{card_id}")
+	@ApiOperation("")
+	public ResponseEntity<Map<String, Object>> downloadFile(@PathVariable int card_id, HttpServletResponse response) throws Exception{
+		
+		// 카드 번호에 저장된 파일 이름을 불러온다
+		String storedFileName = service.getFileName(card_id);
+		byte fileByte[] = FileUtils.readFileToByteArray(new File("/home/ubuntu/upload/" + storedFileName));
+		
+		response.setContentType("application/octet-stream");
+		response.setContentLength(fileByte.length);
+		response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(storedFileName.split("_")[1], "UTF-8") + "\";"); 
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.getOutputStream().write(fileByte);
+		response.getOutputStream().flush();
+		response.getOutputStream().close();
+		
+		return handleSuccess("파일 다운로드 완료 테스트");
 	}
 	
 	@NoArgsConstructor

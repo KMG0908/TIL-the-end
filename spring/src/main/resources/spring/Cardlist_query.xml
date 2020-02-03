@@ -22,7 +22,8 @@
 		set	
 		cardlist_name = #{cardlist_name},
 		cardlist_cards = #{cardlist_cards},
-		board_id = #{board_id}
+		board_id = #{board_id},
+		cardlist_secret = #{cardlist_secret}
 		where cardlist_id = #{cardlist_id}
 	</update>
 	

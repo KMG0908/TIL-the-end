@@ -65,7 +65,7 @@ public class CardlistRESTController {
 
 	// UPDATE
 	@PutMapping("/api/cardlist")
-	@ApiOperation("cardlist 정보 수정, board_id는 입력하지 않아도 됩니다. 수정이 가능한 정보는 name, cards, board_id 세가지입니다.")
+	@ApiOperation("cardlist 정보 수정, 수정이 가능한 정보는 name, cards, board_id, _secret 네가지입니다.")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Cardlist cardlist) {
 		service.updateCardlist(cardlist);
 		return handleSuccess(cardlist.getCardlist_id() + "번 카드리스트 수정 완료");

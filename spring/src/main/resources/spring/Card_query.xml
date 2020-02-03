@@ -11,6 +11,13 @@
 		#{card_name}, #{card_contents}, #{card_secret})
 	</insert>
 
+	<select id="getFileName" parameterType="int" resultType="string">
+		select card_upload
+		from card
+		where card_id = #{card_id}
+	</select>
+
+
 	<select id="search" parameterType="int" resultType="card">
 		select *
 		from

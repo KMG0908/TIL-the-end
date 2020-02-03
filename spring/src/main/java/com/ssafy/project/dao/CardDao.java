@@ -37,4 +37,6 @@ public interface CardDao {
 
 	public void uploadFile(@Param("card_id")int card_id, @Param("card_upload")String card_upload);
 
+	public String getFileName(int card_id);
+
 }
