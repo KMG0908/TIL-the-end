@@ -1,5 +1,6 @@
 package com.ssafy.project.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.project.dto.Card;
 import com.ssafy.project.service.CardService;
@@ -76,6 +79,17 @@ public class CardRESTController {
 		service.movecard(card_id, cardlist_id);
 		return handleSuccess("이동 완료");
 	}
+	
+	@PostMapping("/api/fileupload/{card_id}")
+	@ApiOperation("(개발중, 사용X) card에 파일 추가, 파일은 서버의 upload 폴더에 카드번호 + _ + original 파일 이름으로 들어갑니다")
+	public ResponseEntity<Map<String, Object>> fileupload(@RequestParam("file") MultipartFile multipartFile) {
+		File targetFile = new File("/upload/" + multipartFile.getOriginalFilename());
+		
+		
+		
+		return handleSuccess("삭제 완료");
+	}
+	
 	
 
 	// DELETE
