@@ -8,7 +8,8 @@ import boardDictReducer from "./boardDictReducer"
 import statisticsReducer from "./statisticsReducer"
 import searchReducer from "./searchReducer";
 import tagReducer from "./tagReducer";
-
+import heatmapReducer from "./heatmapReducer";
+import calendarReducer from "./calendarReducer"
 export default combineReducers({
   members: memberReducer,
   boards : boardReducer,
@@ -17,5 +18,7 @@ export default combineReducers({
   boardDict : boardDictReducer,
   statistics : statisticsReducer,
   search : searchReducer,
-  tag : tagReducer
+  tag : tagReducer,
+  heatmaps : heatmapReducer,
+  dailyCalendar : calendarReducer
 });

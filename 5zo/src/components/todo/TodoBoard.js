@@ -59,7 +59,9 @@ class TodoBoard extends React.Component {
 
   RenderList() {
     const { classes } = this.props;
+    
     if (this.props.boards && this.props.boardDict[date]) {
+      console.log(this.props.boardDict[date])
       const board_lists = Array.isArray(
         this.props.boards[this.props.boardDict[date]].board_lists
       )
