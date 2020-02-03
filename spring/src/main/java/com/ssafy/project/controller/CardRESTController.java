@@ -130,7 +130,7 @@ public class CardRESTController {
 	}
 
 	@GetMapping("/api/file/download/{card_id}")
-	@ApiOperation("")
+	@ApiOperation("카드에 첨부된 파일 다운로드")
 	public ResponseEntity<Map<String, Object>> downloadFile(@PathVariable int card_id, HttpServletResponse response)
 			throws Exception {
 
@@ -163,7 +163,7 @@ public class CardRESTController {
 
 	// DELETE
 	@DeleteMapping("/api/card/{card_id}")
-	@ApiOperation("card 정보 삭제")
+	@ApiOperation("card 정보 전체 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int card_id) {
 		
 		String storedFileName = service.getFileName(card_id);
@@ -185,8 +185,23 @@ public class CardRESTController {
 	}
 
 	@DeleteMapping("/api/file/delete/{card_id}")
-	@ApiOperation("card 정보 삭제")
+	@ApiOperation("card 첨부 파일만 삭제")
 	public ResponseEntity<Map<String, Object>> deleteFile(@PathVariable int card_id) {
+		
+		String storedFileName = service.getFileName(card_id);
+		if (storedFileName != null) {
+			File file = new File("/home/ubuntu/upload/" + storedFileName);
+			if (file.exists()) {
+				if (file.delete()) {
+					System.out.println("기존 파일 삭제 성공");
+				} else {
+					System.out.println("기존 파일 삭제 실패");
+				}
+			} else {
+				System.out.println("기존 파일이 존재하지 않습니다.");
+			}
+		}
+		
 		service.deleteFile(card_id);
 		return handleSuccess("삭제 완료");
 	}
