@@ -7,6 +7,18 @@
 		insert into board(mem_id, board_date, board_lists)
 		values(#{mem_id}, #{board_date}, #{board_lists})
 	</insert>
+	
+	<select id="boardPage" parameterType="map" resultType="board">
+		<![CDATA[
+		select * 
+		from board
+		where mem_id = #{mem_id}
+		and board_date < now()
+		order by board_date desc		
+		limit #{start_page}, 5
+		]]>
+	</select>
+	
 
 	<select id="searchUserBoardDate" parameterType="string" resultType="board">
 		select *

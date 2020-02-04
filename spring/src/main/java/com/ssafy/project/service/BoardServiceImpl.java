@@ -1,5 +1,6 @@
 package com.ssafy.project.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.project.dao.BoardDao;
 import com.ssafy.project.dto.Board;
 import com.ssafy.project.dto.BoardException;
+import com.ssafy.project.dto.MemberException;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -101,6 +103,28 @@ public class BoardServiceImpl implements BoardService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new BoardException("보드 테이블 id 조회 중 오류 발생");
+		}
+	}
+	
+	
+	@Override
+	public List<Board> boardPage(String mem_id, int page_number) {
+		try {
+			if(page_number < 1) {
+				throw new BoardException("page_number는 0 이하일 수 없습니다.");
+			}
+			int start_page = (page_number*5)-5;
+			HashMap<String, Object> paramsMap = new HashMap<String, Object>();
+			paramsMap.put("mem_id", mem_id);
+			paramsMap.put("start_page", start_page);			
+			return dao.boardPage(paramsMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (e instanceof BoardException) {
+				throw (BoardException) e;
+			}else {
+				throw new BoardException("보드 " + page_number + "페이지 조회 중 오류 발생");				
+			}
 		}
 	}
 

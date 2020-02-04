@@ -21,7 +21,7 @@ public interface BoardService {
 	void updateBoard(Board board);
 
 	void deleteBoard(int board_id);
-	
-	
 
+	List<Board> boardPage(String mem_id, int page_number);
+	
 }

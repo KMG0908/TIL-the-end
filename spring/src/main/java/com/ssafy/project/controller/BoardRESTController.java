@@ -83,6 +83,12 @@ public class BoardRESTController {
 		return handleSuccess(service.searchUserBoardDaily(mem_id, from, to));
 	}
 
+	@GetMapping("/api/board/member/{mem_id}/page/{page_number}")
+	@ApiOperation("최신 날짜 기준 보드 5개 리턴")
+	public ResponseEntity<Map<String, Object>> boardPage(@PathVariable String mem_id, @PathVariable int page_number) {
+		return handleSuccess(service.boardPage(mem_id, page_number));
+	}
+	
 	@GetMapping("/api/board/{board_id}")
 	@ApiOperation("보드의 카드 리스트 조회")
 	@ResponseBody
