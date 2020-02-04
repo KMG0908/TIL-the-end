@@ -28,7 +28,10 @@ import {
   FETCH_STATISTICS_MEMBER,
   FETCH_STATISTICS_DATA,
   SEARCH_KEYWORD,
+  SEARCH_CL_BY_TAGS,
+
   MEM_TAG,
+  GET_ALL_TAG,
   GET_DAILY_TASK,
   GET_DAILY_CAL,
 } from "./types";
@@ -551,12 +554,32 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
   dispatch({ type: SEARCH_KEYWORD, payload: cards });
 };
 
+export const searchCLByTags = (tags) => async ( dispatch, getState) => {
+  // const response = await apis.post('/search/cardlist/by/tags', {
+  //   tags
+  // });
+  // const data = response.data.data;
+  // console.log(data);
+  dispatch ( { type : SEARCH_CL_BY_TAGS, payload : tags})
+}
+
+
 export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
   const response = await apis.get(
     `/tag/public/${mem_id}/from/${from}/to/${to}`
   );
   dispatch({ type: MEM_TAG, payload: response.data.data });
 };
+
+export const getAllTag = () => async (dispatch, getState) => {
+  const response = await apis.get(
+    `/tag `
+  )
+  const datas = response.data.data
+  const data_ = []
+  datas.map(data => data_.push('#'+data.tag_name))
+  dispatch({ type : GET_ALL_TAG, payload : data_})
+}
 
 export const getDailyTask = (mem_id, from, to) => async (dispatch, getState) => {
   const start = date_to_str(from, "");

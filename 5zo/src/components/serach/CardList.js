@@ -12,9 +12,7 @@ class CardList extends Component {
         let keyword = this.props.keyword
         
         if (keyword === undefined) return
-        console.log(`componentDidMount - params.keyword : ${keyword} , type : ${type}`)
         this.props.searchKeyword(keyword, type)
-        console.log('마지막')
     }
     state = {cards : []}
     setState(){
