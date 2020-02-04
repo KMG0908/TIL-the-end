@@ -555,7 +555,7 @@ export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
   const response = await apis.get(
     `/tag/public/${mem_id}/from/${from}/to/${to}`
   );
-  dispatch({ type: MEM_TAG, payload: response.data });
+  dispatch({ type: MEM_TAG, payload: response.data.data });
 };
 
 export const getDailyTask = (mem_id, from, to) => async (dispatch, getState) => {

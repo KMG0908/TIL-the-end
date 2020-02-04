@@ -10,7 +10,7 @@ import DefLand from "./landing/DefLand";
 import LandingPage from "./landing/LandingPage";
 import Statistics from "./statistics/Statistics";
 import Search from "./serach/Search";
-import Tags from "./tags/Tags";
+import TagPage from "./tags/Tags";
 import Todo from "./todo/Todo";
 import history from "../history";
 import Register from "./Auth/Register";
@@ -61,7 +61,7 @@ class App extends React.Component {
             <Route path="/statistics/:user_id" exact component={Statistics} />
             <Route path="/search" exact component={Search} />
             <Route path="/search/:keyword" component={Search} />
-            <Route path="/tags" exact component={Tags} />{" "}
+            <Route path="/tags" exact component={TagPage} />
             <Route path="/todo" exact component={Todo} />
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />

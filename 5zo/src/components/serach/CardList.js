@@ -16,22 +16,26 @@ class CardList extends Component {
         this.props.searchKeyword(keyword, type)
         console.log('마지막')
     }
-    
+    state = {cards : []}
+    setState(){
+        this.state.cards = this.props.cards
+    }
     render() {
+        this.setState()
         console.log('cardList----------------------------------')
         let type = this.props.type
         console.log('type : ' + type)
         let keyword = this.props.keyword
-        if(this.props.cards){
+        if(this.state.cards){
             switch (type) {
                 case 'member':
-                    return this.props.cards.map(member => <MemberCard member={member} key={member.id} style={{alignItems:'center'}} />)
+                    return this.state.cards.map(member => <MemberCard member={member} key={member.id} style={{alignItems:'center'}} />)
                 case 'tag':
-                    return this.props.cards.map(tag => <TagCard tag={tag} key={tag.id} />)
+                    return this.state.cards.map(tag => <TagCard tag={tag} key={tag.id} />)
                 case 'cardlist':
-                    return this.props.cards.map(list => <ListCard list={list} key={list.id} />)
+                    return this.state.cards.map(list => <ListCard list={list} key={list.id} />)
                 default:
-                    return this.props.cards.map(card => <CardCard card={card} key={card.id} />)
+                    return this.state.cards.map(card => <CardCard card={card} key={card.id} />)
             }
         }
         return ("")
