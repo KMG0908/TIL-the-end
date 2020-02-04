@@ -28,7 +28,7 @@ class TagFrequencyChart extends React.Component{
           text: 'Tag Frequency'
         },
         tooltip: {
-          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          pointFormat: '<b>{point.percentage:.1f}%</b>'
         },
         plotOptions: {
           pie: {

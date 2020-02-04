@@ -33,7 +33,7 @@ const TodoComponent = WithTitle({ component : Link, title: 'Todo'});
 const StatisticsComponent = WithTitle({ component : Link, title: 'Statistics'});
 
 
-const SidebarList = () => {
+const SidebarList = (props) => {
   return (
     <>
       <List>
@@ -53,7 +53,7 @@ const SidebarList = () => {
         </ListItem>
       </List>
       <List>
-        <ListItem button component={Link}  to={"/statistics/1"}>
+        <ListItem button component={Link}  to={"/statistics/" + props.user_id}>
           <ListItemIcon>
             <EqualizerIcon />
           </ListItemIcon>

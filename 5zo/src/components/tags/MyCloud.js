@@ -54,7 +54,6 @@ const SimpleCloud = ({ tags }) => {
     }
     return (
         <>
-
             <TagCloud
                 minSize={20}
                 maxSize={60}
@@ -63,7 +62,7 @@ const SimpleCloud = ({ tags }) => {
             />
             <div style={{ height: 400, width: 600 }}>
                 <ReactWordcloud callbacks={callbacks} words={words} />
-                <ReactWordcloud callbacks={callbacks} words={words_} />
+                {/* <ReactWordcloud callbacks={callbacks} words={words_} /> */}
             </div>
         </>
     )

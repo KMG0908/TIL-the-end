@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { login, loginErrReset } from "../../actions";
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink } from '../Auth';
 import storage from 'lib/storage';
+import "./login.css"
 
 class Login extends Component {
   componentDidMount(){
@@ -35,6 +36,26 @@ class Login extends Component {
     }
   }
   login() {
+    if(!this.state.loginId){
+      document.getElementById("loginId_msg").value = '아이디를 입력해주세요';
+      document.getElementById("loginId").focus();
+      document.getElementById("loginId_msg").classList.add("empty")
+      return;
+    }
+    else{
+      document.getElementById("loginId_msg").classList.remove("empty")
+    }
+    
+    if(!this.state.loginPw){
+      document.getElementById("loginPw_msg").value = '비밀번호를 입력해주세요';
+      document.getElementById("loginPw").focus();
+      document.getElementById("loginPw_msg").classList.add("empty")
+      return;
+    }
+    else{
+      document.getElementById("loginPw_msg").classList.remove("empty")
+    }
+
     this.props.login(this.state.loginId, this.state.loginPw);
   }
   cancelLogin() {
@@ -52,8 +73,8 @@ class Login extends Component {
       <div>
         <AuthWrapper>
           <AuthContent title="로그인">
-            <InputWithLabel label="아이디" name="loginId" placeholder="아이디" onChange={this.handleChange} maxLength="20"/>
-            <InputWithLabel label="비밀번호" name="loginPw" placeholder="비밀번호" type="password" onChange={this.handleChange} maxLength="16" />
+            <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디" onChange={this.handleChange} maxLength="20"/>
+            <InputWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호" type="password" onChange={this.handleChange} maxLength="16" />
             {this.props.login_err}
             <AuthButton onClick={this.login}> 로그인 </AuthButton>
             <AuthButton onClick={this.cancelLogin}> 취소 </AuthButton>

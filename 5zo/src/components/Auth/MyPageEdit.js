@@ -40,6 +40,12 @@ class MyPageEdit extends Component {
     }
   }
   editMyinfo(){
+    if(!document.getElementById("loginPw").value){
+      document.getElementById("loginPw").focus();
+
+      return;
+    }
+
     this.props.editMyinfo(this.props.mem_info.mem_id, this.state.loginPw, this.state.email, this.state.nick)
   }
   cancelEditMyinfo = () => {
@@ -65,7 +71,7 @@ class MyPageEdit extends Component {
             <InputWithLabel label="이메일" name="email" type="email" value={this.state.email} onChange={this.handleChange}/>
             <InputWithLabel label="닉네임" name="nick" value={this.state.nick} onChange={this.handleChange}/>
             <br/><br/>
-            <InputWithLabel label="비밀번호" name="loginPw" type="password" placeholder={"현재 비밀번호를 입력하세요"} value={this.state.loginPw} onChange={this.handleChange}/>
+            <InputWithLabel label="비밀번호" id="loginPw" name="loginPw" type="password" placeholder={"현재 비밀번호를 입력하세요"} value={this.state.loginPw} onChange={this.handleChange}/>
             {this.props.edit_myinfo_err}
             <AuthButton onClick={this.editMyinfo}> 수정 </AuthButton>
             <AuthButton onClick={this.cancelEditMyinfo}> 취소 </AuthButton>
