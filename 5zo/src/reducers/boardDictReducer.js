@@ -1,4 +1,4 @@
-import { ADD_BOARD, FETCH_DAILY_LIST, FETCH_TODO_LIST,  GET_DAILY_CAL} from "../actions/types";
+import { ADD_BOARD, FETCH_DAILY_LIST, FETCH_TODO_LIST} from "../actions/types";
 
 export default (state = {}, action) => {
   switch (action.type) {

@@ -45,7 +45,7 @@ class DailyBoard extends React.Component {
     const { date } = this.state;
     if (this.props.boardDict[date]) {
       const { classes } = this.props;
-      console.log(this.props.boardDict[date]);
+      console.log(this.props.boards);
 
       const board_lists = Array.isArray(
         this.props.boards[this.props.boardDict[date]].board_lists
