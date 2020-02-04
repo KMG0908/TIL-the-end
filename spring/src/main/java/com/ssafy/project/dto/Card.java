@@ -30,5 +30,8 @@ public class Card implements Serializable {
 	private boolean card_secret;
 	
 	
+	private String card_upload;
+	
+	
 	
 }

@@ -65,7 +65,7 @@ public class CardlistRESTController {
 
 	// UPDATE
 	@PutMapping("/api/cardlist")
-	@ApiOperation("cardlist 정보 수정, board_id는 입력하지 않아도 됩니다. 수정이 가능한 정보는 name, cards 두가지입니다.")
+	@ApiOperation("cardlist 정보 수정, 수정이 가능한 정보는 name, cards, board_id, _secret 네가지입니다.")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Cardlist cardlist) {
 		service.updateCardlist(cardlist);
 		return handleSuccess(cardlist.getCardlist_id() + "번 카드리스트 수정 완료");
@@ -87,6 +87,12 @@ public class CardlistRESTController {
 		return handleSuccess(cardlist.getCardlist_id() + "번 카드리스트의 패치 완료");
 	}
 	
+	@PatchMapping("/api/card/{cardlist_id}/to/{board_id}")
+	@ApiOperation("card를 이동할 때 카드의 외래키를 바꾸는 api 입니다")
+	public ResponseEntity<Map<String, Object>> movecardlist(@PathVariable int cardlist_id, @PathVariable int board_id) {
+		service.movecardlist(cardlist_id, board_id);
+		return handleSuccess("이동 완료");
+	}
 	
 	@GetMapping("/api/search/public/cardlist/{mem_id}/by/{keyword}")
 	@ApiOperation("A유저가 B유저를 검색) 특정문자열을 cardlist_name 에서 포함여부를 찾아서 cardlist 배열 반환하는 쿼리문")

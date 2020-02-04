@@ -24,5 +24,7 @@ public interface CardlistService {
 
 	List<Cardlist> searchGlobalCardlist(String keyword);
 
+	void movecardlist(int cardlist_id, int board_id);
+
 
 }

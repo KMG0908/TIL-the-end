@@ -27,4 +27,12 @@ public interface CardService {
 
 	List<Card> searchGlobalCard(String keyword);
 
+	void movecard(int card_id, int cardlist_id);
+
+	void deleteFile(int card_id);
+
+	void uploadFile(int card_id, String destinationFileName);
+
+	String getFileName(int card_id);
+
 }

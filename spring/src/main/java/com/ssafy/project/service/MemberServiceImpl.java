@@ -26,10 +26,10 @@ public class MemberServiceImpl implements MemberService {
 				throw new MemberException("동일한 닉네임이 존재합니다");
 			} else {
 				dao.insertMember(member);
-				System.out.println("member 생성 통과");
+//				System.out.println("member 생성 통과");
 				dao.grantMember(member.getMem_id());
-				System.out.println("member 권한 통과");
-				dao.createBoard(member.getMem_id());
+//				System.out.println("member 권한 통과");
+//				dao.createBoard(member.getMem_id());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,6 +76,7 @@ public class MemberServiceImpl implements MemberService {
 			if (member == null) {
 				throw new MemberException("등록되지 않은 회원입니다.");
 			}
+			member.setMem_pw(null);
 			return member;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,6 +91,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void updateMember(Member member) {
 		try {
+			Member diff = dao.search(member.getMem_id());
+			if(!member.getMem_pw().equals(diff.getMem_pw())) {
+				throw new MemberException("비밀번호가 틀립니다");
+			}
 			dao.updateMember(member);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -130,6 +135,21 @@ public class MemberServiceImpl implements MemberService {
 			}
 		}
 	}
+	
+	@Override
+	public void patchpassword(String mem_id, String old_pw, String new_pw) {
+		try {
+			Member diff = dao.search(mem_id);
+			if(!diff.getMem_pw().equals(old_pw)) {
+				throw new MemberException("비밀번호가 틀립니다");
+			}
+			dao.updatePassword(mem_id, new_pw);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException("회원 비밀번호 수정 중 오류 발생");
+		}
+	}
+	
 
 	@Override
 	public int getAuth(String mem_id) {

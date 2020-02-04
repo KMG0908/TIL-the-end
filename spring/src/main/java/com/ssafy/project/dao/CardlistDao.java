@@ -28,4 +28,5 @@ public interface CardlistDao {
 
 	public List<Cardlist> searchGlobalCardlist(String keyword);
 
+	public void movecardlist(@Param("cardlist_id")int cardlist_id, @Param("board_id")int board_id);
 }

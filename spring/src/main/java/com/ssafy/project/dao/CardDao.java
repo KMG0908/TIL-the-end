@@ -31,4 +31,12 @@ public interface CardDao {
 
 	public List<Card> searchGlobalCard(String keyword);
 
+	public void movecard(@Param("card_id")int card_id, @Param("cardlist_id")int cardlist_id);
+
+	public void deleteFile(int card_id);
+
+	public void uploadFile(@Param("card_id")int card_id, @Param("card_upload")String card_upload);
+
+	public String getFileName(int card_id);
+
 }

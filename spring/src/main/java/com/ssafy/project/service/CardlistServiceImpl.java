@@ -116,4 +116,13 @@ public class CardlistServiceImpl implements CardlistService {
 		}
 	}
 	
+	@Override
+	public void movecardlist(int cardlist_id, int board_id) {
+		try {
+			dao.movecardlist(cardlist_id, board_id);
+		} catch (Exception e) {
+			throw new CardException("전체 카드list 이동 중 오류 발생");
+		}
+	}
+	
 }
