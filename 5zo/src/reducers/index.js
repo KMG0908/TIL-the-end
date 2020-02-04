@@ -10,6 +10,7 @@ import searchReducer from "./searchReducer";
 import tagReducer from "./tagReducer";
 import heatmapReducer from "./heatmapReducer";
 import calendarReducer from "./calendarReducer"
+import calendarListReducer from "./calendarListReducer"
 export default combineReducers({
   members: memberReducer,
   boards : boardReducer,
@@ -20,5 +21,6 @@ export default combineReducers({
   search : searchReducer,
   tag : tagReducer,
   heatmaps : heatmapReducer,
-  dailyCalendar : calendarReducer
+  dailyCalendar : calendarReducer,
+  listCalendar : calendarListReducer
 });

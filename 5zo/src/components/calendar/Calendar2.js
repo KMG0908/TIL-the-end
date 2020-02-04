@@ -33,7 +33,9 @@ class Event extends React.Component {
         this.event[i] = this.props.daily.info.board_date
       }*/
       
-      
+      setTimeout(
+        () => this.setFetch()
+        , 100)
     }
     else {
       this.setFetch()
@@ -44,18 +46,23 @@ class Event extends React.Component {
     const arr = this.props.daily.info
     if (this.props.members.mem_info) {
       for(let i = 0; i < arr.length; i++) {
-        console.log("AAAAAAAAAAAAAA")
-        this.props.getDailyList(arr[i].board_id);
-        
+        this.props.fetchDailyLists(this.props.members.mem_info.mem_id, arr[i].board_date);
       }
     }
   }
-  setCalendar(i) {
+  setCalendar() {
     const { classes } = this.props;
-    const app = this.props.daily;
+    const app = this.props.boards.info;
     console.log(app)
-    //console.log(this.props.dailyList)
     if (app) {
+      for (let i = 0; i < app.length; i++) {
+        if (app[i] && this.props.boardDict[app[i].board_date]) {
+          console.log(app[i].board_date)
+          console.log(app[i])
+        }
+        
+      }
+
     }
 
     /*
