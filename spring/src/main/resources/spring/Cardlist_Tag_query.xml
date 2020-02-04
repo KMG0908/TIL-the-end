@@ -8,10 +8,32 @@
 		insert into cardlist_tag(cardlist_id, tag_id)
 		values(#{cardlist_id}, #{tag_id})
 	</insert>
-
-	<select id="searchAll" parameterType="int" resultType="cardlist_tag">
-		select * from cardlist_tag where cardlist_id = #{cardlist_id}
+	
+	
+	<select id="existsTagId" parameterType="string" resultType="int">
+		select count(*)
+		from tag
+		where tag_name = #{tag_name}
 	</select>
+	
+	<select id="getTagId" parameterType="string" resultType="int">
+		select tag_id
+		from tag
+		where tag_name = #{tag_name}
+	</select>
+	
+	<insert id="createTag" parameterType="string">
+		insert into tag(tag_name)
+		values(#{tag_name})
+	</insert>
+
+	<select id="searchAll" parameterType="int" resultType="tag">
+		select ct.cardlist_tag_id as tag_id, t.tag_name 
+		from cardlist_tag ct, tag t
+		where ct.cardlist_id = #{cardlist_id}
+		and ct.tag_id = t.tag_id
+	</select>
+	
 
 	<delete id="deleteCardlist_Tag" parameterType="int">
 		delete

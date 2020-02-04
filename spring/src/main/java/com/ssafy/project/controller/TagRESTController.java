@@ -48,7 +48,7 @@ public class TagRESTController {
 
 	// CREATE
 	@PostMapping("/api/tag")
-	@ApiOperation("tag 신규 생성, 이미 존재할 경우 오류발생 & 생성하지 못한다")
+	@ApiOperation("tag 신규 생성, 개발용입니다, 카드리스트에 태그를 추가하는 기능은 cardlist-tag-rest-api를 사용해주세요")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Tag tag) {
 		service.insertTag(tag);
 		return handleSuccess(tag.getTag_id());
