@@ -21,6 +21,7 @@ import MyPage from "./Auth/MyPage";
 import MyPageEdit from "./Auth/MyPageEdit";
 import Imgur from "./image_test/Imgur"
 
+import NewSearch from "./serach/NewSearch";
 
 class App extends React.Component {
   initializeUserInfo = async () => {
@@ -49,6 +50,9 @@ class App extends React.Component {
             <Route path="/defLand" exact component={DefLand} />
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
+
+            
+            <Route path="/new" exact component={NewSearch}></Route>
           </div>
         </LandingPage>
       );
@@ -69,6 +73,8 @@ class App extends React.Component {
             <Route path="/mypage" exact component = {MyPage}/>
             <Route path="/mypage/edit" exact component = {MyPageEdit}/>
             <Route path="/imgur" exact component={Imgur}></Route>
+
+            <Route path="/new" exact component={NewSearch}></Route>
           </div>
         </Navigation>
       );
