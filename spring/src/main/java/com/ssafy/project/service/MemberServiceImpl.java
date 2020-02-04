@@ -117,6 +117,9 @@ public class MemberServiceImpl implements MemberService {
 	public Member login(String mem_id, String mem_pw) {
 		try {
 			Member member = dao.search(mem_id);
+			if(dao.getAuth(mem_id) == 3) {
+				throw new MemberException("탈퇴한 회원입니다.");
+			}
 			if (member == null) {
 				throw new MemberException("등록되지 않은 회원입니다.");
 			}
