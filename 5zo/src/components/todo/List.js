@@ -8,6 +8,7 @@ import Card from "./Card";
 import Icon from "@material-ui/core/Icon";
 import { deleteList, editList } from "../../actions";
 import { Droppable } from "react-beautiful-dnd";
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
   root: {
@@ -68,6 +69,7 @@ class List extends React.Component {
             card={this.props.cards[card_id]}
             cardlist_id={this.props.cardlist_id}
             key={card_id}
+            editMode={this.props.editMode}
           />
         );
       } else {
@@ -118,7 +120,7 @@ class List extends React.Component {
             className={classes.titleContainer}
             onClick={() => this.setState({ isEditing: true })}
           >
-            {this.props.title}
+            <Typography variant={this.props.editMode?"h2":"h6"}>{this.props.title}</Typography>
             <Icon
               className={classes.delete}
               fontSize="small"

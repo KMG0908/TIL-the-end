@@ -1,37 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import Icon from "@material-ui/core/Icon";
-import { deleteCard, editCard } from "../../actions";
+import { editCard } from "../../actions";
 import TrelloForm from "./TrelloForm";
 import { Draggable } from "react-beautiful-dnd";
 
-const styles = theme => ({
-  paper: {
-    textAlign: "left",
-    padding: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    color: theme.palette.text.secondary,
-    minHeight: "60px",
-    display: "flex"
-  },
-  delete: {
-    visibility: "hidden",
-    display: "none",
-    right: "5px",
-    bottom: "5px",
-    marginLeft: "auto",
-    opacity: "0.5",
-    "$paper:hover &": {
-      cursor: "pointer",
-      visibility: "visible"
-    },
-    "&:hover": {
-      opacity: "0.8"
-    }
-  }
-});
+import CardForm from "./CardForm";
 
 class Card extends React.Component {
   state = {
@@ -71,26 +45,24 @@ class Card extends React.Component {
   };
 
   renderCard = () => {
-    const { classes } = this.props;
     return (
-      <Draggable draggableId={`card-${this.props.card_id}`} index={this.props.index}>
+      <Draggable
+        draggableId={`card-${this.props.card_id}`}
+        index={this.props.index}
+      >
         {provided => (
           <Paper
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            className={classes.paper}
             onDoubleClick={() => this.setState({ isEditing: true })}
+            expanded={this.props.editMode}
           >
-            {this.props.card.card_name}
-
-            <Icon
-              className={classes.delete}
-              fontSize="small"
-              onMouseDown={this.handleDeleteCard}
-            >
-              delete
-            </Icon>
+            <CardForm
+              card={this.props.card}
+              cardlist_id={this.props.cardlist_id}
+              editMode={this.props.editMode}
+            />
           </Paper>
         )}
       </Draggable>
@@ -98,7 +70,7 @@ class Card extends React.Component {
   };
 
   render() {
-    if (this.state.isEditing) {
+    if (this.state.isEditing && !this.props.editMode) {
       return this.renderEditForm();
     } else {
       return this.renderCard();
@@ -106,6 +78,4 @@ class Card extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(
-  connect(null, { deleteCard, editCard })(Card)
-);
+export default connect(null, { editCard })(Card);

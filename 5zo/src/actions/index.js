@@ -197,7 +197,6 @@ export const memInfoChangeReset = () => async (dispatch, getState) => {
 
 export const addBoard = (mem_id, board_date) => async dispatch => {
   const board_lists = "[]";
-  console.log(mem_id);
   const response = await apis.post("/board", {
     mem_id,
     board_date,
@@ -261,7 +260,7 @@ export const addList = (board_id, cardlist_name, board_date) => async (
     const res = await apis.post("/board", {
       mem_id,
       board_date,
-      board_lists
+      board_lists,
     });
     board_id = res.data.data
     dispatch({
@@ -271,10 +270,12 @@ export const addList = (board_id, cardlist_name, board_date) => async (
   }
 
   const cardlist_cards = "[]";
+  const cardlist_secret = 0
   const response = await apis.post(`/cardlist`, {
     board_id,
     cardlist_name,
-    cardlist_cards
+    cardlist_cards,
+    cardlist_secret
   });
   if (response.data.state == "ok") {
     const cardlist_id = response.data.data;
@@ -344,7 +345,7 @@ export const addCard = (cardlist_id, card_name) => async (
     const cardList = getState().cardLists[cardlist_id];
     const cardlist_cards = JSON.stringify(cardList.cardlist_cards);
     const cardlist_name = cardList.cardlist_name;
-    await apis.put("/cardlist", { cardlist_cards, cardlist_id, cardlist_name });
+    await apis.put("/cardlist", {...cardList, cardlist_cards });
   }
 };
 

@@ -7,6 +7,7 @@ import { sort } from "../../actions";
 import DailyBoard from "./DailyBoard";
 import TodoBoard from "./TodoBoard";
 import { connect } from "react-redux";
+import Hidden from "@material-ui/core/Hidden";
 
 const styles = theme => ({
   root: {
@@ -24,30 +25,55 @@ const styles = theme => ({
     color: theme.palette.text.secondary,
     minHeight: "300px",
     height: "100%"
+  },
+  items: {
+    transition: theme.transitions.create("all", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
   }
 });
 
 class Todo extends React.Component {
+  state = { editMode: false };
+
   FormRow() {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <Grid item md={4} sm={12}>
+        <Grid
+          item
+          className={classes.items}
+          md={this.state.editMode ? 11 : 4}
+          sm={12}
+        >
           <Paper className={classes.daily}>
-            <DailyBoard />
+            <DailyBoard
+              editMode={this.state.editMode}
+              onEditButton={() => {
+                this.setState({ editMode: !this.state.editMode });
+              }}
+            />
           </Paper>
         </Grid>
-        <Grid item md={8} sm={12} overflow="hidden">
-          <Paper className={classes.lists}>
-            <TodoBoard />
-          </Paper>
-        </Grid>
+        <Hidden smDown>
+          <Grid
+            item
+            className={classes.items}
+            md={this.state.editMode ? 1 : 8}
+            sm={12}
+            overflow="hidden"
+          >
+            <Paper className={classes.lists}>
+              <TodoBoard />
+            </Paper>
+          </Grid>
+        </Hidden>
       </React.Fragment>
     );
   }
 
   onDragEnd = result => {
-    console.log(result);
     const { destination, source, draggableId, type } = result;
     if (
       !destination ||

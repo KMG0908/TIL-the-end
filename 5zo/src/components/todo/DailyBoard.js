@@ -8,6 +8,7 @@ import { fetchDailyLists } from "../../actions";
 import TrelloCreate from "./TrelloCreate";
 import { connect } from "react-redux";
 import DatePicker from "./DatePicker";
+import Icon from "@material-ui/core/Icon";
 
 const styles = theme => ({
   root: {
@@ -28,12 +29,9 @@ const styles = theme => ({
     width: "100%"
   }
 });
-// const date = "2020-02-10";
 class DailyBoard extends React.Component {
   state = {
-    date: new Date()
-      .toISOString()
-      .split("T")[0]
+    date: new Date().toISOString().split("T")[0]
   };
 
   componentDidMount() {
@@ -75,6 +73,7 @@ class DailyBoard extends React.Component {
                       board_id={this.props.boardDict[date]}
                       cardlist_id={this.props.cardLists[list].cardlist_id}
                       title={this.props.cardLists[list].cardlist_name}
+                      editMode={this.props.editMode}
                     />
                   </Paper>
                 </div>
@@ -100,6 +99,7 @@ class DailyBoard extends React.Component {
           {provided => (
             <Box container {...provided.droppableProps} ref={provided.innerRef}>
               <DatePicker
+              onEditButton={()=>{this.props.onEditButton()}}
                 onChangeDate={val => {
                   this.setState({ date: val });
                   this.props.fetchDailyLists(
