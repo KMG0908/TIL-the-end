@@ -51,7 +51,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
-			<version>2.2.4.RELEASE</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
