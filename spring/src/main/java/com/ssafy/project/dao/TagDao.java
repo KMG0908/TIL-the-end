@@ -28,5 +28,7 @@ public interface TagDao {
 	public List<Tag> searchPublicTag(@Param("mem_id")String mem_id, @Param("keyword")String keyword);
 
 	public List<Tag> searchGlobalTag(String keyword);
+	
+	public List<Tag> globalTag();
 
 }

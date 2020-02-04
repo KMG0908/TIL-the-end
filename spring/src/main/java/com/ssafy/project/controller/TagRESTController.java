@@ -117,5 +117,11 @@ public class TagRESTController {
 		return handleSuccess(service.searchGlobalTag(keyword));
 	}
 	
+	@GetMapping("/api/search/global/tag/")
+	@ApiOperation("공개된 전체 tag 배열을 반환하는 쿼리문")
+	public ResponseEntity<Map<String, Object>> globalTag() {
+		return handleSuccess(service.globalTag());
+	}
+	
 
 }

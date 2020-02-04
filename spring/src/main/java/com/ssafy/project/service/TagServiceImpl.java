@@ -126,5 +126,15 @@ public class TagServiceImpl implements TagService {
 			throw new CardException("전체 태그 검색 중 오류 발생");
 		}
 	}
+	
+	@Override
+	public List<Tag> globalTag() {
+		try {
+			return dao.globalTag();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new CardException("전체 태그 조회 중 오류 발생");
+		}
+	}
 
 }
