@@ -28,7 +28,9 @@ import {
   FETCH_STATISTICS_MEMBER,
   FETCH_STATISTICS_DATA,
   SEARCH_KEYWORD,
-  MEM_TAG
+  MEM_TAG,
+  GET_DAILY_TASK,
+  GET_DAILY_CAL,
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -92,41 +94,41 @@ export const loginErrReset = () => async (dispatch, getState) => {
 };
 
 export const register = (loginId, loginPw, email, nick) => async dispatch => {
-  if(!loginId){
+  if (!loginId) {
     dispatch({ type: REGISTER_ERR, payload: '아이디를 입력해주세요.' })
     return;
   }
-  
-  if(!matches(loginId, /^[a-z0-9_\-]{5,20}$/)){
+
+  if (!matches(loginId, /^[a-z0-9_\-]{5,20}$/)) {
     dispatch({ type: REGISTER_ERR, payload: '올바르지 않은 아이디입니다. 5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.' })
     return;
   }
-  
-  if(!loginPw){
+
+  if (!loginPw) {
     dispatch({ type: REGISTER_ERR, payload: '비밀번호를 입력해주세요.' })
     return;
   }
-  
-  if(!matches(loginPw, /^[a-zA-Z0-9!@#$%^&*()]{8,16}$/)){
+
+  if (!matches(loginPw, /^[a-zA-Z0-9!@#$%^&*()]{8,16}$/)) {
     dispatch({ type: REGISTER_ERR, payload: '올바르지 않은 비밀번호입니다. 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.' })
     return;
   }
-  
-  if(!email){
+
+  if (!email) {
     dispatch({ type: REGISTER_ERR, payload: '이메일을 입력해주세요.' })
     return;
   }
-  
-  if(!isEmail(email)){
+
+  if (!isEmail(email)) {
     dispatch({ type: REGISTER_ERR, payload: '잘못된 이메일 형식입니다.' })
     return;
   }
-  
-  if(!nick){
+
+  if (!nick) {
     dispatch({ type: REGISTER_ERR, payload: '닉네임을 입력해주세요.' })
     return;
   }
-  
+
   const response = await apis.post(`/member`, {
     "mem_id": loginId,
     "mem_pw": loginPw,
@@ -158,30 +160,30 @@ export const logout = () => async dispatch => {
 };
 
 export const editMyinfo = (loginId, loginPw, email, nick) => async dispatch => {
-  if(!loginPw){
-    dispatch({type : EDIT_MYINFO_ERR, payload : '비밀번호를 입력해주세요.'})
+  if (!loginPw) {
+    dispatch({ type: EDIT_MYINFO_ERR, payload: '비밀번호를 입력해주세요.' })
   }
-  if(!email){
-    dispatch({type : EDIT_MYINFO_ERR, payload : '이메일을 입력해주세요.'})
+  if (!email) {
+    dispatch({ type: EDIT_MYINFO_ERR, payload: '이메일을 입력해주세요.' })
   }
-  if(!nick){
-    dispatch({type : EDIT_MYINFO_ERR, payload : '닉네임을 입력해주세요.'})
+  if (!nick) {
+    dispatch({ type: EDIT_MYINFO_ERR, payload: '닉네임을 입력해주세요.' })
   }
   const response = await apis.put(`/member`, {
-    'mem_id' : loginId,
-    'mem_pw' : loginPw,
-    'mem_email' : email,
-    'mem_nick' : nick
+    'mem_id': loginId,
+    'mem_pw': loginPw,
+    'mem_email': email,
+    'mem_nick': nick
   })
 
   const data = response.data.data;
 
   console.log('data');
   console.log(data);
-  if(data.mem_id){
-    dispatch({type : EDIT_MYINFO, payload : data})
-  }else{
-    dispatch({type : EDIT_MYINFO_ERR, payload : data})
+  if (data.mem_id) {
+    dispatch({ type: EDIT_MYINFO, payload: data })
+  } else {
+    dispatch({ type: EDIT_MYINFO_ERR, payload: data })
   }
 }
 export const editMyinfoErrReset = () => async (dispatch, getState) => {
@@ -190,8 +192,8 @@ export const editMyinfoErrReset = () => async (dispatch, getState) => {
   }
 }
 export const memInfoChangeReset = () => async (dispatch, getState) => {
-  if(getState().members.mem_info_change){
-    dispatch({ type : EDIT_MYINFO_CHANGE_RESET})
+  if (getState().members.mem_info_change) {
+    dispatch({ type: EDIT_MYINFO_CHANGE_RESET })
   }
 }
 
@@ -244,6 +246,8 @@ export const fetchTodoLists = mem_id => async dispatch => {
     });
   }
 };
+
+
 
 export const fetchList = board_id => async dispatch => {
   const response = await apis.get(`/board/${board_id}/cardlist`);
@@ -552,4 +556,24 @@ export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
     `/tag/public/${mem_id}/from/${from}/to/${to}`
   );
   dispatch({ type: MEM_TAG, payload: response.data });
+};
+
+export const getDailyTask = (mem_id, from, to) => async (dispatch, getState) => {
+  const start = date_to_str(from, "");
+  const end = date_to_str(to, "");
+  const response = await apis.get(`/card/daily/private/${mem_id}/from/${start}/to/${end}`);
+  console.log(response)
+  dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
+}
+
+
+export const getDailyCal = (mem_id, from, to) => async dispatch => {
+  const start = 20190101
+  const end = date_to_str(to, "");
+
+  console.log(end)
+  const response = await apis.get(`/board/member/${mem_id}/from/${start}/to/${end}`);
+  console.log(response.data.data);
+  dispatch({ type: GET_DAILY_CAL, payload: response.data.data});
+
 };

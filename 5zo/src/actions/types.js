@@ -42,3 +42,10 @@ export const SEARCH_KEYWORD = 'SEARCH_KEYWORD'
 
 // tag action
 export const MEM_TAG = 'MEM_TAG'
+
+
+//heatmap action
+
+export const GET_DAILY_TASK = 'GET_DAILY_TASK'
+
+export const GET_DAILY_CAL = 'GET_DAILY_CAL'

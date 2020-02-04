@@ -1,11 +1,9 @@
 import CalendarHeatmap from 'react-calendar-heatmap'
 import React from 'react'
-import 'react-calendar-heatmap/dist/styles.css'
-import moment from 'moment'
-import axios from 'axios';
 import { connect } from "react-redux";
+import { getLoggedInfo, getDailyTask } from "../../actions";
+import 'react-calendar-heatmap/dist/styles.css'
 
-var data = require('./heat.json');
 const today = new Date();
 class Heatmap extends React.Component {
   constructor(props) {
@@ -15,21 +13,34 @@ class Heatmap extends React.Component {
     }
   }
   componentDidMount() {
-    let appointments = data;
-    this.setState({
-      heat:appointments
-    })
+    const member = this.props.mem_info;
+    console.log(member)
+    console.log(today)
+    this.props.getDailyTask(member.mem_id, shiftDate(today, -365), today);
+
   }
-  render() {
-    const {heat} = this.state
-    return (
-      <div>
+  setHeatMap() {
+    if (this.props.board_info) {
+      const state = this.props.board_info
+      const data = []
+      for (let i = 0; i < state.length; i++) {
+        data.push({
+          count: state[i].board_id,
+          date: state[i].board_date
+        })
+      }
+      return (
         <CalendarHeatmap
           startDate={shiftDate(today, -365)}
           endDate={today}
-          values={heat}
+          values={data}
         />
-      </div>
+      )
+    }
+  }
+  render() {
+    return (
+      <div>{this.setHeatMap()}</div>
     )
   }
 }
@@ -40,4 +51,11 @@ function shiftDate(date, numDays) {
   return newDate;
 }
 
-export default Heatmap
+const mapStatetoProps = state => {
+  return {
+    mem_info: state.members.mem_info,
+    board_info: state.heatmaps.info
+  };
+};
+
+export default connect(mapStatetoProps, { getLoggedInfo, getDailyTask })(Heatmap);

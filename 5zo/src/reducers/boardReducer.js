@@ -3,7 +3,8 @@ import {
   ADD_LIST,
   DELETE_LIST,
   FETCH_DAILY_LIST,
-  FETCH_TODO_LIST
+  FETCH_TODO_LIST,
+  GET_DAILY_CAL
 } from "../actions/types";
 import _ from "lodash";
 
@@ -19,7 +20,10 @@ export default (state = {}, action) => {
       board.board_lists = JSON.parse(board.board_lists);
       return { ...state, [action.payload.board_id]: board };
     }
-
+    case GET_DAILY_CAL: {
+      const board = action.payload;
+      return{...state, 'info' : action.payload};
+    }
     case FETCH_TODO_LIST: {
       const board = action.payload;
       board.board_lists = JSON.parse(board.board_lists);
