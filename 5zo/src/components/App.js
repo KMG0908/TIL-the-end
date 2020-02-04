@@ -15,12 +15,11 @@ import Todo from "./todo/Todo";
 import history from "../history";
 import Register from "./Auth/Register";
 import Login from "./Auth/Login";
-import List from "@material-ui/core/List";
 import storage from "lib/storage";
 import MyPage from "./Auth/MyPage";
 import MyPageEdit from "./Auth/MyPageEdit";
 import Imgur from "./image_test/Imgur"
-
+import UserPage from "./userPage/UserPage"
 
 class App extends React.Component {
   initializeUserInfo = async () => {
@@ -69,6 +68,7 @@ class App extends React.Component {
             <Route path="/mypage" exact component = {MyPage}/>
             <Route path="/mypage/edit" exact component = {MyPageEdit}/>
             <Route path="/imgur" exact component={Imgur}></Route>
+            <Route path="/user" component={UserPage}></Route>
           </div>
         </Navigation>
       );
