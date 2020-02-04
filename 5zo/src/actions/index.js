@@ -34,6 +34,7 @@ import {
   GET_ALL_TAG,
   GET_DAILY_TASK,
   GET_DAILY_CAL,
+  GET_DAILY_LIST,
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -277,7 +278,7 @@ export const addList = (board_id, cardlist_name, board_date) => async (
     const board_lists = JSON.stringify(board.board_lists);
     let form = new FormData();
     form.append("board_id", board_id);
-    form.append("board_lists", board_lists);
+    form.append("", board_lists);
     await apis.patch(`board/${board_id}`, form);
   }
 };
@@ -579,6 +580,33 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
   console.log(end)
   const response = await apis.get(`/board/member/${mem_id}/from/${start}/to/${end}`);
   console.log(response.data.data);
+<<<<<<< HEAD
   dispatch({ type: GET_DAILY_CAL, payload: response.data.data });
+=======
+
+  //const arr = await apis.get(`/board/${response.data.data[i].board_id}`);
+  let app = [];
+
+  for (let i = 0; i < response.data.data.length; i++) {
+    console.log("aaaaaaaaaaaa")
+    let cardlist = await apis.get(`/board/${response.data.data[i].board_id}`);
+    if (cardlist.data.state === "ok") {
+      console.log(cardlist.data.data)
+      //dispatch({ type: GET_DAILY_CAL, payload: [cardlist.data.data] });
+    }
+  }
+  console.log(app)
+  
+  dispatch({ type: GET_DAILY_CAL, payload: app });
+
+};
+
+
+
+export const getDailyList = (board_li) => async (dispatch, getState) => {
+  const response = await apis.get(`/board/${board_li}`);
+  console.log(response)
+  dispatch({ type: GET_DAILY_LIST, payload: response.data.data });
+>>>>>>> yang/calendar
 
 };

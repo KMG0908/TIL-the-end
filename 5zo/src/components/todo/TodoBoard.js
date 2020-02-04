@@ -60,7 +60,7 @@ class TodoBoard extends React.Component {
     const { classes } = this.props;
     
     if (this.props.boards && this.props.boardDict[date]) {
-      console.log(this.props.boardDict[date])
+      console.log(this.props.boards)
       const board_lists = Array.isArray(
         this.props.boards[this.props.boardDict[date]].board_lists
       )

@@ -50,3 +50,4 @@ export const GET_ALL_TAG = 'GET_ALL_TAG'
 export const GET_DAILY_TASK = 'GET_DAILY_TASK'
 
 export const GET_DAILY_CAL = 'GET_DAILY_CAL'
+export const GET_DAILY_LIST = 'GET_DAILY_LIST'
