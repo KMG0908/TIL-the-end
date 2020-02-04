@@ -29,6 +29,8 @@ const styles = theme => ({
     width: "100%"
   }
 });
+
+const today = new Date().toISOString().split("T")[0];
 class DailyBoard extends React.Component {
   state = {
     date: new Date().toISOString().split("T")[0]
@@ -62,7 +64,7 @@ class DailyBoard extends React.Component {
               key={list}
             >
               {provided => (
-                <div key={list}>
+                <div key={this.props.cardLists[list].cardlist_id}>
                   <Paper
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
@@ -71,6 +73,7 @@ class DailyBoard extends React.Component {
                   >
                     <List
                       board_id={this.props.boardDict[date]}
+                      date={date}
                       cardlist_id={this.props.cardLists[list].cardlist_id}
                       title={this.props.cardLists[list].cardlist_name}
                       editMode={this.props.editMode}
@@ -94,12 +97,14 @@ class DailyBoard extends React.Component {
         <Droppable
           droppableId={String(this.props.boardDict[date])}
           direction="vertical"
-          type="list"
+          type="list2"
         >
           {provided => (
-            <Box container {...provided.droppableProps} ref={provided.innerRef}>
+            <Box {...provided.droppableProps} ref={provided.innerRef}>
               <DatePicker
-              onEditButton={()=>{this.props.onEditButton()}}
+                onEditButton={() => {
+                  this.props.onEditButton();
+                }}
                 onChangeDate={val => {
                   this.setState({ date: val });
                   this.props.fetchDailyLists(
@@ -110,12 +115,14 @@ class DailyBoard extends React.Component {
               />
               {this.RenderList()}
               {provided.placeholder}
-              <Paper className={classes.addList} elevation={0}>
-                <TrelloCreate
-                  date={date}
-                  board_id={this.props.boardDict[date]}
-                />
-              </Paper>
+              {this.state.date >= today ? (
+                <Paper className={classes.addList} elevation={0}>
+                  <TrelloCreate
+                    date={date}
+                    board_id={this.props.boardDict[date]}
+                  />
+                </Paper>
+              ) : null}
             </Box>
           )}
         </Droppable>

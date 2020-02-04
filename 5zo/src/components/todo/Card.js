@@ -7,6 +7,7 @@ import { Draggable } from "react-beautiful-dnd";
 
 import CardForm from "./CardForm";
 
+const today = new Date().toISOString().split("T")[0];
 class Card extends React.Component {
   state = {
     isEditing: false,
@@ -56,9 +57,10 @@ class Card extends React.Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             onDoubleClick={() => this.setState({ isEditing: true })}
-            expanded={this.props.editMode}
+            expanded={this.props.editMode ? this.props.editMode : null}
           >
             <CardForm
+              date={this.props.date ? this.props.date : null}
               card={this.props.card}
               cardlist_id={this.props.cardlist_id}
               editMode={this.props.editMode}
@@ -70,7 +72,7 @@ class Card extends React.Component {
   };
 
   render() {
-    if (this.state.isEditing && !this.props.editMode) {
+    if (this.state.isEditing && (this.props.date>=today||!this.props.date)) {
       return this.renderEditForm();
     } else {
       return this.renderCard();
