@@ -54,7 +54,7 @@ class App extends React.Component {
       );
     } else { // 로그인했을 때
       return (
-        <Navigation nickname={this.props.members.mem_info.mem_nick}>
+        <Navigation nickname={this.props.members.mem_info.mem_nick} user_id={this.props.members.mem_info.mem_id}>
           <div>
             <Route path="/" exact component={Main} />
             <Route path="/calendar" exact component={Calendar} />

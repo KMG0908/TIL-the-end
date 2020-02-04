@@ -8,6 +8,7 @@ import TagFrequencyChart from "./TagFrequencyChart"
 import CardCountChartWeek from "./CardCountChartWeek"
 import CardCountChartMonth from "./CardCountChartMonth"
 import CardCountChartSelect from "./CardCountChartSelect"
+import TagPage from "../tags/Tags"
 import "./statistics.css"
 import storage from "lib/storage";
 
@@ -113,6 +114,7 @@ class Statistics extends React.Component {
           {this.setStandardButton()}
           {calendar}
           <div className="charts">
+            <TagPage></TagPage>
             <TagFrequencyChart></TagFrequencyChart>
             {linechart}
           </div>

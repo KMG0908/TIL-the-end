@@ -1,0 +1,9 @@
+.none{
+  display: none;
+  border: 0px;
+  width: 100%;
+}
+
+.empty{
+  display: block;
+}

@@ -208,7 +208,7 @@ function Navigation(props) {
         </div>
         <Divider />
 
-        <SidebarList/>
+        <SidebarList user_id={props.user_id}/>
       </Drawer>
       <main
         className={clsx(classes.content, {

@@ -12,14 +12,15 @@ import { DateRangePicker, isInclusivelyBeforeDay, isInclusivelyAfterDay } from '
 // https://github.com/airbnb/react-dates
 class PeriodSelect extends React.Component{
   componentDidMount() {
-    if(!this.props.info){
-      setTimeout(
-        () => this.props.fetchStatisticsData(moment().subtract(7, 'day'), moment().subtract(1, 'day'), moment())  // startDate, endDate, availableDate
-      , 100)
-    }
-    else{
-      this.props.fetchStatisticsData(moment().subtract(7, 'day'), moment().subtract(1, 'day'), moment()) 
-    }
+    // if(!this.props.info){
+    //   setTimeout(
+    //     () => this.props.fetchStatisticsData(moment().subtract(7, 'day'), moment().subtract(1, 'day'), moment())  // startDate, endDate, availableDate
+    //   , 100)
+    // }
+    // else{
+    //   this.props.fetchStatisticsData(moment().subtract(7, 'day'), moment().subtract(1, 'day'), moment()) 
+    // }
+    this.props.fetchStatisticsData(moment().subtract(7, 'day'), moment().subtract(1, 'day'), moment()) 
   }
   constructor(props){
     super(props);

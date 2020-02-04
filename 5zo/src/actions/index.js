@@ -34,7 +34,7 @@ import {
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
-import { isEmail, isLength, isAlphanumeric, matches } from "validator";
+import { isEmail, matches } from "validator";
 
 export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
@@ -48,33 +48,16 @@ export const login = (loginId, loginPw) => async dispatch => {
   });
   const data = response.data.data;
 
-  if (!loginId) {
-    dispatch({ type: LOGIN_ERR, payload: "아이디를 입력해주세요." });
-    return;
-  }
-
-  if (!loginPw) {
-    dispatch({ type: LOGIN_ERR, payload: "비밀번호를 입력해주세요." });
-    return;
-  }
-
   if (data.mem_id) {
     const response = await apis.get(`/member/${data.mem_id}`);
-    //const joinedDate = response.data.data.mem_reg_date.replace(/-/gi, '/');
-    const joinedDate = "2019/02/03";
+    const joinedDate = response.data.data.mem_reg_date.replace(/-/gi, '/');
+    // const joinedDate = "2019/02/03";
     var isAvailableWeek = true;
     var isAvailableMonth = true;
 
     if (new Date(joinedDate) > new Date(moment().subtract(7, "days")))
       isAvailableWeek = false;
-    if (
-      new Date(joinedDate) >
-      new Date(
-        moment()
-          .startOf("month")
-          .subtract(1, "month")
-      )
-    )
+    if (new Date(joinedDate) > new Date(moment().startOf("month").subtract(1, "month")))
       isAvailableMonth = false;
 
     data.joinedDate = joinedDate;
@@ -349,7 +332,7 @@ export const addCard = (cardlist_id, card_name) => async (
     const cardList = getState().cardLists[cardlist_id];
     const cardlist_cards = JSON.stringify(cardList.cardlist_cards);
     const cardlist_name = cardList.cardlist_name;
-    await apis.put("/cardlist", {...cardList, cardlist_cards });
+    await apis.put("/cardlist", { ...cardList, cardlist_cards });
   }
 };
 
@@ -456,12 +439,11 @@ export const fetchStatisticsData = (
   endDate,
   availableDate
 ) => async (dispatch, getState) => {
-  console.log(getState());
   const joinedDate = getState().members.mem_info.joinedDate;
   //const joinedDate = moment('2019/02/03')
   var calendarStartDate = startDate;
   if (new Date(joinedDate) > new Date(calendarStartDate))
-    calendarStartDate = joinedDate;
+    calendarStartDate = moment(joinedDate);
 
   const date = {
     startDate: calendarStartDate,
@@ -474,40 +456,40 @@ export const fetchStatisticsData = (
     date["availableDate"] = getState().statistics.info.date.availableDate;
   }
 
-  const dates = [];
-  const dailyTask = [];
+  var start = date_to_str(new Date(startDate), "");
+  var end = date_to_str(new Date(endDate), "");
 
-  // const response = await apis.get(`/card/daily/all/${getState().members.mem_info.mem_id}`);
-  // const responseData = response.data.data;
+  var dates = [];
+  var dailyTask = [];
 
-  // for(let i=0; i<responseData.length; i++){
-  //   console.log(responseData[i].board_date + " " + responseData[i].board_id)
-  //   dates.push(date_to_str(new Date(moment(responseData[i].board_date)), "-"))
-  //   dailyTask.push(responseData[i].board_id);
-  // }
+  var response = await apis.get(`/card/daily/private/${getState().members.mem_info.mem_id}/from/${start}/to/${end}`);
+  const responseData = response.data.data;
 
-  let cnt = 0;
-  const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
-  while (true) {
-    let date_ = date_to_str(
-      new Date(moment(date["startDate"]).add(cnt, "days")),
-      "-"
-    );
-    if (date_ === date_to_str(new Date(date["endDate"]), "-")) break;
-    dates.push(date_);
-    dailyTask.push(getRandom(0, 10));
-    cnt++;
+  for (let i = 0; i < responseData.length; i++) {
+    console.log(responseData[i].board_date + " " + responseData[i].board_id)
+    dates.push(date_to_str(new Date(moment(responseData[i].board_date)), "-"))
+    dailyTask.push(responseData[i].board_id);
   }
+
+  // let cnt = 0;
+  // const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
+  // while (true) {
+  //   let date_ = date_to_str(
+  //     new Date(moment(date["startDate"]).add(cnt, "days")),
+  //     "-"
+  //   );
+  //   if (date_ === date_to_str(new Date(date["endDate"]), "-")) break;
+  //   dates.push(date_);
+  //   dailyTask.push(getRandom(0, 10));
+  //   cnt++;
+  // }
 
   const data = {
     dates: dates,
     dailyTask: dailyTask
   };
 
-  var start = date_to_str(new Date(startDate), "");
-  var end = date_to_str(new Date(endDate), "");
-
-  const response = await apis.get(
+  response = await apis.get(
     `/tag/public/${getState().members.mem_info.mem_id}/from/${start}/to/${end}`
   );
   const tag_data = response.data.data;
@@ -574,6 +556,6 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
   console.log(end)
   const response = await apis.get(`/board/member/${mem_id}/from/${start}/to/${end}`);
   console.log(response.data.data);
-  dispatch({ type: GET_DAILY_CAL, payload: response.data.data});
+  dispatch({ type: GET_DAILY_CAL, payload: response.data.data });
 
 };
