@@ -41,19 +41,18 @@ const ListsContainer = styled(Box)`
 `;
 
 const Contain = styled(Container)`
-  padding:0;  
-height: 100%;
+  padding: 0;
+  height: 100%;
   display: flex;
   overflow: auto;
   justifycontent: space-around;
-  flexwrap: wrap;
 `;
 
-const date = "9999-12-31"
+const date = "9999-12-31";
 class TodoBoard extends React.Component {
   componentDidMount() {
     if (this.props.members.mem_info) {
-      this.props.fetchDailyLists(this.props.members.mem_info.mem_id,date);
+      this.props.fetchDailyLists(this.props.members.mem_info.mem_id, date);
     }
   }
 
@@ -64,18 +63,12 @@ class TodoBoard extends React.Component {
         this.props.boards[this.props.boardDict[date]].board_lists
       )
         ? this.props.boards[this.props.boardDict[date]].board_lists
-        : JSON.parse(
-            this.props.boards[this.props.boardDict[date]].board_lists
-          );
+        : JSON.parse(this.props.boards[this.props.boardDict[date]].board_lists);
 
       return board_lists.map((list, index) => {
         if (this.props.cardLists[list]) {
           return (
-            <Draggable
-              draggableId={`list-${list}`}
-              index={index}
-              key={list}
-            >
+            <Draggable draggableId={`list-${list}`} index={index} key={list}>
               {provided => (
                 <Grid spacing={2} key={this.props.cardLists[list].cardlist_id}>
                   <Paper
@@ -118,7 +111,10 @@ class TodoBoard extends React.Component {
               {this.RenderList()}
               {provided.placeholder}
               <Box item className={classes.addList} elevation={0}>
-                <TrelloCreate date={date} board_id={this.props.boardDict[date]} />
+                <TrelloCreate
+                  date={date}
+                  board_id={this.props.boardDict[date]}
+                />
               </Box>
             </ListsContainer>
           )}
