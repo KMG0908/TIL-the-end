@@ -46,6 +46,8 @@ const styles = theme => ({
   }
 });
 
+const today = new Date().toISOString().split("T")[0];
+
 class List extends React.Component {
   state = {
     isEditing: false,
@@ -66,6 +68,7 @@ class List extends React.Component {
           <Card
             card_id={card_id}
             index={index}
+            date={this.props.date ? this.props.date : null}
             card={this.props.cards[card_id]}
             cardlist_id={this.props.cardlist_id}
             key={card_id}
@@ -120,7 +123,9 @@ class List extends React.Component {
             className={classes.titleContainer}
             onClick={() => this.setState({ isEditing: true })}
           >
-            <Typography variant={this.props.editMode?"h2":"h6"}>{this.props.title}</Typography>
+            <Typography variant={this.props.editMode ? "h2" : "h6"}>
+              {this.props.title}
+            </Typography>
             <Icon
               className={classes.delete}
               fontSize="small"
@@ -130,14 +135,16 @@ class List extends React.Component {
             </Icon>
           </div>
         )}
-        <Droppable droppableId={String(this.props.cardlist_id)} type="card">
+        <Droppable droppableId={String(this.props.cardlist_id)} type={this.props.date>=today||!this.props.date?"card":"card1"}>
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {this.renderCard()}
               {provided.placeholder}
-              <Box className={classes.create} elevation={0}>
-                <TrelloCreate cardlist_id={this.props.cardlist_id} />
-              </Box>
+              {this.props.date >= today||!this.props.date ? (
+                <Box className={classes.create} elevation={0}>
+                  <TrelloCreate cardlist_id={this.props.cardlist_id} />
+                </Box>
+              ) : null}
             </div>
           )}
         </Droppable>
