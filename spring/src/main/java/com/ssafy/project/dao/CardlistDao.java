@@ -1,11 +1,13 @@
 package com.ssafy.project.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.project.dto.Cardlist;
+import com.ssafy.project.dto.CardlistSearch;
 
 @Mapper
 public interface CardlistDao {
@@ -22,11 +24,11 @@ public interface CardlistDao {
 
 	public void patch(Cardlist cardlist);
 
-	public List<Cardlist> searchPrivateCardlist(@Param("mem_id")String mem_id, @Param("keyword")String keyword);
+	public List<CardlistSearch> searchPrivateCardlist(Map<String, Object> params);
 
-	public List<Cardlist> searchPublicCardlist(@Param("mem_id")String mem_id, @Param("keyword")String keyword);
+	public List<CardlistSearch> searchPublicCardlist(Map<String, Object> params);
 
-	public List<Cardlist> searchGlobalCardlist(String keyword);
+	public List<CardlistSearch> searchGlobalCardlist(Map<String, Object> params);
 
 	public void movecardlist(@Param("cardlist_id")int cardlist_id, @Param("board_id")int board_id);
 }

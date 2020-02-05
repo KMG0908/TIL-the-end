@@ -5,6 +5,7 @@
 	<typeAliases>
 		<typeAlias type="com.ssafy.project.dto.Member" alias="member" />
 		<typeAlias type="com.ssafy.project.dto.Cardlist" alias="cardlist" />
+		<typeAlias type="com.ssafy.project.dto.CardlistSearch" alias="cardlistsearch" />
 		<typeAlias type="com.ssafy.project.dto.Card" alias="card" />
 		<typeAlias type="com.ssafy.project.dto.Tag" alias="tag" />
 		<typeAlias type="com.ssafy.project.dto.Cardlist_Tag" alias="cardlist_tag" />
