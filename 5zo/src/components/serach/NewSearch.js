@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import Chips from 'react-chips'
 import { connect } from 'react-redux';
-import { getAllTag, searchCLByTags } from 'actions';
-import CardList from "./CardList";
-import NewCardList from './NewCardList';
-
+import { getAllTag, searchCardlist } from 'actions';
+import NewCard from './NewCard'
 class NewSearch extends Component {
   componentDidMount() {
     this.props.getAllTag()
@@ -20,23 +18,39 @@ class NewSearch extends Component {
 
   onChange = chips => {
     this.setState({ chips });
-    this.props.searchCLByTags(chips);
+    this.props.searchCardlist(chips);
   }
 
   render() {
     return (
       <>
         <div style={{ position: "relative", textAlign: "center" }}>
-          <div style={{ display: 'inline-block', width: 700 }}>
+          <div style={{ display: 'inline-block', width: '70%' }}>
             <Chips
               value={this.state.chips}
+              placeholder={"키워드를 입력 후 콤마 ( , ) 를 눌러 추가하세요. ( ex. #aaa + ',' ) "}
               onChange={this.onChange}
               suggestions={this.props.tags ? this.props.tags : []}
-
             />
-          <NewCardList cardLists={[1, 2, 3]} ></NewCardList>
+            <div>
+              <NewCard/>
+              <NewCard/>
+              <NewCard/>
+              <NewCard/>
+              <NewCard/>
+              <NewCard/>
+              <NewCard/>
+              <NewCard/>
+              <NewCard/>
+              <NewCard/>
+              <NewCard/>
+
+
+            </div>
+
+
+
           </div>
-          <br />
         </div>
       </>
     );
@@ -46,8 +60,8 @@ class NewSearch extends Component {
 const mapStatetoProps = state => {
   return {
     tags: state.tag.tags,
-    cards: state.search.cards
+    cardLists: state.search.cardLists
   };
 }
 
-export default connect(mapStatetoProps, { getAllTag, searchCLByTags })(NewSearch)
+export default connect(mapStatetoProps, { getAllTag, searchCardlist })(NewSearch)

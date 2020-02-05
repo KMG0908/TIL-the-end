@@ -28,7 +28,7 @@ import {
   FETCH_STATISTICS_MEMBER,
   FETCH_STATISTICS_DATA,
   SEARCH_KEYWORD,
-  SEARCH_CL_BY_TAGS,
+  SEARCH_CARDLIST,
 
   MEM_TAG,
   GET_ALL_TAG,
@@ -543,13 +543,16 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
   dispatch({ type: SEARCH_KEYWORD, payload: cards });
 };
 
-export const searchCLByTags = (tags) => async ( dispatch, getState) => {
+export const searchCardlist = (keywords) => async ( dispatch, getState) => {
+  let keywords_string = ''
+  keywords.map(keyword => keywords_string += keyword + ',')
+  console.log(keywords_string)
   // const response = await apis.post('/search/cardlist/by/tags', {
-  //   tags
+
   // });
   // const data = response.data.data;
   // console.log(data);
-  dispatch ( { type : SEARCH_CL_BY_TAGS, payload : tags})
+  dispatch ( { type : SEARCH_CARDLIST, payload : []})
 }
 
 
