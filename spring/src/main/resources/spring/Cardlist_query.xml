@@ -1,85 +1,161 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="com.ssafy.project.dao.CardlistDao" >
-   	
-   	<insert id="insertCardlist" 
-   		parameterType="cardlist" 
-		useGeneratedKeys="true"
-		keyProperty="cardlist_id">
-   		insert into cardlist(board_id, cardlist_name, cardlist_cards, cardlist_secret)
-   		values(#{board_id}, #{cardlist_name}, #{cardlist_cards}, #{cardlist_secret})
-   	</insert>
-   	  	
-  	<select id="search" parameterType="int" resultType="cardlist">
-		select * 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.project.dao.CardlistDao">
+
+	<insert id="insertCardlist" parameterType="cardlist" useGeneratedKeys="true" keyProperty="cardlist_id">
+		insert into cardlist(board_id, cardlist_name, cardlist_cards, cardlist_secret)
+		values(#{board_id}, #{cardlist_name}, #{cardlist_cards}, #{cardlist_secret})
+	</insert>
+
+	<select id="search" parameterType="int" resultType="cardlist">
+		select *
 		from cardlist
 		where cardlist_id = #{cardlist_id}
 	</select>
-	
+
 	<update id="updateCardlist" parameterType="cardlist">
 		update cardlist
-		set	
+		set
 		cardlist_name = #{cardlist_name},
 		cardlist_cards = #{cardlist_cards},
 		board_id = #{board_id},
 		cardlist_secret = #{cardlist_secret}
 		where cardlist_id = #{cardlist_id}
 	</update>
-	
+
 	<update id="patch" parameterType="cardlist">
 		update cardlist
 		set
 		cardlist_cards = #{cardlist_cards}
 		where cardlist_id = #{cardlist_id}
 	</update>
-  	
-  	<delete id="deleteCardlist" parameterType="int">
+
+	<delete id="deleteCardlist" parameterType="int">
 		delete
 		from cardlist
 		where cardlist_id = #{cardlist_id}
 	</delete>
-	
+
 	<select id="getMaxCardlistId" resultType="int">
 		select max(cardlist_id)
 		from cardlist
 	</select>
-	
-  	
-  	<select id="searchPrivateCardlist" parameterType="string" resultType="cardlist">
-		select cl.*
-		from board b, cardlist cl
-		where
-		cardlist_name like concat('%',#{keyword},'%')	
-		and b.board_id = cl.board_id
-		and b.mem_id = #{mem_id}
+
+	<select id="searchPrivateCardlist" parameterType="java.util.HashMap" resultType="cardlistsearch">
+    <![CDATA[
+    select b.mem_id, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
+        from cardlist cl, card c, board b,
+            (select cl.cardlist_id, group_concat(t.tag_name) as tag_name
+            from tag t, cardlist_tag ct, cardlist cl
+            where cl.cardlist_id = ct.cardlist_id
+            and ct.tag_id = t.tag_id
+            group by cl.cardlist_id) tag
+    where 1=1 
+    and b.mem_id = #{mem_id}
+    and b.board_date < now()
+    ]]>
+		<choose>
+			<when test="keywordlist.size != 0">
+				<foreach collection="keywordlist" item="item" index="index">
+					and ( c.card_contents like concat ('%',#{item},'%') 
+					or c.card_name like concat ('%',#{item},'%') 
+					or cl.cardlist_name like concat ('%',#{item},'%')  )
+				</foreach>
+			</when>
+			<when test="taglist.size != 0">
+				<foreach collection="taglist" item="item" index="index">
+					and tag.tag_name like concat ('%',#{item},'%') 
+				</foreach>
+			</when>
+		</choose>
+    <![CDATA[
+    and c.cardlist_id = cl.cardlist_id
+    and tag.cardlist_id = cl.cardlist_id
+    and b.board_id = cl.board_id
+    group by cl.cardlist_id
+    ]]>
 	</select>
 
-	<select id="searchPublicCardlist" parameterType="string" resultType="cardlist">
-		select cl.*
-		from board b, cardlist cl
-		where
-		cardlist_name like concat('%',#{keyword},'%')	
-		and b.board_id = cl.board_id
-		and b.mem_id = #{mem_id}
-		and cl.cardlist_secret = false
+	<select id="searchPublicCardlist" parameterType="java.util.HashMap" resultType="cardlistsearch">
+    <![CDATA[
+    select b.mem_id, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
+        from cardlist cl, card c, board b,
+            (select cl.cardlist_id, group_concat(t.tag_name) as tag_name
+            from tag t, cardlist_tag ct, cardlist cl
+            where cl.cardlist_id = ct.cardlist_id
+            and ct.tag_id = t.tag_id
+            group by cl.cardlist_id) tag
+    where 1=1 
+    and b.mem_id = #{mem_id}
+    and b.board_date < now()
+    ]]>
+		<choose>
+			<when test="keywordlist.size != 0">
+				<foreach collection="keywordlist" item="item" index="index">
+					and ( c.card_contents like concat ('%',#{item},'%') 
+					or c.card_name like concat ('%',#{item},'%') 
+					or cl.cardlist_name like concat ('%',#{item},'%')  )
+				</foreach>
+			</when>
+			<when test="taglist.size != 0">
+				<foreach collection="taglist" item="item" index="index">
+					and tag.tag_name like concat ('%',#{item},'%') 
+				</foreach>
+			</when>
+		</choose>
+    <![CDATA[
+    and c.cardlist_id = cl.cardlist_id
+    and tag.cardlist_id = cl.cardlist_id
+    and cl.cardlist_secret = false
+    and c.card_secret = false
+    and b.board_id = cl.board_id
+    group by cl.cardlist_id
+    ]]>
 	</select>
 
-	<select id="searchGlobalCardlist" parameterType="string" resultType="cardlist">
-		select cl.*
-		from board b, cardlist cl
-		where
-		cardlist_name like concat('%',#{keyword},'%')	
-		and b.board_id = cl.board_id
-		and cl.cardlist_secret = false
+	<select id="searchGlobalCardlist" parameterType="java.util.HashMap" resultType="cardlistsearch">
+    <![CDATA[
+    select b.mem_id, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
+        from cardlist cl, card c, board b,
+            (select cl.cardlist_id, group_concat(t.tag_name) as tag_name
+            from tag t, cardlist_tag ct, cardlist cl
+            where cl.cardlist_id = ct.cardlist_id
+            and ct.tag_id = t.tag_id
+            group by cl.cardlist_id) tag
+    where 1=1 
+    and b.board_date < now()
+    ]]>
+		<choose>
+			<when test="keywordlist.size != 0">
+				<foreach collection="keywordlist" item="item" index="index">
+					and ( c.card_contents like concat ('%',#{item},'%') 
+					or c.card_name like concat ('%',#{item},'%') 
+					or cl.cardlist_name like concat ('%',#{item},'%')  )
+				</foreach>
+			</when>
+			<when test="taglist.size != 0">
+				<foreach collection="taglist" item="item" index="index">
+					and tag.tag_name like concat ('%',#{item},'%') 
+				</foreach>
+			</when>
+		</choose>
+    <![CDATA[
+    and c.cardlist_id = cl.cardlist_id
+    and tag.cardlist_id = cl.cardlist_id
+    and cl.cardlist_secret = false
+    and c.card_secret = false
+    and b.board_id = cl.board_id
+    group by cl.cardlist_id
+    ]]>
 	</select>
-  	
-  	
-  	<update id="movecardlist" parameterType="int"> 
+
+
+	<update id="movecardlist" parameterType="int">
 		update cardlist
 		set
 		board_id = #{board_id}
 		where cardlist_id = #{cardlist_id}
 	</update>
-  	
+
 </mapper>

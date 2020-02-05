@@ -1,15 +1,20 @@
 package com.ssafy.project.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.project.dao.CardlistDao;
-import com.ssafy.project.dto.Card;
 import com.ssafy.project.dto.CardException;
 import com.ssafy.project.dto.Cardlist;
 import com.ssafy.project.dto.CardlistException;
+import com.ssafy.project.dto.CardlistSearch;
 
 @Service
 public class CardlistServiceImpl implements CardlistService {
@@ -90,27 +95,79 @@ public class CardlistServiceImpl implements CardlistService {
 	}
 	
 	@Override
-	public List<Cardlist> searchPrivateCardlist(String mem_id, String keyword) {
+	public List<CardlistSearch> searchPrivateCardlist(String mem_id, String keyword) {
 		try {
-			return dao.searchPrivateCardlist(mem_id, keyword);
+			Map<String, Object> params = new HashMap<String, Object>();			 
+		    params.put("mem_id", mem_id); 
+		    
+		    String[] list = keyword.split(",");
+		    List<String> keywordlist = new ArrayList<String>();
+		    List<String> taglist = new ArrayList<String>();
+		    for (int i = 0; i < list.length; i++) {
+				if(list[i].startsWith("#")) {
+					taglist.add(list[i].substring(1));
+				}else {
+					keywordlist.add(list[i]);
+				}
+			}
+		    
+		    params.put("keywordlist", keywordlist); //map에 list를 넣는다.
+		    params.put("taglist", taglist); //map에 list를 넣는다.
+			
+			return dao.searchPrivateCardlist(params);
 		} catch (Exception e) {
 			throw new CardException(mem_id + "의 공개된 카드list 검색 중 오류 발생");
 		}
 	}
 	
 	@Override
-	public List<Cardlist> searchPublicCardlist(String mem_id, String keyword) {
+	public List<CardlistSearch> searchPublicCardlist(String mem_id, String keyword) {
 		try {
-			return dao.searchPublicCardlist(mem_id, keyword);
+			Map<String, Object> params = new HashMap<String, Object>();			 
+		    params.put("mem_id", mem_id); 
+		    
+		    String[] list = keyword.split(",");
+		    List<String> keywordlist = new ArrayList<String>();
+		    List<String> taglist = new ArrayList<String>();
+		    for (int i = 0; i < list.length; i++) {
+				if(list[i].startsWith("#")) {
+					taglist.add(list[i].substring(1));
+				}else {
+					keywordlist.add(list[i]);
+				}
+			}
+		    
+		    params.put("keywordlist", keywordlist); //map에 list를 넣는다.
+		    params.put("taglist", taglist); //map에 list를 넣는다.
+		    
+		    return dao.searchPublicCardlist(params);
 		} catch (Exception e) {
 			throw new CardException(mem_id + "의 전체 카드list 검색 중 오류 발생");
 		}
 	}
 	
 	@Override
-	public List<Cardlist> searchGlobalCardlist(String keyword) {
+	public List<CardlistSearch> searchGlobalCardlist(String keyword) {
 		try {
-			return dao.searchGlobalCardlist(keyword);
+			Map<String, Object> params = new HashMap<String, Object>();	
+//			System.out.println(keyword);
+		    String[] list = keyword.split(",");
+		    List<String> keywordlist = new ArrayList<String>();
+		    List<String> taglist = new ArrayList<String>();
+		    for (int i = 0; i < list.length; i++) {
+				if(list[i].startsWith("#")) {
+					taglist.add(list[i].substring(1));
+				}else {
+					keywordlist.add(list[i]);
+				}
+			}
+//		    System.out.println(keywordlist);
+//		    System.out.println(taglist);
+		    
+		    params.put("keywordlist", keywordlist); //map에 list를 넣는다.
+		    params.put("taglist", taglist); //map에 list를 넣는다.
+		    
+		    return dao.searchGlobalCardlist(params);
 		} catch (Exception e) {
 			throw new CardException("전체 카드list 검색 중 오류 발생");
 		}

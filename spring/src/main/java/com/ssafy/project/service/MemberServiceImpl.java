@@ -22,8 +22,8 @@ public class MemberServiceImpl implements MemberService {
 				throw new MemberException("동일한 아이디가 존재합니다");
 			} else if(dao.searchEmail(member.getMem_email())==1) {
 				throw new MemberException("동일한 이메일이 존재합니다");
-			} else if(dao.searchNick(member.getMem_nick())==1) {
-				throw new MemberException("동일한 닉네임이 존재합니다");
+//			} else if(dao.searchNick(member.getMem_nick())==1) {
+//				throw new MemberException("동일한 닉네임이 존재합니다");
 			} else {
 				dao.insertMember(member);
 //				System.out.println("member 생성 통과");
