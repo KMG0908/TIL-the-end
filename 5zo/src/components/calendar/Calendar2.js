@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import axios from 'axios';
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { getDailyCal, getDailyList, fetchDailyLists } from "../../actions";
+import { getDailyCal, fetchDailyLists } from "../../actions";
 import { getLoggedInfo } from "../../actions";
 import { connect } from "react-redux";
 const localizer = momentLocalizer(moment)
