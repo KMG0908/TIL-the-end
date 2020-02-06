@@ -155,9 +155,11 @@ public class CardlistServiceImpl implements CardlistService {
 		    List<String> keywordlist = new ArrayList<String>();
 		    List<String> taglist = new ArrayList<String>();
 		    for (int i = 0; i < list.length; i++) {
-				if(list[i].startsWith("#")) {
+		    	if(list[i].equals("")) {
+					continue;
+		    	} else if(list[i].startsWith("#")) {
 					taglist.add(list[i].substring(1));
-				}else {
+				} else {
 					keywordlist.add(list[i]);
 				}
 			}

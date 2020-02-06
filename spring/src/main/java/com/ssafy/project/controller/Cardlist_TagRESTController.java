@@ -66,7 +66,7 @@ public class Cardlist_TagRESTController {
 	}	
 	
 	@PostMapping("/api/cardlist_tag/")
-	@ApiOperation("cardtag 관계 신규 생성, 생성 성공시 card_tag_id 반환, 태그가 없으면 만들고 있으면 그 태그를 사용한다, 대소문자 구별 있음")
+	@ApiOperation("cardlist_tag 관계 신규 생성, 생성 성공시 cardlist_tag_id 반환, 태그가 없으면 만들고 있으면 그 태그를 사용한다, 대소문자 구별 있음")
 	public ResponseEntity<Map<String, Object>> insertcardlisttag(@RequestBody CardlistTagRequest request) {
 		service.insertCardlist_Tag(request.cardlist_id, request.tag_name);
 		int cardlist_tag_id = service.getMaxCardlistTagId();
@@ -75,14 +75,14 @@ public class Cardlist_TagRESTController {
 
 	// READ
 	@GetMapping("/api/cardlist_tag/{cardlist_id}")
-	@ApiOperation("카드리스트 하나의 태그들을 조회하는 기능, tag_id가 cardlist_tag_id이므로 카드리스트에서 태그 삭제시 tag api를 사용하지 않도록 주의바랍니다")
+	@ApiOperation("카드리스트 하나의 태그들을 조회하는 기능, 리턴되는 tag_id는 cardlist_tag_id이므로 카드리스트에서 태그 삭제시 tag api를 사용하지 않도록 주의바랍니다")
 	public ResponseEntity<Map<String, Object>> searchAll(@PathVariable int cardlist_id) {
 		return handleSuccess(service.searchAll(cardlist_id));
 	}
 
 	// DELETE
 	@DeleteMapping("/api/cardlist_tag/{cardlist_tag_id}")
-	@ApiOperation("cardlisttag 정보 삭제")
+	@ApiOperation("cardlist_tag 정보 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int cardlist_tag_id) {
 		service.deleteCardlist_Tag(cardlist_tag_id);
 		return handleSuccess(cardlist_tag_id + "번 카드-태그 삭제 완료");

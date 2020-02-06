@@ -17,6 +17,26 @@
 		insert into mem_option(mem_id, mem_auth, mem_post_def_secret)
 		values(#{mem_id}, 1, 1)
 	</insert>
+	
+	<insert id="insertEmailAuth" parameterType = "string">
+		insert into confirm_email(mem_id, email_auth, email_key)
+		values(#{mem_id}, false, #{authCode})		
+	</insert>
+	
+	<delete id="deletePrevAuth" parameterType = "string">
+		delete 
+		from confirm_email
+		where mem_id = #{mem_id}
+	</delete>
+	
+	<update id="postAuth" parameterType = "string">
+		update confirm_email
+		set
+		email_auth = true
+		where (select mem_id from mem_info where mem_email = #{mem_email}) = #{mem_id}
+		and email_key = #{authCode};
+	</update>
+	
 
 	<select id="searchId" parameterType="string" resultType="int">
 		select count(*)

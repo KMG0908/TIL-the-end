@@ -48,7 +48,7 @@ public class TagRESTController {
 
 	// CREATE
 	@PostMapping("/api/tag")
-	@ApiOperation("tag 신규 생성, 개발용입니다, 카드리스트에 태그를 추가하는 기능은 cardlist-tag-rest-api를 사용해주세요")
+	@ApiOperation("(개발자가 강제로 수정시키는 용도)tag 신규 생성, 개발용입니다, 카드리스트에 태그를 추가하는 기능은 cardlist-tag-rest-api를 사용해주세요")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Tag tag) {
 		service.insertTag(tag);
 		return handleSuccess(tag.getTag_id());
@@ -69,7 +69,7 @@ public class TagRESTController {
 
 	// UPDATE
 	@PutMapping("/api/tag")
-	@ApiOperation("tag 정보 수정, 수정가능한 정보는 이름뿐이다")
+	@ApiOperation("(개발자가 강제로 수정시키는 용도)tag 정보 수정, 수정가능한 정보는 이름뿐이다")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Tag tag) {
 		service.updateTag(tag);
 		return handleSuccess("수정 완료");
@@ -77,7 +77,7 @@ public class TagRESTController {
 
 	// DELETE
 	@DeleteMapping("/api/tag/{tag_id}")
-	@ApiOperation("tag 정보 삭제")
+	@ApiOperation("(개발자가 강제로 수정시키는 용도)tag 정보 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int tag_id) {
 		service.deleteTag(tag_id);
 		return handleSuccess("삭제 완료");
