@@ -19,14 +19,14 @@ import storage from "lib/storage";
 import MyPage from "./Auth/MyPage";
 import MyPageEdit from "./Auth/MyPageEdit";
 import Imgur from "./image_test/Imgur"
-import Daily from "./daily/Daily"
+import Daily from "./daily/Main"
 
 import NewSearch from "./serach/NewSearch";
 
 class App extends React.Component {
   initializeUserInfo = async () => {
-    const loggedInfo = storage.get("loggedInfo"); // 로그인 정보를 로컬스토리지에서 가져옵니다.
-    //if (!loggedInfo) return; // 로그인 정보가 없다면 여기서 멈춥니다.
+    const loggedInfo = storage.get("loggedInfo");
+    if (!loggedInfo) return;
 
     // const { UserActions } = this.props;
     // UserActions.setLoggedInfo(loggedInfo);

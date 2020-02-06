@@ -11,13 +11,11 @@ class Heatmap extends React.Component {
     data: [],
   }
   componentDidMount() {
-    const member = this.props.mem_info;
-    this.props.getDailyTask(member.mem_id, shiftDate(today, -365), today);
-
+    const user_id = this.props.user_id;
+    this.props.getDailyTask(user_id, shiftDate(today, -365), today);
   }
   getTooltipDataAttrs = (value) => {
     // Temporary hack around null value.date issue
-    console.log(value.date)
     if (!value || !value.date) {
       return {
         'data-tip': `No Tasks`,
@@ -31,6 +29,7 @@ class Heatmap extends React.Component {
     if (!value || !value.date) {
       return null;
     }
+    this.props.onHandleDate(value.date);
     alert(`${value.date} with task: ${value.count}`);
   };
   setHeatMap() {
@@ -69,9 +68,8 @@ function shiftDate(date, numDays) {
 
 const mapStatetoProps = state => {
   return {
-    mem_info: state.members.mem_info,
     board_info: state.heatmaps.info
   };
 };
 
-export default connect(mapStatetoProps, { getLoggedInfo, getDailyTask })(Heatmap);
+export default connect(mapStatetoProps, { getDailyTask })(Heatmap);
