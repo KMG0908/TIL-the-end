@@ -1,4 +1,4 @@
-import { FETCH_MEMBERS, LOGIN, LOGIN_ERR, REGISTER_ERR, REGISTER, REGISTER_RESET, SET_LOGGED_INFO, GET_LOGGED_INFO, LOGOUT, EDIT_MYINFO, EDIT_MYINFO_ERR, EDIT_MYINFO_CHANGE_RESET } from "../actions/types"
+import { FETCH_MEMBERS, LOGIN, LOGIN_ERR, REGISTER_ERR, REGISTER, REGISTER_RESET, SET_LOGGED_INFO, GET_LOGGED_INFO, LOGOUT, EDIT_MYINFO, EDIT_MYINFO_ERR, EDIT_MYINFO_CHANGE_RESET, GET_OTHER_MEMBER } from "../actions/types"
 import _ from "lodash";
 import { combineReducers } from "redux";
 
@@ -30,6 +30,8 @@ export default (state = {}, action) => {
       return {...state, "edit_myinfo_err" : action.payload}
     case EDIT_MYINFO_CHANGE_RESET:
       return { ...state, "mem_info_change" : undefined}
+    case GET_OTHER_MEMBER:
+      return {...state, "other_mem_info" : action.payload}
     default:
       return state
   }
