@@ -184,4 +184,17 @@ public class CardlistServiceImpl implements CardlistService {
 		}
 	}
 	
+	
+	@Override
+	public void cardlistcolorpatch(int cardlist_id, String cardlist_color) {
+		try {
+			Map<String, Object> params = new HashMap<String, Object>();	
+			params.put("cardlist_id", cardlist_id);
+			params.put("cardlist_color", cardlist_color);
+			dao.cardlistcolorpatch(params);
+		} catch (Exception e) {
+			throw new CardException("전체 카드list 이동 중 오류 발생");
+		}
+		
+	}
 }

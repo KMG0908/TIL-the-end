@@ -50,7 +50,11 @@ public interface MemberDao {
 
 	public void deletePrevAuth(@Param("mem_id") String mem_id);
 
-	public void postAuth(@Param("mem_id") String mem_id, @Param("mem_email") String mem_email,
+	public int postAuth(@Param("mem_id") String mem_id, @Param("mem_email") String mem_email,
 			@Param("authCode") String authCode);
+
+	public String searchIdByEmail(String mem_email);
+
+	public void setPw(@Param("mem_id") String mem_id,  @Param("authCode") String authCode);
 
 }

@@ -49,7 +49,7 @@ public class MailServiceImpl implements MailService {
 			
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append("이메일을 등록하신 이후 아이디 찾기와 비밀번호 찾기를 이용하실 수 있습니다.\n\n");
+			sb.append(" 'Til the end' 에 가입하신것을 환영합니다.\n\n");
 			sb.append("귀하의 인증 코드는 " + authCode + "입니다.\n\n");
 			sb.append("http://www.endtil.p-e.kr에 가입하신 적이 없는 경우 refresh6724.dev@gmail.com 으로 문의바랍니다.\n\n");
 
@@ -93,7 +93,7 @@ public class MailServiceImpl implements MailService {
 	@Override
 	public void postAuth(String mem_id, String mem_email, String authCode) {
 		try {			
-			dao.postAuth(mem_id, mem_email, authCode);
+			if(dao.postAuth(mem_id, mem_email, authCode) == 0) throw new Exception();
 		} catch (Exception e) {
 			e.printStackTrace();
 			if(e instanceof MemberException) {
@@ -104,5 +104,63 @@ public class MailServiceImpl implements MailService {
 		}
 		
 	}
+	
+	@Override
+	public void findId(String mem_email) {
+		try {
+			
+			if(dao.searchEmail(mem_email) == 0) throw new MailException("해당 이메일로 등록된 계정이 없습니다.");
+			SimpleMailMessage message= new SimpleMailMessage();
+			String subject = "Til the end 아이디 찾기 안내입니다.";			
+			String mem_id = dao.searchIdByEmail(mem_email);
+			StringBuilder sb = new StringBuilder();
+			sb.append("귀하의 아이디는 " + mem_id + "입니다.\n\n");
+			sb.append("http://www.endtil.p-e.kr에 가입하신 적이 없는 경우 refresh6724.dev@gmail.com 으로 문의바랍니다.\n\n");
+
+			message.setSubject(subject);
+			message.setText(sb.toString());
+			message.setTo(mem_email);
+			javaMailSender.send(message);
+			
+		} catch (Exception e) {
+			e.printStackTrace();			
+		}		
+	}
+	
+	@Override
+	public void findPw(String mem_id, String mem_email) {
+		try {			
+			if(dao.searchEmail(mem_email) == 0) throw new MailException("해당 이메일로 등록된 계정이 없습니다.");
+			if(dao.searchId(mem_id) == 0) throw new MailException("해당 아이디는 존재하지 않습니다.");
+			if(!dao.search(mem_id).getMem_email().equals(mem_email)) {
+				throw new MemberException(mem_email + "은 "  + mem_id + "에 등록된 이메일이 아닙니다.");
+			}
+			SimpleMailMessage message= new SimpleMailMessage();
+			String subject = "Til the end 임시비밀번호 발급 안내입니다.";	
+			StringBuilder sb = new StringBuilder();
+			
+			int ran = new Random().nextInt(900000000) + 100000000;
+			String authCode = String.valueOf(ran);
+			
+			dao.setPw(mem_id, authCode);
+			
+			sb.append("귀하의 임시비밀번호는 " + authCode + "입니다.\n\n");
+			
+			sb.append("임시비밀번호로 로그인 하신 후 반드시 비밀번호를 변경해주세요. \n\n");
+			
+			sb.append("http://www.endtil.p-e.kr에 가입하신 적이 없는 경우 refresh6724.dev@gmail.com 으로 문의바랍니다.\n\n");
+
+			message.setSubject(subject);
+			message.setText(sb.toString());
+			message.setTo(mem_email);
+			javaMailSender.send(message);
+			
+		} catch (Exception e) {
+			e.printStackTrace();			
+		}	
+		
+	}
+	
+	
 
 }

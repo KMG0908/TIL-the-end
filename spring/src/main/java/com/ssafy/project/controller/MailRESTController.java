@@ -85,5 +85,19 @@ public class MailRESTController {
 		service.postAuth(postauthvo.getMem_id(), postauthvo.getMem_email(), postauthvo.getAuthCode());
 		return handleSuccess("이메일 인증이 완료되었습니다.");
 	}
+	
+	@GetMapping("/api/email/findId/{mem_email}")
+	@ApiOperation("mem_email로 등록된 이메일로 아이디를 발송")
+	public ResponseEntity<Map<String, Object>> findId(@PathVariable String mem_email) {		
+		service.findId(mem_email);
+		return handleSuccess("등록된 이메일로 아이디를 발송하였습니다.");
+	}
+	
+	@GetMapping("/api/email/findPw/{mem_id}/{mem_email}")
+	@ApiOperation("mem_email로 등록된 이메일로 임시 비밀번호를 발송")
+	public ResponseEntity<Map<String, Object>> findPw(@PathVariable String mem_id, @PathVariable String mem_email) {		
+		service.findPw(mem_id, mem_email);
+		return handleSuccess("등록된 이메일로 임시 비밀번호를 발송하였습니다.");
+	}
 
 }

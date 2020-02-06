@@ -31,4 +31,6 @@ public interface CardlistDao {
 	public List<CardlistSearch> searchGlobalCardlist(Map<String, Object> params);
 
 	public void movecardlist(@Param("cardlist_id")int cardlist_id, @Param("board_id")int board_id);
+
+	public void cardlistcolorpatch(Map<String, Object> params);
 }

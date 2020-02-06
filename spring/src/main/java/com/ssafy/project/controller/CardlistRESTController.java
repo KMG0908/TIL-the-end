@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +20,8 @@ import com.ssafy.project.dto.Cardlist;
 import com.ssafy.project.service.CardlistService;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @RestController
 public class CardlistRESTController {
@@ -85,6 +86,20 @@ public class CardlistRESTController {
 	public ResponseEntity<Map<String, Object>> patch(@RequestBody Cardlist cardlist) {
 		service.patch(cardlist);
 		return handleSuccess(cardlist.getCardlist_id() + "번 카드리스트의 패치 완료");
+	}
+	
+	@PatchMapping("/api/cardlist/{cardlist_id}/color/{cardlist_color}")
+	@ApiOperation("")
+	public ResponseEntity<Map<String, Object>> cardlistcolorpatch(@RequestBody Cardlistcolorpatch cp) {
+		service.cardlistcolorpatch(cp.getCardlist_id(), cp.getCardlist_color());
+		return handleSuccess(cp.getCardlist_id() + "번 카드리스트의 색상 패치 완료");
+	}
+	
+	@NoArgsConstructor
+	@Data
+	private static class Cardlistcolorpatch {
+		private int cardlist_id;
+		private String cardlist_color;
 	}
 	
 	@PatchMapping("/api/card/{cardlist_id}/to/{board_id}")

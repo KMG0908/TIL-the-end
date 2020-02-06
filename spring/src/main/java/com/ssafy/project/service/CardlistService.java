@@ -27,5 +27,8 @@ public interface CardlistService {
 
 	void movecardlist(int cardlist_id, int board_id);
 
+	void cardlistcolorpatch(int cardlist_id, String cardlist_color);
+
+
 
 }

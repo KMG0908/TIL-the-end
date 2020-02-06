@@ -29,4 +29,6 @@ public class Cardlist implements Serializable {
 	
 	private int cardlist_heart;
 	
+	private String cardlist_color;
+	
 }

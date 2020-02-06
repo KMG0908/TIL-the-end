@@ -37,6 +37,18 @@
 		and email_key = #{authCode};
 	</update>
 	
+	<update id="setPw" parameterType="string">
+		update mem_info
+		set
+		mem_pw = #{authCode}
+		where mem_id = #{mem_id}
+	</update>
+	
+	<select id="searchIdByEmail" parameterType="string" resultType="string">
+		select mem_id
+		from mem_info
+		where mem_email = #{mem_email}
+	</select>
 
 	<select id="searchId" parameterType="string" resultType="int">
 		select count(*)
