@@ -59,7 +59,6 @@ class CardForm extends React.Component {
 
   handleChange = content => {
     this.setState({ card_contents: content });
-    console.log(this.state.card_contents);
   };
   onEditCard = event => {
     event.stopPropagation();
@@ -73,11 +72,19 @@ class CardForm extends React.Component {
     return (
       <div
         onClick={() => {
-          this.setState({ enableToolbar: true });
+          if (this.props.date === today) {
+            this.setState({ enableToolbar: true });
+          }
         }}
       >
         <div className={classes.paper}>
-          <Typography variant={this.props.editMode ? "h3" : "body1"}>
+          <Typography
+            variant={
+              this.props.editModeList === this.props.cardlist_id
+                ? "h3"
+                : "body1"
+            }
+          >
             {this.props.card.card_name}
           </Typography>
           <Icon
@@ -89,12 +96,12 @@ class CardForm extends React.Component {
           </Icon>
         </div>
         <Collapse
-          in={this.props.editMode}
+          in={this.props.editModeList === this.props.cardlist_id}
           className={classes.collapseCard}
           timeout="auto"
           unmountOnExit
         >
-          {this.state.enableToolbar && this.props.date == today ? (
+          {this.state.enableToolbar ? (
             <SunEditor
               lang="ko"
               enable={true}
@@ -130,7 +137,8 @@ class CardForm extends React.Component {
             />
           )}
 
-          {this.state.enableToolbar && this.props.date == today ? (
+          {this.state.enableToolbar &&
+          this.props.editModeList === this.props.cardlist_id ? (
             <Button
               className={classes.button}
               variant="contained"
@@ -146,6 +154,12 @@ class CardForm extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    editModeList: state.editModeList
+  };
+};
+
 export default withStyles(styles, { withTheme: true })(
-  connect(null, { deleteCard, editCard })(CardForm)
+  connect(mapStateToProps, { deleteCard, editCard })(CardForm)
 );

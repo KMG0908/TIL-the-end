@@ -8,9 +8,10 @@ import List from "./List";
 import TrelloCreate from "./TrelloCreate";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-
 import styled from "styled-components";
 import { connect } from "react-redux";
+
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
   root: {
@@ -39,7 +40,9 @@ const ListsContainer = styled(Box)`
   flex-direction: row;
   flexwrap: wrap;
 `;
-
+const Divs = styled.div`
+  overflow: hidden;
+`;
 const Contain = styled(Container)`
   padding: 0;
   height: 100%;
@@ -58,9 +61,8 @@ class TodoBoard extends React.Component {
 
   RenderList() {
     const { classes } = this.props;
-    
+
     if (this.props.boards && this.props.boardDict[date]) {
-      console.log(this.props.boards)
       const board_lists = Array.isArray(
         this.props.boards[this.props.boardDict[date]].board_lists
       )
@@ -97,31 +99,51 @@ class TodoBoard extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Contain>
-        <Droppable
-          droppableId={String(this.props.boardDict[date])}
-          type="list2"
-          direction="horizontal"
+      <Divs>
+        <Typography
+          variant="h4"
+          style={{
+            whiteSpace: "nowrap"
+          }}
         >
-          {provided => (
-            <ListsContainer
-              container
-              spacing={2}
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {this.RenderList()}
-              {provided.placeholder}
-              <Box item className={classes.addList} elevation={0}>
-                <TrelloCreate
-                  date={date}
-                  board_id={this.props.boardDict[date]}
-                />
-              </Box>
-            </ListsContainer>
-          )}
-        </Droppable>
-      </Contain>
+          What i will lean in the future
+        </Typography>
+
+        <Typography
+          variant="body"
+          style={{
+            whiteSpace: "nowrap"
+          }}
+        >
+          앞으로 공부하고 싶은 것들을 계획하세요.
+        </Typography>
+
+        <Contain>
+          <Droppable
+            droppableId={String(this.props.boardDict[date])}
+            type="list2"
+            direction="horizontal"
+          >
+            {provided => (
+              <ListsContainer
+                container
+                spacing={2}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {this.RenderList()}
+                {provided.placeholder}
+                <Box item className={classes.addList} elevation={0}>
+                  <TrelloCreate
+                    date={date}
+                    board_id={this.props.boardDict[date]}
+                  />
+                </Box>
+              </ListsContainer>
+            )}
+          </Droppable>
+        </Contain>
+      </Divs>
     );
   }
 }
@@ -131,7 +153,8 @@ const mapStateToProps = state => {
     boards: state.boards,
     boardDict: state.boardDict,
     cardLists: state.cardLists,
-    members: state.members
+    members: state.members,
+    editModeList: state.editModeList
   };
 };
 
