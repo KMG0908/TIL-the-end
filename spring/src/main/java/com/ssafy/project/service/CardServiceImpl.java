@@ -10,6 +10,7 @@ import com.ssafy.project.dto.Board;
 import com.ssafy.project.dto.BoardException;
 import com.ssafy.project.dto.Card;
 import com.ssafy.project.dto.CardException;
+import com.ssafy.project.dto.MemberException;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -37,7 +38,11 @@ public class CardServiceImpl implements CardService {
 			return card;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new CardException(card_id + "번 카드 조회 중 오류 발생");
+			if (e instanceof CardException) {
+				throw (CardException) e;
+			} else {
+				throw new CardException(card_id + "번 카드 조회 중 오류 발생");
+			}
 		}
 	}
 

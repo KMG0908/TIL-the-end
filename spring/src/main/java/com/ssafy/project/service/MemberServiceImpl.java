@@ -18,9 +18,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void insertMember(Member member) {
 		try {
-			if(dao.searchId(member.getMem_id())==1) {
+			if (dao.searchId(member.getMem_id()) == 1) {
 				throw new MemberException("동일한 아이디가 존재합니다");
-			} else if(dao.searchEmail(member.getMem_email())==1) {
+			} else if (dao.searchEmail(member.getMem_email()) == 1) {
 				throw new MemberException("동일한 이메일이 존재합니다");
 //			} else if(dao.searchNick(member.getMem_nick())==1) {
 //				throw new MemberException("동일한 닉네임이 존재합니다");
@@ -92,13 +92,17 @@ public class MemberServiceImpl implements MemberService {
 	public void updateMember(Member member) {
 		try {
 			Member diff = dao.search(member.getMem_id());
-			if(!member.getMem_pw().equals(diff.getMem_pw())) {
+			if (!member.getMem_pw().equals(diff.getMem_pw())) {
 				throw new MemberException("비밀번호가 틀립니다");
 			}
 			dao.updateMember(member);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new MemberException("회원 정보 수정 중 오류 발생");
+			if (e instanceof MemberException) {
+				throw (MemberException) e;
+			} else {
+				throw new MemberException("회원 정보 수정 중 오류 발생");
+			}
 		}
 
 	}
@@ -117,7 +121,7 @@ public class MemberServiceImpl implements MemberService {
 	public Member login(String mem_id, String mem_pw) {
 		try {
 			Member member = dao.search(mem_id);
-			if(dao.getAuth(mem_id) == 3) {
+			if (dao.getAuth(mem_id) == 3) {
 				throw new MemberException("탈퇴한 회원입니다.");
 			}
 			if (member == null) {
@@ -138,21 +142,24 @@ public class MemberServiceImpl implements MemberService {
 			}
 		}
 	}
-	
+
 	@Override
 	public void patchpassword(String mem_id, String old_pw, String new_pw) {
 		try {
 			Member diff = dao.search(mem_id);
-			if(!diff.getMem_pw().equals(old_pw)) {
+			if (!diff.getMem_pw().equals(old_pw)) {
 				throw new MemberException("비밀번호가 틀립니다");
 			}
 			dao.updatePassword(mem_id, new_pw);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new MemberException("회원 비밀번호 수정 중 오류 발생");
+			if (e instanceof MemberException) {
+				throw (MemberException) e;
+			} else {
+				throw new MemberException("회원 비밀번호 수정 중 오류 발생");
+			}
 		}
 	}
-	
 
 	@Override
 	public int getAuth(String mem_id) {
@@ -178,7 +185,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean getpostdef(String mem_id) {
 		try {
-			return dao.getpostdef(mem_id)==1;
+			return dao.getpostdef(mem_id) == 1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MemberException(mem_id + "의 글쓰기 기본 설정 조회 중 오류 발생");

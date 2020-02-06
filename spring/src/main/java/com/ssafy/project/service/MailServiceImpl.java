@@ -1,15 +1,12 @@
 package com.ssafy.project.service;
 
-import java.io.File;
 import java.util.Random;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.project.dao.MemberDao;
@@ -123,7 +120,14 @@ public class MailServiceImpl implements MailService {
 			javaMailSender.send(message);
 			
 		} catch (Exception e) {
-			e.printStackTrace();			
+			e.printStackTrace();	
+			if(e instanceof MemberException) {
+				throw (MemberException) e;
+			} else if(e instanceof MailException) {
+				throw (MailException) e;
+			} else {
+				throw new MailException("메일 발송에 실패하였습니다");				
+			}
 		}		
 	}
 	
@@ -156,7 +160,14 @@ public class MailServiceImpl implements MailService {
 			javaMailSender.send(message);
 			
 		} catch (Exception e) {
-			e.printStackTrace();			
+			e.printStackTrace();
+			if(e instanceof MemberException) {
+				throw (MemberException) e;
+			} else if(e instanceof MailException) {
+				throw (MailException) e;
+			} else {
+				throw new MailException("메일 발송에 실패하였습니다");				
+			}
 		}	
 		
 	}

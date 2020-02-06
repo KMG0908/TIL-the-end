@@ -33,7 +33,6 @@ public class CardlistServiceImpl implements CardlistService {
 
 	}
 
-
 	@Override
 	public Cardlist search(int cardlist_id) {
 		try {
@@ -62,8 +61,7 @@ public class CardlistServiceImpl implements CardlistService {
 		}
 
 	}
-	
-	
+
 	@Override
 	public void patch(Cardlist cardlist) {
 		try {
@@ -83,7 +81,7 @@ public class CardlistServiceImpl implements CardlistService {
 			throw new CardlistException(cardlist_id + "번 카드 리스트 삭제 중 오류 발생");
 		}
 	}
-	
+
 	@Override
 	public int getMaxCardlistId() {
 		try {
@@ -93,33 +91,35 @@ public class CardlistServiceImpl implements CardlistService {
 			throw new CardlistException("카드 리스트 id 조회 중 오류 발생.");
 		}
 	}
-	
+
 	@Override
 	public List<CardlistSearch> searchPrivateCardlist(String mem_id, String keyword) {
 		try {
-			Map<String, Object> params = new HashMap<String, Object>();			 
-		    params.put("mem_id", mem_id); 
-		    
-		    String[] list = keyword.split(",");
-		    List<String> keywordlist = new ArrayList<String>();
-		    List<String> taglist = new ArrayList<String>();
-		    for (int i = 0; i < list.length; i++) {
-				if(list[i].startsWith("#")) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("mem_id", mem_id);
+
+			String[] list = keyword.split(",");
+			List<String> keywordlist = new ArrayList<String>();
+			List<String> taglist = new ArrayList<String>();
+			for (int i = 0; i < list.length; i++) {
+				if (list[i].equals("")) {
+					continue;
+				} else if (list[i].startsWith("#")) {
 					taglist.add(list[i].substring(1));
-				}else {
+				} else {
 					keywordlist.add(list[i]);
 				}
 			}
-		    
-		    params.put("keywordlist", keywordlist); //map에 list를 넣는다.
-		    params.put("taglist", taglist); //map에 list를 넣는다.
-			
+
+			params.put("keywordlist", keywordlist); // map에 list를 넣는다.
+			params.put("taglist", taglist); // map에 list를 넣는다.
+
 			return dao.searchPrivateCardlist(params);
 		} catch (Exception e) {
 			throw new CardException(mem_id + "의 공개된 카드list 검색 중 오류 발생");
 		}
 	}
-	
+
 	@Override
 	public List<CardlistSearch> searchPublicCardlist(String mem_id, String keyword) {
 		try {
@@ -130,7 +130,9 @@ public class CardlistServiceImpl implements CardlistService {
 		    List<String> keywordlist = new ArrayList<String>();
 		    List<String> taglist = new ArrayList<String>();
 		    for (int i = 0; i < list.length; i++) {
-				if(list[i].startsWith("#")) {
+		    	if(list[i].equals("")) {
+					continue;
+		    	} else if(list[i].startsWith("#")) {
 					taglist.add(list[i].substring(1));
 				}else {
 					keywordlist.add(list[i]);
@@ -145,19 +147,19 @@ public class CardlistServiceImpl implements CardlistService {
 			throw new CardException(mem_id + "의 전체 카드list 검색 중 오류 발생");
 		}
 	}
-	
+
 	@Override
 	public List<CardlistSearch> searchGlobalCardlist(String keyword) {
 		try {
-			Map<String, Object> params = new HashMap<String, Object>();	
+			Map<String, Object> params = new HashMap<String, Object>();
 //			System.out.println(keyword);
-		    String[] list = keyword.split(",");
-		    List<String> keywordlist = new ArrayList<String>();
-		    List<String> taglist = new ArrayList<String>();
-		    for (int i = 0; i < list.length; i++) {
-		    	if(list[i].equals("")) {
+			String[] list = keyword.split(",");
+			List<String> keywordlist = new ArrayList<String>();
+			List<String> taglist = new ArrayList<String>();
+			for (int i = 0; i < list.length; i++) {
+				if (list[i].equals("")) {
 					continue;
-		    	} else if(list[i].startsWith("#")) {
+				} else if (list[i].startsWith("#")) {
 					taglist.add(list[i].substring(1));
 				} else {
 					keywordlist.add(list[i]);
@@ -165,16 +167,16 @@ public class CardlistServiceImpl implements CardlistService {
 			}
 //		    System.out.println(keywordlist);
 //		    System.out.println(taglist);
-		    
-		    params.put("keywordlist", keywordlist); //map에 list를 넣는다.
-		    params.put("taglist", taglist); //map에 list를 넣는다.
-		    
-		    return dao.searchGlobalCardlist(params);
+
+			params.put("keywordlist", keywordlist); // map에 list를 넣는다.
+			params.put("taglist", taglist); // map에 list를 넣는다.
+
+			return dao.searchGlobalCardlist(params);
 		} catch (Exception e) {
 			throw new CardException("전체 카드list 검색 중 오류 발생");
 		}
 	}
-	
+
 	@Override
 	public void movecardlist(int cardlist_id, int board_id) {
 		try {
@@ -183,18 +185,17 @@ public class CardlistServiceImpl implements CardlistService {
 			throw new CardException("전체 카드list 이동 중 오류 발생");
 		}
 	}
-	
-	
+
 	@Override
 	public void cardlistcolorpatch(int cardlist_id, String cardlist_color) {
 		try {
-			Map<String, Object> params = new HashMap<String, Object>();	
+			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("cardlist_id", cardlist_id);
 			params.put("cardlist_color", cardlist_color);
 			dao.cardlistcolorpatch(params);
 		} catch (Exception e) {
 			throw new CardException("전체 카드list 이동 중 오류 발생");
 		}
-		
+
 	}
 }

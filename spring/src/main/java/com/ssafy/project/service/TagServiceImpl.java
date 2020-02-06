@@ -103,7 +103,7 @@ public class TagServiceImpl implements TagService {
 			return dao.searchPrivateTag(mem_id, keyword);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new CardException(mem_id + "의 공개된 태그 검색 중 오류 발생");
+			throw new TagException(mem_id + "의 전체 태그 검색 중 오류 발생");
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class TagServiceImpl implements TagService {
 			return dao.searchPublicTag(mem_id, keyword);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new CardException(mem_id + "의 전체 태그 검색 중 오류 발생");
+			throw new TagException(mem_id + "의 공개된 태그 검색 중 오류 발생");
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class TagServiceImpl implements TagService {
 			return dao.searchGlobalTag(keyword);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new CardException("전체 태그 검색 중 오류 발생");
+			throw new TagException("공개된 전체 태그 검색 중 오류 발생");
 		}
 	}
 	
@@ -133,7 +133,7 @@ public class TagServiceImpl implements TagService {
 			return dao.globalTag();
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new CardException("전체 태그 조회 중 오류 발생");
+			throw new TagException("전체 태그 조회 중 오류 발생");
 		}
 	}
 
