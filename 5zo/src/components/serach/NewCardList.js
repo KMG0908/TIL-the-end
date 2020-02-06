@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Card from './Card';
+import Card from './안쓰는거_킵/Card';
 
 class NewCardList extends Component {
   render(){

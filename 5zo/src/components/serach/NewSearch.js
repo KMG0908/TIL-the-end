@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Chips from './Chips'
+import Chips from './ChipLibrary/Chips'
 import { connect } from 'react-redux';
 import { getAllTag, searchCardlist } from 'actions';
 import NewCard from './NewCard'
