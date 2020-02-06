@@ -52,7 +52,7 @@ class App extends React.Component {
             <Route path="/register" exact component={Register} />
 
             
-            <Route path="/new" exact component={NewSearch}></Route>
+            <Route path="/search" exact component={NewSearch}></Route>
           </div>
         </LandingPage>
       );
@@ -63,8 +63,8 @@ class App extends React.Component {
             <Route path="/" exact component={Main} />
             <Route path="/calendar" exact component={Calendar} />
             <Route path="/statistics/:user_id" exact component={Statistics} />
-            <Route path="/search" exact component={Search} />
-            <Route path="/search/:keyword" component={Search} />
+            {/* <Route path="/search" exact component={Search} /> */}
+            {/* <Route path="/search/:keyword" component={Search} /> */}
             <Route path="/tags" exact component={TagPage} />
             <Route path="/todo" exact component={Todo} />
             <Route path="/login" exact component={Login} />
@@ -74,7 +74,7 @@ class App extends React.Component {
             <Route path="/mypage/edit" exact component = {MyPageEdit}/>
             <Route path="/imgur" exact component={Imgur}></Route>
 
-            <Route path="/new" exact component={NewSearch}></Route>
+            <Route path="/search" exact component={NewSearch}></Route>
             <Route path="/user" component={UserPage}></Route>
           </div>
         </Navigation>
