@@ -34,15 +34,9 @@ import {
   GET_ALL_TAG,
   GET_DAILY_TASK,
   GET_DAILY_CAL,
-<<<<<<< HEAD
-=======
   GET_DAILY_LIST,
-<<<<<<< HEAD
   GET_OTHER_MEMBER,
->>>>>>> kmg
-=======
   SET_EDIT_MODE_LIST
->>>>>>> bds3
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -653,18 +647,6 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
 
 
 
-  for (let i = 0; i < response.data.data.length; i++) {
-    console.log("aaaaaaaaaaaa");
-    let cardlist = await apis.get(`/board/${response.data.data[i].board_id}`);
-    if (cardlist.data.state === "ok") {
-      console.log(cardlist.data.data);
-      //dispatch({ type: GET_DAILY_CAL, payload: [cardlist.data.data] });
-    }
-  }
-  console.log(app);
-
-  dispatch({ type: GET_DAILY_CAL, payload: app });
-};
 
 export const getDailyList = board_li => async (dispatch, getState) => {
   const response = await apis.get(`/board/${board_li}`);
