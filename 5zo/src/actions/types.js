@@ -40,7 +40,7 @@ export const FETCH_STATISTICS_DATA = 'FETCH_STATISTICS_DATA'
 
 // search action
 export const SEARCH_KEYWORD = 'SEARCH_KEYWORD'
-export const SEARCH_CL_BY_TAGS = 'SEARCH_CL_BY_TAGS'
+export const SEARCH_CARDLIST = 'SEARCH_CARDLIST'
 // tag action
 export const MEM_TAG = 'MEM_TAG'
 export const GET_ALL_TAG = 'GET_ALL_TAG'
