@@ -3,6 +3,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
+import Avatar from '@material-ui/core/Avatar';
 
 class NewCard extends Component {
   render() {
@@ -16,6 +17,7 @@ class NewCard extends Component {
       user: {
         fontSize: 14,
         textAlign: 'left',
+        verticalAlign: 'middle'
       },
       tags: {
       },
@@ -28,8 +30,12 @@ class NewCard extends Component {
       return (
         <Card style={styles.root} variant="outlined">
           <CardContent>
-            <Typography style={styles.user} color="textSecondary" gutterBottom>
-            {this.props.cardList.mem_id}
+            <Typography style={styles.user} color="textSecondary" >
+             <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" style={{display : 'inline-block'}} />
+             <div style={{display : 'inline', verticalAlign: 'middle'}}>
+
+              <span>{this.props.cardList.mem_id}</span>
+             </div>
             </Typography>
             <Typography variant="body2" component="p" style={styles.date}>
               {this.props.cardList.board_date}
