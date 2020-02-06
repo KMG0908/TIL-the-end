@@ -29,7 +29,6 @@ import {
   FETCH_STATISTICS_DATA,
   SEARCH_KEYWORD,
   SEARCH_CL_BY_TAGS,
-
   MEM_TAG,
   GET_ALL_TAG,
   GET_DAILY_TASK,
@@ -37,8 +36,12 @@ import {
 <<<<<<< HEAD
 =======
   GET_DAILY_LIST,
+<<<<<<< HEAD
   GET_OTHER_MEMBER,
 >>>>>>> kmg
+=======
+  SET_EDIT_MODE_LIST
+>>>>>>> bds3
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -58,14 +61,21 @@ export const login = (loginId, loginPw) => async dispatch => {
 
   if (data.mem_id) {
     const response = await apis.get(`/member/${data.mem_id}`);
-    const joinedDate = response.data.data.mem_reg_date.replace(/-/gi, '/');
+    const joinedDate = response.data.data.mem_reg_date.replace(/-/gi, "/");
     // const joinedDate = "2019/02/03";
     var isAvailableWeek = true;
     var isAvailableMonth = true;
 
     if (new Date(joinedDate) > new Date(moment().subtract(7, "days")))
       isAvailableWeek = false;
-    if (new Date(joinedDate) > new Date(moment().startOf("month").subtract(1, "month")))
+    if (
+      new Date(joinedDate) >
+      new Date(
+        moment()
+          .startOf("month")
+          .subtract(1, "month")
+      )
+    )
       isAvailableMonth = false;
 
     data.joinedDate = joinedDate;
@@ -293,16 +303,18 @@ export const addList = (board_id, cardlist_name, board_date) => async (
     const board = getState().boards[board_id];
     const board_lists = JSON.stringify(board.board_lists);
     let form = new FormData();
+    console.log(board_lists)
     form.append("board_id", board_id);
-    form.append("", board_lists);
+    form.append("board_lists", board_lists);
     await apis.patch(`board/${board_id}`, form);
   }
 };
 
 export const editList = cardlist => async dispatch => {
   const response = await apis.put(`/cardlist`, {
-    cardlist_id: cardlist.cardlist_id,
-    cardlist_name: cardlist.cardlist_name,
+    ...cardlist,
+    // cardlist_id: cardlist.cardlist_id,
+    // cardlist_name: cardlist.cardlist_name,
     cardlist_cards: JSON.stringify(cardlist.cardlist_cards)
   });
   if (response.data.state === "ok") {
@@ -482,12 +494,16 @@ export const fetchStatisticsData = (
   var dates = [];
   var dailyTask = [];
 
-  var response = await apis.get(`/card/daily/private/${getState().members.mem_info.mem_id}/from/${start}/to/${end}`);
+  var response = await apis.get(
+    `/card/daily/private/${
+      getState().members.mem_info.mem_id
+    }/from/${start}/to/${end}`
+  );
   const responseData = response.data.data;
 
   for (let i = 0; i < responseData.length; i++) {
-    console.log(responseData[i].board_date + " " + responseData[i].board_id)
-    dates.push(date_to_str(new Date(moment(responseData[i].board_date)), "-"))
+    console.log(responseData[i].board_date + " " + responseData[i].board_id);
+    dates.push(date_to_str(new Date(moment(responseData[i].board_date)), "-"));
     dailyTask.push(responseData[i].board_id);
   }
 
@@ -553,15 +569,24 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
   dispatch({ type: SEARCH_KEYWORD, payload: cards });
 };
 
+<<<<<<< HEAD
 export const searchCLByTags = (tags) => async (dispatch, getState) => {
+=======
+export const searchCLByTags = tags => async (dispatch, getState) => {
+>>>>>>> bds3
   // const response = await apis.post('/search/cardlist/by/tags', {
   //   tags
   // });
   // const data = response.data.data;
   // console.log(data);
+<<<<<<< HEAD
   dispatch({ type: SEARCH_CL_BY_TAGS, payload: tags })
 }
 
+=======
+  dispatch({ type: SEARCH_CL_BY_TAGS, payload: tags });
+};
+>>>>>>> bds3
 
 export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
   const response = await apis.get(
@@ -571,6 +596,7 @@ export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
 };
 
 export const getAllTag = () => async (dispatch, getState) => {
+<<<<<<< HEAD
   const response = await apis.get(
     `/tag `
   )
@@ -579,8 +605,19 @@ export const getAllTag = () => async (dispatch, getState) => {
   datas.map(data => data_.push('#' + data.tag_name))
   dispatch({ type: GET_ALL_TAG, payload: data_ })
 }
+=======
+  const response = await apis.get(`/tag `);
+  const datas = response.data.data;
+  const data_ = [];
+  datas.map(data => data_.push("#" + data.tag_name));
+  dispatch({ type: GET_ALL_TAG, payload: data_ });
+};
+>>>>>>> bds3
 
-export const getDailyTask = (mem_id, from, to) => async (dispatch, getState) => {
+export const getDailyTask = (mem_id, from, to) => async (
+  dispatch,
+  getState
+) => {
   const start = date_to_str(from, "");
   const end = date_to_str(to, "");
   const response = await apis.get(
@@ -603,6 +640,7 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
   const board_data = response.data.data
   console.log(response.data.data);
   let app = [];
+<<<<<<< HEAD
   for (let i = 0; i < board_data.length; i++) {
     board = board_data[i]
     response = await apis.get(`/board/${board_data[i].board_id}`);
@@ -632,3 +670,29 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
 };
 
 
+=======
+
+  for (let i = 0; i < response.data.data.length; i++) {
+    console.log("aaaaaaaaaaaa");
+    let cardlist = await apis.get(`/board/${response.data.data[i].board_id}`);
+    if (cardlist.data.state === "ok") {
+      console.log(cardlist.data.data);
+      //dispatch({ type: GET_DAILY_CAL, payload: [cardlist.data.data] });
+    }
+  }
+  console.log(app);
+
+  dispatch({ type: GET_DAILY_CAL, payload: app });
+};
+
+export const getDailyList = board_li => async (dispatch, getState) => {
+  const response = await apis.get(`/board/${board_li}`);
+  console.log(response);
+  dispatch({ type: GET_DAILY_LIST, payload: response.data.data });
+};
+
+export const setEditModeList = list_id => ({
+  type: SET_EDIT_MODE_LIST,
+  payload: list_id
+});
+>>>>>>> bds3

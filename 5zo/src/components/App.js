@@ -19,10 +19,9 @@ import storage from "lib/storage";
 import MyPage from "./Auth/MyPage";
 import MyPageEdit from "./Auth/MyPageEdit";
 import Imgur from "./image_test/Imgur"
-import Daily from "./Daily/Daily"
+import Daily from "./daily/Daily"
 
 import NewSearch from "./serach/NewSearch";
-import UserPage from "./userPage/UserPage"
 
 class App extends React.Component {
   initializeUserInfo = async () => {
@@ -52,14 +51,17 @@ class App extends React.Component {
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
 
-            
             <Route path="/new" exact component={NewSearch}></Route>
           </div>
         </LandingPage>
       );
-    } else { // 로그인했을 때
+    } else {
+      // 로그인했을 때
       return (
-        <Navigation nickname={this.props.members.mem_info.mem_nick} user_id={this.props.members.mem_info.mem_id}>
+        <Navigation
+          nickname={this.props.members.mem_info.mem_nick}
+          user_id={this.props.members.mem_info.mem_id}
+        >
           <div>
             <Route path="/" exact component={Main} />
             <Route path="/calendar" exact component={Calendar} />
@@ -71,12 +73,11 @@ class App extends React.Component {
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
             {/*  아래는 테스트 */}
-            <Route path="/mypage" exact component = {MyPage}/>
-            <Route path="/mypage/edit" exact component = {MyPageEdit}/>
+            <Route path="/mypage" exact component={MyPage} />
+            <Route path="/mypage/edit" exact component={MyPageEdit} />
             <Route path="/imgur" exact component={Imgur}></Route>
-
+            <Route path="/daily" exact component={Daily}></Route>
             <Route path="/new" exact component={NewSearch}></Route>
-            <Route path="/user" component={UserPage}></Route>
             <Route path="/daily/:user_id" exact component={Daily}></Route>
           </div>
         </Navigation>

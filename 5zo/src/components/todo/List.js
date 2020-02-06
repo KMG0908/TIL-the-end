@@ -6,7 +6,7 @@ import TrelloForm from "./TrelloForm";
 import { connect } from "react-redux";
 import Card from "./Card";
 import Icon from "@material-ui/core/Icon";
-import { deleteList, editList } from "../../actions";
+import { deleteList, editList, setEditModeList } from "../../actions";
 import { Droppable } from "react-beautiful-dnd";
 import Typography from "@material-ui/core/Typography";
 
@@ -72,7 +72,6 @@ class List extends React.Component {
             card={this.props.cards[card_id]}
             cardlist_id={this.props.cardlist_id}
             key={card_id}
-            editMode={this.props.editMode}
           />
         );
       } else {
@@ -112,6 +111,20 @@ class List extends React.Component {
     e.preventDefault();
     this.setState({ listTitle: e.target.value });
   };
+
+  handleSetEditModeList = e => {
+    e.stopPropagation();
+    if (this.props.editModeList === this.props.cardlist_id) {
+      this.props.setEditModeList(null);
+    } else {
+      this.props.setEditModeList(this.props.cardlist_id);
+    }
+  };
+  handleTitleDoubleClick = () => {
+    if (!this.props.date || this.props.date >= today) {
+      this.setState({ isEditing: true });
+    }
+  };
   render() {
     const { classes } = this.props;
     return (
@@ -121,11 +134,24 @@ class List extends React.Component {
         ) : (
           <div
             className={classes.titleContainer}
-            onClick={() => this.setState({ isEditing: true })}
+            onClick={this.handleTitleDoubleClick}
           >
-            <Typography variant={this.props.editMode ? "h2" : "h6"}>
+            {this.props.date===today ? (
+              <Icon
+                onClick={this.handleSetEditModeList}
+                className={classes.expand}
+              >
+                edit
+              </Icon>
+            ) : null}
+            <Typography
+              variant={
+                this.props.editModeList === this.props.cardlist_id ? "h2" : "h6"
+              }
+            >
               {this.props.title}
             </Typography>
+
             <Icon
               className={classes.delete}
               fontSize="small"
@@ -135,12 +161,15 @@ class List extends React.Component {
             </Icon>
           </div>
         )}
-        <Droppable droppableId={String(this.props.cardlist_id)} type={this.props.date>=today||!this.props.date?"card":"card1"}>
+        <Droppable
+          droppableId={String(this.props.cardlist_id)}
+          type={this.props.date >= today || !this.props.date ? "card" : "card1"}
+        >
           {provided => (
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {this.renderCard()}
               {provided.placeholder}
-              {this.props.date >= today||!this.props.date ? (
+              {this.props.date >= today || !this.props.date ? (
                 <Box className={classes.create} elevation={0}>
                   <TrelloCreate cardlist_id={this.props.cardlist_id} />
                 </Box>
@@ -156,10 +185,11 @@ class List extends React.Component {
 const mapStateToProps = state => {
   return {
     cards: state.cards,
-    cardLists: state.cardLists
+    cardLists: state.cardLists,
+    editModeList: state.editModeList
   };
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { deleteList, editList })(List)
+  connect(mapStateToProps, { deleteList, editList, setEditModeList })(List)
 );

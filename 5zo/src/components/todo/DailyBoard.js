@@ -4,11 +4,11 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import List from "./List";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { fetchDailyLists } from "../../actions";
+import { fetchDailyLists, setEditModeList } from "../../actions";
 import TrelloCreate from "./TrelloCreate";
 import { connect } from "react-redux";
-import DatePicker from "./DatePicker";
-import Icon from "@material-ui/core/Icon";
+import DatePicker from "../helper/DatePicker";
+import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
   root: {
@@ -59,6 +59,7 @@ class DailyBoard extends React.Component {
         if (this.props.cardLists[list]) {
           return (
             <Draggable
+              isDragDisabled={this.state.date < today}
               draggableId={String(`list-${list}`)}
               index={index}
               key={list}
@@ -76,7 +77,6 @@ class DailyBoard extends React.Component {
                       date={date}
                       cardlist_id={this.props.cardLists[list].cardlist_id}
                       title={this.props.cardLists[list].cardlist_name}
-                      editMode={this.props.editMode}
                     />
                   </Paper>
                 </div>
@@ -101,10 +101,13 @@ class DailyBoard extends React.Component {
         >
           {provided => (
             <Box {...provided.droppableProps} ref={provided.innerRef}>
+              <Typography variant="h4">Today I learn</Typography>
+              <Typography variant="body">
+                오늘 내가 배운 것들을 기록하세요.
+                <br />
+                혹은, 과거에 배운것을 확인하거나 미래에 배울 내용을 계획하세요.
+              </Typography>
               <DatePicker
-                onEditButton={() => {
-                  this.props.onEditButton();
-                }}
                 onChangeDate={val => {
                   this.setState({ date: val });
                   this.props.fetchDailyLists(
@@ -136,10 +139,11 @@ const mapStateToProps = state => {
     boards: state.boards,
     boardDict: state.boardDict,
     cardLists: state.cardLists,
-    members: state.members
+    members: state.members,
+    editModeList: state.editModeList
   };
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { fetchDailyLists })(DailyBoard)
+  connect(mapStateToProps, { fetchDailyLists, setEditModeList })(DailyBoard)
 );

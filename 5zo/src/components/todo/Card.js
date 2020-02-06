@@ -50,6 +50,7 @@ class Card extends React.Component {
       <Draggable
         draggableId={`card-${this.props.card_id}`}
         index={this.props.index}
+        isDragDisabled={!(!this.props.date||this.props.date>=today)}
       >
         {provided => (
           <Paper
@@ -57,13 +58,12 @@ class Card extends React.Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             onDoubleClick={() => this.setState({ isEditing: true })}
-            expanded={this.props.editMode ? this.props.editMode : null}
+            expanded={this.props.editModeList === this.props.cardList}
           >
             <CardForm
               date={this.props.date ? this.props.date : null}
               card={this.props.card}
               cardlist_id={this.props.cardlist_id}
-              editMode={this.props.editMode}
             />
           </Paper>
         )}
@@ -72,12 +72,16 @@ class Card extends React.Component {
   };
 
   render() {
-    if (this.state.isEditing && (this.props.date>=today||!this.props.date)) {
+    if (this.state.isEditing&&(this.props.date >= today || !this.props.date)) {
       return this.renderEditForm();
     } else {
       return this.renderCard();
     }
   }
 }
+
+const mapStateToProps = state => {
+  return { editModeList: state.editModeList };
+};
 
 export default connect(null, { editCard })(Card);

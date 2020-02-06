@@ -44,23 +44,18 @@ class Todo extends React.Component {
         <Grid
           item
           className={classes.items}
-          md={this.state.editMode ? 11 : 4}
+          md={this.props.editModeList ? 11 : 4}
           sm={12}
         >
           <Paper className={classes.daily}>
-            <DailyBoard
-              editMode={this.state.editMode}
-              onEditButton={() => {
-                this.setState({ editMode: !this.state.editMode });
-              }}
-            />
+            <DailyBoard editMode={this.state.editMode} />
           </Paper>
         </Grid>
         <Hidden smDown>
           <Grid
             item
             className={classes.items}
-            md={this.state.editMode ? 1 : 8}
+            md={this.props.editModeList ? 1 : 8}
             sm={12}
             overflow="hidden"
           >
@@ -110,6 +105,11 @@ class Todo extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    editModeList: state.editModeList
+  };
+};
 export default withStyles(styles, { withTheme: true })(
-  connect(null, { sort })(Todo)
+  connect(mapStateToProps, { sort })(Todo)
 );

@@ -8,6 +8,8 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import { setEditModeList } from "../../actions";
 
 const useStyles = makeStyles({
   Keyboard: {
@@ -29,14 +31,19 @@ const useStyles = makeStyles({
   }
 });
 
-export default function DatePicker(props) {
+const today = new Date().toISOString().split("T")[0];
+function DatePicker(props) {
   const classes = useStyles();
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = date => {
     setSelectedDate(date);
-    props.onChangeDate(date.toISOString().split("T")[0]);
+    let isoDate = date.toISOString().split("T")[0];
+    props.onChangeDate(isoDate);
+    if (isoDate > today) {
+      props.setEditModeList(null);
+    }
   };
   const toNextDate = () => {
     const date = new Date();
@@ -78,9 +85,26 @@ export default function DatePicker(props) {
           </Icon>
         </Grid>
         <Grid xs={1} container item justify="flex-end">
-          <Icon onClick={()=>{props.onEditButton()}} className={classes.expand}>open_with</Icon>
+          {props.editModeList ? (
+            <Icon
+              onClick={() => {
+                props.setEditModeList(null);
+              }}
+              className={classes.expand}
+            >
+              close
+            </Icon>
+          ) : null}
         </Grid>
       </Grid>
     </MuiPickersUtilsProvider>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    editModeList: state.editModeList
+  };
+};
+
+export default connect(mapStateToProps, { setEditModeList })(DatePicker);
