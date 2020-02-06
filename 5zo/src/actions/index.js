@@ -10,6 +10,9 @@ import {
   SET_LOGGED_INFO,
   GET_LOGGED_INFO,
   LOGOUT,
+  DELETE_ACCOUNT,
+  DELETE_ACCOUNT_ERR,
+  DELETE_ACCOUNT_SUCCESS,
   EDIT_MYINFO,
   EDIT_MYINFO_ERR,
   EDIT_MYINFO_CHANGE_RESET,
@@ -163,6 +166,42 @@ export const logout = () => async dispatch => {
   dispatch({ type: LOGOUT });
 };
 
+export const deleteAccount = (mem_id, mem_pw) => async dispatch => {
+  let response
+  console.log(`mem_id : ${mem_id} , mem_pw : ${mem_pw}`)
+  response = await apis.post(`/member/login`, {
+    'mem_id': mem_id,
+    'mem_pw': mem_pw
+  })
+  console.log('deleteAccount')
+  console.log(response)
+  if (response.data.state === 'ok') {
+    response = await apis.delete(`/member/${mem_id}`)
+    if (response.data.state === 'ok') {
+      dispatch({ type: DELETE_ACCOUNT_SUCCESS})
+    } else {
+      console.log('회원탈퇴오류')
+      dispatch({ type: DELETE_ACCOUNT_ERR, payload: '회원 탈퇴 실패' })
+    }
+  }else{
+    console.log('회원탈퇴실패 - 비밀번호 틀림')
+
+    dispatch({ type: DELETE_ACCOUNT_ERR, payload: '비밀번호 틀림' })
+  }
+}
+
+export const deleteAccountErrReset = () => async(dispatch, getState) => {
+  if( getState().members.delete_account_err) {
+    dispatch ({ type : DELETE_ACCOUNT_ERR, payload : ""})
+  }
+}
+
+export const deleteAccountSuccessReset = () => async(dispatch , getState) => {
+  if( getState().members.delete_account_success) {
+    dispatch ({ type : DELETE_ACCOUNT_SUCCESS, payload : ""})
+  }
+}
+
 export const editMyinfo = (loginId, loginPw, email, nick) => async dispatch => {
   if (!loginPw) {
     dispatch({ type: EDIT_MYINFO_ERR, payload: "비밀번호를 입력해주세요." });
@@ -204,7 +243,7 @@ export const memInfoChangeReset = () => async (dispatch, getState) => {
 export const getOtherMember = (user_id) => async dispatch => {
   const response = await apis.get(`/member/${user_id}`);
 
-  dispatch({type:GET_OTHER_MEMBER, payload: response.data.data})
+  dispatch({ type: GET_OTHER_MEMBER, payload: response.data.data })
 }
 
 export const addBoard = (mem_id, board_date) => async dispatch => {
@@ -491,7 +530,7 @@ export const fetchStatisticsData = (
 
   var response = await apis.get(
     `/card/daily/private/${
-      getState().members.mem_info.mem_id
+    getState().members.mem_info.mem_id
     }/from/${start}/to/${end}`
   );
   const responseData = response.data.data;
@@ -564,13 +603,13 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
   dispatch({ type: SEARCH_KEYWORD, payload: cards });
 };
 
-export const searchCardlist = (keywords) => async ( dispatch, getState) => {
+export const searchCardlist = (keywords) => async (dispatch, getState) => {
   let keywords_string = ','
   keywords.map(keyword => keywords_string += keyword + ',')
   const response = await apis.get(`/search/global/cardlist/by/${keywords_string}`);
   const data = response.data.data;
 
-  dispatch ( { type : SEARCH_CARDLIST, payload : data})
+  dispatch({ type: SEARCH_CARDLIST, payload: data })
 }
 
 
@@ -627,7 +666,7 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
     //console.log('cardlist_id_array_')
     //console.log(cardlist_id_array_)
     const cardlist_id_array = []
-    cardlist_id_array_.map(cardlist_id => cardlist_id === "" ? null:cardlist_id_array.push(Number(cardlist_id)))
+    cardlist_id_array_.map(cardlist_id => cardlist_id === "" ? null : cardlist_id_array.push(Number(cardlist_id)))
     //console.log('cardlist_id_array')
     //console.log(cardlist_id_array)
     for (let j = 0; j < cardlist_id_array.length; j++) {

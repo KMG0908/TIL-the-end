@@ -18,7 +18,7 @@ class MyPage extends Component {
             <TextWithLabel label="이메일" name="email"  value={this.props.mem_info ? this.props.mem_info.mem_email : ''} type="email"/>
             <TextWithLabel label="닉네임" name="nick" value={this.props.mem_info ? this.props.mem_info.mem_nick:''} />
             <RightAlignedLink to="/mypage/edit"> 수정 </RightAlignedLink>
-            <RightAlignedLink to="/secession"> 탈퇴 </RightAlignedLink>
+            <RightAlignedLink to="/mypage/delete"> 탈퇴 </RightAlignedLink>
           </AuthContent>
         </AuthWrapper>
       </div>
@@ -34,4 +34,4 @@ const mapStatetoProps = state => {
   };
 };
 
-export default connect(mapStatetoProps, { login, loginErrReset })(MyPage);
+export default connect(mapStatetoProps, { login, loginErrReset})(MyPage);
