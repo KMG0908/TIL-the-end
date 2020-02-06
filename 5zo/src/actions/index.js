@@ -544,15 +544,12 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
 };
 
 export const searchCardlist = (keywords) => async ( dispatch, getState) => {
-  let keywords_string = ''
+  let keywords_string = ','
   keywords.map(keyword => keywords_string += keyword + ',')
-  console.log(keywords_string)
-  // const response = await apis.post('/search/cardlist/by/tags', {
+  const response = await apis.get(`/search/global/cardlist/by/${keywords_string}`);
+  const data = response.data.data;
 
-  // });
-  // const data = response.data.data;
-  // console.log(data);
-  dispatch ( { type : SEARCH_CARDLIST, payload : []})
+  dispatch ( { type : SEARCH_CARDLIST, payload : data})
 }
 
 
