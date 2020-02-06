@@ -9,7 +9,6 @@ import Calendar from "./calendar/Calendar";
 import DefLand from "./landing/DefLand";
 import LandingPage from "./landing/LandingPage";
 import Statistics from "./statistics/Statistics";
-import Search from "./serach/Search";
 import TagPage from "./tags/Tags";
 import Todo from "./todo/Todo";
 import history from "../history";
