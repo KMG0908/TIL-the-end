@@ -28,20 +28,15 @@ import {
   FETCH_STATISTICS_MEMBER,
   FETCH_STATISTICS_DATA,
   SEARCH_KEYWORD,
-  SEARCH_CL_BY_TAGS,
+  SEARCH_CARDLIST,
+
   MEM_TAG,
   GET_ALL_TAG,
   GET_DAILY_TASK,
   GET_DAILY_CAL,
-<<<<<<< HEAD
-=======
   GET_DAILY_LIST,
-<<<<<<< HEAD
   GET_OTHER_MEMBER,
->>>>>>> kmg
-=======
   SET_EDIT_MODE_LIST
->>>>>>> bds3
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -569,24 +564,15 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
   dispatch({ type: SEARCH_KEYWORD, payload: cards });
 };
 
-<<<<<<< HEAD
-export const searchCLByTags = (tags) => async (dispatch, getState) => {
-=======
-export const searchCLByTags = tags => async (dispatch, getState) => {
->>>>>>> bds3
-  // const response = await apis.post('/search/cardlist/by/tags', {
-  //   tags
-  // });
-  // const data = response.data.data;
-  // console.log(data);
-<<<<<<< HEAD
-  dispatch({ type: SEARCH_CL_BY_TAGS, payload: tags })
+export const searchCardlist = (keywords) => async ( dispatch, getState) => {
+  let keywords_string = ','
+  keywords.map(keyword => keywords_string += keyword + ',')
+  const response = await apis.get(`/search/global/cardlist/by/${keywords_string}`);
+  const data = response.data.data;
+
+  dispatch ( { type : SEARCH_CARDLIST, payload : data})
 }
 
-=======
-  dispatch({ type: SEARCH_CL_BY_TAGS, payload: tags });
-};
->>>>>>> bds3
 
 export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
   const response = await apis.get(
@@ -596,7 +582,6 @@ export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
 };
 
 export const getAllTag = () => async (dispatch, getState) => {
-<<<<<<< HEAD
   const response = await apis.get(
     `/tag `
   )
@@ -605,14 +590,6 @@ export const getAllTag = () => async (dispatch, getState) => {
   datas.map(data => data_.push('#' + data.tag_name))
   dispatch({ type: GET_ALL_TAG, payload: data_ })
 }
-=======
-  const response = await apis.get(`/tag `);
-  const datas = response.data.data;
-  const data_ = [];
-  datas.map(data => data_.push("#" + data.tag_name));
-  dispatch({ type: GET_ALL_TAG, payload: data_ });
-};
->>>>>>> bds3
 
 export const getDailyTask = (mem_id, from, to) => async (
   dispatch,
@@ -640,7 +617,6 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
   const board_data = response.data.data
   console.log(response.data.data);
   let app = [];
-<<<<<<< HEAD
   for (let i = 0; i < board_data.length; i++) {
     board = board_data[i]
     response = await apis.get(`/board/${board_data[i].board_id}`);
@@ -670,20 +646,7 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
 };
 
 
-=======
 
-  for (let i = 0; i < response.data.data.length; i++) {
-    console.log("aaaaaaaaaaaa");
-    let cardlist = await apis.get(`/board/${response.data.data[i].board_id}`);
-    if (cardlist.data.state === "ok") {
-      console.log(cardlist.data.data);
-      //dispatch({ type: GET_DAILY_CAL, payload: [cardlist.data.data] });
-    }
-  }
-  console.log(app);
-
-  dispatch({ type: GET_DAILY_CAL, payload: app });
-};
 
 export const getDailyList = board_li => async (dispatch, getState) => {
   const response = await apis.get(`/board/${board_li}`);
@@ -695,4 +658,3 @@ export const setEditModeList = list_id => ({
   type: SET_EDIT_MODE_LIST,
   payload: list_id
 });
->>>>>>> bds3

@@ -49,6 +49,7 @@
     "react-scripts": "3.3.0",
     "react-tagcloud": "^2.0.0",
     "react-textarea-autosize": "^7.1.2",
+    "react-tooltip": "^3.11.6",
     "react-wordcloud": "^1.1.1",
     "redux": "^4.0.5",
     "redux-actions": "^2.6.5",
