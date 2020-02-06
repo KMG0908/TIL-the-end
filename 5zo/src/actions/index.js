@@ -34,6 +34,11 @@ import {
   GET_ALL_TAG,
   GET_DAILY_TASK,
   GET_DAILY_CAL,
+<<<<<<< HEAD
+=======
+  GET_DAILY_LIST,
+  GET_OTHER_MEMBER,
+>>>>>>> kmg
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -190,6 +195,12 @@ export const memInfoChangeReset = () => async (dispatch, getState) => {
     dispatch({ type: EDIT_MYINFO_CHANGE_RESET });
   }
 };
+
+export const getOtherMember = (user_id) => async dispatch => {
+  const response = await apis.get(`/member/${user_id}`);
+
+  dispatch({type:GET_OTHER_MEMBER, payload: response.data.data})
+}
 
 export const addBoard = (mem_id, board_date) => async dispatch => {
   const board_lists = "[]";

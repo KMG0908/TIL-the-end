@@ -19,6 +19,7 @@ import storage from "lib/storage";
 import MyPage from "./Auth/MyPage";
 import MyPageEdit from "./Auth/MyPageEdit";
 import Imgur from "./image_test/Imgur"
+import Daily from "./Daily/Daily"
 
 import NewSearch from "./serach/NewSearch";
 import UserPage from "./userPage/UserPage"
@@ -76,6 +77,7 @@ class App extends React.Component {
 
             <Route path="/new" exact component={NewSearch}></Route>
             <Route path="/user" component={UserPage}></Route>
+            <Route path="/daily/:user_id" exact component={Daily}></Route>
           </div>
         </Navigation>
       );
