@@ -1,8 +1,7 @@
-import { Router, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Register from "../Auth/Register";
 import Login from "../Auth/Login";
 import React from 'react';
-import { Container } from '@material-ui/core';
 import {
     Provider, Heading, Subhead, Flex, Box
 } from 'rebass'

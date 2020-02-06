@@ -163,21 +163,7 @@ function Navigation(props) {
           <Typography variant="h6" noWrap>
             Today I Learn   --- <WithTitle/>
           </Typography>
-          <Typography variant="h6" noWrap>
-            <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
-          </Typography>
+          
           <Typography>
             <input type="button" value="로그아웃" onClick={logout}/>
           </Typography>
