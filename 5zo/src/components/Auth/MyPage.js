@@ -9,10 +9,11 @@ class MyPage extends Component {
     console.log('mypage')
     console.log(this.props.mem_info)
     return (
-      <div>
+      <div style={{textAlign : 'center'}}>
+      <div style={{display : 'inline-block', minWidth : 500}}>
           <h1> 내 정보 </h1>
         <AuthWrapper>
-          <AuthContent title="My Page">
+          <AuthContent>
               {/* 로그인한 member 의 데이터를 아래 TextWithLabel 들의 value 에 줘야함. */}
             <TextWithLabel label="이메일" name="email"  value={this.props.mem_info ? this.props.mem_info.mem_email : ''} type="email"/>
             <TextWithLabel label="닉네임" name="nick" value={this.props.mem_info ? this.props.mem_info.mem_nick:''} />
@@ -20,6 +21,7 @@ class MyPage extends Component {
             <RightAlignedLink to="/secession"> 탈퇴 </RightAlignedLink>
           </AuthContent>
         </AuthWrapper>
+      </div>
       </div>
     );
   }

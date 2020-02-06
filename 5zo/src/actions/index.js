@@ -588,6 +588,7 @@ export const getAllTag = () => async (dispatch, getState) => {
   const datas = response.data.data
   const data_ = []
   datas.map(data => data_.push('#' + data.tag_name))
+  data_.sort()
   dispatch({ type: GET_ALL_TAG, payload: data_ })
 }
 

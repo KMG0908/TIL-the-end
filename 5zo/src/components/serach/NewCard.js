@@ -17,13 +17,17 @@ class NewCard extends Component {
       user: {
         fontSize: 14,
         textAlign: 'left',
-        verticalAlign: 'middle'
+        verticalAlign: 'middle',
       },
       tags: {
       },
       date: {
         textAlign: 'right',
       },
+      avatar : {
+        display: 'flex',
+        display : 'inline-block'
+      }
     };
     let cardList = this.props.cardList
     if (cardList) {
@@ -31,11 +35,9 @@ class NewCard extends Component {
         <Card style={styles.root} variant="outlined">
           <CardContent>
             <Typography style={styles.user} color="textSecondary" >
-             <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" style={{display : 'inline-block'}} />
-             <div style={{display : 'inline', verticalAlign: 'middle'}}>
+              <Avatar style={styles.avatar} component={'span'} alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
 
               <span>{this.props.cardList.mem_id}</span>
-             </div>
             </Typography>
             <Typography variant="body2" component="p" style={styles.date}>
               {this.props.cardList.board_date}

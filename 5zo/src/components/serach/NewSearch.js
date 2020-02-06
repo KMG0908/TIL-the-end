@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Chips from 'react-chips'
+import Chips from './Chips'
 import { connect } from 'react-redux';
 import { getAllTag, searchCardlist } from 'actions';
 import NewCard from './NewCard'
 
-const widthPer = '50%'
+const widthPer = 600
 
 class NewSearch extends Component {
   componentDidMount() {
@@ -25,15 +25,13 @@ class NewSearch extends Component {
   }
 
   render() {
-    console.log('render')
-    console.log(this.props.cardLists)
     return (
       <>
         <div style={{ position: "relative", textAlign: "center" }}>
           <div style={{ display: 'inline-block', width: widthPer }}>
             <Chips
               value={this.state.chips}
-              placeholder={"키워드를 입력 후 콤마 ( , ) 를 눌러 추가하세요. ( ex. #aaa + ',' ) "}
+              placeholder={`태그 : # + keyword , 유저 : @ + keyword , 검색 키워드 : keyword`}
               onChange={this.onChange}
               suggestions={this.props.tags ? this.props.tags : []}
             />
