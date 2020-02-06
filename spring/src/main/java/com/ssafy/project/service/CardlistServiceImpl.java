@@ -194,7 +194,7 @@ public class CardlistServiceImpl implements CardlistService {
 			params.put("cardlist_color", cardlist_color);
 			dao.cardlistcolorpatch(params);
 		} catch (Exception e) {
-			throw new CardException("전체 카드list 이동 중 오류 발생");
+			throw new CardException(cardlist_id + "번 카드리스트 색상 변경 오류");
 		}
 
 	}

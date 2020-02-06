@@ -42,7 +42,7 @@
 		from cardlist
 	</select>
 
-	<select id="searchPrivateCardlist" parameterType="java.util.HashMap" resultType="cardlistsearch">
+	<select id="searchPrivateCardlist" parameterType="hashMap" resultType="cardlistsearch">
     <![CDATA[
     select b.mem_id, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
         from cardlist cl, card c, board b,
@@ -77,7 +77,7 @@
     ]]>
 	</select>
 
-	<select id="searchPublicCardlist" parameterType="java.util.HashMap" resultType="cardlistsearch">
+	<select id="searchPublicCardlist" parameterType="hashMap" resultType="cardlistsearch">
     <![CDATA[
     select b.mem_id, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
         from cardlist cl, card c, board b,
@@ -114,7 +114,7 @@
     ]]>
 	</select>
 
-	<select id="searchGlobalCardlist" parameterType="java.util.HashMap" resultType="cardlistsearch">
+	<select id="searchGlobalCardlist" parameterType="hashMap" resultType="cardlistsearch">
     <![CDATA[
     select b.mem_id, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
         from cardlist cl, card c, board b,
@@ -155,6 +155,14 @@
 		update cardlist
 		set
 		board_id = #{board_id}
+		where cardlist_id = #{cardlist_id}
+	</update>
+	
+	
+	<update id="cardlistcolorpatch" parameterType="hashMap">
+		update cardlist
+		set
+		cardlist_color = #{cardlist_color}
 		where cardlist_id = #{cardlist_id}
 	</update>
 
