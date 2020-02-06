@@ -3,45 +3,61 @@ import React from 'react'
 import { connect } from "react-redux";
 import { getLoggedInfo, getDailyTask } from "../../actions";
 import 'react-calendar-heatmap/dist/styles.css'
-
+import ReactTooltip from 'react-tooltip';
+import moment from 'moment'
 const today = new Date();
 class Heatmap extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      heat: [],
-    }
+  state = {
+    data: [],
   }
   componentDidMount() {
     const member = this.props.mem_info;
-    console.log(member)
-    console.log(today)
     this.props.getDailyTask(member.mem_id, shiftDate(today, -365), today);
 
   }
+  getTooltipDataAttrs = (value) => {
+    // Temporary hack around null value.date issue
+    console.log(value.date)
+    if (!value || !value.date) {
+      return {
+        'data-tip': `No Tasks`,
+      }
+    }
+    return {
+      'data-tip': `${value.date} with task: ${value.count}`,
+    };
+  };
+  handleClick = (value) => {
+    if (!value || !value.date) {
+      return null;
+    }
+    alert(`${value.date} with task: ${value.count}`);
+  };
   setHeatMap() {
     if (this.props.board_info) {
       const state = this.props.board_info
-      const data = []
       for (let i = 0; i < state.length; i++) {
-        data.push({
+        this.state.data.push({
           count: state[i].board_id,
           date: state[i].board_date
         })
       }
-      return (
-        <CalendarHeatmap
-          startDate={shiftDate(today, -365)}
-          endDate={today}
-          values={data}
-        />
-      )
     }
   }
   render() {
+    this.setHeatMap()
     return (
-      <div>{this.setHeatMap()}</div>
-    )
+      <div>
+        <CalendarHeatmap
+          startDate={shiftDate(today, -365)}
+          endDate={today}
+          values={this.state.data}
+          tooltipDataAttrs={this.getTooltipDataAttrs}
+          onClick={this.handleClick}
+        />
+        <ReactTooltip />
+      </div >
+    );
   }
 }
 

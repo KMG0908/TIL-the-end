@@ -34,7 +34,6 @@ import {
   GET_ALL_TAG,
   GET_DAILY_TASK,
   GET_DAILY_CAL,
-  GET_DAILY_LIST,
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -543,13 +542,13 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
   dispatch({ type: SEARCH_KEYWORD, payload: cards });
 };
 
-export const searchCLByTags = (tags) => async ( dispatch, getState) => {
+export const searchCLByTags = (tags) => async (dispatch, getState) => {
   // const response = await apis.post('/search/cardlist/by/tags', {
   //   tags
   // });
   // const data = response.data.data;
   // console.log(data);
-  dispatch ( { type : SEARCH_CL_BY_TAGS, payload : tags})
+  dispatch({ type: SEARCH_CL_BY_TAGS, payload: tags })
 }
 
 
@@ -566,8 +565,8 @@ export const getAllTag = () => async (dispatch, getState) => {
   )
   const datas = response.data.data
   const data_ = []
-  datas.map(data => data_.push('#'+data.tag_name))
-  dispatch({ type : GET_ALL_TAG, payload : data_})
+  datas.map(data => data_.push('#' + data.tag_name))
+  dispatch({ type: GET_ALL_TAG, payload: data_ })
 }
 
 export const getDailyTask = (mem_id, from, to) => async (dispatch, getState) => {
@@ -576,42 +575,49 @@ export const getDailyTask = (mem_id, from, to) => async (dispatch, getState) => 
   const response = await apis.get(
     `/card/daily/private/${mem_id}/from/${start}/to/${end}`
   );
-  console.log(response);
+  console.log(response.data.data);
   dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
 };
 
 export const getDailyCal = (mem_id, from, to) => async dispatch => {
   const start = 20190101;
   const end = date_to_str(to, "");
-
+  let response, cardList, board, cardlist_id, cardlist
   console.log(end);
-  const response = await apis.get(
+
+
+  response = await apis.get(
     `/board/member/${mem_id}/from/${start}/to/${end}`
   );
+  const board_data = response.data.data
   console.log(response.data.data);
-  dispatch({ type: GET_DAILY_CAL, payload: response.data.data });
-
-  //const arr = await apis.get(`/board/${response.data.data[i].board_id}`);
   let app = [];
-
-  for (let i = 0; i < response.data.data.length; i++) {
-    console.log("aaaaaaaaaaaa")
-    let cardlist = await apis.get(`/board/${response.data.data[i].board_id}`);
-    if (cardlist.data.state === "ok") {
-      console.log(cardlist.data.data)
-      //dispatch({ type: GET_DAILY_CAL, payload: [cardlist.data.data] });
+  for (let i = 0; i < board_data.length; i++) {
+    board = board_data[i]
+    response = await apis.get(`/board/${board_data[i].board_id}`);
+    const cardList_id_string = response.data.data
+    //console.log(cardList_id_string)
+    const cardlist_id_array_ = cardList_id_string.substring(1, cardList_id_string.length - 1).split(',');
+    //console.log('cardlist_id_array_')
+    //console.log(cardlist_id_array_)
+    const cardlist_id_array = []
+    cardlist_id_array_.map(cardlist_id => cardlist_id === "" ? null:cardlist_id_array.push(Number(cardlist_id)))
+    //console.log('cardlist_id_array')
+    //console.log(cardlist_id_array)
+    for (let j = 0; j < cardlist_id_array.length; j++) {
+      cardlist_id = cardlist_id_array[j]
+      response = await apis.get(`/cardlist/${cardlist_id}`);
+      cardlist = response.data.data;
+      cardlist.date = board.board_date;
+      //console.log(cardlist)
+      app.push(cardlist);
     }
   }
+  console.log("app=============")
   console.log(app)
-  
+
+
   dispatch({ type: GET_DAILY_CAL, payload: app });
-
 };
 
 
-
-export const getDailyList = (board_li) => async (dispatch, getState) => {
-  const response = await apis.get(`/board/${board_li}`);
-  console.log(response)
-  dispatch({ type: GET_DAILY_LIST, payload: response.data.data });
-};

@@ -1,9 +1,8 @@
 import React from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
-import axios from 'axios';
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { getDailyCal, getDailyList, fetchDailyLists } from "../../actions";
+import { getDailyCal, fetchDailyLists } from "../../actions";
 import { getLoggedInfo } from "../../actions";
 import { connect } from "react-redux";
 const localizer = momentLocalizer(moment)
@@ -15,117 +14,54 @@ class Event extends React.Component {
   constructor(props) {
     super(props)
     const event = [];
-   
+
     this.state = {
       cal_events: [],
     }
   }
   componentDidMount() {
     if (this.props.members.mem_info) {
-      console.log(this.props.members.mem_info.mem_reg_date)
-      console.log(today)
       this.props.getDailyCal(this.props.members.mem_info.mem_id, this.props.members.mem_info.mem_reg_date, today);
-      
-    }
-    if (!this.props.daily.info) {
-      /*
-      for(let i = 0; i < this.props.daily.info.length; i++) {
-        this.event[i] = this.props.daily.info.board_date
-      }*/
-      
-      
-    }
-    else {
-      this.setFetch()
-    }
-
-  }
-  setFetch() {
-    const arr = this.props.daily.info
-    if (this.props.members.mem_info) {
-      for(let i = 0; i < arr.length; i++) {
-        console.log("AAAAAAAAAAAAAA")
-        this.props.getDailyList(arr[i].board_id);
-        
-      }
     }
   }
-  setCalendar(i) {
+  setCalendar() {
     const { classes } = this.props;
-    const app = this.props.daily;
-    console.log(app)
-    //console.log(this.props.dailyList)
-    if (app) {
-    }
-
-    /*
-    this.setState({
-      cal_events: appointments
-    })
-    const { cal_events } = this.state
-    return (
-      <Calendar
-        localizer={localizer}
-        events={cal_events}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-      />
-    );
-    */
-    /*
-    const board_lists = Array.isArray(
-      this.props.boards[this.props.boardDict[date]].board_lists
-    )
-      ? this.props.boards[this.props.boardDict[date]].board_lists
-      : JSON.parse(
-        this.props.boards[this.props.boardDict[date]].board_lists
-      );
-    return board_lists.map((list, index) => {
-      
-      if (this.props.cardLists[list]) {
-        const state = this.props.cardLists;
-        const data = []
-        for (let i = 0; i < state.length; i++) {
-          data.push({
-            id: i,
-            title: state[i].cardList_name,
-            start: this.props.boardDict[date],
-            end: this.props.boardDict[date]
-          })
-        }
-        let appointments = data;
-        
-        for (let i = 0; i < appointments.length; i++) {
-          appointments[i].start = moment.utc(appointments[i].start).toDate();
-          appointments[i].end = moment.utc(appointments[i].end).toDate();
- 
-        }
-        this.setState({
-          cal_events: appointments
+    console.log(this.props.daily)
+    if (this.props.daily.info) {
+      const app = this.props.daily.info;
+      const data = []
+      for (let i = 0; i < app.length; i++) {
+        data.push({
+          id: app[i].cardlist_id,
+          title: app[i].cardlist_name,
+          start: app[i].date,
+          end: app[i].date
         })
-        const { cal_events } = this.state
-        return (
-          <Calendar
-            localizer={localizer}
-            events={cal_events}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 500 }}
-          />
-        );
       }
-    });
-    */
-  }
-  setEvent(i, appoint) {
-
+      let appointments = data;
+      for (let i = 0; i < appointments.length; i++) {
+        appointments[i].start = moment.utc(appointments[i].start).toDate();
+        appointments[i].end = moment.utc(appointments[i].end).toDate();
+      }
+      let cal_events = appointments
+      return (
+        <Calendar
+          view="month"
+          views={["month"]}
+          localizer={localizer}
+          events={cal_events}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
+        />
+      );
+    }
   }
   render() {
 
     return (
       <div>
-       {this.setCalendar()}
+        {this.setCalendar()}
       </div>
     )
   }
@@ -141,7 +77,6 @@ const mapStateToProps = state => {
     cardLists: state.cardLists,
     members: state.members,
     daily: state.dailyCalendar,
-    dailyList: state.listCalendar
   };
 };
-export default connect(mapStateToProps, { getLoggedInfo, getDailyCal, getDailyList, fetchDailyLists })(Event);
+export default connect(mapStateToProps, { getLoggedInfo, getDailyCal, fetchDailyLists })(Event);
