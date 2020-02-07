@@ -13,6 +13,7 @@ const Label = styled.div`
     font-size : 1rem;
     color : ${oc.gray[6]};
     margin-bottom : 0.25rem;
+    text-align : left
 `;
 
 const Input = styled.input`
@@ -24,6 +25,7 @@ const Input = styled.input`
     font-size : 1.2rem;
     padding-left : 0.5rem;
     padding-right : 0.5rem;
+    display: block
     ::placeholder {
         color : ${oc.gray[3]};
     }
@@ -32,16 +34,7 @@ const Input = styled.input`
 const InputWithLabel = ({ label, ...rest }) => (
   <Wrapper>
     <Label> {label} </Label>
-    <Input {...rest} onBlur={function(){
-      // if(document.getElementById("nick")){
-      //   if(!document.getElementById(rest.name).value){
-      //     document.getElementById(rest.name + "_msg").classList.add("empty")
-      //   }
-      //   else{
-      //     document.getElementById(rest.name + "_msg").classList.remove("empty")
-      //   }
-      // }
-    }}/>
+    <Input {...rest}/>
     <input type="text" id={`${rest.name}_msg`} className="none" readOnly/>
   </Wrapper>
 )

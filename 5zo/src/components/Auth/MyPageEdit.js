@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 import { login, loginErrReset, editMyinfo, editMyinfoErrReset, memInfoChangeReset } from "actions";
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
 import storage from 'lib/storage';
+import PasswordWithLabel from './PasswordWithLabel';
 
 class MyPageEdit extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loginPw: '',
+      nowPw: '',
       email: this.props.mem_info ? this.props.mem_info.mem_email : '',
       nick: this.props.mem_info ? this.props.mem_info.mem_nick : ''
     }
@@ -21,9 +22,9 @@ class MyPageEdit extends Component {
   handleChange(event) {
     const { name, value } = event.target;
     switch (name) {
-      case 'loginPw':
+      case 'nowPw':
         this.setState({
-          loginPw: value
+          nowPw: value
         })
         break;
       case 'email':
@@ -39,13 +40,13 @@ class MyPageEdit extends Component {
     }
   }
   editMyinfo() {
-    if (!document.getElementById("loginPw").value) {
-      document.getElementById("loginPw").focus();
+    if (!document.getElementById("nowPw").value) {
+      document.getElementById("nowPw").focus();
 
       return;
     }
 
-    this.props.editMyinfo(this.props.mem_info.mem_id, this.state.loginPw, this.state.email, this.state.nick)
+    this.props.editMyinfo(this.props.mem_info.mem_id, this.state.nowPw, this.state.email, this.state.nick)
   }
   cancelEditMyinfo = () => {
     window.location.href = "/mypage"
@@ -102,7 +103,7 @@ class MyPageEdit extends Component {
     return (
 
       <div style={{ textAlign: 'center' }}>
-        <div style={{ display: 'inline-block', minWidth: 500 }}>
+        <div style={{ display: 'inline-block', width: 500 }}>
           <AuthWrapper>
             <AuthContent title="내 정보 수정">
               <div style={{ width: "120px", height: "120px", overflow: "hidden" }} id="image_div">
@@ -114,8 +115,9 @@ class MyPageEdit extends Component {
               <InputWithLabel label="이메일" name="email" type="email" value={this.state.email} onChange={this.handleChange} />
               <InputWithLabel label="닉네임" name="nick" value={this.state.nick} onChange={this.handleChange} />
               <br /><br />
-              <InputWithLabel label="비밀번호" id="loginPw" name="loginPw" type="password" placeholder={"현재 비밀번호를 입력하세요"} value={this.state.loginPw} onChange={this.handleChange} />
+              <PasswordWithLabel label="현재 비밀번호" id="nowPw" name="nowPw" placeholder={"수정하려면 현재 비밀번호를 입력하세요"} value={this.state.nowPw} onChange={this.handleChange} />
               {this.props.edit_myinfo_err}
+              <RightAlignedLink to="/mypage/edit-password"> 비밀번호 변경 </RightAlignedLink>
               <AuthButton onClick={this.editMyinfo}> 수정 </AuthButton>
               <AuthButton onClick={this.cancelEditMyinfo}> 취소 </AuthButton>
             </AuthContent>

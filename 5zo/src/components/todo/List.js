@@ -189,12 +189,9 @@ class List extends React.Component {
         return chip.slice(1);
       } else return chip;
     });
-    this.setState({ chips: chipsWithOutHash });
-    const chipswithoutHash = resultArray.map(chip => {
-      if (chip.startsWith("#")) {
-        return chip;
-      } else return "#" + chip;
-    });
+    
+    // this.setState({ chips: chipsWithOutHash });
+
   };
   render() {
     const { classes } = this.props;

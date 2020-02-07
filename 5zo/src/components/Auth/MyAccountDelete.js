@@ -18,7 +18,6 @@ class MyAccountDelete extends Component {
 
         this.handleChange = this.handleChange.bind(this)
         this.deleteAccount = this.deleteAccount.bind(this)
-        this.cancelDeleteAccount = this.cancelDeleteAccount.bind(this)
     }
     handleChange(event) {
         const { name, value } = event.target;
@@ -39,7 +38,7 @@ class MyAccountDelete extends Component {
         this.props.deleteAccount(this.props.mem_info.mem_id, this.state.loginPw)
 
     }
-    cancelDeleteAccount = () => {
+    cancel = () => {
         window.location.href = "/mypage"
     }
     render() {
@@ -55,13 +54,13 @@ class MyAccountDelete extends Component {
         return (
 
             <div style={{ textAlign: 'center' }}>
-                <div style={{ display: 'inline-block', minWidth: 500 }}>
+            <div style={{ display: 'inline-block', width: 500 }}>
                     <AuthWrapper>
                         <AuthContent title="회원 탈퇴">
                             <InputWithLabel label="비밀번호" id="loginPw" name="loginPw" type="password" placeholder={"현재 비밀번호를 입력하세요"} value={this.state.loginPw} onChange={this.handleChange} />
                             {this.props.delete_account_err}
                             <AuthButton onClick={this.deleteAccount}> 탈퇴 </AuthButton>
-                            <AuthButton onClick={this.cancelDeleteAccount}> 취소 </AuthButton>
+                            <AuthButton onClick={this.cancel}> 취소 </AuthButton>
                         </AuthContent>
                     </AuthWrapper>
                 </div>

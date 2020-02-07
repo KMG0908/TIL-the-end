@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { login, loginErrReset } from "../../actions";
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '../Auth';
-import storage from 'lib/storage';
 
 class MyPage extends Component {
   render() {
@@ -10,7 +8,7 @@ class MyPage extends Component {
     console.log(this.props.mem_info)
     return (
       <div style={{textAlign : 'center'}}>
-      <div style={{display : 'inline-block', minWidth : 500}}>
+      <div style={{ display: 'inline-block', width: 500 }}>
         <AuthWrapper title="내 정보">
           <AuthContent>
               {/* 로그인한 member 의 데이터를 아래 TextWithLabel 들의 value 에 줘야함. */}
@@ -30,8 +28,7 @@ class MyPage extends Component {
 const mapStatetoProps = state => {
   return {
     mem_info : state.members.mem_info,
-    login_err : state.members.login_err
   };
 };
 
-export default connect(mapStatetoProps, { login, loginErrReset})(MyPage);
+export default connect(mapStatetoProps)(MyPage);
