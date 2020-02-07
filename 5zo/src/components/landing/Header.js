@@ -1,19 +1,8 @@
-import Register from "../Auth/Register";
-import Login from "../Auth/Login";
-import { Link } from "react-router-dom";
+
 import React from 'react';
 import {
     Relative, Absolute, Flex, NavLink, Button
 } from 'rebass'
-import styled, { css } from 'styled-components'
-
-
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-
-
 
 class Header extends React.Component {
     render() {

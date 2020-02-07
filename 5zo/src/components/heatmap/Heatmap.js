@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { getLoggedInfo, getDailyTask } from "../../actions";
 import 'react-calendar-heatmap/dist/styles.css'
 import ReactTooltip from 'react-tooltip';
-import moment from 'moment'
 const today = new Date();
 class Heatmap extends React.Component {
   state = {
@@ -15,7 +14,6 @@ class Heatmap extends React.Component {
     this.props.getDailyTask(user_id, shiftDate(today, -365), today);
   }
   getTooltipDataAttrs = (value) => {
-    // Temporary hack around null value.date issue
     if (!value || !value.date) {
       return {
         'data-tip': `No Tasks`,

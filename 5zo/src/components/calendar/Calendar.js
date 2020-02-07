@@ -6,14 +6,25 @@ import { getDailyCal, fetchDailyLists } from "../../actions";
 import { getLoggedInfo } from "../../actions";
 import { connect } from "react-redux";
 const localizer = momentLocalizer(moment)
-
-const myEventsList = []
 const today = new Date();
-const date = "2020-02-03";
+
+function ClickEvent({ event }) {
+
+  //console.log(event);
+  return (
+    <div>
+      <div>
+
+        <div>{event.title}</div>
+
+      </div>
+    </div>
+  );
+}
 class Event extends React.Component {
   constructor(props) {
     super(props)
-    const event = [];
+    //const event = [];
 
     this.state = {
       cal_events: [],
@@ -52,7 +63,9 @@ class Event extends React.Component {
           events={cal_events}
           startAccessor="start"
           endAccessor="end"
+          defaultDate={new Date()}
           style={{ height: 500 }}
+          
         />
       );
     }
