@@ -39,7 +39,6 @@ const Logo = styled(Link)`
 const Contents = styled.div`
     background : white;
     padding : 2rem;
-    padding ; 2rem;
     height : auto;
 `
 
