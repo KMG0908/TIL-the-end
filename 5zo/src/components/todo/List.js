@@ -6,11 +6,13 @@ import TrelloForm from "./TrelloForm";
 import { connect } from "react-redux";
 import Card from "./Card";
 import Icon from "@material-ui/core/Icon";
-import { deleteList, editList, setEditModeList } from "../../actions";
+import { deleteList, editList, setEditModeList, memTag } from "../../actions";
 import { Droppable } from "react-beautiful-dnd";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { TwitterPicker } from "react-color";
+import Chips from "../serach/ChipLibrary/Chips";
+import theme from "components/serach/ChipLibrary/theme";
 
 const styles = theme => ({
   root: {
@@ -53,9 +55,28 @@ const styles = theme => ({
     }
   },
   color: {
-    width: "36px",
-    height: "14px",
-    borderRadius: "2px"
+    width: "20px",
+    height: "20px",
+    border: "2px solid"
+  },
+  swatch: {
+    marginLeft: theme.spacing(1.6),
+    marginRight: theme.spacing(1)
+  },
+  popover: {
+    marginBottom: theme.spacing(1)
+  },
+  hashtags: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center"
+  },
+  hashtagLabel: {
+    alignItems: "center",
+    textAlign: "left",
+    padding: theme.spacing(1),
+    margin: theme.spacing(0.5),
+    verticalAlign: "middle"
   }
 });
 
@@ -66,12 +87,17 @@ class List extends React.Component {
     const cardlist_color = this.props.cardLists[this.props.cardlist_id]
       .cardlist_color;
     this.setState({ color: cardlist_color ? cardlist_color : "#94C9A9" });
+    this.props.memTag(this.props.members.mem_info.mem_id, 20100101, 99991230);
+    if (this.props.tags.length) {
+      this.onAddChips(this.props.tags);
+    }
   }
   state = {
     color: "#94C9A9",
     displayColorPicker: false,
     isEditing: false,
-    listTitle: this.props.cardLists[this.props.cardlist_id].cardlist_name
+    listTitle: this.props.cardLists[this.props.cardlist_id].cardlist_name,
+    chips: []
   };
 
   renderCard() {
@@ -143,29 +169,40 @@ class List extends React.Component {
       this.setState({ isEditing: true });
     }
   };
-  handleClick = () => {
+  handleClick = event => {
+    event.stopPropagation();
     this.setState({ displayColorPicker: !this.state.displayColorPicker });
   };
   handleClose = () => {
     this.setState({ displayColorPicker: false });
   };
-  handleChange = color => {
-
-
+  handleChangeColor = color => {
     const cardlist = this.props.cardLists[this.props.cardlist_id];
     cardlist.cardlist_color = color.hex;
 
     this.props.editList(cardlist);
-    console.log(color);
+    this.setState({ displayColorPicker: false });
+  };
+  onAddChips = resultArray => {
+    const chipsWithOutHash = resultArray.map(chip => {
+      if (chip.startsWith("#")) {
+        return chip.slice(1);
+      } else return chip;
+    });
+    this.setState({ chips: chipsWithOutHash });
+    const chipswithoutHash = resultArray.map(chip => {
+      if (chip.startsWith("#")) {
+        return chip;
+      } else return "#" + chip;
+    });
   };
   render() {
     const { classes } = this.props;
-    const color = this.props.cardLists[this.props.cardlist_id].cardlist_color? this.props.cardLists[this.props.cardlist_id].cardlist_color:"#94C9A9"
+    const color = this.props.cardLists[this.props.cardlist_id].cardlist_color
+      ? this.props.cardLists[this.props.cardlist_id].cardlist_color
+      : "#94C9A9";
     return (
-      <Paper
-        className={classes.list}
-        style={{ backgroundColor: color }}
-      >
+      <Paper className={classes.list} style={{ backgroundColor: color }}>
         {this.state.isEditing ? (
           this.titleEditer()
         ) : (
@@ -173,6 +210,12 @@ class List extends React.Component {
             className={classes.titleContainer}
             onClick={this.handleTitleDoubleClick}
           >
+            <div className={classes.swatch} onClick={this.handleClick}>
+              <div
+                className={classes.color}
+                style={{ backgroundColor: "color" }}
+              />
+            </div>
             {this.props.date === today ? (
               <Icon
                 onClick={this.handleSetEditModeList}
@@ -198,6 +241,12 @@ class List extends React.Component {
             </Icon>
           </div>
         )}
+        {this.state.displayColorPicker ? (
+          <div className={classes.popover}>
+            <div style={styles.cover} onClick={this.handleClose} />
+            <TwitterPicker color={color} onChange={this.handleChangeColor} />
+          </div>
+        ) : null}
         <Droppable
           droppableId={String(this.props.cardlist_id)}
           type={this.props.date >= today || !this.props.date ? "card" : "card1"}
@@ -209,24 +258,16 @@ class List extends React.Component {
 
               {this.props.editModeList === this.props.cardlist_id ? (
                 <>
-                  <Paper>
-                    해쉬태그
-                    <div style={styles.swatch} onClick={this.handleClick}>
-                      <div
-                        className={classes.color}
-                        style={{ backgroundColor: color }}
-                      />
-                    </div>
-                    {this.state.displayColorPicker ? (
-                      <div style={styles.popover}>
-                        <div style={styles.cover} onClick={this.handleClose} />
-                        <TwitterPicker
-                          color={color}
-                          onChange={this.handleChange}
-                        />
-                      </div>
-                    ) : null}
-                  </Paper>
+                  <div className={classes.hashtags}>
+                    <Paper className={classes.hashtagLabel}>
+                      <Box> #Tags : </Box>
+                    </Paper>
+                    <Chips
+                      value={this.state.chips.map(chip=>chip.startsWith("#")?chip:`#${chip}`)}
+                      onChange={this.onAddChips}
+                      suggestions={this.props.tags.mem_tags?this.props.tags.mem_tags.map(tag=>tag.tag_name):[]}
+                    />
+                  </div>
                 </>
               ) : null}
               {this.props.date >= today || !this.props.date ? (
@@ -246,10 +287,14 @@ const mapStateToProps = state => {
   return {
     cards: state.cards,
     cardLists: state.cardLists,
-    editModeList: state.editModeList
+    editModeList: state.editModeList,
+    members: state.members,
+    tags: state.tag
   };
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { deleteList, editList, setEditModeList })(List)
+  connect(mapStateToProps, { deleteList, editList, setEditModeList, memTag })(
+    List
+  )
 );

@@ -21,7 +21,6 @@ const styles = theme => ({
   list: {
     margin: theme.spacing(1),
     color: theme.palette.error.contrastText,
-    minHeight: "200px",
     width: "300px"
   },
   addList: {
