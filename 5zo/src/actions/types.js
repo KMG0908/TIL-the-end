@@ -35,6 +35,7 @@ export const SEARCH_CARDLIST = 'SEARCH_CARDLIST'
 // tag action
 export const MEM_TAG = 'MEM_TAG'
 export const GET_ALL_TAG = 'GET_ALL_TAG'
+export const FETCH_TAG = 'FETCH_TAG'
 
 
 //heatmap action

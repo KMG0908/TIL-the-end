@@ -1,17 +1,20 @@
 import CalendarHeatmap from 'react-calendar-heatmap'
 import React from 'react'
 import { connect } from "react-redux";
-import { getLoggedInfo, getDailyTask } from "../../actions";
+import { getDailyTask } from "../../actions";
 import 'react-calendar-heatmap/dist/styles.css'
 import ReactTooltip from 'react-tooltip';
-const today = new Date();
+import storage from 'lib/storage';
+const yesterday = new Date();
 class Heatmap extends React.Component {
   state = {
     data: [],
   }
   componentDidMount() {
     const user_id = this.props.user_id;
-    this.props.getDailyTask(user_id, shiftDate(today, -365), today);
+    
+    yesterday.setDate(yesterday.getDate() - 1);
+    this.props.getDailyTask(user_id, shiftDate(yesterday, -365), yesterday);
   }
   getTooltipDataAttrs = (value) => {
     if (!value || !value.date) {
@@ -46,8 +49,8 @@ class Heatmap extends React.Component {
     return (
       <div>
         <CalendarHeatmap
-          startDate={shiftDate(today, -365)}
-          endDate={today}
+          startDate={shiftDate(yesterday, -365)}
+          endDate={yesterday}
           values={this.state.data}
           tooltipDataAttrs={this.getTooltipDataAttrs}
           onClick={this.handleClick}

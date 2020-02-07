@@ -62,7 +62,7 @@ class App extends React.Component {
           user_id={this.props.members.mem_info.mem_id}
         >
           <div>
-            <Route path="/" exact component={Main} />
+            <Route path="/" exact component={Daily} />
             <Route path="/calendar" exact component={Calendar} />
             <Route path="/statistics/:user_id" exact component={Statistics} />
             {/* <Route path="/search" exact component={Search} /> */}
