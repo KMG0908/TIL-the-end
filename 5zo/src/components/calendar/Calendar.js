@@ -14,9 +14,7 @@ function ClickEvent({ event }) {
   return (
     <div>
       <div>
-
         <div>{event.title}</div>
-
       </div>
     </div>
   );
@@ -35,6 +33,17 @@ class Event extends React.Component {
       this.props.getDailyCal(this.props.members.mem_info.mem_id, this.props.members.mem_info.mem_reg_date, today);
     }
   }
+ 
+  onSlotChange(slotInfo) {
+    //console.log(slotInfo)
+    var startDate = moment(slotInfo.start.toLocaleString()).format("YYYY-MM-DDm:ss");
+    var endDate = moment(slotInfo.end.toLocaleString()).format("YYYY-MM-DDm:ss");
+    //console.log(startDate); 
+    //console.log(endDate); 
+  }
+  onEventClick(event) {
+    console.log(event) 
+  }
   setCalendar() {
     const { classes } = this.props;
     console.log(this.props.daily)
@@ -49,6 +58,7 @@ class Event extends React.Component {
           end: app[i].date
         })
       }
+     
       let appointments = data;
       for (let i = 0; i < appointments.length; i++) {
         appointments[i].start = moment.utc(appointments[i].start).toDate();
@@ -57,21 +67,24 @@ class Event extends React.Component {
       let cal_events = appointments
       return (
         <Calendar
+          selectable
           view="month"
           views={["month"]}
           localizer={localizer}
+          onSelectEvent={event => this.onEventClick(event)}
+          onSelectSlot={(slotInfo) => this.onSlotChange(slotInfo)}
           events={cal_events}
           startAccessor="start"
           endAccessor="end"
           defaultDate={new Date()}
           style={{ height: 500 }}
-          
+          step={30}
+          timeslots={2}
         />
       );
     }
   }
   render() {
-
     return (
       <div>
         {this.setCalendar()}
