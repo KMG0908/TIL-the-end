@@ -72,7 +72,7 @@ class App extends React.Component {
               <Route path="/todo" exact component={Todo} />
               <Route path="/login" exact component={Login} />
               <Route path="/register" exact component={Register} />
-              <Route component={Redirecting} />
+              
               {/*  아래는 테스트 */}
               <Route path="/mypage" exact component={MyPage} />
               <Route path="/mypage/edit" exact component={MyPageEdit} />
@@ -81,6 +81,7 @@ class App extends React.Component {
               <Route path="/daily" exact component={Daily}></Route>
               <Route path="/daily/:user_id" exact component={Daily}></Route>
               <Route path="/search" exact component={NewSearch}></Route>
+              <Route component={Redirecting} />
             </Switch>
           </div>
 
