@@ -19,7 +19,7 @@ import MyPage from "./Auth/MyPage";
 import MyPageEdit from "./Auth/MyPageEdit";
 import MyAccountDelete from "./Auth/MyAccountDelete";
 import Imgur from "./image_test/Imgur"
-import Daily from "./daily/Daily"
+import Daily from "./daily/Main"
 import Redirecting from "./redirectingPage/RedirectBody";
 
 import FindIdPage from './Auth/FindIdPage'
