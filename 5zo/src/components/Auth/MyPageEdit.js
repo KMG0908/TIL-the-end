@@ -103,7 +103,7 @@ class MyPageEdit extends Component {
     return (
 
       <div style={{ textAlign: 'center' }}>
-        <div style={{ display: 'inline-block', minWidth: 500 }}>
+        <div style={{ display: 'inline-block', width: 500 }}>
           <AuthWrapper>
             <AuthContent title="내 정보 수정">
               <div style={{ width: "120px", height: "120px", overflow: "hidden" }} id="image_div">

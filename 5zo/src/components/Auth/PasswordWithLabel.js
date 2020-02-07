@@ -49,10 +49,12 @@ function PasswordWithLabel({ id, label, ...rest }) {
 
         <Wrapper>
             <Label> {label} </Label>
+            <div style={{display : 'inline'}}>
             <Input id={id} type='password' {...rest} />
             <IconButton color="primary" aria-label="upload picture" component="span" style={{width:'10%'}} onClick={typeChange}>
-                <VisibilityIcon style={{width:'100%'}}/>
+                <VisibilityIcon/>
             </IconButton>
+            </div>
             <input type="text" id={`${rest.name}_msg`} className="none" readOnly />
         </Wrapper>
     )

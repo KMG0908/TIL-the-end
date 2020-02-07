@@ -46,7 +46,7 @@ class FindIdPage extends Component {
         return (
 
             <div style={{ textAlign: 'center' }}>
-                <div style={{ display: 'inline-block', minWidth: 500 }}>
+            <div style={{ display: 'inline-block', width: 500 }}>
                     <AuthWrapper>
                         <AuthContent title="아이디 찾기">
                             <InputWithLabel label="이메일" id="email" name="email" type="email" placeholder={"이메일의 입력하세요"} value={this.state.email} onChange={this.handleChange} />

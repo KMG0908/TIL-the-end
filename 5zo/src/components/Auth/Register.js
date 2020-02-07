@@ -58,7 +58,7 @@ class Register extends Component {
     return (
 
       <div style={{ textAlign: 'center' }}>
-        <div style={{ display: 'inline-block', minWidth: 500 }}>
+      <div style={{ display: 'inline-block', width: 500 }}>
         <AuthWrapper>
           <AuthContent title="회원가입" id="register">
             <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디( 5 ~ 20 자 )" onChange={this.handleChange} />

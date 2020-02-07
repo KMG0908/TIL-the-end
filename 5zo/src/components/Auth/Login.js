@@ -40,21 +40,13 @@ class Login extends Component {
     if (!this.state.loginId) {
       document.getElementById("loginId_msg").value = '아이디를 입력해주세요';
       document.getElementById("loginId").focus();
-      document.getElementById("loginId_msg").classList.add("empty")
       return;
-    }
-    else {
-      document.getElementById("loginId_msg").classList.remove("empty")
     }
 
     if (!this.state.loginPw) {
       document.getElementById("loginPw_msg").value = '비밀번호를 입력해주세요';
       document.getElementById("loginPw").focus();
-      document.getElementById("loginPw_msg").classList.add("empty")
       return;
-    }
-    else {
-      document.getElementById("loginPw_msg").classList.remove("empty")
     }
 
     this.props.login(this.state.loginId, this.state.loginPw);
@@ -73,7 +65,7 @@ class Login extends Component {
     return (
 
       <div style={{ textAlign: 'center' }}>
-        <div style={{ display: 'inline-block', minWidth: 500 }}>
+      <div style={{ display: 'inline-block', width: 500 }}>
           <AuthWrapper >
             <AuthContent title="로그인">
               <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디" onChange={this.handleChange} />

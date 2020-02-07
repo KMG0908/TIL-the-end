@@ -54,7 +54,7 @@ class MyAccountDelete extends Component {
         return (
 
             <div style={{ textAlign: 'center' }}>
-                <div style={{ display: 'inline-block', minWidth: 500 }}>
+            <div style={{ display: 'inline-block', width: 500 }}>
                     <AuthWrapper>
                         <AuthContent title="회원 탈퇴">
                             <InputWithLabel label="비밀번호" id="loginPw" name="loginPw" type="password" placeholder={"현재 비밀번호를 입력하세요"} value={this.state.loginPw} onChange={this.handleChange} />

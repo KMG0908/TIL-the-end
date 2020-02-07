@@ -76,7 +76,6 @@ class App extends React.Component {
             <Route path="/tags" exact component={TagPage} />
             <Route path="/todo" exact component={Todo} />
             <Route path="/login" exact component={Login} />
-            <Route path="/register" exact component={Register} />
             {/*  아래는 테스트 */}
             <Route path="/mypage" exact component={MyPage} />
             <Route path="/mypage/edit" exact component={MyPageEdit} />

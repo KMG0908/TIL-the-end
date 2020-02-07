@@ -55,7 +55,7 @@ class FindPwPage extends Component {
         return (
 
             <div style={{ textAlign: 'center' }}>
-                <div style={{ display: 'inline-block', minWidth: 500 }}>
+            <div style={{ display: 'inline-block', width: 500 }}>
                     <AuthWrapper>
                         <AuthContent title="비밀번호 찾기">
                             <InputWithLabel label="아이디" id="mem_id" name="mem_id" placeholder={"아이디를 입력하세요"} value={this.state.mem_id} onChange={this.handleChange} />
