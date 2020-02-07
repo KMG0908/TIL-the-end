@@ -158,4 +158,9 @@
 		where mem_id = #{mem_id}
 	</update>
 
+	<insert id="insertSNS" parameterType="sns" useGeneratedKeys="true" keyProperty="id">
+		insert into mem_info(mem_id, sns_nid, sns_email, provider)
+		values(#{mem_id}, #{sns_nid}, #{mem_email}, #{provider})
+	</insert>
+
 </mapper>

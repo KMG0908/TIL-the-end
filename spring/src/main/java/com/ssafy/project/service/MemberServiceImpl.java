@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.project.dao.MemberDao;
 import com.ssafy.project.dto.Member;
 import com.ssafy.project.dto.MemberException;
+import com.ssafy.project.dto.SNS;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -199,6 +200,43 @@ public class MemberServiceImpl implements MemberService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MemberException(mem_id + "의 글쓰기 기본 설정 변경 중 오류 발생");
+		}
+	}
+
+	@Override
+	public Member naverLogin(Member naver) {
+		// 경우의 수 1 : 네이버 이메일로 가입된 아이디가 없다면 멤버 신규 생성 sns 신규 생성 연결 및 리턴
+		// 경우의 수 2 : 네이버 이메일로 가입된 아이디가 있고 sns 테이블을 확인해 있다면 바로 리턴
+		// 경우의 수 3 : 네이버 이메일로 가입된 아이디가 있지만 sns 테이블에 없다면 sns 생성 후 연결 리턴
+		try {
+			if(dao.searchEmail(naver.getMem_email()) == 0) {
+				dao.insertMember(naver);
+				dao.grantMember(naver.getMem_id());
+				SNS sns = new SNS();
+				sns.setMem_id(naver.getMem_id());
+				sns.setSns_nid(Integer.parseInt(naver.getMem_id().split("_")[1]));
+				sns.setSns_email(naver.getMem_email());
+				sns.setProvider("NAVER");	
+				dao.insertSNS(sns);
+				return naver;
+				
+			} else if(dao.searchSNS(naver.getMem_email()) == 0){
+				SNS sns = new SNS();
+				String mem_email = naver.getMem_email();
+				String mem_id = dao.searchIdByEmail(mem_email);
+				sns.setMem_id(mem_id);
+				sns.setSns_nid(Integer.parseInt(naver.getMem_id().split("_")[1]));
+				sns.setSns_email(mem_email);
+				sns.setProvider("NAVER");	
+				dao.insertSNS(sns);				
+				return dao.search(mem_id);
+				
+			} else {
+				return dao.searchSNS
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException("네이버 아이디 로그인 중 오류 발생");
 		}
 	}
 
