@@ -35,7 +35,10 @@ const today = new Date().toISOString().split("T")[0];
 function DatePicker(props) {
   const classes = useStyles();
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  let [selectedDate, setSelectedDate] = React.useState(new Date());
+  if(props.date){
+    selectedDate = new Date(props.date);
+  }
 
   const handleDateChange = date => {
     setSelectedDate(date);
