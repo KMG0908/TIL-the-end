@@ -15,29 +15,37 @@ import { Link } from "react-router-dom";
 
 
 
-const WithTitle = ({ component: Component, title}) => {
+const WithTitle = ({ component: Component, title }) => {
   return class Title extends React.Component {
     render() {
       return (
         <React.Fragment>
-          <TitleComponent title={title}/>
-          <Component {...this.props}/>
+          <TitleComponent title={title} />
+          <Component {...this.props} />
         </React.Fragment>
       );
     }
   };
 };
 
-const CalendarComponent = WithTitle({ component : Link, title: 'Calendar'});
-const TodoComponent = WithTitle({ component : Link, title: 'Todo'});
-const StatisticsComponent = WithTitle({ component : Link, title: 'Statistics'});
+const CalendarComponent = WithTitle({ component: Link, title: 'Calendar' });
+const TodoComponent = WithTitle({ component: Link, title: 'Todo' });
+const StatisticsComponent = WithTitle({ component: Link, title: 'Statistics' });
 
 
 const SidebarList = (props) => {
   return (
     <>
       <List>
-        <ListItem button component={Link}  to={"/todo"}>
+        <ListItem button component={Link} to={"/daily"}>
+          <ListItemIcon>
+            <TodayIcon />
+          </ListItemIcon>
+          <ListItemText primary="Daily" />
+        </ListItem>
+      </List>
+      <List>
+        <ListItem button component={Link} to={"/todo"}>
           <ListItemIcon>
             <TodayIcon />
           </ListItemIcon>
@@ -45,19 +53,11 @@ const SidebarList = (props) => {
         </ListItem>
       </List>
       <List>
-        <ListItem button component={Link}  to={"/calendar"}>
+        <ListItem button component={Link} to={"/calendar"}>
           <ListItemIcon>
             <EventIcon />
           </ListItemIcon>
           <ListItemText primary="Calendar" />
-        </ListItem>
-      </List>
-      <List>
-        <ListItem button component={Link}  to={"/statistics/" + props.user_id}>
-          <ListItemIcon>
-            <EqualizerIcon />
-          </ListItemIcon>
-          <ListItemText primary="통계" />
         </ListItem>
       </List>
       <List>
@@ -68,18 +68,10 @@ const SidebarList = (props) => {
           <ListItemText primary="Search" />
         </ListItem>
       </List>
-      <List>
-        <ListItem button component={Link} to={"/tags"}>
-          <ListItemIcon>
-            <LocalOfferIcon />
-          </ListItemIcon>
-          <ListItemText primary="Tags" />
-        </ListItem>
-      </List>
 
       <Divider />
     </>
   );
 };
 
-export {SidebarList,  WithTitle};
+export { SidebarList, WithTitle };

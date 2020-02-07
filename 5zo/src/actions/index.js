@@ -51,6 +51,7 @@ import {
   SEARCH_CARDLIST,
   MEM_TAG,
   GET_ALL_TAG,
+  FETCH_TAG,
   GET_DAILY_TASK,
   GET_DAILY_CAL,
   GET_DAILY_LIST,
@@ -355,6 +356,11 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
           let card = await apis.get(`/card/${card_id}`);
           dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
         });
+        
+        let tags = await apis.get(`/cardlist_tag/${cardlist_id}`);
+        if(tags.data.data.length > 0){
+          dispatch({ type: FETCH_TAG, payload: { cardlist_id : cardlist_id, tags : tags.data.data} });
+        }
       }
     });
   }
