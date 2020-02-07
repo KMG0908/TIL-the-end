@@ -41,7 +41,7 @@ const SidebarList = (props) => {
           <ListItemIcon>
             <TodayIcon />
           </ListItemIcon>
-          <ListItemText primary="Til Todo" />
+          <ListItemText primary="Dashboard" />
         </ListItem>
       </List>
       <List>

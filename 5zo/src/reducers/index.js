@@ -12,6 +12,7 @@ import heatmapReducer from "./heatmapReducer";
 import calendarReducer from "./calendarReducer";
 import calendarListReducer from "./calendarListReducer";
 import editModeList from "./editModeList";
+import editModeCard from "./editModeCard";
 
 export default combineReducers({
   members: memberReducer,
@@ -25,5 +26,6 @@ export default combineReducers({
   heatmaps: heatmapReducer,
   dailyCalendar: calendarReducer,
   listCalendar: calendarListReducer,
-  editModeList: editModeList
+  editModeList: editModeList,
+  editModeCard: editModeCard
 });
