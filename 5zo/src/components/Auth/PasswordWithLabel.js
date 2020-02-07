@@ -18,6 +18,7 @@ const Label = styled.div`
     font-size : 1rem;
     color : ${oc.gray[6]};
     margin-bottom : 0.25rem;
+    text-align : left
 `;
 
 const Input = styled.input`

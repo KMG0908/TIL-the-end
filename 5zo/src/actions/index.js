@@ -273,12 +273,12 @@ export const editPassword = (mem_id,old_pw, new_pw) => async (dispatch, getState
 
 export const editPasswordFailReset = () => async (dispatch, getState) => {
   if (getState().members.edit_password_fail) {
-    dispatch({ type: EDIT_PASSWORD_SUCCESS_RESET});
+    dispatch({ type: EDIT_PASSWORD_FAIL_RESET});
   }
 };
 export const editPasswordSuccessReset = () => async (dispatch, getState) => {
   if (getState().members.edit_password_success) {
-    dispatch({ type: EDIT_PASSWORD_FAIL_RESET });
+    dispatch({ type: EDIT_PASSWORD_SUCCESS_RESET });
   }
 };
 

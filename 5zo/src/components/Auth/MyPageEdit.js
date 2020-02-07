@@ -51,9 +51,6 @@ class MyPageEdit extends Component {
   cancelEditMyinfo = () => {
     window.location.href = "/mypage"
   }
-  editPassword = () => {
-    window.location.href = "/mypage/edit-password"
-  }
   uploadImage(e) {
     const file = e.target.files;
 
@@ -118,9 +115,9 @@ class MyPageEdit extends Component {
               <InputWithLabel label="이메일" name="email" type="email" value={this.state.email} onChange={this.handleChange} />
               <InputWithLabel label="닉네임" name="nick" value={this.state.nick} onChange={this.handleChange} />
               <br /><br />
-              <PasswordWithLabel label="현재 비밀번호" id="nowPw" name="nowPw" placeholder={"현재 비밀번호를 입력하세요"} value={this.state.nowPw} onChange={this.handleChange} />
+              <PasswordWithLabel label="현재 비밀번호" id="nowPw" name="nowPw" placeholder={"수정하려면 현재 비밀번호를 입력하세요"} value={this.state.nowPw} onChange={this.handleChange} />
               {this.props.edit_myinfo_err}
-              <AuthButton onClick={this.editPassword}> 비밀번호 변경 </AuthButton>
+              <RightAlignedLink to="/mypage/edit-password"> 비밀번호 변경 </RightAlignedLink>
               <AuthButton onClick={this.editMyinfo}> 수정 </AuthButton>
               <AuthButton onClick={this.cancelEditMyinfo}> 취소 </AuthButton>
             </AuthContent>
