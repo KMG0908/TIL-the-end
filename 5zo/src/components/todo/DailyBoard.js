@@ -17,8 +17,6 @@ const styles = theme => ({
   list: {
     margin: theme.spacing(1),
     marginLeft: theme.spacing(0),
-    padding: theme.spacing(1),
-    backgroundColor: "#94C9A9",
     color: theme.palette.error.contrastText,
     minHeight: "200px",
     width: "100%"
@@ -42,6 +40,15 @@ class DailyBoard extends React.Component {
       this.props.fetchDailyLists(this.props.members.mem_info.mem_id, date);
     }
   }
+  handleDoubleClick = list_id => {
+    if (this.state.date < today) {
+      if (this.props.editModeList === list_id) {
+        this.props.setEditModeList(null);
+      } else {
+        this.props.setEditModeList(list_id);
+      }
+    }
+  };
 
   RenderList() {
     const { date } = this.state;
@@ -65,20 +72,20 @@ class DailyBoard extends React.Component {
               key={list}
             >
               {provided => (
-                <div key={this.props.cardLists[list].cardlist_id}>
-                  <Paper
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    ref={provided.innerRef}
-                    className={classes.list}
-                  >
-                    <List
-                      board_id={this.props.boardDict[date]}
-                      date={date}
-                      cardlist_id={this.props.cardLists[list].cardlist_id}
-                      title={this.props.cardLists[list].cardlist_name}
-                    />
-                  </Paper>
+                <div
+                  className={classes.list}
+                  key={this.props.cardLists[list].cardlist_id}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                  ref={provided.innerRef}
+                  onDoubleClick={() => this.handleDoubleClick(list)}
+                >
+                  <List
+                    board_id={this.props.boardDict[date]}
+                    date={date}
+                    cardlist_id={this.props.cardLists[list].cardlist_id}
+                    title={this.props.cardLists[list].cardlist_name}
+                  />
                 </div>
               )}
             </Draggable>

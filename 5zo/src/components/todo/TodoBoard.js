@@ -20,8 +20,6 @@ const styles = theme => ({
 
   list: {
     margin: theme.spacing(1),
-    padding: theme.spacing(1),
-    backgroundColor: "#2C7873",
     color: theme.palette.error.contrastText,
     minHeight: "200px",
     width: "300px"
@@ -75,18 +73,18 @@ class TodoBoard extends React.Component {
             <Draggable draggableId={`list-${list}`} index={index} key={list}>
               {provided => (
                 <Grid spacing={2} key={this.props.cardLists[list].cardlist_id}>
-                  <Paper
-                    className={classes.list}
+                  <div
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
+                    className={classes.list}
                   >
                     <List
                       board_id={this.props.boardDict[date]}
                       cardlist_id={this.props.cardLists[list].cardlist_id}
                       title={this.props.cardLists[list].cardlist_name}
                     />
-                  </Paper>
+                  </div>
                 </Grid>
               )}
             </Draggable>

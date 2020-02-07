@@ -9,10 +9,17 @@ import Icon from "@material-ui/core/Icon";
 import { deleteList, editList, setEditModeList } from "../../actions";
 import { Droppable } from "react-beautiful-dnd";
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import { TwitterPicker } from "react-color";
 
 const styles = theme => ({
   root: {
     flexGrow: 1
+  },
+  list: {
+    padding: theme.spacing(1),
+    // backgroundColor: "#94C9A9",
+    color: theme.palette.error.contrastText
   },
   paper: {
     textAlign: "left",
@@ -33,6 +40,7 @@ const styles = theme => ({
   create: {
     textAlign: "left"
   },
+  expand: { marginRight: theme.spacing(2) },
   delete: {
     display: "block",
     right: "5px",
@@ -43,20 +51,30 @@ const styles = theme => ({
     "&:hover": {
       opacity: "0.8"
     }
+  },
+  color: {
+    width: "36px",
+    height: "14px",
+    borderRadius: "2px"
   }
 });
 
 const today = new Date().toISOString().split("T")[0];
 
 class List extends React.Component {
+  componentDidMount() {
+    const cardlist_color = this.props.cardLists[this.props.cardlist_id]
+      .cardlist_color;
+    this.setState({ color: cardlist_color ? cardlist_color : "#94C9A9" });
+  }
   state = {
+    color: "#94C9A9",
+    displayColorPicker: false,
     isEditing: false,
     listTitle: this.props.cardLists[this.props.cardlist_id].cardlist_name
   };
 
   renderCard() {
-    const { classes } = this.props;
-
     const cards = Array.isArray(
       this.props.cardLists[this.props.cardlist_id].cardlist_cards
     )
@@ -125,10 +143,29 @@ class List extends React.Component {
       this.setState({ isEditing: true });
     }
   };
+  handleClick = () => {
+    this.setState({ displayColorPicker: !this.state.displayColorPicker });
+  };
+  handleClose = () => {
+    this.setState({ displayColorPicker: false });
+  };
+  handleChange = color => {
+
+
+    const cardlist = this.props.cardLists[this.props.cardlist_id];
+    cardlist.cardlist_color = color.hex;
+
+    this.props.editList(cardlist);
+    console.log(color);
+  };
   render() {
     const { classes } = this.props;
+    const color = this.props.cardLists[this.props.cardlist_id].cardlist_color? this.props.cardLists[this.props.cardlist_id].cardlist_color:"#94C9A9"
     return (
-      <div>
+      <Paper
+        className={classes.list}
+        style={{ backgroundColor: color }}
+      >
         {this.state.isEditing ? (
           this.titleEditer()
         ) : (
@@ -136,7 +173,7 @@ class List extends React.Component {
             className={classes.titleContainer}
             onClick={this.handleTitleDoubleClick}
           >
-            {this.props.date===today ? (
+            {this.props.date === today ? (
               <Icon
                 onClick={this.handleSetEditModeList}
                 className={classes.expand}
@@ -169,6 +206,29 @@ class List extends React.Component {
             <div {...provided.droppableProps} ref={provided.innerRef}>
               {this.renderCard()}
               {provided.placeholder}
+
+              {this.props.editModeList === this.props.cardlist_id ? (
+                <>
+                  <Paper>
+                    해쉬태그
+                    <div style={styles.swatch} onClick={this.handleClick}>
+                      <div
+                        className={classes.color}
+                        style={{ backgroundColor: color }}
+                      />
+                    </div>
+                    {this.state.displayColorPicker ? (
+                      <div style={styles.popover}>
+                        <div style={styles.cover} onClick={this.handleClose} />
+                        <TwitterPicker
+                          color={color}
+                          onChange={this.handleChange}
+                        />
+                      </div>
+                    ) : null}
+                  </Paper>
+                </>
+              ) : null}
               {this.props.date >= today || !this.props.date ? (
                 <Box className={classes.create} elevation={0}>
                   <TrelloCreate cardlist_id={this.props.cardlist_id} />
@@ -177,7 +237,7 @@ class List extends React.Component {
             </div>
           )}
         </Droppable>
-      </div>
+      </Paper>
     );
   }
 }

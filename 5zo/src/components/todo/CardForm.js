@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { deleteCard, editCard } from "../../actions";
+import { deleteCard, editCard, setEditModeCard } from "../../actions";
 import Icon from "@material-ui/core/Icon";
 
 import Collapse from "@material-ui/core/Collapse";
@@ -62,21 +62,24 @@ class CardForm extends React.Component {
   };
   onEditCard = event => {
     event.stopPropagation();
-    this.setState({ enableToolbar: false });
+    this.props.setEditModeCard(null);
     const card = this.props.card;
     card.card_contents = this.state.card_contents;
     this.props.editCard(card);
   };
+  handleCardClick = event => {
+    event.stopPropagation();
+    if (
+      this.props.date === today &&
+      this.props.editModeList === this.props.cardlist_id
+    ) {
+      this.props.setEditModeCard(this.props.card.card_id);
+    }
+  };
   render() {
     const { classes } = this.props;
     return (
-      <div
-        onClick={() => {
-          if (this.props.date === today) {
-            this.setState({ enableToolbar: true });
-          }
-        }}
-      >
+      <div onClick={this.handleCardClick}>
         <div className={classes.paper}>
           <Typography
             variant={
@@ -95,60 +98,61 @@ class CardForm extends React.Component {
             delete
           </Icon>
         </div>
-        <Collapse
-          in={this.props.editModeList === this.props.cardlist_id}
-          className={classes.collapseCard}
-          timeout="auto"
-          unmountOnExit
-        >
-          {this.state.enableToolbar ? (
-            <SunEditor
-              lang="ko"
-              enable={true}
-              onChange={this.handleChange}
-              showToolbar={this.state.enableToolbar}
-              setContents={
-                this.props.card.card_contents
-                  ? `${this.props.card.card_contents}`
-                  : null
-              }
-              setOptions={{
-                height: "auto",
-                stickyToolbar: 50,
-                placeholder: "오늘 배운 내용을 입력해주세요",
-                resizingBar: false,
-                buttonList: [
-                  ["font", "fontSize", "formatBlock"],
-                  ["bold", "underline", "italic", "strike"],
-                  ["fontColor", "hiliteColor", "textStyle"],
-                  ["removeFormat"],
-                  ["outdent", "indent"],
-                  ["align", "horizontalRule", "list", "lineHeight"],
-                  ["table", "link", "image", "video"],
-                  ["fullScreen", "preview", "showBlocks"]
-                ]
-              }}
-            />
-          ) : (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: this.props.card.card_contents
-              }}
-            />
-          )}
+        <div onDoubleClick={this.handleCardClick}>
+          <Collapse
+            in={this.props.editModeList === this.props.cardlist_id}
+            className={classes.collapseCard}
+            timeout="auto"
+            unmountOnExit
+            onClick={this.handleChange}
+          >
+            {this.props.card.card_id === this.props.editModeCard ? (
+              <SunEditor
+                lang="ko"
+                enable={true}
+                onChange={this.handleChange}
+                setContents={
+                  this.props.card.card_contents
+                    ? `${this.props.card.card_contents}`
+                    : null
+                }
+                setOptions={{
+                  height: "auto",
+                  stickyToolbar: 50,
+                  placeholder: "오늘 배운 내용을 입력해주세요",
+                  resizingBar: false,
+                  buttonList: [
+                    ["font", "fontSize", "formatBlock"],
+                    ["bold", "underline", "italic", "strike"],
+                    ["fontColor", "hiliteColor", "textStyle"],
+                    ["removeFormat"],
+                    ["outdent", "indent"],
+                    ["align", "horizontalRule", "list", "lineHeight"],
+                    ["table", "link", "image", "video"],
+                    ["fullScreen", "preview", "showBlocks"]
+                  ]
+                }}
+              />
+            ) : (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: this.props.card.card_contents
+                }}
+              />
+            )}
 
-          {this.state.enableToolbar &&
-          this.props.editModeList === this.props.cardlist_id ? (
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="primary"
-              onClick={this.onEditCard}
-            >
-              저장
-            </Button>
-          ) : null}
-        </Collapse>
+            {this.props.editModeCard === this.props.card.card_id ? (
+              <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                onClick={this.onEditCard}
+              >
+                저장
+              </Button>
+            ) : null}
+          </Collapse>
+        </div>
       </div>
     );
   }
@@ -156,10 +160,11 @@ class CardForm extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    editModeList: state.editModeList
+    editModeList: state.editModeList,
+    editModeCard: state.editModeCard
   };
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { deleteCard, editCard })(CardForm)
+  connect(mapStateToProps, { deleteCard, editCard, setEditModeCard })(CardForm)
 );

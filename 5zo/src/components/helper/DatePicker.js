@@ -7,9 +7,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from "@material-ui/pickers";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { setEditModeList } from "../../actions";
+import { setEditModeList, setEditModeCard } from "../../actions";
 
 const useStyles = makeStyles({
   Keyboard: {
@@ -43,16 +43,17 @@ function DatePicker(props) {
     props.onChangeDate(isoDate);
     if (isoDate > today) {
       props.setEditModeList(null);
+      props.setEditModeCard(null);
     }
   };
   const toNextDate = () => {
-    const date = new Date();
+    const date = selectedDate;
     date.setDate(selectedDate.getDate() + 1);
     setSelectedDate(date);
     handleDateChange(date);
   };
   const toPrevDate = () => {
-    const date = new Date();
+    const date = selectedDate;
     date.setDate(selectedDate.getDate() - 1);
     setSelectedDate(date);
     handleDateChange(date);
@@ -107,4 +108,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { setEditModeList })(DatePicker);
+export default connect(mapStateToProps, { setEditModeList, setEditModeCard })(
+  DatePicker
+);
