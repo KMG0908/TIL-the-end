@@ -66,7 +66,7 @@ public class CardlistRESTController {
 
 	// UPDATE
 	@PutMapping("/api/cardlist")
-	@ApiOperation("cardlist 정보 수정, 수정이 가능한 정보는 name, cards, board_id, _secret 네가지입니다.")
+	@ApiOperation("cardlist 정보 수정, 수정이 가능한 정보는 name, cards, board_id, _secret, color 다섯가지입니다.")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Cardlist cardlist) {
 		service.updateCardlist(cardlist);
 		return handleSuccess(cardlist.getCardlist_id() + "번 카드리스트 수정 완료");
@@ -89,7 +89,7 @@ public class CardlistRESTController {
 	}
 	
 	@PatchMapping("/api/cardlist/{cardlist_id}/color/{cardlist_color}")
-	@ApiOperation("")
+	@ApiOperation("cardlist의 색상만 바꾸는 patch rest api 입니다")
 	public ResponseEntity<Map<String, Object>> cardlistcolorpatch(@RequestBody Cardlistcolorpatch cp) {
 		service.cardlistcolorpatch(cp.getCardlist_id(), cp.getCardlist_color());
 		return handleSuccess(cp.getCardlist_id() + "번 카드리스트의 색상 패치 완료");

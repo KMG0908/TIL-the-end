@@ -190,6 +190,8 @@ public class CardlistServiceImpl implements CardlistService {
 	public void cardlistcolorpatch(int cardlist_id, String cardlist_color) {
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
+			System.out.println(cardlist_id);
+			System.out.println(cardlist_color);
 			params.put("cardlist_id", cardlist_id);
 			params.put("cardlist_color", cardlist_color);
 			dao.cardlistcolorpatch(params);
