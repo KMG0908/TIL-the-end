@@ -31,7 +31,6 @@ class Heatmap extends React.Component {
       return null;
     }
     this.props.onHandleDate(value.date);
-    alert(`${value.date} with task: ${value.count}`);
   };
   setHeatMap() {
     if (this.props.board_info) {

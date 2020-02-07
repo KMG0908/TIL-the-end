@@ -5,7 +5,7 @@ import oc from 'open-color';
 const Title = styled.div`
     font-size : 1.5rem;
     forn-weight : 500
-    color : ${oc.gray[8]};
+    color : #94C9A9;
     margin-bottom: 1rem;
 `;
 
