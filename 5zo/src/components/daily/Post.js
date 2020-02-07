@@ -7,6 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
 import "typeface-roboto";
 import SubPost from "./SubPost";
+import Tag from "./Tag";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -24,6 +25,14 @@ const renderSubPost = props => {
   });
 };
 
+const renderTags = props => {
+  if(props.tags[props.list_id]){
+    return props.tags[props.list_id].map(tag => {
+      return <Tag name={tag.tag_name}></Tag>
+    })
+  }
+}
+
 const Post = props => {
   const classes = useStyles();
   return (
@@ -33,6 +42,7 @@ const Post = props => {
       </Typography>
         <hr/>
       {renderSubPost(props)}
+      {renderTags(props)}
     </Paper>
   );
 };
@@ -40,7 +50,8 @@ const Post = props => {
 const mapStateToProps = state => {
   return {
     cardLists: state.cardLists,
-    cards: state.cards
+    cards: state.cards,
+    tags: state.tag
   };
 };
 
