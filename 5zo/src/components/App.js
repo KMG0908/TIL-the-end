@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Route } from "react-router-dom";
+import { Router, Route, Redirect, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { setLoggedInfo } from "actions";
 
@@ -20,7 +20,7 @@ import MyPageEdit from "./Auth/MyPageEdit";
 import MyAccountDelete from "./Auth/MyAccountDelete";
 import Imgur from "./image_test/Imgur"
 import Daily from "./daily/Main"
-
+import Redirecting from "./redirectingPage/RedirectBody";
 import NewSearch from "./serach/NewSearch";
 
 class App extends React.Component {
@@ -62,24 +62,28 @@ class App extends React.Component {
           user_id={this.props.members.mem_info.mem_id}
         >
           <div>
-            <Route path="/" exact component={Main} />
-            <Route path="/calendar" exact component={Calendar} />
-            <Route path="/statistics/:user_id" exact component={Statistics} />
-            {/* <Route path="/search" exact component={Search} /> */}
-            {/* <Route path="/search/:keyword" component={Search} /> */}
-            <Route path="/tags" exact component={TagPage} />
-            <Route path="/todo" exact component={Todo} />
-            <Route path="/login" exact component={Login} />
-            <Route path="/register" exact component={Register} />
-            {/*  아래는 테스트 */}
-            <Route path="/mypage" exact component={MyPage} />
-            <Route path="/mypage/edit" exact component={MyPageEdit} />
-            <Route path="/mypage/delete" exact component={MyAccountDelete} />
-            <Route path="/imgur" exact component={Imgur}></Route>
-            <Route path="/daily" exact component={Daily}></Route>
-            <Route path="/daily/:user_id" exact component={Daily}></Route>
-            <Route path="/search" exact component={NewSearch}></Route>
+            <Switch>
+              <Route path="/" exact component={Daily} />
+              <Route path="/calendar" exact component={Calendar} />
+              <Route path="/statistics/:user_id" exact component={Statistics} />
+              {/* <Route path="/search" exact component={Search} /> */}
+              {/* <Route path="/search/:keyword" component={Search} /> */}
+              <Route path="/tags" exact component={TagPage} />
+              <Route path="/todo" exact component={Todo} />
+              <Route path="/login" exact component={Login} />
+              <Route path="/register" exact component={Register} />
+              <Route component={Redirecting} />
+              {/*  아래는 테스트 */}
+              <Route path="/mypage" exact component={MyPage} />
+              <Route path="/mypage/edit" exact component={MyPageEdit} />
+              <Route path="/mypage/delete" exact component={MyAccountDelete} />
+              <Route path="/imgur" exact component={Imgur}></Route>
+              <Route path="/daily" exact component={Daily}></Route>
+              <Route path="/daily/:user_id" exact component={Daily}></Route>
+              <Route path="/search" exact component={NewSearch}></Route>
+            </Switch>
           </div>
+
         </Navigation>
       );
     }
