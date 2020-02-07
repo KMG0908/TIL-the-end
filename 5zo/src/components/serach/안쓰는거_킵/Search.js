@@ -5,7 +5,7 @@ import SearchNav from "./SearchNav";
 import queryString from "query-string";
 import { connect } from "react-redux";
 import { searchKeyword } from 'actions';
-import { login, loginErrReset } from "../../actions";
+import { login, loginErrReset } from "actions";
 
 class SearchPage extends Component {
   constructor(props) {

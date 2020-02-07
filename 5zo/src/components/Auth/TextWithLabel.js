@@ -7,12 +7,14 @@ const Wrapper = styled.div`
     & + & {
         margin-tip : 1rem;
     }
+    textAlign : 'left'
 `;
 
 const Label = styled.div`
     font-size : 1rem;
     color : ${oc.gray[6]};
     margin-bottom : 0.25rem;
+    text-align : left
 `;
 
 const Input = styled.input`
@@ -30,7 +32,7 @@ const Input = styled.input`
 `;
 
 const TextWithLabel = ({label, ...rest}) => (
-    <Wrapper>
+    <Wrapper >
         <Label> {label} </Label>
         <Input {...rest} readOnly/>
     </Wrapper>

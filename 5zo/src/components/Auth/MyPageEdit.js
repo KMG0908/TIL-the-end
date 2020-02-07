@@ -66,14 +66,14 @@ class MyPageEdit extends Component {
         var div = document.getElementById("image_div");
         var divAspect = 120 / 120;
         var imgAspect = image.height / image.width;
-        
+
         if (imgAspect <= divAspect) {
           var imgWidthActual = div.offsetHeight / imgAspect;
           var imgWidthToBe = div.offsetHeight / divAspect;
           var marginLeft = -Math.round((imgWidthActual - imgWidthToBe) / 2);
           canvasContext.drawImage(this, 0, 0, 120 * this.width / this.height, 120);
           document.getElementById("profile_image").style.cssText = "margin-left: " + marginLeft + "px; margin-top: 0px;"
-        } 
+        }
         else {
           var imgWidthActual = div.offsetHeight / imgAspect;
           var imgWidthToBe = div.offsetHeight / divAspect;
@@ -100,24 +100,27 @@ class MyPageEdit extends Component {
     }
     console.log(this.state);
     return (
-      <div>
-        <h1> 내 정보 수정 </h1>
-        <AuthWrapper>
-          <AuthContent title="내 정보 수정">
-            <div style={{width: "120px", height: "120px", overflow: "hidden"}} id="image_div">
-              <img id="profile_image"></img>
-            </div>
-            <input type="file" accept="image/*" onChange={this.uploadImage} />
-            {/* 로그인한 member 의 데이터를 아래 TextWithLabel 들의 value 에 줘야함. */}
-            <InputWithLabel label="이메일" name="email" type="email" value={this.state.email} onChange={this.handleChange} />
-            <InputWithLabel label="닉네임" name="nick" value={this.state.nick} onChange={this.handleChange} />
-            <br /><br />
-            <InputWithLabel label="비밀번호" id="loginPw" name="loginPw" type="password" placeholder={"현재 비밀번호를 입력하세요"} value={this.state.loginPw} onChange={this.handleChange} />
-            {this.props.edit_myinfo_err}
-            <AuthButton onClick={this.editMyinfo}> 수정 </AuthButton>
-            <AuthButton onClick={this.cancelEditMyinfo}> 취소 </AuthButton>
-          </AuthContent>
-        </AuthWrapper>
+
+      <div style={{ textAlign: 'center' }}>
+        <div style={{ display: 'inline-block', minWidth: 500 }}>
+          <AuthWrapper>
+            <AuthContent title="내 정보 수정">
+              <div style={{ width: "120px", height: "120px", overflow: "hidden" }} id="image_div">
+                <img id="profile_image"></img>
+              </div>
+              <input type="file" accept="image/*" onChange={this.uploadImage} />
+              {/* 로그인한 member 의 데이터를 아래 TextWithLabel 들의 value 에 줘야함. */}
+              <TextWithLabel label="아이디" name="id" value={this.props.mem_info ? this.props.mem_info.mem_id : ''} />
+              <InputWithLabel label="이메일" name="email" type="email" value={this.state.email} onChange={this.handleChange} />
+              <InputWithLabel label="닉네임" name="nick" value={this.state.nick} onChange={this.handleChange} />
+              <br /><br />
+              <InputWithLabel label="비밀번호" id="loginPw" name="loginPw" type="password" placeholder={"현재 비밀번호를 입력하세요"} value={this.state.loginPw} onChange={this.handleChange} />
+              {this.props.edit_myinfo_err}
+              <AuthButton onClick={this.editMyinfo}> 수정 </AuthButton>
+              <AuthButton onClick={this.cancelEditMyinfo}> 취소 </AuthButton>
+            </AuthContent>
+          </AuthWrapper>
+        </div>
       </div>
     );
   }
