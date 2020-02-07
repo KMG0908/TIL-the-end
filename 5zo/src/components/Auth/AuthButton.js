@@ -8,7 +8,7 @@ const Wrapper = styled.div`
     padding-top : 0.6rem;
     padding-bottom : 0.5rem;
     border-radius: 10px;
-    background : ${oc.teal[6]};
+    background : #94C9A9;  // <<<<<<<<<<<<<<<<<<<<<<<<<<<
     color : white;
 
     text-align : center;
