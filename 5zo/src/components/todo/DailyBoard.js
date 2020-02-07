@@ -18,7 +18,6 @@ const styles = theme => ({
     margin: theme.spacing(1),
     marginLeft: theme.spacing(0),
     color: theme.palette.error.contrastText,
-    minHeight: "200px",
     width: "100%"
   },
   addList: {
