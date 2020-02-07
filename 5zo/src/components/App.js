@@ -9,7 +9,6 @@ import Calendar from "./calendar/Calendar";
 import DefLand from "./landing/DefLand";
 import LandingPage from "./landing/LandingPage";
 import Statistics from "./statistics/Statistics";
-import Search from "./serach/Search";
 import TagPage from "./tags/Tags";
 import Todo from "./todo/Todo";
 import history from "../history";
@@ -18,6 +17,7 @@ import Login from "./Auth/Login";
 import storage from "lib/storage";
 import MyPage from "./Auth/MyPage";
 import MyPageEdit from "./Auth/MyPageEdit";
+import MyAccountDelete from "./Auth/MyAccountDelete";
 import Imgur from "./image_test/Imgur"
 import Daily from "./daily/Main"
 
@@ -74,6 +74,7 @@ class App extends React.Component {
             {/*  아래는 테스트 */}
             <Route path="/mypage" exact component={MyPage} />
             <Route path="/mypage/edit" exact component={MyPageEdit} />
+            <Route path="/mypage/delete" exact component={MyAccountDelete} />
             <Route path="/imgur" exact component={Imgur}></Route>
             <Route path="/daily" exact component={Daily}></Route>
             <Route path="/daily/:user_id" exact component={Daily}></Route>

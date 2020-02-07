@@ -10,6 +10,9 @@ import {
   SET_LOGGED_INFO,
   GET_LOGGED_INFO,
   LOGOUT,
+  DELETE_ACCOUNT,
+  DELETE_ACCOUNT_ERR,
+  DELETE_ACCOUNT_SUCCESS,
   EDIT_MYINFO,
   EDIT_MYINFO_ERR,
   EDIT_MYINFO_CHANGE_RESET,
@@ -161,6 +164,42 @@ export const getLoggedInfo = () => async dispatch => {
 export const logout = () => async dispatch => {
   dispatch({ type: LOGOUT });
 };
+
+export const deleteAccount = (mem_id, mem_pw) => async dispatch => {
+  let response
+  console.log(`mem_id : ${mem_id} , mem_pw : ${mem_pw}`)
+  response = await apis.post(`/member/login`, {
+    'mem_id': mem_id,
+    'mem_pw': mem_pw
+  })
+  console.log('deleteAccount')
+  console.log(response)
+  if (response.data.state === 'ok') {
+    response = await apis.delete(`/member/${mem_id}`)
+    if (response.data.state === 'ok') {
+      dispatch({ type: DELETE_ACCOUNT_SUCCESS})
+    } else {
+      console.log('회원탈퇴오류')
+      dispatch({ type: DELETE_ACCOUNT_ERR, payload: '회원 탈퇴 실패' })
+    }
+  }else{
+    console.log('회원탈퇴실패 - 비밀번호 틀림')
+
+    dispatch({ type: DELETE_ACCOUNT_ERR, payload: '비밀번호 틀림' })
+  }
+}
+
+export const deleteAccountErrReset = () => async(dispatch, getState) => {
+  if( getState().members.delete_account_err) {
+    dispatch ({ type : DELETE_ACCOUNT_ERR, payload : ""})
+  }
+}
+
+export const deleteAccountSuccessReset = () => async(dispatch , getState) => {
+  if( getState().members.delete_account_success) {
+    dispatch ({ type : DELETE_ACCOUNT_SUCCESS, payload : ""})
+  }
+}
 
 export const editMyinfo = (loginId, loginPw, email, nick) => async dispatch => {
   if (!loginPw) {
@@ -488,7 +527,7 @@ export const fetchStatisticsData = (
 
   var response = await apis.get(
     `/card/daily/private/${
-      getState().members.mem_info.mem_id
+    getState().members.mem_info.mem_id
     }/from/${start}/to/${end}`
   );
   const responseData = response.data.data;
@@ -580,12 +619,15 @@ export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
 };
 
 export const getAllTag = () => async (dispatch, getState) => {
-  const response = await apis.get(`/tag `);
-  const datas = response.data.data;
-  const data_ = [];
-  datas.map(data => data_.push("#" + data.tag_name));
-  dispatch({ type: GET_ALL_TAG, payload: data_ });
-};
+  const response = await apis.get(
+    `/tag `
+  )
+  const datas = response.data.data
+  const data_ = []
+  datas.map(data => data_.push('#' + data.tag_name))
+  data_.sort()
+  dispatch({ type: GET_ALL_TAG, payload: data_ })
+}
 
 export const getDailyTask = (mem_id, from, to) => async (
   dispatch,
