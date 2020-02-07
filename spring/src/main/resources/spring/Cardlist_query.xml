@@ -55,20 +55,18 @@
     and b.mem_id = #{mem_id}
     and b.board_date < now()
     ]]>
-		<choose>
-			<when test="keywordlist.size != 0">
-				<foreach collection="keywordlist" item="item" index="index">
-					and ( c.card_contents like concat ('%',#{item},'%') 
-					or c.card_name like concat ('%',#{item},'%') 
-					or cl.cardlist_name like concat ('%',#{item},'%')  )
-				</foreach>
-			</when>
-			<when test="taglist.size != 0">
-				<foreach collection="taglist" item="item" index="index">
-					and tag.tag_name like concat ('%',#{item},'%') 
-				</foreach>
-			</when>
-		</choose>
+		<if test="keywordlist.size != 0">
+			<foreach collection="keywordlist" item="item" index="index">
+				and ( c.card_contents like concat ('%',#{item},'%')
+				or c.card_name like concat ('%',#{item},'%')
+				or cl.cardlist_name like concat ('%',#{item},'%') )
+			</foreach>
+		</if>
+		<if test="taglist.size != 0">
+			<foreach collection="taglist" item="item" index="index">
+				and tag.tag_name like concat ('%',#{item},'%')
+			</foreach>
+		</if>
     <![CDATA[
     and c.cardlist_id = cl.cardlist_id
     and tag.cardlist_id = cl.cardlist_id
@@ -90,20 +88,18 @@
     and b.mem_id = #{mem_id}
     and b.board_date < now()
     ]]>
-		<choose>
-			<when test="keywordlist.size != 0">
-				<foreach collection="keywordlist" item="item" index="index">
-					and ( c.card_contents like concat ('%',#{item},'%') 
-					or c.card_name like concat ('%',#{item},'%') 
-					or cl.cardlist_name like concat ('%',#{item},'%')  )
-				</foreach>
-			</when>
-			<when test="taglist.size != 0">
-				<foreach collection="taglist" item="item" index="index">
-					and tag.tag_name like concat ('%',#{item},'%') 
-				</foreach>
-			</when>
-		</choose>
+		<if test="keywordlist.size != 0">
+			<foreach collection="keywordlist" item="item" index="index">
+				and ( c.card_contents like concat ('%',#{item},'%')
+				or c.card_name like concat ('%',#{item},'%')
+				or cl.cardlist_name like concat ('%',#{item},'%') )
+			</foreach>
+		</if>
+		<if test="taglist.size != 0">
+			<foreach collection="taglist" item="item" index="index">
+				and tag.tag_name like concat ('%',#{item},'%')
+			</foreach>
+		</if>
     <![CDATA[
     and c.cardlist_id = cl.cardlist_id
     and tag.cardlist_id = cl.cardlist_id
@@ -126,21 +122,20 @@
     where 1=1 
     and b.board_date < now()
     ]]>
-		<choose>
-			<when test="keywordlist.size != 0">
-				<foreach collection="keywordlist" item="item" index="index">
-					and ( c.card_contents like concat ('%',#{item},'%') 
-					or c.card_name like concat ('%',#{item},'%') 
-					or cl.cardlist_name like concat ('%',#{item},'%')  )
-				</foreach>
-			</when>
-			<when test="taglist.size != 0">
-				<foreach collection="taglist" item="item" index="index">
-					and tag.tag_name like concat ('%',#{item},'%') 
-				</foreach>
-			</when>
-		</choose>
-    <![CDATA[
+
+		<if test="keywordlist.size != 0">
+			<foreach collection="keywordlist" item="item" index="index">
+				and ( c.card_contents like concat ('%',#{item},'%')
+				or c.card_name like concat ('%',#{item},'%')
+				or cl.cardlist_name like concat ('%',#{item},'%') )
+			</foreach>
+		</if>
+		<if test="taglist.size != 0">
+			<foreach collection="taglist" item="item" index="index">
+				and tag.tag_name like concat ('%',#{item},'%')
+			</foreach>
+		</if>
+	    <![CDATA[
     and c.cardlist_id = cl.cardlist_id
     and tag.cardlist_id = cl.cardlist_id
     and cl.cardlist_secret = false
@@ -157,8 +152,8 @@
 		board_id = #{board_id}
 		where cardlist_id = #{cardlist_id}
 	</update>
-	
-	
+
+
 	<update id="cardlistcolorpatch" parameterType="hashMap">
 		update cardlist
 		set
