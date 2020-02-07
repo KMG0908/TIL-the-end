@@ -1,21 +1,30 @@
 import React from "react";
-import DatePicker from "../helper/DatePicker";
+import DatePicker from "../helper/DatePicker copy";
 import { connect } from "react-redux";
 import { fetchDailyLists, setEditModeList } from "../../actions";
 import Container from "@material-ui/core/Container";
 import Post from "./Post";
 
 class Daily extends React.Component {
-  state = { date: new Date().toISOString().split("T")[0] };
+  constructor(props){
+    super(props);
+
+    this.state = { 
+      date: this.props.date
+    };
+  }
   componentDidMount() {
     this.props.setEditModeList(null);
     this.props.fetchDailyLists(
-      // this.props.mem_id,
-      "dsbang",
+      this.props.user_id,
       this.state.date
     );
   }
-
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      date: nextProps.date
+    })
+  }
   renderPost() {
     if (this.props.boardDict[this.state.date]) {
       const board_id = this.props.boardDict[this.state.date];
@@ -27,18 +36,18 @@ class Daily extends React.Component {
       });
     }
   };
-
   render() {
     return (
       <Container>
         <DatePicker
+          date={this.state.date}
           onChangeDate={changedDate => {
             this.setState({ date: changedDate });
             this.props.fetchDailyLists(
-              "dsbang",
-              //this.props.mem_id,
+              this.props.user_id,
               changedDate
             );
+            this.props.onHandleDate(changedDate);
           }}
         />
         {this.renderPost()}
