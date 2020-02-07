@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { register, registerReset } from "../../actions";
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton } from '../Auth';
+import PasswordWithLabel from './PasswordWithLabel';
 
 class Register extends Component {
   constructor(props) {
@@ -60,8 +61,8 @@ class Register extends Component {
         <div style={{ display: 'inline-block', minWidth: 500 }}>
         <AuthWrapper>
           <AuthContent title="회원가입" id="register">
-            <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디( 5 ~ 20 자 )" onChange={this.handleChange} maxLength="20" />
-            <InputWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호 ( 8 ~ 16 자 )" type="password" onChange={this.handleChange} maxLength="16" />
+            <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디( 5 ~ 20 자 )" onChange={this.handleChange} />
+            <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호 ( 8 ~ 16 자 )" onChange={this.handleChange}  />
             <InputWithLabel label="이메일" id="email" name="email" placeholder="이메일" type="email" onChange={this.handleChange} />
             <InputWithLabel label="닉네임" id="nick" name="nick" placeholder="닉네임" onChange={this.handleChange} />
             {this.props.register_err}

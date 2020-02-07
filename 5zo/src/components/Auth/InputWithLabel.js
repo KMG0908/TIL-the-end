@@ -32,16 +32,7 @@ const Input = styled.input`
 const InputWithLabel = ({ label, ...rest }) => (
   <Wrapper>
     <Label> {label} </Label>
-    <Input {...rest} onBlur={function(){
-      // if(document.getElementById("nick")){
-      //   if(!document.getElementById(rest.name).value){
-      //     document.getElementById(rest.name + "_msg").classList.add("empty")
-      //   }
-      //   else{
-      //     document.getElementById(rest.name + "_msg").classList.remove("empty")
-      //   }
-      // }
-    }}/>
+    <Input {...rest}/>
     <input type="text" id={`${rest.name}_msg`} className="none" readOnly/>
   </Wrapper>
 )

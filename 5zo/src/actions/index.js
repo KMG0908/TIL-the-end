@@ -1,6 +1,7 @@
 import apis from "../apis/apis";
 // import history from "../history";
 import {
+  // MEMBER
   FETCH_MEMBERS,
   LOGIN,
   LOGIN_ERR,
@@ -16,6 +17,22 @@ import {
   EDIT_MYINFO,
   EDIT_MYINFO_ERR,
   EDIT_MYINFO_CHANGE_RESET,
+
+  EDIT_PASSWORD_FAIL,
+  EDIT_PASSWORD_FAIL_RESET,
+  EDIT_PASSWORD_SUCCESS,
+  EDIT_PASSWORD_SUCCESS_RESET,
+
+  FIND_ID_SUCCESS,
+  FIND_ID_SUCCESS_RESET,
+  FIND_ID_FAIL,
+  FIND_ID_FAIL_RESET,
+
+  FIND_PW_SUCCESS,
+  FIND_PW_SUCCESS_RESET,
+  FIND_PW_FAIL,
+  FIND_PW_FAIL_RESET,
+
   DRAG_HAPPENED,
   ADD_BOARD,
   FETCH_DAILY_LIST,
@@ -202,8 +219,8 @@ export const deleteAccountSuccessReset = () => async(dispatch , getState) => {
   }
 }
 
-export const editMyinfo = (loginId, loginPw, email, nick) => async dispatch => {
-  if (!loginPw) {
+export const editMyinfo = (loginId, nowPw, email, nick) => async dispatch => {
+  if (!nowPw) {
     dispatch({ type: EDIT_MYINFO_ERR, payload: "비밀번호를 입력해주세요." });
   }
   if (!email) {
@@ -214,7 +231,7 @@ export const editMyinfo = (loginId, loginPw, email, nick) => async dispatch => {
   }
   const response = await apis.put(`/member`, {
     mem_id: loginId,
-    mem_pw: loginPw,
+    mem_pw: nowPw,
     mem_email: email,
     mem_nick: nick
   });
@@ -240,11 +257,77 @@ export const memInfoChangeReset = () => async (dispatch, getState) => {
   }
 };
 
+export const editPassword = (mem_id,old_pw, new_pw) => async (dispatch, getState) => {
+  console.log('mem_id : ' + mem_id)
+  console.log('old_pw : ' +old_pw)
+  console.log('new_pw : ' +new_pw)
+  const response = await apis.patch(`/member/password/${mem_id}`,{
+    old_pw, new_pw
+  })
+  if(response.data.state == 'ok'){
+    dispatch({type : EDIT_PASSWORD_SUCCESS})
+  }else{
+    dispatch({type : EDIT_PASSWORD_FAIL, payload : response.data.data})
+  }
+}
+
+export const editPasswordFailReset = () => async (dispatch, getState) => {
+  if (getState().members.edit_password_fail) {
+    dispatch({ type: EDIT_PASSWORD_SUCCESS_RESET});
+  }
+};
+export const editPasswordSuccessReset = () => async (dispatch, getState) => {
+  if (getState().members.edit_password_success) {
+    dispatch({ type: EDIT_PASSWORD_FAIL_RESET });
+  }
+};
+
+
 export const getOtherMember = (user_id) => async dispatch => {
   const response = await apis.get(`/member/${user_id}`);
 
   dispatch({ type: GET_OTHER_MEMBER, payload: response.data.data })
 }
+
+export const findId = (email) => async dispatch => {
+  const response = await apis.get(`/email/findId/${email}`)
+  if(response.data.state === 'ok'){
+    dispatch({ type : FIND_ID_SUCCESS})
+  }else{
+    dispatch({type : FIND_ID_FAIL, payload : response.data.data})
+  }
+}
+export const findIdSuccessReset = () => async (dispatch, getState) => {
+  if(getState().members.find_id_success){
+    dispatch({ type : FIND_ID_SUCCESS_RESET })
+  }
+}
+export const findIdFailReset = () => async (dispatch, getState) => {
+  
+  if(getState().members.find_id_fail){
+    dispatch({ type : FIND_ID_FAIL_RESET })
+  }
+}
+
+export const findPw = (mem_id, email) => async dispatch => {
+  const response = await apis.get(`/email/findPw/${mem_id}/${email}`)
+  if(response.data.state === 'ok'){
+    dispatch({ type : FIND_PW_SUCCESS})
+  }else{
+    dispatch({type : FIND_PW_FAIL, payload : response.data.data})
+  }
+}
+export const findPwSuccessReset = () => async (dispatch, getState) => {
+  if(getState().members.find_pw_success){
+    dispatch({ type : FIND_PW_SUCCESS_RESET })
+  }
+}
+export const findPwFailReset = () => async (dispatch, getState) => {
+  if(getState().members.find_pw_fail){
+    dispatch({ type : FIND_PW_FAIL_RESET })
+  }
+}
+
 
 export const addBoard = (mem_id, board_date) => async dispatch => {
   const board_lists = "[]";

@@ -4,6 +4,7 @@ import { login, loginErrReset } from "../../actions";
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink } from '../Auth';
 import storage from 'lib/storage';
 import "./login.css"
+import PasswordWithLabel from './PasswordWithLabel';
 
 class Login extends Component {
   componentDidMount() {
@@ -58,7 +59,7 @@ class Login extends Component {
 
     this.props.login(this.state.loginId, this.state.loginPw);
   }
-  cancelLogin() {
+  cancel() {
     window.location.href = '/'
   }
   render() {
@@ -75,12 +76,14 @@ class Login extends Component {
         <div style={{ display: 'inline-block', minWidth: 500 }}>
           <AuthWrapper >
             <AuthContent title="로그인">
-              <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디" onChange={this.handleChange} maxLength="20" />
-              <InputWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호" type="password" onChange={this.handleChange} maxLength="16" />
+              <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디" onChange={this.handleChange} />
+              <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호" onChange={this.handleChange}  />
               {this.props.login_err}
               <AuthButton onClick={this.login}> 로그인 </AuthButton>
-              <AuthButton onClick={this.cancelLogin}> 취소 </AuthButton>
+              <AuthButton onClick={this.cancel}> 취소 </AuthButton>
               <RightAlignedLink to="/register"> 회원가입 </RightAlignedLink>
+              <RightAlignedLink to="/find-id"> 아이디 찾기 </RightAlignedLink>
+              <RightAlignedLink to="/find-pw"> 비밀번호 찾기 </RightAlignedLink>
             </AuthContent>
           </AuthWrapper>
         </div>

@@ -21,7 +21,11 @@ import MyAccountDelete from "./Auth/MyAccountDelete";
 import Imgur from "./image_test/Imgur"
 import Daily from "./daily/Daily"
 
+import FindIdPage from './Auth/FindIdPage'
+import FindPwPage from './Auth/FindPwPage'
+
 import NewSearch from "./serach/NewSearch";
+import EditPasswordPage from "./Auth/EditPasswordPage";
 
 class App extends React.Component {
   initializeUserInfo = async () => {
@@ -50,7 +54,9 @@ class App extends React.Component {
             <Route path="/defLand" exact component={DefLand} />
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
-            <Route path="/search" exact component={NewSearch}></Route>
+            <Route path="/search" exact component={NewSearch}/>
+            <Route path="/find-id" exact component = {FindIdPage}/>
+            <Route path="/find-pw" exact component = {FindPwPage}/>
           </div>
         </LandingPage>
       );
@@ -74,6 +80,7 @@ class App extends React.Component {
             {/*  아래는 테스트 */}
             <Route path="/mypage" exact component={MyPage} />
             <Route path="/mypage/edit" exact component={MyPageEdit} />
+            <Route path="/mypage/edit-password" exact component={EditPasswordPage} />
             <Route path="/mypage/delete" exact component={MyAccountDelete} />
             <Route path="/imgur" exact component={Imgur}></Route>
             <Route path="/daily" exact component={Daily}></Route>
