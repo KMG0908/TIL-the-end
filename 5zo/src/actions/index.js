@@ -690,14 +690,20 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
   dispatch({ type: SEARCH_KEYWORD, payload: cards });
 };
 
-export const searchCardlist = keywords => async (dispatch, getState) => {
+export const searchCardlist = ( keywords, page, limit) => async (dispatch, getState) => {
   let keywords_string = ",";
-  keywords.map(keyword => (keywords_string += keyword + ","));
+  keywords.map(keyword => keywords_string += encodeURI(keyword) + ',')
+  console.log('keywords : ' + keywords_string)
+
+  if(!limit) limit = 10
+  if(!page) page = 1
+
   const response = await apis.get(
     `/search/global/cardlist/by/${keywords_string}`
+    // `/search/global/cardlist/by/${keywords_string_encode}?limit=${limit}&page=${page}`
   );
   const data = response.data.data;
-
+  console.log(data)
   dispatch({ type: SEARCH_CARDLIST, payload: data });
 };
 

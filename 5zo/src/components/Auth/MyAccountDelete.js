@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { deleteAccountErrReset, deleteAccount, logout, deleteAccountSuccessReset } from "actions";
-import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
+import { AuthWrapper, AuthContent, PasswordWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
 import storage from 'lib/storage';
 
 class MyAccountDelete extends Component {
@@ -57,7 +57,7 @@ class MyAccountDelete extends Component {
             <div style={{ display: 'inline-block', width: 500 }}>
                     <AuthWrapper>
                         <AuthContent title="회원 탈퇴">
-                            <InputWithLabel label="비밀번호" id="loginPw" name="loginPw" type="password" placeholder={"현재 비밀번호를 입력하세요"} value={this.state.loginPw} onChange={this.handleChange} />
+                            <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder={"탈퇴하려면 현재 비밀번호를 입력하세요"} value={this.state.loginPw} onChange={this.handleChange} />
                             {this.props.delete_account_err}
                             <AuthButton onClick={this.deleteAccount}> 탈퇴 </AuthButton>
                             <AuthButton onClick={this.cancel}> 취소 </AuthButton>

@@ -226,7 +226,7 @@ Chips.defaultProps = {
   suggestions: [],
   fetchSuggestions: null,
   fetchSuggestionsThrushold: 10,
-  createChipKeys: [13],
+  createChipKeys: [13, 9, 32],
   fromSuggestionsOnly: false,
   uniqueChips: true,
   getSuggestionValue: s => s,
