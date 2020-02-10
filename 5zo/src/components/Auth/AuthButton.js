@@ -28,11 +28,10 @@ const Wrapper = styled.div`
         background : ${oc.teal[7]};
     }
 `;
-
-const AuthButton = ({children, onClick}) => (
+const AuthButton = ({ children, onClick, onSubmit, type }) => (
     <Wrapper onClick={onClick}>
         {children}
     </Wrapper>
-);
+)
 
 export default AuthButton;
