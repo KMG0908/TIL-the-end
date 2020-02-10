@@ -6,7 +6,13 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 
 class NewCard extends Component {
+  
+  
   render() {
+    const moveDetail = (e) => {
+      console.log(cardList.board_date)
+      window.location.href=`/dayily/${cardList.mem_id}/${cardList.board_date.replace(/-/gi,'')}`
+    }
     const styles = {
       root: {
         textAlign: 'left',
@@ -32,11 +38,10 @@ class NewCard extends Component {
     let cardList = this.props.cardList
     if (cardList) {
       return (
-        <Card style={styles.root} variant="outlined">
+        <Card style={styles.root} variant="outlined" onClick ={moveDetail}>
           <CardContent>
             <Typography style={styles.user} color="textSecondary" >
               <Avatar style={styles.avatar} component={'span'} alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
-
               <span>{cardList.mem_id}</span>
             </Typography>
             <Typography variant="body2" component="p" style={styles.date}>

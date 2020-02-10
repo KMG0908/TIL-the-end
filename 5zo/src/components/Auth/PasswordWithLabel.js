@@ -34,7 +34,6 @@ const Input = styled.input`
 `;
 
 function PasswordWithLabel({ id, label, ...rest }) {
-    const myRef = React.createRef()
     const typeChange = () => {
         const input = document.getElementById(id)
         if (input.type === 'text') {

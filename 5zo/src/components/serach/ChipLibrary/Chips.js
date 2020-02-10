@@ -180,7 +180,7 @@ class Chips extends Component {
         <Autosuggest
           {...this.props}
           theme={this.props.theme}
-          suggestions={this.state.suggestions}
+          suggestions={this.state.suggestions.slice(0,5)}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           getSuggestionValue={val => this.state.value}

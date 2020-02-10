@@ -695,12 +695,12 @@ export const searchCardlist = ( keywords, page, limit) => async (dispatch, getSt
   keywords.map(keyword => keywords_string += encodeURI(keyword) + ',')
   console.log('keywords : ' + keywords_string)
 
-  if(!limit) limit = 10
+  if(!limit) limit = 5
   if(!page) page = 1
 
   const response = await apis.get(
-    `/search/global/cardlist/by/${keywords_string}`
-    // `/search/global/cardlist/by/${keywords_string_encode}?limit=${limit}&page=${page}`
+    // `/search/global/cardlist/by/${keywords_string}`
+    `/search/global/cardlist/by/${keywords_string}?limit=${limit}&page=${page}`
   );
   const data = response.data.data;
   console.log(data)
