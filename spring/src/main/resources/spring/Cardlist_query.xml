@@ -20,7 +20,8 @@
 		cardlist_name = #{cardlist_name},
 		cardlist_cards = #{cardlist_cards},
 		board_id = #{board_id},
-		cardlist_secret = #{cardlist_secret}
+		cardlist_secret = #{cardlist_secret},
+		cardlist_color = #{cardlist_color}
 		where cardlist_id = #{cardlist_id}
 	</update>
 
@@ -72,6 +73,7 @@
     and tag.cardlist_id = cl.cardlist_id
     and b.board_id = cl.board_id
     group by cl.cardlist_id
+    limit {start}, {limit}
     ]]>
 	</select>
 
@@ -107,6 +109,7 @@
     and c.card_secret = false
     and b.board_id = cl.board_id
     group by cl.cardlist_id
+    limit {start}, {limit}
     ]]>
 	</select>
 
@@ -142,6 +145,7 @@
     and c.card_secret = false
     and b.board_id = cl.board_id
     group by cl.cardlist_id
+    limit {start}, {limit}
     ]]>
 	</select>
 

@@ -19,11 +19,11 @@ public interface CardlistService {
 
 	void patch(Cardlist cardlist);
 
-	List<CardlistSearch> searchPublicCardlist(String mem_id, String keyword);
+	List<CardlistSearch> searchPublicCardlist(String mem_id, String keyword, int limit, int page);
 
-	List<CardlistSearch> searchPrivateCardlist(String mem_id, String keyword);
+	List<CardlistSearch> searchPrivateCardlist(String mem_id, String keyword, int limit, int page);
 
-	List<CardlistSearch> searchGlobalCardlist(String keyword);
+	List<CardlistSearch> searchGlobalCardlist(String keyword, int limit, int page);
 
 	void movecardlist(int cardlist_id, int board_id);
 

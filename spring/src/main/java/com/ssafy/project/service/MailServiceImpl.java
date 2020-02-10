@@ -135,7 +135,7 @@ public class MailServiceImpl implements MailService {
 	public void findPw(String mem_id, String mem_email) {
 		try {			
 			if(dao.searchEmail(mem_email) == 0) throw new MailException("해당 이메일로 등록된 계정이 없습니다.");
-			if(dao.searchId(mem_id) == 0) throw new MailException("해당 아이디는 존재하지 않습니다.");
+			if(dao.countId(mem_id) == 0) throw new MailException("해당 아이디는 존재하지 않습니다.");
 			if(!dao.search(mem_id).getMem_email().equals(mem_email)) {
 				throw new MemberException(mem_email + "은 "  + mem_id + "에 등록된 이메일이 아닙니다.");
 			}

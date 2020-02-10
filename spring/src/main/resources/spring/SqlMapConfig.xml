@@ -11,6 +11,7 @@
 		<typeAlias type="com.ssafy.project.dto.Cardlist_Tag" alias="cardlist_tag" />
 		<typeAlias type="com.ssafy.project.dto.Comment" alias="comment" />
 		<typeAlias type="com.ssafy.project.dto.Board" alias="board" />
+		<typeAlias type="com.ssafy.project.dto.SNS" alias="sns" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="spring/Member_query.xml" />

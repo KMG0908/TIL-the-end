@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.project.dto.Member;
+import com.ssafy.project.dto.SNS;
 
 @Mapper
 public interface MemberDao {
@@ -15,7 +16,7 @@ public interface MemberDao {
 
 	public void grantMember(String mem_id);
 
-	public int searchId(String mem_id);
+	public int countId(String mem_id);
 
 	public int searchEmail(String mem_email);
 
@@ -56,5 +57,11 @@ public interface MemberDao {
 	public String searchIdByEmail(String mem_email);
 
 	public void setPw(@Param("mem_id") String mem_id,  @Param("authCode") String authCode);
+
+	public void insertSNS(SNS sns);
+
+	public int countSNSByEmail(String mem_email);
+
+	public String searchSNSIdByEmail(String mem_email);
 
 }

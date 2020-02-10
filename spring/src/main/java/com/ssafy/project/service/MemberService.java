@@ -31,4 +31,6 @@ public interface MemberService {
 	public void patchpostdef(String mem_id);
 
 	public void patchpassword(String mem_id, String old_pw, String new_pw);
+
+	public Member naverLogin(Member naver);
 }
