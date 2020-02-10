@@ -37,10 +37,10 @@ class Chips extends Component {
   }
 
   handleKeyDown = e => {
-    // if (e.keyCode === 13 && this.lastEvent === e) {
-    //   this.lastEvent = null;
-    //   return;
-    // }
+    if (e.keyCode === 13 && this.lastEvent === e) {
+      this.lastEvent = null;
+      return;
+    }
     if (!this.props.fromSuggestionsOnly && (this.props.createChipKeys.includes(e.keyCode) || this.props.createChipKeys.includes(e.key))) {
       e.preventDefault();
       if (this.state.value.trim()) this.addChip(this.state.value);

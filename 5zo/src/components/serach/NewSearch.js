@@ -45,7 +45,7 @@ class NewSearch extends Component {
       return
     }
     let keywords_string = ",";
-    chips.map(keyword => keywords_string += encodeURI(keyword) + ',')
+    chips.map(keyword => keywords_string += encodeURIComponent(keyword) + ',')
 
     const response = await apis.get(
       `/search/global/cardlist/by/${keywords_string}?limit=${limit}&page=${page}`
