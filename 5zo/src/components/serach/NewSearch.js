@@ -31,7 +31,7 @@ class NewSearch extends Component {
           <div style={{ display: 'inline-block', width: widthPer }}>
             <Chips
               value={this.state.chips}
-              placeholder={`태그 : # + keyword , 유저 : @ + keyword , 검색 키워드 : keyword`}
+              placeholder={`태그 : # + keyword , 검색 키워드 : keyword`}
               onChange={this.onChange}
               suggestions={this.props.tags ? this.props.tags : []}
             />

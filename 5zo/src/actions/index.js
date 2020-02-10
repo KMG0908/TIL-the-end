@@ -692,12 +692,11 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
 
 export const searchCardlist = keywords => async (dispatch, getState) => {
   let keywords_string = ",";
-  keywords.map(keyword => (keywords_string += keyword + ","));
+  keywords.map(keyword => keyword.charAt(0) === '#' ? keywords_string += `%23`+keyword.substring(1, keyword.length) + ',' : (keywords_string += keyword + ","));
   const response = await apis.get(
     `/search/global/cardlist/by/${keywords_string}`
   );
   const data = response.data.data;
-
   dispatch({ type: SEARCH_CARDLIST, payload: data });
 };
 
@@ -728,6 +727,8 @@ export const getDailyTask = (mem_id, from, to) => async (
   const response = await apis.get(
     `/card/daily/private/${mem_id}/from/${start}/to/${end}`
   );
+  console.log("dddd")
+  console.log(mem_id + " " + from + " " + to);
   console.log(response.data.data);
   dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
 };

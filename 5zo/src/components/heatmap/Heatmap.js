@@ -4,30 +4,38 @@ import { connect } from "react-redux";
 import { getDailyTask } from "../../actions";
 import 'react-calendar-heatmap/dist/styles.css'
 import ReactTooltip from 'react-tooltip';
-import storage from 'lib/storage';
-const yesterday = new Date();
+import './heatmap.css';
+import moment from "moment"
+
+let yesterday = new Date();
 class Heatmap extends React.Component {
-  state = {
-    data: [],
+  constructor(props){
+    super(props);
+
+    this.state = {
+      data: []
+    }
   }
   componentDidMount() {
     const user_id = this.props.user_id;
     
+    yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     this.props.getDailyTask(user_id, shiftDate(yesterday, -365), yesterday);
   }
   getTooltipDataAttrs = (value) => {
-    if (!value || !value.date) {
+    let date = moment(value.date).format('YYYY년 MM월 DD일')
+    if(value.count === 0){
       return {
-        'data-tip': `No Tasks`,
-      }
+        'data-tip': `No task, ${date}`,
+      };
     }
     return {
-      'data-tip': `${value.date} with task: ${value.count}`,
+      'data-tip': `${value.count} task, ${date}`,
     };
   };
   handleClick = (value) => {
-    if (!value || !value.date) {
+    if (value.count == 0) {
       return null;
     }
     this.props.onHandleDate(value.date);
@@ -35,29 +43,92 @@ class Heatmap extends React.Component {
   setHeatMap() {
     if (this.props.board_info) {
       const state = this.props.board_info
-      for (let i = 0; i < state.length; i++) {
-        this.state.data.push({
-          count: state[i].board_id,
-          date: state[i].board_date
+      let data = [];
+
+      let startDate = shiftDate(yesterday, -365);
+      let endDate = yesterday;
+
+      let date = startDate;
+      while(true){
+        data.push({
+          count : 0,
+          date : date_to_str(date, "-")
         })
+
+        if(date_to_str(date, "-") === date_to_str(endDate, "-")) break;
+        
+        date = shiftDate(date, 1);
       }
+      
+      for (let i = 0; i < state.length; i++) {
+        data[dateDiff(startDate, state[i].board_date)].count = state[i].board_id
+      }
+
+      return(
+        <>
+          <CalendarHeatmap
+            startDate={shiftDate(yesterday, -365)}
+            endDate={yesterday}
+            values={data}
+            tooltipDataAttrs={this.getTooltipDataAttrs}
+            onClick={this.handleClick}
+            classForValue={(value) => {
+              if (value.count == 0) {
+                return 'color-empty';
+              }
+              else if(value.count <= 5){
+                return `color-scale-1`;
+              }
+              else if(value.count <= 10){
+                return `color-scale-2`;
+              }
+              else if(value.count <= 15){
+                return `color-scale-3`;
+              }
+              else{
+                return `color-scale-4`;
+              }
+            }}
+          />
+          <ReactTooltip />
+        </>
+      )
     }
   }
   render() {
-    this.setHeatMap()
     return (
       <div>
-        <CalendarHeatmap
-          startDate={shiftDate(yesterday, -365)}
-          endDate={yesterday}
-          values={this.state.data}
-          tooltipDataAttrs={this.getTooltipDataAttrs}
-          onClick={this.handleClick}
-        />
-        <ReactTooltip />
+        {this.setHeatMap()}
       </div >
     );
   }
+}
+
+function dateDiff(date1, date2){
+  date1 = new Date(date1);
+  date2 = new Date(date2);
+
+  date1 = new Date(date1.getFullYear(), date1.getMonth()+1, date1.getDate());
+  date2 = new Date(date2.getFullYear(), date2.getMonth()+1, date2.getDate());
+ 
+  var diff = Math.abs(date2.getTime() - date1.getTime());
+  diff = Math.ceil(diff / (1000 * 3600 * 24));
+ 
+  return diff - 1;
+}
+
+function date_to_str(format, separator) {
+  let year = format.getFullYear();
+  let month = format.getMonth() + 1;
+  let date = format.getDate();
+
+  return (
+    year +
+    separator +
+    ("0" + month).slice(-2) +
+    separator +
+    ("0" + date).slice(-2)
+  );
 }
 
 function shiftDate(date, numDays) {
