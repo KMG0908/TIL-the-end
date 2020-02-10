@@ -51,7 +51,7 @@ class NewCard extends Component {
               {cardList.cardlist_name}
               </Typography>
             <Typography style={styles.tags} color="textSecondary">
-              {cardList.tag_name.split(',').map(tag => `#${tag}  `)}
+              {cardList.tag_name.split(',').map(tag => tag !== '' ? `#${tag}  ` : ``)}
             </Typography>
           </CardContent>
         </Card>
