@@ -1,8 +1,6 @@
 package com.ssafy.project.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,9 +100,11 @@ public class CardlistServiceImpl implements CardlistService {
 			List<String> keywordlist = new ArrayList<String>();
 			List<String> taglist = new ArrayList<String>();
 			for (int i = 0; i < list.length; i++) {
-				if (list[i].equals("")) {
-					continue;
-				} else if (list[i].startsWith("#")) {
+//				if (list[i].equals("")) {
+//					continue;
+//				} else 
+
+				if (list[i].startsWith("#")) {
 					taglist.add(list[i].substring(1));
 				} else {
 					keywordlist.add(list[i]);
@@ -113,7 +113,7 @@ public class CardlistServiceImpl implements CardlistService {
 
 			params.put("keywordlist", keywordlist); // map에 list를 넣는다.
 			params.put("taglist", taglist); // map에 list를 넣는다.
-			params.put("start", limit*(page-1));
+			params.put("start", limit * (page - 1));
 			params.put("limit", limit);
 
 			return dao.searchPrivateCardlist(params);
@@ -125,28 +125,30 @@ public class CardlistServiceImpl implements CardlistService {
 	@Override
 	public List<CardlistSearch> searchPublicCardlist(String mem_id, String keyword, int limit, int page) {
 		try {
-			Map<String, Object> params = new HashMap<String, Object>();			 
-		    params.put("mem_id", mem_id); 
-		    
-		    String[] list = keyword.split(",");
-		    List<String> keywordlist = new ArrayList<String>();
-		    List<String> taglist = new ArrayList<String>();
-		    for (int i = 0; i < list.length; i++) {
-		    	if(list[i].equals("")) {
-					continue;
-		    	} else if(list[i].startsWith("#")) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("mem_id", mem_id);
+
+			String[] list = keyword.split(",");
+			List<String> keywordlist = new ArrayList<String>();
+			List<String> taglist = new ArrayList<String>();
+			for (int i = 0; i < list.length; i++) {
+//		    	if(list[i].equals("")) {
+//					continue;
+//		    	} else
+
+				if (list[i].startsWith("#")) {
 					taglist.add(list[i].substring(1));
-				}else {
+				} else {
 					keywordlist.add(list[i]);
 				}
 			}
-		    
-		    params.put("keywordlist", keywordlist); //map에 list를 넣는다.
-		    params.put("taglist", taglist); //map에 list를 넣는다.
-		    params.put("start", limit*(page-1));
+
+			params.put("keywordlist", keywordlist); // map에 list를 넣는다.
+			params.put("taglist", taglist); // map에 list를 넣는다.
+			params.put("start", limit * (page - 1));
 			params.put("limit", limit);
-		    
-		    return dao.searchPublicCardlist(params);
+
+			return dao.searchPublicCardlist(params);
 		} catch (Exception e) {
 			throw new CardException(mem_id + "의 전체 카드list 검색 중 오류 발생");
 		}
@@ -161,9 +163,11 @@ public class CardlistServiceImpl implements CardlistService {
 			List<String> keywordlist = new ArrayList<String>();
 			List<String> taglist = new ArrayList<String>();
 			for (int i = 0; i < list.length; i++) {
-				if (list[i].equals("")) {
-					continue;
-				} else if (list[i].startsWith("#")) {
+//				if (list[i].equals("")) {
+//					continue;
+//				} else 
+
+				if (list[i].startsWith("#")) {
 					taglist.add(list[i].substring(1));
 				} else {
 					keywordlist.add(list[i]);
@@ -174,9 +178,9 @@ public class CardlistServiceImpl implements CardlistService {
 
 			params.put("keywordlist", keywordlist); // map에 list를 넣는다.
 			params.put("taglist", taglist); // map에 list를 넣는다.
-			//  limit * (page-1) 부터 limit 개
+			// limit * (page-1) 부터 limit 개
 			// 0부터 시작한다
-			params.put("start", limit*(page-1));
+			params.put("start", limit * (page - 1));
 			params.put("limit", limit);
 
 			return dao.searchGlobalCardlist(params);

@@ -33,7 +33,7 @@ public class CardServiceImpl implements CardService {
 		try {
 			Card card = dao.search(card_id);
 			if (card == null) {
-				throw new CardException("존재하지 않는 카드번호입니다");
+				throw new CardException(card_id + "번 카드는 존재하지 않습니다.");
 			}
 			return card;
 		} catch (Exception e) {
