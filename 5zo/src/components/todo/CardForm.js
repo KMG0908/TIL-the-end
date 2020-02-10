@@ -79,80 +79,60 @@ class CardForm extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div onClick={this.handleCardClick}>
-        <div className={classes.paper}>
-          <Typography
-            variant={
-              this.props.editModeList === this.props.cardlist_id
-                ? "h3"
-                : "body1"
-            }
-          >
-            {this.props.card.card_name}
-          </Typography>
-          <Icon
-            className={classes.delete}
-            fontSize="small"
-            onMouseDown={this.handleDeleteCard}
-          >
-            delete
-          </Icon>
-        </div>
-        <div onDoubleClick={this.handleCardClick}>
-          <Collapse
-            in={this.props.editModeList === this.props.cardlist_id}
-            className={classes.collapseCard}
-            timeout="auto"
-            unmountOnExit
-            onClick={this.handleChange}
-          >
-            {this.props.card.card_id === this.props.editModeCard ? (
-              <SunEditor
-                lang="ko"
-                enable={true}
-                onChange={this.handleChange}
-                setContents={
-                  this.props.card.card_contents
-                    ? `${this.props.card.card_contents}`
-                    : null
-                }
-                setOptions={{
-                  height: "auto",
-                  stickyToolbar: 50,
-                  placeholder: "오늘 배운 내용을 입력해주세요",
-                  resizingBar: false,
-                  buttonList: [
-                    ["font", "fontSize", "formatBlock"],
-                    ["bold", "underline", "italic", "strike"],
-                    ["fontColor", "hiliteColor", "textStyle"],
-                    ["removeFormat"],
-                    ["outdent", "indent"],
-                    ["align", "horizontalRule", "list", "lineHeight"],
-                    ["table", "link", "image", "video"],
-                    ["fullScreen", "preview", "showBlocks"]
-                  ]
-                }}
-              />
-            ) : (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: this.props.card.card_contents
-                }}
-              />
-            )}
+      <div onDoubleClick={this.handleCardClick}>
+        <Collapse
+          in={this.props.editModeList === this.props.cardlist_id}
+          className={classes.collapseCard}
+          timeout="auto"
+          unmountOnExit
+          onClick={this.handleChange}
+        >
+          {this.props.card.card_id === this.props.editModeCard ? (
+            <SunEditor
+              lang="ko"
+              enable={true}
+              onChange={this.handleChange}
+              setContents={
+                this.props.card.card_contents
+                  ? `${this.props.card.card_contents}`
+                  : null
+              }
+              setOptions={{
+                height: "auto",
+                stickyToolbar: 50,
+                placeholder: "오늘 배운 내용을 입력해주세요",
+                resizingBar: false,
+                buttonList: [
+                  ["font", "fontSize", "formatBlock"],
+                  ["bold", "underline", "italic", "strike"],
+                  ["fontColor", "hiliteColor", "textStyle"],
+                  ["removeFormat"],
+                  ["outdent", "indent"],
+                  ["align", "horizontalRule", "list", "lineHeight"],
+                  ["table", "link", "image", "video"],
+                  ["fullScreen", "preview", "showBlocks"]
+                ]
+              }}
+            />
+          ) : (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: this.props.card.card_contents
+              }}
+            />
+          )}
 
-            {this.props.editModeCard === this.props.card.card_id ? (
-              <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
-                onClick={this.onEditCard}
-              >
-                저장
-              </Button>
-            ) : null}
-          </Collapse>
-        </div>
+          {this.props.editModeCard === this.props.card.card_id ? (
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              onClick={this.onEditCard}
+            >
+              저장
+            </Button>
+          ) : null}
+        </Collapse>
       </div>
     );
   }

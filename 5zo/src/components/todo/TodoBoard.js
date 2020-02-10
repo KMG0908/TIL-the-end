@@ -10,9 +10,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import styled from "styled-components";
 import { connect } from "react-redux";
-
 import Typography from "@material-ui/core/Typography";
-
 const styles = theme => ({
   root: {
     flexGrow: 1
@@ -35,17 +33,16 @@ const ListsContainer = styled(Box)`
   display: flex;
   justifycontent: space-around;
   flex-direction: row;
-  flexwrap: wrap;
+  flexwrap: nowrap;
 `;
 const Divs = styled.div`
-  overflow: hidden;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 `;
 const Contain = styled(Container)`
-  padding: 0;
-  height: 100%;
   display: flex;
-  overflow: auto;
-  justifycontent: space-around;
+  height: 100%;
 `;
 
 const date = "9999-12-31";
@@ -96,14 +93,14 @@ class TodoBoard extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Divs>
+      <Divs noScrollY={true} style={{ height: "100%" }}>
         <Typography
           variant="h4"
           style={{
             whiteSpace: "nowrap"
           }}
         >
-          What i will lean in the future
+          What I will learn in the future
         </Typography>
 
         <Typography
@@ -114,12 +111,12 @@ class TodoBoard extends React.Component {
         >
           앞으로 공부하고 싶은 것들을 계획하세요.
         </Typography>
-
         <Contain>
           <Droppable
             droppableId={String(this.props.boardDict[date])}
             type="list2"
             direction="horizontal"
+            style={{ height: "100%" }}
           >
             {provided => (
               <ListsContainer

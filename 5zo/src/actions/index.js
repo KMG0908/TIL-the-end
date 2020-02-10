@@ -17,22 +17,18 @@ import {
   EDIT_MYINFO,
   EDIT_MYINFO_ERR,
   EDIT_MYINFO_CHANGE_RESET,
-
   EDIT_PASSWORD_FAIL,
   EDIT_PASSWORD_FAIL_RESET,
   EDIT_PASSWORD_SUCCESS,
   EDIT_PASSWORD_SUCCESS_RESET,
-
   FIND_ID_SUCCESS,
   FIND_ID_SUCCESS_RESET,
   FIND_ID_FAIL,
   FIND_ID_FAIL_RESET,
-
   FIND_PW_SUCCESS,
   FIND_PW_SUCCESS_RESET,
   FIND_PW_FAIL,
   FIND_PW_FAIL_RESET,
-
   DRAG_HAPPENED,
   ADD_BOARD,
   FETCH_DAILY_LIST,
@@ -57,7 +53,9 @@ import {
   GET_DAILY_LIST,
   GET_OTHER_MEMBER,
   SET_EDIT_MODE_LIST,
-  SET_EDIT_MODE_CARD
+  SET_EDIT_MODE_CARD,
+  ADD_TAG,
+  DELETE_TAG
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -185,40 +183,40 @@ export const logout = () => async dispatch => {
 };
 
 export const deleteAccount = (mem_id, mem_pw) => async dispatch => {
-  let response
-  console.log(`mem_id : ${mem_id} , mem_pw : ${mem_pw}`)
+  let response;
+  console.log(`mem_id : ${mem_id} , mem_pw : ${mem_pw}`);
   response = await apis.post(`/member/login`, {
-    'mem_id': mem_id,
-    'mem_pw': mem_pw
-  })
-  console.log('deleteAccount')
-  console.log(response)
-  if (response.data.state === 'ok') {
-    response = await apis.delete(`/member/${mem_id}`)
-    if (response.data.state === 'ok') {
-      dispatch({ type: DELETE_ACCOUNT_SUCCESS})
+    mem_id: mem_id,
+    mem_pw: mem_pw
+  });
+  console.log("deleteAccount");
+  console.log(response);
+  if (response.data.state === "ok") {
+    response = await apis.delete(`/member/${mem_id}`);
+    if (response.data.state === "ok") {
+      dispatch({ type: DELETE_ACCOUNT_SUCCESS });
     } else {
-      console.log('회원탈퇴오류')
-      dispatch({ type: DELETE_ACCOUNT_ERR, payload: '회원 탈퇴 실패' })
+      console.log("회원탈퇴오류");
+      dispatch({ type: DELETE_ACCOUNT_ERR, payload: "회원 탈퇴 실패" });
     }
-  }else{
-    console.log('회원탈퇴실패 - 비밀번호 틀림')
+  } else {
+    console.log("회원탈퇴실패 - 비밀번호 틀림");
 
-    dispatch({ type: DELETE_ACCOUNT_ERR, payload: '비밀번호 틀림' })
+    dispatch({ type: DELETE_ACCOUNT_ERR, payload: "비밀번호 틀림" });
   }
-}
+};
 
-export const deleteAccountErrReset = () => async(dispatch, getState) => {
-  if( getState().members.delete_account_err) {
-    dispatch ({ type : DELETE_ACCOUNT_ERR, payload : ""})
+export const deleteAccountErrReset = () => async (dispatch, getState) => {
+  if (getState().members.delete_account_err) {
+    dispatch({ type: DELETE_ACCOUNT_ERR, payload: "" });
   }
-}
+};
 
-export const deleteAccountSuccessReset = () => async(dispatch , getState) => {
-  if( getState().members.delete_account_success) {
-    dispatch ({ type : DELETE_ACCOUNT_SUCCESS, payload : ""})
+export const deleteAccountSuccessReset = () => async (dispatch, getState) => {
+  if (getState().members.delete_account_success) {
+    dispatch({ type: DELETE_ACCOUNT_SUCCESS, payload: "" });
   }
-}
+};
 
 export const editMyinfo = (loginId, nowPw, email, nick) => async dispatch => {
   if (!nowPw) {
@@ -258,23 +256,27 @@ export const memInfoChangeReset = () => async (dispatch, getState) => {
   }
 };
 
-export const editPassword = (mem_id,old_pw, new_pw) => async (dispatch, getState) => {
-  console.log('mem_id : ' + mem_id)
-  console.log('old_pw : ' +old_pw)
-  console.log('new_pw : ' +new_pw)
-  const response = await apis.patch(`/member/password/${mem_id}`,{
-    old_pw, new_pw
-  })
-  if(response.data.state == 'ok'){
-    dispatch({type : EDIT_PASSWORD_SUCCESS})
-  }else{
-    dispatch({type : EDIT_PASSWORD_FAIL, payload : response.data.data})
+export const editPassword = (mem_id, old_pw, new_pw) => async (
+  dispatch,
+  getState
+) => {
+  console.log("mem_id : " + mem_id);
+  console.log("old_pw : " + old_pw);
+  console.log("new_pw : " + new_pw);
+  const response = await apis.patch(`/member/password/${mem_id}`, {
+    old_pw,
+    new_pw
+  });
+  if (response.data.state == "ok") {
+    dispatch({ type: EDIT_PASSWORD_SUCCESS });
+  } else {
+    dispatch({ type: EDIT_PASSWORD_FAIL, payload: response.data.data });
   }
-}
+};
 
 export const editPasswordFailReset = () => async (dispatch, getState) => {
   if (getState().members.edit_password_fail) {
-    dispatch({ type: EDIT_PASSWORD_FAIL_RESET});
+    dispatch({ type: EDIT_PASSWORD_FAIL_RESET });
   }
 };
 export const editPasswordSuccessReset = () => async (dispatch, getState) => {
@@ -283,52 +285,49 @@ export const editPasswordSuccessReset = () => async (dispatch, getState) => {
   }
 };
 
-
-export const getOtherMember = (user_id) => async dispatch => {
+export const getOtherMember = user_id => async dispatch => {
   const response = await apis.get(`/member/${user_id}`);
 
   dispatch({ type: GET_OTHER_MEMBER, payload: response.data.data });
 };
 
-export const findId = (email) => async dispatch => {
-  const response = await apis.get(`/email/findId/${email}`)
-  if(response.data.state === 'ok'){
-    dispatch({ type : FIND_ID_SUCCESS})
-  }else{
-    dispatch({type : FIND_ID_FAIL, payload : response.data.data})
+export const findId = email => async dispatch => {
+  const response = await apis.get(`/email/findId/${email}`);
+  if (response.data.state === "ok") {
+    dispatch({ type: FIND_ID_SUCCESS });
+  } else {
+    dispatch({ type: FIND_ID_FAIL, payload: response.data.data });
   }
-}
+};
 export const findIdSuccessReset = () => async (dispatch, getState) => {
-  if(getState().members.find_id_success){
-    dispatch({ type : FIND_ID_SUCCESS_RESET })
+  if (getState().members.find_id_success) {
+    dispatch({ type: FIND_ID_SUCCESS_RESET });
   }
-}
+};
 export const findIdFailReset = () => async (dispatch, getState) => {
-  
-  if(getState().members.find_id_fail){
-    dispatch({ type : FIND_ID_FAIL_RESET })
+  if (getState().members.find_id_fail) {
+    dispatch({ type: FIND_ID_FAIL_RESET });
   }
-}
+};
 
 export const findPw = (mem_id, email) => async dispatch => {
-  const response = await apis.get(`/email/findPw/${mem_id}/${email}`)
-  if(response.data.state === 'ok'){
-    dispatch({ type : FIND_PW_SUCCESS})
-  }else{
-    dispatch({type : FIND_PW_FAIL, payload : response.data.data})
+  const response = await apis.get(`/email/findPw/${mem_id}/${email}`);
+  if (response.data.state === "ok") {
+    dispatch({ type: FIND_PW_SUCCESS });
+  } else {
+    dispatch({ type: FIND_PW_FAIL, payload: response.data.data });
   }
-}
+};
 export const findPwSuccessReset = () => async (dispatch, getState) => {
-  if(getState().members.find_pw_success){
-    dispatch({ type : FIND_PW_SUCCESS_RESET })
+  if (getState().members.find_pw_success) {
+    dispatch({ type: FIND_PW_SUCCESS_RESET });
   }
-}
+};
 export const findPwFailReset = () => async (dispatch, getState) => {
-  if(getState().members.find_pw_fail){
-    dispatch({ type : FIND_PW_FAIL_RESET })
+  if (getState().members.find_pw_fail) {
+    dispatch({ type: FIND_PW_FAIL_RESET });
   }
-}
-
+};
 
 export const addBoard = (mem_id, board_date) => async dispatch => {
   const board_lists = "[]";
@@ -356,10 +355,13 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
           let card = await apis.get(`/card/${card_id}`);
           dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
         });
-        
+
         let tags = await apis.get(`/cardlist_tag/${cardlist_id}`);
-        if(tags.data.data.length > 0){
-          dispatch({ type: FETCH_TAG, payload: { cardlist_id : cardlist_id, tags : tags.data.data} });
+        if (tags.data.data.length > 0) {
+          dispatch({
+            type: FETCH_TAG,
+            payload: { cardlist_id: cardlist_id, tags: tags.data.data }
+          });
         }
       }
     });
@@ -617,7 +619,7 @@ export const fetchStatisticsData = (
 
   var response = await apis.get(
     `/card/daily/private/${
-    getState().members.mem_info.mem_id
+      getState().members.mem_info.mem_id
     }/from/${start}/to/${end}`
   );
   const responseData = response.data.data;
@@ -708,15 +710,13 @@ export const memTag = (mem_id, from, to) => async (dispatch, getState) => {
 };
 
 export const getAllTag = () => async (dispatch, getState) => {
-  const response = await apis.get(
-    `/tag `
-  )
-  const datas = response.data.data
-  const data_ = []
-  datas.map(data => data_.push('#' + data.tag_name))
-  data_.sort()
-  dispatch({ type: GET_ALL_TAG, payload: data_ })
-}
+  const response = await apis.get(`/tag `);
+  const datas = response.data.data;
+  const data_ = [];
+  datas.map(data => data_.push("#" + data.tag_name));
+  data_.sort();
+  dispatch({ type: GET_ALL_TAG, payload: data_ });
+};
 
 export const getDailyTask = (mem_id, from, to) => async (
   dispatch,
@@ -736,20 +736,22 @@ export const getDailyTask = (mem_id, from, to) => async (
 export const getDailyCal = (mem_id, from, to) => async dispatch => {
   const start = 20190101;
   const end = date_to_str(to, "");
-  let response, cardList, board, cardlist_id, cardlist
-  response = await apis.get(
-    `/board/member/${mem_id}/from/${start}/to/${end}`
-  );
-  const board_data = response.data.data
+  let response, cardList, board, cardlist_id, cardlist;
+  response = await apis.get(`/board/member/${mem_id}/from/${start}/to/${end}`);
+  const board_data = response.data.data;
   console.log(response.data.data);
   let app = [];
   for (let i = 0; i < board_data.length; i++) {
     board = board_data[i];
     response = await apis.get(`/board/${board_data[i].board_id}`);
-    const cardList_id_string = response.data.data
-    const cardlist_id_array_ = cardList_id_string.substring(1, cardList_id_string.length - 1).split(',');
-    const cardlist_id_array = []
-    cardlist_id_array_.map(cardlist_id => cardlist_id === "" ? null:cardlist_id_array.push(Number(cardlist_id)))
+    const cardList_id_string = response.data.data;
+    const cardlist_id_array_ = cardList_id_string
+      .substring(1, cardList_id_string.length - 1)
+      .split(",");
+    const cardlist_id_array = [];
+    cardlist_id_array_.map(cardlist_id =>
+      cardlist_id === "" ? null : cardlist_id_array.push(Number(cardlist_id))
+    );
     for (let j = 0; j < cardlist_id_array.length; j++) {
       cardlist_id = cardlist_id_array[j];
       response = await apis.get(`/cardlist/${cardlist_id}`);
@@ -763,6 +765,7 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
 
 export const getDailyList = board_li => async (dispatch, getState) => {
   const response = await apis.get(`/board/${board_li}`);
+  console.log(response.data.data);
   dispatch({ type: GET_DAILY_LIST, payload: response.data.data });
 };
 
@@ -775,3 +778,22 @@ export const setEditModeCard = card_id => ({
   type: SET_EDIT_MODE_CARD,
   payload: card_id
 });
+
+export const addTag = (cardlist_id, tag_name) => async disptach => {
+  const response = await apis.post(`/cardlist_tag/`, { cardlist_id, tag_name });
+  disptach({
+    type: ADD_TAG,
+    payload: { cardlist_id, tag: { tag_name, tag_id: response.data.data } }
+  });
+};
+
+export const deleteTag = (cardlist_id, tag_id) => async (
+  dispatch,
+  getState
+) => {
+  const response = await apis.delete(`/cardlist_tag/${tag_id}`);
+  dispatch({
+    type: DELETE_TAG,
+    payload: { cardlist_id, tag_id }
+  });
+};
