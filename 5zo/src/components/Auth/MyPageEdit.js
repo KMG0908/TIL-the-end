@@ -86,6 +86,7 @@ class MyPageEdit extends Component {
         var dataURI = canvas.toDataURL("image/png");
 
         document.getElementById("profile_image").src = dataURI;
+        console.log(dataURI)
       };
     }
   }

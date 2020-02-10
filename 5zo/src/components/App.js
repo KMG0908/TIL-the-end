@@ -86,6 +86,7 @@ class App extends React.Component {
               <Route path="/imgur" exact component={Imgur}></Route>
               <Route path="/daily" exact component={Daily}></Route>
               <Route path="/daily/:user_id" exact component={Daily}></Route>
+              <Route path="/daily/:user_id/:date" exact component={Daily}></Route>
               <Route path="/search" exact component={NewSearch}></Route>
               <Route component={Redirecting} />
             </Switch>

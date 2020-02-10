@@ -11,8 +11,9 @@ const useStyles = makeStyles(theme => ({
 
 const Tag = props => {
   const classes = useStyles();
+  const label = `#${props.name}`
   return (
-    <Chip className={classes.chip} variant="outlined" color="primary" label={props.name} />
+    <Chip className={classes.chip} variant="outlined" color="primary" label={label} />
   );
 };
 

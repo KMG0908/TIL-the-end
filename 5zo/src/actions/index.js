@@ -727,9 +727,6 @@ export const getDailyTask = (mem_id, from, to) => async (
   const response = await apis.get(
     `/card/daily/private/${mem_id}/from/${start}/to/${end}`
   );
-  console.log("dddd")
-  console.log(mem_id + " " + from + " " + to);
-  console.log(response.data.data);
   dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
 };
 

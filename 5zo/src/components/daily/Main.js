@@ -11,17 +11,30 @@ class Main extends React.Component{
     super(props);
 
     let user_id = this.props.match.params.user_id
-    
     if(!user_id) user_id = storage.get('loggedInfo').mem_id
     
-    let date = new Date();
-    if(user_id === storage.get('loggedInfo').mem_id) date = this.date_to_str(date, "-")
-    else date = this.date_to_str(new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1), "-")
+    let date = this.props.match.params.date;
+    if(!date) date = new Date();
+    else date = new Date(date.substr(0, 4), date.substr(4, 2) * 1 - 1, date.substr(6, 2));
+
+    date = this.date_to_str(date, "-")
+
+    if(user_id !== storage.get('loggedInfo').mem_id) {
+      if(date >= new Date().toISOString().split("T")[0]){
+        date = new Date();
+        date.setDate(date.getDate() - 1);
+
+        date =this.date_to_str(date, "-")
+      }
+    }
 
     this.state = {
       date: date,
       user_id: user_id
     }
+
+    // const d = date.replace(/-/gi, "");
+    // this.props.history.replace(`/daily/${user_id}/${d}`);
 
     this.onHandleDate = this.onHandleDate.bind(this);
   }
@@ -53,6 +66,9 @@ class Main extends React.Component{
         );
       }
     }
+
+    // const d = date.replace(/-/gi, "");
+    // this.props.history.replace(`/daily/${this.state.user_id}/${d}`);
   }
   date_to_str(format, separator) {
     let year = format.getFullYear();
