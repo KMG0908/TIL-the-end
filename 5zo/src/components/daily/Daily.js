@@ -1,7 +1,6 @@
 import React from "react";
 import DatePicker from "../helper/DatePicker";
 import { connect } from "react-redux";
-import { fetchDailyLists, setEditModeList } from "../../actions";
 import Container from "@material-ui/core/Container";
 import Post from "./Post";
 

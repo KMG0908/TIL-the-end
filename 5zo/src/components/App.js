@@ -54,7 +54,7 @@ class App extends React.Component {
             <Switch>
               <Route path="/login" exact component={Login} />
               <Route path="/register" exact component={Register} />
-              {/* <Route path="/search" exact component={NewSearch}/>               <Route path="/find-id" exact component = {FindIdPage}/> */}
+              {/* <Route path="/search" exact component={NewSearch}/>      <Route path="/find-id" exact component = {FindIdPage}/> */}
               <Route path="/find-id" exact component={FindIdPage} />
               <Route path="/find-pw" exact component={FindPwPage} />
               <Route path="/" component={DefLand} />

@@ -23,7 +23,7 @@ class Heatmap extends React.Component {
       }
     }
     return {
-      'data-tip': `${value.date} with task: ${value.count}`,
+      'data-tip': `${value.date}  with task: ${value.count}`,
     };
   };
   handleClick = (value) => {
@@ -53,6 +53,7 @@ class Heatmap extends React.Component {
           values={this.state.data}
           tooltipDataAttrs={this.getTooltipDataAttrs}
           onClick={this.handleClick}
+          
         />
         <ReactTooltip />
       </div >
