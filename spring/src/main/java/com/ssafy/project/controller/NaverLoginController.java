@@ -23,7 +23,7 @@ import com.ssafy.project.service.MemberService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-public class NaverController {
+public class NaverLoginController {
 
 	@Autowired
 	private MemberService service;
@@ -48,8 +48,15 @@ public class NaverController {
 	public ResponseEntity<Map<String, Object>> handler(Exception e) {
 		return handleFail(e.getMessage(), HttpStatus.OK);
 	}
+	
+	@GetMapping("/api/naver/login")
+	@ApiOperation("네이버로그인")
+	public ResponseEntity<Map<String, Object>> naverlogin(HttpSession session) throws Exception {		
+		return handleSuccess(naverLoginBO.getAuthorizationUrl(session));
+	}
+	
 
-	@GetMapping("/callback")
+	@GetMapping("/api/naver/callback")
 	@ApiOperation("네이버로그인 리다이렉트")
 	public ResponseEntity<Map<String, Object>> callback(@RequestParam String code, @RequestParam String state,
 			HttpSession session) throws Exception {

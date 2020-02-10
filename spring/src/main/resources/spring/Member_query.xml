@@ -8,15 +8,17 @@
 		values(#{mem_id},#{mem_email},#{mem_pw},#{mem_nick}, now())
 	</insert>
 	
+	<insert id="grantMember" parameterType="string">
+		insert into mem_option(mem_id, mem_auth, mem_post_def_secret)
+		values(#{mem_id}, 1, 1)
+	</insert>
+	
 	<insert id="createBoard" parameterType="member">
 		insert into board(mem_id, board_date)
 		values(#{mem_id},  now()), (#{mem_id}, '9999-12-31')
 	</insert>
 
-	<insert id="grantMember" parameterType="string">
-		insert into mem_option(mem_id, mem_auth, mem_post_def_secret)
-		values(#{mem_id}, 1, 1)
-	</insert>
+	
 	
 	<insert id="insertEmailAuth" parameterType = "string">
 		insert into confirm_email(mem_id, email_auth, email_key)
@@ -50,7 +52,7 @@
 		where mem_email = #{mem_email}
 	</select>
 
-	<select id="searchId" parameterType="string" resultType="int">
+	<select id="countId" parameterType="string" resultType="int">
 		select count(*)
 		from mem_info
 		where mem_id = #{mem_id}
@@ -72,10 +74,10 @@
 	<select id="searchAll" resultType="member">
 		select *
 		from mem_info
+		join mem_option
+		using (mem_id);
 	</select>
-
-
-
+	
 	<select id="searchIdLike" parameterType="string" resultType="member">
 		select *
 		from mem_info
@@ -159,8 +161,20 @@
 	</update>
 
 	<insert id="insertSNS" parameterType="sns" useGeneratedKeys="true" keyProperty="id">
-		insert into mem_info(mem_id, sns_nid, sns_email, provider)
-		values(#{mem_id}, #{sns_nid}, #{mem_email}, #{provider})
+		insert into sns(mem_id, sns_nid, sns_email, provider)
+		values(#{mem_id}, #{sns_nid}, #{sns_email}, #{provider})
 	</insert>
+	
+	<select id="countSNSByEmail" parameterType="string" resultType="int">
+		select count(*)
+		from sns
+		where sns_email = #{mem_email}
+	</select>
+	
+	<select id="searchSNSIdByEmail" parameterType="string" resultType="string">
+		select mem_id
+		from sns
+		where sns_email = #{mem_email}
+	</select>
 
 </mapper>

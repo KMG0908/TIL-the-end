@@ -93,7 +93,7 @@ public class CardlistServiceImpl implements CardlistService {
 	}
 
 	@Override
-	public List<CardlistSearch> searchPrivateCardlist(String mem_id, String keyword) {
+	public List<CardlistSearch> searchPrivateCardlist(String mem_id, String keyword, int limit, int page) {
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("mem_id", mem_id);
@@ -113,6 +113,8 @@ public class CardlistServiceImpl implements CardlistService {
 
 			params.put("keywordlist", keywordlist); // map에 list를 넣는다.
 			params.put("taglist", taglist); // map에 list를 넣는다.
+			params.put("start", limit*(page-1));
+			params.put("limit", limit);
 
 			return dao.searchPrivateCardlist(params);
 		} catch (Exception e) {
@@ -121,7 +123,7 @@ public class CardlistServiceImpl implements CardlistService {
 	}
 
 	@Override
-	public List<CardlistSearch> searchPublicCardlist(String mem_id, String keyword) {
+	public List<CardlistSearch> searchPublicCardlist(String mem_id, String keyword, int limit, int page) {
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();			 
 		    params.put("mem_id", mem_id); 
@@ -141,6 +143,8 @@ public class CardlistServiceImpl implements CardlistService {
 		    
 		    params.put("keywordlist", keywordlist); //map에 list를 넣는다.
 		    params.put("taglist", taglist); //map에 list를 넣는다.
+		    params.put("start", limit*(page-1));
+			params.put("limit", limit);
 		    
 		    return dao.searchPublicCardlist(params);
 		} catch (Exception e) {
@@ -149,7 +153,7 @@ public class CardlistServiceImpl implements CardlistService {
 	}
 
 	@Override
-	public List<CardlistSearch> searchGlobalCardlist(String keyword) {
+	public List<CardlistSearch> searchGlobalCardlist(String keyword, int limit, int page) {
 		try {
 			Map<String, Object> params = new HashMap<String, Object>();
 //			System.out.println(keyword);
@@ -170,6 +174,10 @@ public class CardlistServiceImpl implements CardlistService {
 
 			params.put("keywordlist", keywordlist); // map에 list를 넣는다.
 			params.put("taglist", taglist); // map에 list를 넣는다.
+			//  limit * (page-1) 부터 limit 개
+			// 0부터 시작한다
+			params.put("start", limit*(page-1));
+			params.put("limit", limit);
 
 			return dao.searchGlobalCardlist(params);
 		} catch (Exception e) {

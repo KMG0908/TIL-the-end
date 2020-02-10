@@ -2,8 +2,11 @@ package com.ssafy.project;
 
 import java.util.Locale;
 
+import org.apache.catalina.connector.Connector;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -13,6 +16,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
+import com.google.common.collect.Sets;
+
+import io.swagger.annotations.ApiOperation;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -36,19 +42,39 @@ public class Application implements WebMvcConfigurer {
 	 * 
 	 * @return
 	 */
+	
 	@Bean
-	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2).groupName("project") // service할 project 이름
-				.apiInfo(info()).select().apis(RequestHandlerSelectors.basePackage("com.ssafy.project.controller"))
-				.paths(PathSelectors.ant("/api/**")) // 서비스할 경로 phone으로 통일, 서비스 구분은 요청 method로 구분
-				// .paths(PathSelectors.any()) // 서비스할 경로를 통일하지 않고 경로명으로 구분해서 사용
-				.build();
+	public Docket createRestApi() {
+	  return new Docket(DocumentationType.SWAGGER_2)
+	      .produces(Sets.newHashSet("application/json"))
+	      .consumes(Sets.newHashSet("application/json"))
+	      .protocols(Sets.newHashSet("http", "https"))
+	      .apiInfo(info())
+	      .forCodeGeneration(true)
+	      .useDefaultResponseMessages(false).select()
+	      .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+	      .paths(PathSelectors.any()).build();
 	}
+//	@Bean
+//	public Docket api() {
+//		return new Docket(DocumentationType.SWAGGER_2)
+//				.groupName("project") // service할 project 이름
+//				.apiInfo(info())
+//				.select()
+//				.apis(RequestHandlerSelectors.basePackage("com.ssafy.project.controller"))
+//				.paths(PathSelectors.ant("/api/**")) // 서비스할 경로 phone으로 통일, 서비스 구분은 요청 method로 구분
+//				// .paths(PathSelectors.any()) // 서비스할 경로를 통일하지 않고 경로명으로 구분해서 사용
+//				.build();
+//	}
 
 	// 프로젝트의 정보를 만들어주는 함수
 	private ApiInfo info() {
-		return new ApiInfoBuilder().title("Project Management API").description("프로젝트를 위한 <b>CRUD</b>")
-				.license("5zo company").version("0.1.18").build();
+		return new ApiInfoBuilder()
+				.title("Project Management API")
+				.description("프로젝트를 위한 <b>CRUD</b>")
+				.license("5zo company")
+				.version("0.1.24")
+				.build();
 	}
 
 	/**
@@ -117,4 +143,23 @@ public class Application implements WebMvcConfigurer {
 	 */
 
 
+	/*
+	 * 서버 https http 연결
+	 */
+	@Bean
+    public ServletWebServerFactory serveltContainer(){
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+        tomcat.addAdditionalTomcatConnectors(createStandardConnector());
+        return tomcat;
+    }
+
+    private Connector createStandardConnector(){
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        connector.setPort(8070);
+        return connector;
+    }
+
+
+//출처: https://engkimbs.tistory.com/756 [새로비]
+	
 }
