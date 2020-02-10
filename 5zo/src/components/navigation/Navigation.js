@@ -184,12 +184,6 @@ function Navigation(props) {
               <MenuItem onClick={logout}>Logout</MenuItem>
             </Menu>
           </div>
-          {/* <Typography>
-            <input type="button" value="로그아웃" onClick={logout} />
-          </Typography>
-          <Typography>
-            <input type="button" value="마이페이지" onClick={myPage} />
-          </Typography> */}
         </Toolbar>
       </AppBar>
       <Drawer
