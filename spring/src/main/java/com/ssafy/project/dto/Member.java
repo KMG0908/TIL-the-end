@@ -27,6 +27,9 @@ public class Member implements Serializable {
 	 * 가입일(date)
 	 */
 	private String mem_reg_date;
+	
+	private String mem_thumb;
+	
 	/*
 	 * 아래는 회원 권한 테이블로 별도 관리하고 있습니다.
 	 */

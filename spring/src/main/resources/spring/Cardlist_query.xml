@@ -73,6 +73,7 @@
     and tag.cardlist_id = cl.cardlist_id
     and b.board_id = cl.board_id
     group by cl.cardlist_id
+    order by b.board_date desc
     limit #{start}, #{limit}
     ]]>
 	</select>
@@ -109,6 +110,7 @@
     and c.card_secret = false
     and b.board_id = cl.board_id
     group by cl.cardlist_id
+    order by b.board_date desc
     limit #{start}, #{limit}
     ]]>
 	</select>
@@ -145,6 +147,7 @@
     and c.card_secret = false
     and b.board_id = cl.board_id
     group by cl.cardlist_id
+    order by b.board_date desc
     limit #{start}, #{limit}
     ]]>
 	</select>

@@ -213,8 +213,7 @@ public class MemberServiceImpl implements MemberService {
 				SNS sns = new SNS();
 				sns.setMem_id(naver.getMem_id());
 				sns.setSns_nid(Integer.parseInt(naver.getMem_id().split("_")[1]));
-				String sns_email = naver.getMem_email();
-				sns.setSns_email(sns_email);
+				sns.setMem_email(naver.getMem_email());
 				sns.setProvider("NAVER");	
 				dao.insertSNS(sns);
 				return naver;
@@ -226,8 +225,7 @@ public class MemberServiceImpl implements MemberService {
 				String mem_id = dao.searchIdByEmail(mem_email);
 				sns.setMem_id(mem_id);
 				sns.setSns_nid(Integer.parseInt(naver.getMem_id().split("_")[1]));
-				String sns_email = naver.getMem_email();
-				sns.setSns_email(sns_email);
+				sns.setMem_email(naver.getMem_email());
 				sns.setProvider("NAVER");	
 				dao.insertSNS(sns);				
 				return dao.search(mem_id);

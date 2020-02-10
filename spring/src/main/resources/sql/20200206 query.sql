@@ -64,7 +64,7 @@ CREATE TABLE `sns` (
 	`id`					int				NOT NULL		primary key		auto_increment,
 	`mem_id`				varchar(255)	NOT NULL,
 	`sns_nid`				int				NULL,
-	`sns_email`				varchar(255)	NULL,
+	`mem_email`				varchar(255)	NULL,
 	`access_token`			varchar(255)	NULL,
 	`provider`				varchar(255)	NULL
 );

@@ -85,7 +85,7 @@ public class MemberRESTController {
 
 	// UPDATE
 	@PutMapping("/api/member")
-	@ApiOperation("member 정보 수정, 가입일 수정 불가, 비밀번호는 서버의 비밀번호와 비교해서 같으면 변경하는 용도입니다, 변경 성공시 member를 리턴합니다")
+	@ApiOperation("member 정보 수정, 변경 가능 : email, nick, thumb / 검증 : 현재비밀번호 , 변경 성공시 member를 리턴합니다")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Member member) {	
 		service.updateMember(member);
 		return handleSuccess(service.search(member.getMem_id()));
