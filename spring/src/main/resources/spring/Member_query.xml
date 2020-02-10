@@ -95,6 +95,7 @@
 		from mem_info
 		join mem_option
 		using (mem_id)
+		where mem_id = #{mem_id}
 	</select>
 
 	<update id="updateMember" parameterType="member">

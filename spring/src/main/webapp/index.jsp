@@ -10,8 +10,8 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 	$(function() {
-		$.ajax({
-			url : 'https://localhost:8080/spring/api/naver/login',
+		$.ajax({ //axios // baseURL / api/naver/login 
+			url : 'https://localhost:8443/spring/api/naver/login',			
 			success : function(data) {
 				url = data.data;
 				console.log(url);

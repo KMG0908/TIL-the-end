@@ -73,7 +73,7 @@ public class Application implements WebMvcConfigurer {
 				.title("Project Management API")
 				.description("프로젝트를 위한 <b>CRUD</b>")
 				.license("5zo company")
-				.version("0.1.26")
+				.version("0.1.27")
 				.build();
 	}
 
@@ -155,7 +155,7 @@ public class Application implements WebMvcConfigurer {
 
     private Connector createStandardConnector(){
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-        connector.setPort(8070);
+        connector.setPort(8080);
         return connector;
     }
 
