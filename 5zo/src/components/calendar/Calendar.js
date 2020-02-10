@@ -113,7 +113,6 @@ class Event extends React.Component {
           title: app[i].cardlist_name,
           start: app[i].date,
           end: app[i].date,
-          color: app[i].cardlist_color
         })
       }
 
