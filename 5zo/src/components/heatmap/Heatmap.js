@@ -6,8 +6,9 @@ import 'react-calendar-heatmap/dist/styles.css'
 import ReactTooltip from 'react-tooltip';
 import './heatmap.css';
 import moment from "moment"
+import storage from 'lib/storage';
 
-let yesterday = new Date();
+let lastDay = new Date();
 class Heatmap extends React.Component {
   constructor(props){
     super(props);
@@ -19,9 +20,9 @@ class Heatmap extends React.Component {
   componentDidMount() {
     const user_id = this.props.user_id;
     
-    yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    this.props.getDailyTask(user_id, shiftDate(yesterday, -365), yesterday);
+    lastDay = new Date();
+    if(user_id !== storage.get('loggedInfo').mem_id) lastDay.setDate(lastDay.getDate() - 1);
+    this.props.getDailyTask(user_id, shiftDate(lastDay, -365), lastDay);
   }
   getTooltipDataAttrs = (value) => {
     let date = moment(value.date).format('YYYY년 MM월 DD일')
@@ -45,8 +46,8 @@ class Heatmap extends React.Component {
       const state = this.props.board_info
       let data = [];
 
-      let startDate = shiftDate(yesterday, -365);
-      let endDate = yesterday;
+      let startDate = shiftDate(lastDay, -365);
+      let endDate = lastDay;
 
       let date = startDate;
       while(true){
@@ -65,16 +66,16 @@ class Heatmap extends React.Component {
       }
 
       return(
-        <>
+        <div className='user-heatmap'>
           <CalendarHeatmap
-            startDate={shiftDate(yesterday, -365)}
-            endDate={yesterday}
+            startDate={shiftDate(lastDay, -365)}
+            endDate={lastDay}
             values={data}
             tooltipDataAttrs={this.getTooltipDataAttrs}
             onClick={this.handleClick}
             classForValue={(value) => {
               if (value.count == 0) {
-                return 'color-empty';
+                return `color-empty`;
               }
               else if(value.count <= 5){
                 return `color-scale-1`;
@@ -89,9 +90,12 @@ class Heatmap extends React.Component {
                 return `color-scale-4`;
               }
             }}
+            showWeekdayLabels={true}
+            monthLabels={['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']}
+            weekdayLabels={['월', '월', '수', '수', '금', '금', '일']}
           />
           <ReactTooltip />
-        </>
+        </div>
       )
     }
   }

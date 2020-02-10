@@ -1,21 +1,41 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import "typeface-roboto";
 import { connect } from "react-redux";
+import Content from "./Content";
+
+const useStyles = makeStyles(theme => ({
+  subPost: {
+    '&:not(:last-child)': {
+      marginBottom: '25px'
+    }
+  },
+  title: {
+    borderBottom: '2px solid #5F806C',
+    borderLeft: '5px solid #5F806C',
+    color: '#2d3434',
+    fontSize: '18px',
+    margin: 0,
+    padding: '0 0 0 5px'
+  }
+}));
 
 const SubPost = props => {
+  const classes = useStyles();
   return (
-    <>
-      <Typography variant="h4">
+    <div className={classes.subPost}>
+      <Typography variant="h5" className={classes.title}>
         {props.cards[props.card_id].card_name}
       </Typography>
 
-      <div
+      {/* <div
         dangerouslySetInnerHTML={{
           __html: props.cards[props.card_id].card_contents
         }}
-      />
-    </>
+      /> */}
+      <Content card_id={props.card_id}></Content>
+    </div>
   );
 };
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { getOtherMember } from "../../actions";
+import "./userInfo.css"
 
 class UserInfo extends React.Component{
   componentDidMount(){
@@ -14,15 +15,13 @@ class UserInfo extends React.Component{
       const date = reg_date.getDate();
       return(
         <div>
-          <div>
+          <div className="user_image">
             <img></img>
           </div>
-          <div>
-            <span>{this.props.info.mem_nick}</span>
-            <span style={{color: "gray"}}> @{this.props.info.mem_id}</span>
-          </div>
-          <div>
-            <span>{year}년 {month}월 {date}일에 가입함</span>
+          <div className="user_info">
+            <span className="user_nick">{this.props.info.mem_nick}</span>
+            <span className="user_id" style={{color: "gray"}}> @{this.props.info.mem_id}</span>
+            <div>{year}년 {month}월 {date}일에 가입함</div>
           </div>
         </div>
       )
