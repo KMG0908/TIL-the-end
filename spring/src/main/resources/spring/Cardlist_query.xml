@@ -47,11 +47,11 @@
     <![CDATA[
     select b.mem_id, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
         from cardlist cl, card c, board b,
-            (select cl.cardlist_id, group_concat(t.tag_name) as tag_name
-            from tag t, cardlist_tag ct, cardlist cl
-            where cl.cardlist_id = ct.cardlist_id
-            and ct.tag_id = t.tag_id
-            group by cl.cardlist_id) tag
+            (select cl.cardlist_id, ifnull(tag.tag_name, "") as tag_name
+			from cardlist cl left outer join (select ct.cardlist_id, group_concat(t.tag_name) as tag_name
+			from cardlist_tag ct, tag t
+			where ct.tag_id = t.tag_id
+			group by ct.cardlist_id) tag on cl.cardlist_id = tag.cardlist_id) tag
     where 1=1 
     and b.mem_id = #{mem_id}
     and b.board_date < now()
@@ -81,11 +81,11 @@
     <![CDATA[
     select b.mem_id, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
         from cardlist cl, card c, board b,
-            (select cl.cardlist_id, group_concat(t.tag_name) as tag_name
-            from tag t, cardlist_tag ct, cardlist cl
-            where cl.cardlist_id = ct.cardlist_id
-            and ct.tag_id = t.tag_id
-            group by cl.cardlist_id) tag
+            (select cl.cardlist_id, ifnull(tag.tag_name, "") as tag_name
+			from cardlist cl left outer join (select ct.cardlist_id, group_concat(t.tag_name) as tag_name
+			from cardlist_tag ct, tag t
+			where ct.tag_id = t.tag_id
+			group by ct.cardlist_id) tag on cl.cardlist_id = tag.cardlist_id) tag
     where 1=1 
     and b.mem_id = #{mem_id}
     and b.board_date < now()
@@ -117,11 +117,11 @@
     <![CDATA[
     select b.mem_id, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
         from cardlist cl, card c, board b,
-            (select cl.cardlist_id, group_concat(t.tag_name) as tag_name
-            from tag t, cardlist_tag ct, cardlist cl
-            where cl.cardlist_id = ct.cardlist_id
-            and ct.tag_id = t.tag_id
-            group by cl.cardlist_id) tag
+            (select cl.cardlist_id, ifnull(tag.tag_name, "") as tag_name
+			from cardlist cl left outer join (select ct.cardlist_id, group_concat(t.tag_name) as tag_name
+			from cardlist_tag ct, tag t
+			where ct.tag_id = t.tag_id
+			group by ct.cardlist_id) tag on cl.cardlist_id = tag.cardlist_id) tag
     where 1=1 
     and b.board_date < now()
     ]]>
