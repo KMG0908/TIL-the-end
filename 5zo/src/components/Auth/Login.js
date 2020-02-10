@@ -82,18 +82,17 @@ class Login extends Component {
     }
     return (
       <div style={{ textAlign: 'center' }}>
-      <div style={{ display: 'inline-block', width: 500 }}>
+        <div style={{ display: 'inline-block', width: 500 }}>
           <AuthWrapper >
             <AuthContent title="로그인">
-              <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디" onChange={this.handleChange} />
-              <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호" onChange={this.handleChange}  />
-              {this.props.login_err}
-              <AuthButton onClick={this.login}> 로그인 </AuthButton>
-              <AuthButton onClick={this.cancel}> 취소 </AuthButton>
-              <div id="naver_id_login" style={{textAlign: "center"}}></div>
-              <RightAlignedLink to="/register"> 회원가입 </RightAlignedLink>
-              <RightAlignedLink to="/find-id"> 아이디 찾기 </RightAlignedLink>
-              <RightAlignedLink to="/find-pw"> 비밀번호 찾기 </RightAlignedLink>
+                <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디" onChange={this.handleChange} />
+                <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호" onChange={this.handleChange} />
+                {this.props.login_err}
+                <AuthButton onClick={this.login}> 로그인 </AuthButton>
+                <AuthButton onClick={this.cancel}> 취소 </AuthButton>
+                <RightAlignedLink to="/register"> 회원가입 </RightAlignedLink>
+                <RightAlignedLink to="/find-id"> 아이디 찾기 </RightAlignedLink>
+                <RightAlignedLink to="/find-pw"> 비밀번호 찾기 </RightAlignedLink>
             </AuthContent>
           </AuthWrapper>
         </div>
