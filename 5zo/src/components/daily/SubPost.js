@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   title: {
-    borderBottom: '2px solid #5F806C',
+    borderBottom: '1px solid #5F806C',
     borderLeft: '5px solid #5F806C',
     color: '#2d3434',
     fontSize: '18px',

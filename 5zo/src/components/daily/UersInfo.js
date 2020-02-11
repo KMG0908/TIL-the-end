@@ -13,14 +13,16 @@ class UserInfo extends React.Component{
       const year = reg_date.getFullYear();
       const month = reg_date.getMonth() + 1;
       const date = reg_date.getDate();
+      const tmp_image = "https://www.gravatar.com/avatar/bc05615a975020a24c81da899a113e23?d=mm&s=90"
+      
       return(
         <div>
           <div className="user_image">
-            <img></img>
+            <img src={this.props.info.mem_thumb ? this.props.info.mem_thumb : tmp_image}></img>
           </div>
           <div className="user_info">
             <span className="user_nick">{this.props.info.mem_nick}</span>
-            <span className="user_id" style={{color: "gray"}}> @{this.props.info.mem_id}</span>
+            <span className="user_id" style={{color: "gray"}}>@{this.props.info.mem_id}</span>
             <div>{year}년 {month}월 {date}일에 가입함</div>
           </div>
         </div>

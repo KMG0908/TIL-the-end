@@ -19,6 +19,8 @@ const Wrapper = styled.div`
     user-select : none;
     transition : .2s all;
 
+    border-radius: 5px;
+
     $:hover {
         background : ${oc.teal[5]};
         ${shadow(0)}

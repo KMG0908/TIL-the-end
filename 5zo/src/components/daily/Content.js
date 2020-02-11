@@ -13,9 +13,12 @@ class Content extends React.Component{
     });
 
     editor.disabled()
-    console.log(this.props.cards)
+
     if(this.props.cards[this.props.card_id].card_contents){
       editor.setContents(this.props.cards[this.props.card_id].card_contents)
+    }
+    else{
+      document.getElementById("suneditor_" + this.props.card_id).style.display = 'none';
     }
   }
 
