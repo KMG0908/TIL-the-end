@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '../Auth';
+import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel, ColorPicker } from '../Auth';
 import { editMyColor, editMyColorFailReset, memInfoChangeReset } from "actions";
 import { TwitterPicker } from "react-color";
 import storage from 'lib/storage';
@@ -16,9 +16,9 @@ const Label = styled.div`
 `;
 
 class MyPage extends Component {
-
   handleChangeColor = color => {
     document.getElementById('myColor').style.backgroundColor = color.hex
+    this.props.mem_info.mem_color = color.hex
     this.props.editMyColor(this.props.mem_info.mem_id, color.hex)
   };
 
@@ -30,6 +30,7 @@ class MyPage extends Component {
       this.props.memInfoChangeReset();
       this.props.editMyColorFailReset();
     }
+
     return (
       <div style={{ textAlign: 'center' }}>
         <div style={{ display: 'inline-block', width: 500 }}>
@@ -43,19 +44,7 @@ class MyPage extends Component {
               <br></br>
 
               <Label>카드리스트 기본 색</Label>
-              <div style={{ display: 'inline-block', width: `100%` }} >
-                <div style={{ display: 'inline-block', float:'left' ,height : '100px', minHeight : '100px'}}>
-                  <div id='myColor' style={{ background: this.props.mem_info.mem_color, width: '50px',height : '100%', minWidth: '100px', minHeight: '100px' }} />
-                </div>
-                <div style={{ display: 'inline-block' ,float:'right'}}>
-                  <TwitterPicker
-                    style={{ marginRight: 0, border: null, display: 'inline-block' , }}
-
-                    onChange={this.handleChangeColor}
-                    triangle="hide"
-                  />
-                </div>
-              </div>
+              <ColorPicker value={this.props.mem_info ? this.props.mem_info.mem_color : null} handleChangeColor={this.handleChangeColor}></ColorPicker>
               <RightAlignedLink to="/mypage/edit"> 수정 </RightAlignedLink>
               <RightAlignedLink to="/mypage/delete"> 탈퇴 </RightAlignedLink>
             </AuthContent>

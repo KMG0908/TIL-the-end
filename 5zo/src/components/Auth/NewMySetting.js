@@ -4,8 +4,21 @@ import { login, loginErrReset, editMyinfo, editMyinfoErrReset, memInfoChangeRese
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
 import storage from 'lib/storage';
 import PasswordWithLabel from './PasswordWithLabel';
+import { TwitterPicker } from "react-color";
 import history from '../../history'
-class MyPageEdit extends Component {
+
+import styled from 'styled-components';
+import oc from 'open-color';
+
+
+const Label = styled.div`
+    font-size : 1rem;
+    color : ${oc.gray[6]};
+    margin-bottom : 0.25rem;
+    text-align : left
+`;
+
+class NewMySetting extends Component {
   constructor(props) {
     super(props);
 
@@ -106,19 +119,27 @@ class MyPageEdit extends Component {
       <div style={{ textAlign: 'center' }}>
         <div style={{ display: 'inline-block', width: 500 }}>
           <AuthWrapper>
-            <AuthContent title="내 정보 수정">
+            <AuthContent title="My Setting">
               <div style={{ width: "120px", height: "120px", overflow: "hidden" }} id="image_div">
                 <img id="profile_image"></img>
               </div>
               <input type="file" accept="image/*" onChange={this.uploadImage} />
               {/* 로그인한 member 의 데이터를 아래 TextWithLabel 들의 value 에 줘야함. */}
-              <TextWithLabel label="아이디" name="id" value={this.props.mem_info ? this.props.mem_info.mem_id : ''} />
-              <InputWithLabel label="이메일" name="email" type="email" value={this.state.email} onChange={this.handleChange} />
               <InputWithLabel label="닉네임" name="nick" value={this.state.nick} onChange={this.handleChange} />
-              <br /><br />
-              <PasswordWithLabel label="현재 비밀번호" id="nowPw" name="nowPw" placeholder={"수정하려면 현재 비밀번호를 입력하세요"} value={this.state.nowPw} onChange={this.handleChange} />
-              {this.props.edit_myinfo_err}
-              <RightAlignedLink to="/mypage/edit-password"> 비밀번호 변경 </RightAlignedLink>
+              <br/>
+              <div style={{ display: 'inline-block', width: `100%` }} >
+                <div style={{ display: 'inline-block', float:'left' ,height : '100px', minHeight : '100px'}}>
+                  <div id='myColor' style={{ background: this.props.mem_info.mem_color, width: '50px',height : '100%', minWidth: '100px', minHeight: '100px' }} />
+                </div>
+                <div style={{ display: 'inline-block' ,float:'right'}}>
+                  <TwitterPicker
+                    style={{ marginRight: 0, border: null, display: 'inline-block' , }}
+
+                    onChange={this.handleChangeColor}
+                    triangle="hide"
+                  />
+                </div>
+              </div>
               <AuthButton onClick={this.editMyinfo}> 수정 </AuthButton>
               <AuthButton onClick={this.cancelEditMyinfo}> 취소 </AuthButton>
             </AuthContent>
@@ -137,4 +158,4 @@ const mapStatetoProps = state => {
   };
 };
 
-export default connect(mapStatetoProps, { editMyinfo, editMyinfoErrReset, memInfoChangeReset })(MyPageEdit);
+export default connect(mapStatetoProps, { editMyinfo, editMyinfoErrReset, memInfoChangeReset })(NewMySetting);

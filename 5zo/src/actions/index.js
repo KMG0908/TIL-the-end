@@ -220,7 +220,7 @@ export const deleteAccountSuccessReset = () => async (dispatch, getState) => {
   }
 };
 
-export const editMyinfo = (loginId, nowPw, email, nick) => async dispatch => {
+export const editMyinfo = (loginId, nowPw, email, nick, color) => async dispatch => {
   if (!nowPw) {
     dispatch({ type: EDIT_MYINFO_ERR, payload: "비밀번호를 입력해주세요." });
   }
@@ -234,7 +234,8 @@ export const editMyinfo = (loginId, nowPw, email, nick) => async dispatch => {
     mem_id: loginId,
     mem_pw: nowPw,
     mem_email: email,
-    mem_nick: nick
+    mem_nick: nick,
+    mem_color:color
   });
 
   const data = response.data.data;

@@ -135,6 +135,9 @@ function Navigation(props) {
   const regist = () => {
     history.push('/register')
   }
+  const mySetting = () => {
+    history.push('/my-setting')
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -192,7 +195,8 @@ function Navigation(props) {
               {props.mem_info ?
                 <>
                   <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={myPage}>MyPage</MenuItem>
+                  <MenuItem onClick={myPage}>My Page</MenuItem>
+                  <MenuItem onClick={mySetting}>My Setting</MenuItem>
                   <MenuItem onClick={logout}>Logout</MenuItem>
                 </>
                 :

@@ -26,6 +26,7 @@ import FindIdPage from './Auth/FindIdPage'
 import FindPwPage from './Auth/FindPwPage'
 import EditPasswordPage from "./Auth/EditPasswordPage";
 import Body from "./landing/Body";
+import NewMySetting from "./Auth/NewMySetting";
 
 
 
@@ -82,6 +83,9 @@ class App extends React.Component {
               <Route path="/mypage/edit" exact component={MyPageEdit} />
               <Route path="/mypage/edit-password" exact component={EditPasswordPage} />
               <Route path="/mypage/delete" exact component={MyAccountDelete} />
+
+              {/* test */}
+              <Route path='/my-setting' exact component={NewMySetting}/>
 
               <Route path="/imgur" exact component={Imgur}></Route>
               <Route path="/daily" exact component={Daily}></Route>
