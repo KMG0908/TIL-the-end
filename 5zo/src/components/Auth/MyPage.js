@@ -42,7 +42,7 @@ class MyPage extends Component {
               {/* <div style={{background : this.props.mem_info.mem_color, width : '10', heigth : '10'}}/> */}
               <br></br>
 
-              <Label>카드리스트 색</Label>
+              <Label>카드리스트 기본 색</Label>
               <div style={{ display: 'inline-block', width: `100%` }} >
                 <div style={{ display: 'inline-block', float:'left' ,height : '100px', minHeight : '100px'}}>
                   <div id='myColor' style={{ background: this.props.mem_info.mem_color, width: '50px',height : '100%', minWidth: '100px', minHeight: '100px' }} />
