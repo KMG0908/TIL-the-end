@@ -40,8 +40,8 @@ const StyledIcon = styled(Icon)`
 const TrelloForm = React.memo(
   ({ board_id, text = "", onChange, closeForm, children, submit }) => {
     const placeholder = board_id
-      ? "Enter list title..."
-      : "Enter a title for this card...";
+      ? "Enter post title..."
+      : "Enter a title for this learning...";
 
     return (
       <Container>

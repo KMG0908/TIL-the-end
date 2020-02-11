@@ -18,12 +18,12 @@ import storage from "lib/storage";
 
 import { connect } from "react-redux";
 import { logout } from "../../actions";
-import { Link } from "react-router-dom";
 
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import { Background } from "devextreme-react/vector-map";
+import { withRouter } from "react-router-dom";
+import TitleBreadcumbs from "./TitleBreadcumbs";
 
 const drawerWidth = 240;
 
@@ -33,7 +33,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1
   },
   appBar: {
-    backgroundColor: "#94C9A9",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -67,8 +66,7 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
     justifyContent: "flex-end"
   },
-  toolbar: {
-  },
+  toolbar: {},
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -84,10 +82,6 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen
     }),
     marginLeft: 0
-  },
-  link: {
-    textDecoration: "inherit",
-    color: "white"
   },
   menuRight: {
     float: "right"
@@ -126,11 +120,17 @@ function Navigation(props) {
   const myPage = () => {
     window.location.href = "/mypage";
   };
+  console.log(props.members.mem_info);
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
+        style={{
+          backgroundColor: props.members.mem_info.mem_color
+            ? props.members.mem_info.mem_color
+            : "#94C9A9"
+        }}
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open
@@ -147,9 +147,7 @@ function Navigation(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap className={classes.title}>
-            <Link className={classes.link} to={"/"}>
-              Today I Learn
-            </Link>
+            <TitleBreadcumbs />
 
             <WithTitle />
           </Typography>
@@ -221,8 +219,10 @@ function Navigation(props) {
   );
 }
 
-const mapStateToProps = function(state) {
-  return {};
+const mapStateToProps = state => {
+  return {
+    members: state.members
+  };
 };
 
-export default connect(mapStateToProps, { logout })(Navigation);
+export default connect(mapStateToProps, { logout })(withRouter(Navigation));

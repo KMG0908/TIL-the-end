@@ -1,7 +1,6 @@
 import "date-fns";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import DateFnsUtils from "@date-io/date-fns";
 import Icon from "@material-ui/core/Icon";
 import {
   MuiPickersUtilsProvider,
@@ -10,6 +9,8 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { setEditModeList, setEditModeCard } from "../../actions";
+import moment from "moment";
+import MomentUtils from "@date-io/moment";
 
 const useStyles = makeStyles({
   Keyboard: {
@@ -30,13 +31,14 @@ const useStyles = makeStyles({
     display: "inline"
   }
 });
+moment.locale("kr");
 
 const today = new Date().toISOString().split("T")[0];
 function DatePicker(props) {
   const classes = useStyles();
 
   let [selectedDate, setSelectedDate] = React.useState(new Date());
-  if(props.date){
+  if (props.date) {
     selectedDate = new Date(props.date);
   }
 
@@ -63,18 +65,28 @@ function DatePicker(props) {
   };
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <MuiPickersUtilsProvider
+      utils={MomentUtils}
+      libInstance={moment}
+      locale="kr"
+    >
       <Grid container>
-        <Grid xs={1} container item></Grid>
-        <Grid xs={10} container item justify="center">
+        <Grid xs={1} container item justify="flex-start"></Grid>
+        <Grid
+          xs={10}
+          style={{ flexWrap: "nowrap" }}
+          container
+          item
+          justify="center"
+        >
           <Icon className={classes.arrow} onClick={toPrevDate}>
             arrow_back_ios
           </Icon>
           <KeyboardDatePicker
+            ToolbarComponent={({ year, month, date }) => <div>{year}</div>}
             className={classes.Keyboard}
-            disableToolbar
             variant="inline"
-            format="yyyy년 MM월 dd일"
+            format="YYYY년 MM월 DD일"
             margin="normal"
             id="date-picker-inline"
             label="날짜"

@@ -11,7 +11,7 @@ class NewCard extends Component {
   render() {
     const moveDetail = (e) => {
       console.log(cardList.board_date)
-      window.location.href=`/dayily/${cardList.mem_id}/${cardList.board_date.replace(/-/gi,'')}`
+      window.location.href=`/daily/${cardList.mem_id}/${cardList.board_date.replace(/-/gi,'')}`
     }
     const styles = {
       root: {

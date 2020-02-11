@@ -12,13 +12,13 @@ class Login extends Component {
   componentDidMount() {
     this.props.loginErrReset();
 
-    if (!this.props.mem_info) {
-      axios.get('http://13.124.67.187:8080/spring/api/naver/login')
-        .then(response => {
-          const url = response.data.data;
-          document.getElementById("naver_id_login").innerHTML = '<a href=\"' + url + '\"><img width="300" alt="네이버 아이디로 로그인" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" /></a>'
-        })
-    }
+    // if (!this.props.mem_info) {
+    //   axios.get('http://13.124.67.187:8080/spring/api/naver/login')
+    //     .then(response => {
+    //       const url = response.data.data;
+    //       document.getElementById("naver_id_login").innerHTML = '<a href=\"' + url + '\"><img width="300" alt="네이버 아이디로 로그인" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" /></a>'
+    //     })
+    // }
 
     // if (!this.props.mem_info) {
     //   const response = await apis.get('/naver/login');

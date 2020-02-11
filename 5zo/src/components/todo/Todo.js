@@ -35,7 +35,7 @@ const styles = theme => ({
 });
 
 class Todo extends React.Component {
-  state = { editMode: false };
+  state = { editMode: false, expandTodo: false };
 
   FormRow() {
     const { classes } = this.props;
@@ -44,7 +44,7 @@ class Todo extends React.Component {
         <Grid
           item
           className={classes.items}
-          md={this.props.editModeList ? 11 : 4}
+          md={this.props.editModeList ? 11 : this.state.expandTodo ? 1 : 4}
           sm={12}
         >
           <Paper className={classes.daily}>
@@ -55,12 +55,17 @@ class Todo extends React.Component {
           <Grid
             item
             className={classes.items}
-            md={this.props.editModeList ? 1 : 8}
+            md={this.props.editModeList ? 1 : this.state.expandTodo ? 11 : 8}
             sm={12}
             overflow="hidden"
           >
             <Paper className={classes.lists}>
-              <TodoBoard />
+              <TodoBoard
+                expandTodo={() =>
+                  this.setState({ expandTodo: !this.state.expandTodo })
+                }
+                isExpanding={this.state.expandTodo}
+              />
             </Paper>
           </Grid>
         </Hidden>

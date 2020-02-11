@@ -523,7 +523,6 @@ export const sort = (
     const card_id = parseInt(draggableId.split("-")[1]);
     if (droppableIdStart === droppableIdEnd) {
       const cardlist = getState().cardLists[droppableIdStart];
-
       cardlist.cardlist_cards.splice(droppableIndexStart, 1);
       cardlist.cardlist_cards.splice(droppableIndexEnd, 0, card_id);
       const cardlist_cards = JSON.stringify(cardlist.cardlist_cards);
@@ -532,7 +531,7 @@ export const sort = (
       const cardlistFrom = getState().cardLists[droppableIdStart];
       const cardlistTo = getState().cardLists[droppableIdEnd];
       const card = getState().cards[card_id];
-      card.cardlist_id = droppableIndexEnd;
+      card.cardlist_id = droppableIdEnd;
       cardlistFrom.cardlist_cards.splice(droppableIndexStart, 1);
       cardlistTo.cardlist_cards.splice(droppableIndexEnd, 0, card_id);
       apis.put("/card", { ...card });
@@ -547,14 +546,32 @@ export const sort = (
     }
   } else {
     const list_id = parseInt(draggableId.split("-")[1]);
-    const board = getState().boards[droppableIdStart];
-    board.board_lists.splice(droppableIndexStart, 1);
-    board.board_lists.splice(droppableIndexEnd, 0, list_id);
+    if (droppableIdStart === droppableIdEnd) {
+      const board = getState().boards[droppableIdStart];
+      board.board_lists.splice(droppableIndexStart, 1);
+      board.board_lists.splice(droppableIndexEnd, 0, list_id);
 
-    let form = new FormData();
-    form.append("board_id", droppableIdStart);
-    form.append("board_lists", JSON.stringify(board.board_lists));
-    apis.patch(`/board/${droppableIdStart}`, form);
+      let form = new FormData();
+      form.append("board_id", droppableIdStart);
+      form.append("board_lists", JSON.stringify(board.board_lists));
+      apis.patch(`/board/${droppableIdStart}`, form);
+    } else {
+      const boardFrom = getState().boards[droppableIdStart];
+      const boardTo = getState().boards[droppableIdEnd];
+      const cardlist = getState().cardLists[list_id];
+      cardlist.board_id = droppableIdEnd;
+      boardFrom.board_lists.splice(droppableIndexStart, 1);
+      boardTo.board_lists.splice(droppableIndexEnd, 0, list_id);
+      apis.put("/cardlist", { ...cardlist });
+      let fromForm = new FormData();
+      fromForm.append("board_id", droppableIdStart);
+      fromForm.append("board_lists", JSON.stringify(boardFrom.board_lists));
+      apis.patch(`/board/${droppableIdStart}`, fromForm);
+      let toForm = new FormData();
+      toForm.append("board_id", droppableIdEnd);
+      toForm.append("board_lists", JSON.stringify(boardTo.board_lists));
+      apis.patch(`/board/${droppableIdEnd}`, toForm);
+    }
   }
 };
 
@@ -692,13 +709,18 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
   dispatch({ type: SEARCH_KEYWORD, payload: cards });
 };
 
-export const searchCardlist = ( keywords, page, limit) => async (dispatch, getState) => {
+export const searchCardlist = (keywords, page, limit) => async (
+  dispatch,
+  getState
+) => {
   let keywords_string = ",";
-  keywords.map(keyword => keywords_string += encodeURIComponent(keyword) + ',')
-  console.log('keywords : ' + keywords_string)
+  keywords.map(
+    keyword => (keywords_string += encodeURIComponent(keyword) + ",")
+  );
+  console.log("keywords : " + keywords_string);
 
-  if(!limit) limit = 5
-  if(!page) page = 1
+  if (!limit) limit = 5;
+  if (!page) page = 1;
 
   const response = await apis.get(
     `/search/global/cardlist/by/${keywords_string}?limit=${limit}&page=${page}`

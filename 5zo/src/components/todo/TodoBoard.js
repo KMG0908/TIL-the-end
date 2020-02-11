@@ -11,6 +11,8 @@ import Container from "@material-ui/core/Container";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import Typography from "@material-ui/core/Typography";
+import { Icon } from "@material-ui/core";
+
 const styles = theme => ({
   root: {
     flexGrow: 1
@@ -25,6 +27,14 @@ const styles = theme => ({
     margin: theme.spacing(1),
     padding: theme.spacing(1),
     width: "300px"
+  },
+  icon: {
+    position: "absolute",
+    right: "60px",
+    opacity: "0.5",
+    "&:hover": {
+      opacity: "0.8"
+    }
   }
 });
 
@@ -39,6 +49,7 @@ const Divs = styled.div`
   height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  min-height: 80vh;
 `;
 const Contain = styled(Container)`
   display: flex;
@@ -66,7 +77,12 @@ class TodoBoard extends React.Component {
       return board_lists.map((list, index) => {
         if (this.props.cardLists[list]) {
           return (
-            <Draggable draggableId={`list-${list}`} index={index} key={list}>
+            <Draggable
+              draggableId={`list-${list}`}
+              index={index}
+              key={list}
+              isDragDisabled={Boolean(this.props.editModeCard)}
+            >
               {provided => (
                 <Grid spacing={2} key={this.props.cardLists[list].cardlist_id}>
                   <div
@@ -101,6 +117,11 @@ class TodoBoard extends React.Component {
           }}
         >
           What I will learn in the future
+          {this.props.editModeList ? null : (
+            <Icon className={classes.icon} fontSize="small" onClick={()=>this.props.expandTodo()}>
+              {this.props.isExpanding?"close":"open_with"}
+            </Icon>
+          )}
         </Typography>
 
         <Typography
@@ -111,10 +132,10 @@ class TodoBoard extends React.Component {
         >
           앞으로 공부하고 싶은 것들을 계획하세요.
         </Typography>
-        <Contain>
+        <Contain style={{ padding: "0px" }}>
           <Droppable
             droppableId={String(this.props.boardDict[date])}
-            type="list2"
+            type="list"
             direction="horizontal"
             style={{ height: "100%" }}
           >
@@ -148,7 +169,8 @@ const mapStateToProps = state => {
     boardDict: state.boardDict,
     cardLists: state.cardLists,
     members: state.members,
-    editModeList: state.editModeList
+    editModeList: state.editModeList,
+    editModeCard: state.editModeCard
   };
 };
 
