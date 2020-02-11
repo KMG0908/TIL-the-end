@@ -61,7 +61,7 @@
 		where cardlist.board_id in (select board_id from board where mem_id = #{mem_id});
 	</update>
 	
-	<select id="findpw" parameterType="string">
+	<select id="findpw" parameterType="string" resultType="string">
 		select mem_pw
 		from mem_info
 		where mem_id = #{mem_id}
@@ -74,7 +74,7 @@
 		where mem_id = #{mem_id}
 	</update>
 	
-	<update id="patchcolor">
+	<update id="patchcolor" parameterType="string">
 		update mem_info
 		set
 		mem_color = #{mem_color}
@@ -101,7 +101,7 @@
 	</update>
 	
 	<update id="patchpostdef" parameterType="string">
-		update mem_option
+		update mem_info
 		set
 		mem_post_def_secret = case when mem_post_def_secret = 0 then 1 else 0 end
 		where mem_id = #{mem_id}
