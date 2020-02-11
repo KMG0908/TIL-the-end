@@ -60,6 +60,7 @@ import {
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
 import { isEmail, matches } from "validator";
+import storage from "lib/storage";
 
 export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
@@ -109,49 +110,6 @@ export const loginErrReset = () => async (dispatch, getState) => {
 };
 
 export const register = (loginId, loginPw, email, nick) => async dispatch => {
-  if (!loginId) {
-    dispatch({ type: REGISTER_ERR, payload: "아이디를 입력해주세요." });
-    return;
-  }
-
-  if (!matches(loginId, /^[a-z0-9_\-]{5,20}$/)) {
-    dispatch({
-      type: REGISTER_ERR,
-      payload:
-        "올바르지 않은 아이디입니다. 5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다."
-    });
-    return;
-  }
-
-  if (!loginPw) {
-    dispatch({ type: REGISTER_ERR, payload: "비밀번호를 입력해주세요." });
-    return;
-  }
-
-  if (!matches(loginPw, /^[a-zA-Z0-9!@#$%^&*()]{8,16}$/)) {
-    dispatch({
-      type: REGISTER_ERR,
-      payload:
-        "올바르지 않은 비밀번호입니다. 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
-    });
-    return;
-  }
-
-  if (!email) {
-    dispatch({ type: REGISTER_ERR, payload: "이메일을 입력해주세요." });
-    return;
-  }
-
-  if (!isEmail(email)) {
-    dispatch({ type: REGISTER_ERR, payload: "잘못된 이메일 형식입니다." });
-    return;
-  }
-
-  if (!nick) {
-    dispatch({ type: REGISTER_ERR, payload: "닉네임을 입력해주세요." });
-    return;
-  }
-
   const response = await apis.post(`/member`, {
     mem_id: loginId,
     mem_pw: loginPw,
@@ -343,6 +301,9 @@ export const addBoard = (mem_id, board_date) => async dispatch => {
 };
 
 export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
+  let own = false;
+  if(mem_id === storage.get('loggedInfo').mem_id) own = true;
+
   const response = await apis.get(`/board/member/${mem_id}/date/${board_date}`);
   if (response.data.data.length) {
     dispatch({ type: FETCH_DAILY_LIST, payload: response.data.data[0] });
@@ -350,18 +311,20 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
     response.data.data[0].board_lists.map(async cardlist_id => {
       let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
       if (cardlist.data.state === "ok") {
-        dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
-        cardlist.data.data.cardlist_cards.map(async card_id => {
-          let card = await apis.get(`/card/${card_id}`);
-          dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
-        });
-
-        let tags = await apis.get(`/cardlist_tag/${cardlist_id}`);
-        if (tags.data.data.length > 0) {
-          dispatch({
-            type: FETCH_TAG,
-            payload: { cardlist_id: cardlist_id, tags: tags.data.data }
+        if(own || (!own && cardlist.data.data.cardlist_secret === false)){
+          dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
+          cardlist.data.data.cardlist_cards.map(async card_id => {
+            let card = await apis.get(`/card/${card_id}`);
+            dispatch({ type: FETCH_CARDS, payload: [card.data.data] });
           });
+
+          let tags = await apis.get(`/cardlist_tag/${cardlist_id}`);
+          if (tags.data.data.length > 0) {
+            dispatch({
+              type: FETCH_TAG,
+              payload: { cardlist_id: cardlist_id, tags: tags.data.data }
+            });
+          }
         }
       }
     });
@@ -723,15 +686,15 @@ export const getAllTag = () => async (dispatch, getState) => {
   dispatch({ type: GET_ALL_TAG, payload: data_ });
 };
 
-export const getDailyTask = (mem_id, from, to) => async (
-  dispatch,
-  getState
-) => {
+export const getDailyTask = (mem_id, from, to) => async dispatch => {
+  let own = false;
+  if(mem_id === storage.get('loggedInfo').mem_id) own = true;
+
   const start = date_to_str(from, "");
   const end = date_to_str(to, "");
-  const response = await apis.get(
-    `/card/daily/private/${mem_id}/from/${start}/to/${end}`
-  );
+  let response;
+  if(own) response = await apis.get(`/card/daily/private/${mem_id}/from/${start}/to/${end}` );
+  else response = await apis.get(`/card/daily/public/${mem_id}/from/${start}/to/${end}` );
   dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
 };
 
