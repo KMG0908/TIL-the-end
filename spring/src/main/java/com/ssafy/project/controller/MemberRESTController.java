@@ -69,7 +69,7 @@ public class MemberRESTController {
 
 	// READ
 	@GetMapping("/api/member")
-	@ApiOperation("(운영자) 회원 목록 6개 컬럼 조회, 아이디, 이메일, 닉네임, 권한, 가입일, 썸네일")
+	@ApiOperation("(운영자) 회원 목록 8개 컬럼 조회, 아이디, 이메일, 닉네임, 권한, 가입일, 썸네일, 컬러, 폰트")
 	public ResponseEntity<Map<String, Object>> searchAll() {
 		return handleSuccess(service.searchAll());
 	}
