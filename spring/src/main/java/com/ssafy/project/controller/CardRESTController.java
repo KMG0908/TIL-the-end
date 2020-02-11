@@ -88,7 +88,7 @@ public class CardRESTController {
 	}
 
 	@PostMapping("/api/file/upload/{card_id}")
-	@ApiOperation("(개발중, 사용X) card에 파일 추가, 파일은 서버의 upload 폴더에 카드번호 + _ + original 파일 이름으로 들어갑니다")
+	@ApiOperation("card에 파일 추가, 파일은 서버의 upload 폴더에 카드번호 + _ + original 파일 이름으로 들어갑니다")
 	public ResponseEntity<Map<String, Object>> uploadFile(@PathVariable int card_id,
 			@RequestParam("sourceFile") MultipartFile sourceFile) throws IOException {
 		String sourceFileName = sourceFile.getOriginalFilename();
@@ -209,14 +209,14 @@ public class CardRESTController {
 	// 기타 기능
 
 	@GetMapping("/api/card/daily/public/{mem_id}/from/{from}/to/{to}")
-	@ApiOperation("(수정중)사용자 아이디를 통해 날짜별로 공개된 카드의 개수를 구하는 기능, 날짜가 board_date, 개수가 board_id로 출력됩니다.")
+	@ApiOperation("사용자 아이디를 통해 날짜별로 공개된 카드의 개수를 구하는 기능, 날짜가 board_date, 개수가 board_id로 출력됩니다.")
 	public ResponseEntity<Map<String, Object>> countPublicDailyCard(@PathVariable String mem_id,
 			@PathVariable String from, @PathVariable String to) {
 		return handleSuccess(service.countPublicDailyCard(mem_id, from, to));
 	}
 
 	@GetMapping("/api/card/daily/private/{mem_id}/from/{from}/to/{to}")
-	@ApiOperation("(수정중)사용자 아이디를 통해 날짜별로 전체(비공개 포함) 카드의 개수를 구하는 기능, 날짜가 board_date, 개수가 board_id로 출력됩니다.")
+	@ApiOperation("사용자 아이디를 통해 날짜별로 전체(비공개 포함) 카드의 개수를 구하는 기능, 날짜가 board_date, 개수가 board_id로 출력됩니다.")
 	public ResponseEntity<Map<String, Object>> countAllDailyCard(@PathVariable String mem_id, @PathVariable String from,
 			@PathVariable String to) {
 		return handleSuccess(service.countAllDailyCard(mem_id, from, to));
