@@ -1,5 +1,6 @@
 package com.ssafy.project.service;
 
+import java.security.MessageDigest;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -23,6 +24,28 @@ public class MailServiceImpl implements MailService {
 	@Autowired
 	private MemberDao dao;
 
+	
+	public static String pwdEncrypt(String pwd) {
+	    StringBuffer hexString = new StringBuffer();
+	 
+	    try {	 
+	        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+	        byte[] hash = digest.digest(pwd.getBytes("UTF-8"));
+	 
+	        for (int i = 0; i < hash.length; i++) {
+	            String hex = Integer.toHexString(0xff & hash[i]);
+	 
+	            if (hex.length() == 1) {
+	                hexString.append('0');
+	            }	 
+	            hexString.append(hex);
+	        }	 
+	    } catch (Exception ex) {
+	        throw new RuntimeException(ex);
+	    }	 
+	    return hexString.toString();
+	}
+	
 	public void setJavaMailSender(JavaMailSender javaMailSender) {
 		this.javaMailSender = javaMailSender;
 	}
@@ -106,7 +129,7 @@ public class MailServiceImpl implements MailService {
 	public void findId(String mem_email) {
 		try {
 			
-			if(dao.searchEmail(mem_email) == 0) throw new MailException("해당 이메일로 등록된 계정이 없습니다.");
+			if(dao.countEmail(mem_email) == 0) throw new MailException("해당 이메일로 등록된 계정이 없습니다.");
 			SimpleMailMessage message= new SimpleMailMessage();
 			String subject = "Til the end 아이디 찾기 안내입니다.";			
 			String mem_id = dao.searchIdByEmail(mem_email);
@@ -134,7 +157,7 @@ public class MailServiceImpl implements MailService {
 	@Override
 	public void findPw(String mem_id, String mem_email) {
 		try {			
-			if(dao.searchEmail(mem_email) == 0) throw new MailException("해당 이메일로 등록된 계정이 없습니다.");
+			if(dao.countEmail(mem_email) == 0) throw new MailException("해당 이메일로 등록된 계정이 없습니다.");
 			if(dao.countId(mem_id) == 0) throw new MailException("해당 아이디는 존재하지 않습니다.");
 			if(!dao.search(mem_id).getMem_email().equals(mem_email)) {
 				throw new MemberException(mem_email + "은 "  + mem_id + "에 등록된 이메일이 아닙니다.");
@@ -146,7 +169,7 @@ public class MailServiceImpl implements MailService {
 			int ran = new Random().nextInt(900000000) + 100000000;
 			String authCode = String.valueOf(ran);
 			
-			dao.setPw(mem_id, authCode);
+			dao.setPw(mem_id, pwdEncrypt(authCode));
 			
 			sb.append("귀하의 임시비밀번호는 " + authCode + "입니다.\n\n");
 			
