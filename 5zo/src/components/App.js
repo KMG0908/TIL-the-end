@@ -75,7 +75,7 @@ class App extends React.Component {
               <Route path="/calendar" exact component={Calendar} />
               <Route path="/statistics/:user_id" exact component={Statistics} />
               <Route path="/tags" exact component={TagPage} />
-              <Route path="/todo" exact component={Todo} />
+              <Route path="/dashboard" exact component={Todo} />
               <Route path="/login" exact component={Login} />
 
               <Route path="/mypage" exact component={MyPage} />

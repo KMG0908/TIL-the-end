@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Paper from "@material-ui/core/Paper";
-import { editCard, setEditModeCard } from "../../actions";
+import { editCard, setEditModeCard, deleteCard } from "../../actions";
 import TrelloForm from "./TrelloForm";
 import { Draggable } from "react-beautiful-dnd";
 import { withStyles } from "@material-ui/core/styles";
@@ -79,6 +79,7 @@ class Card extends React.Component {
       this.props.editModeList === this.props.cardlist_id
     ) {
       this.props.setEditModeCard(this.props.card.card_id);
+      console.log(this.props.editModeCard)
     }
   };
   render = () => {
@@ -87,7 +88,10 @@ class Card extends React.Component {
       <Draggable
         draggableId={`card-${this.props.card_id}`}
         index={this.props.index}
-        isDragDisabled={!(!this.props.date || this.props.date >= today)}
+        isDragDisabled={
+          !(!this.props.date || this.props.date >= today) ||
+          Boolean(this.props.editModeCard)
+        }
       >
         {provided => (
           <Paper
@@ -140,5 +144,5 @@ const mapStateToProps = state => {
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { setEditModeCard, editCard })(Card)
+  connect(mapStateToProps, { setEditModeCard, editCard, deleteCard })(Card)
 );

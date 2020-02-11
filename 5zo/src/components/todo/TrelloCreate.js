@@ -60,7 +60,7 @@ class TrelloCreate extends React.PureComponent {
 
   renderOpenForm = () => {
     const { date } = this.props;
-    const buttonText = date ? "Add another list" : "Add another card";
+    const buttonText = date ? "Add another post" : "Add another subtitle";
     const buttonTextOpacity = date ? 1 : 0.5;
     const buttonTextColor = date ? "white" : "inherit";
     const buttonTextBackground = date ? "rgba(0,0,0,.15)" : "inherit";
@@ -99,11 +99,11 @@ class TrelloCreate extends React.PureComponent {
         board_id={board_id}
         submit={date ? this.handleAddList : this.handleAddCard}
       >
-        {date ? "Add List" : "Add Card"}
+        {date ? "Add Post" : "Add what i will learn"}
       </TrelloForm>
     ) : (
       <TrelloOpenForm board_id={board_id} onClick={this.openForm}>
-        {date ? "Add another list" : "Add another card"}
+        {date ? "Add another post" : "Add what i will learn"}
       </TrelloOpenForm>
     );
   }

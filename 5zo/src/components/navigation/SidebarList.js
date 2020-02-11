@@ -45,7 +45,7 @@ const SidebarList = (props) => {
         </ListItem>
       </List>
       <List>
-        <ListItem button component={Link} to={"/todo"}>
+        <ListItem button component={Link} to={"/dashboard"}>
           <ListItemIcon>
             <TodayIcon />
           </ListItemIcon>

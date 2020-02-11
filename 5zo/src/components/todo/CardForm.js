@@ -95,12 +95,12 @@ class CardForm extends React.Component {
               setContents={
                 this.props.card.card_contents
                   ? `${this.props.card.card_contents}`
-                  : null
+                  : ""
               }
               setOptions={{
                 height: "auto",
                 stickyToolbar: 50,
-                placeholder: "오늘 배운 내용을 입력해주세요",
+                placeholder: "오늘 공부한 내용을 입력해주세요",
                 resizingBar: false,
                 buttonList: [
                   ["font", "fontSize", "formatBlock"],

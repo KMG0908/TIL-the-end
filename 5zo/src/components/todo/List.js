@@ -199,7 +199,6 @@ class List extends React.Component {
     const chipsWithouthash = chips.map(chip =>
       chip.startsWith("#") ? chip.slice(1) : chip
     );
-    console.log(chips)
     if ((!listTags && chips) || listTags.length < chips.length) {
       if (
         !chipsWithouthash
@@ -220,6 +219,8 @@ class List extends React.Component {
     const { classes } = this.props;
     const color = this.props.cardLists[this.props.cardlist_id].cardlist_color
       ? this.props.cardLists[this.props.cardlist_id].cardlist_color
+      : this.props.members.mem_info.mem_color
+      ? this.props.members.mem_info.mem_color
       : "#94C9A9";
 
     if (this.props.tags[this.props.cardlist_id]) {
@@ -231,7 +232,7 @@ class List extends React.Component {
         style={{
           backgroundColor: color,
           opacity: this.props.cardLists[this.props.cardlist_id].cardlist_secret
-            ? 0.5
+            ? 0.7
             : 1
         }}
       >
@@ -243,7 +244,7 @@ class List extends React.Component {
             onClick={this.handleTitleDoubleClick}
           >
             <div style={{ display: "flex" }}>
-              <Icon className={classes.swatch} onClick={this.handleClick}>
+              <Icon className={classes.delete} onClick={this.handleClick}>
                 menu
                 <div
                   className={classes.color}
@@ -251,7 +252,12 @@ class List extends React.Component {
                 />
               </Icon>
               {this.props.date === today ? (
-                <Icon onClick={this.handleSetEditModeList}>edit</Icon>
+                <Icon
+                  className={classes.delete}
+                  onClick={this.handleSetEditModeList}
+                >
+                  edit
+                </Icon>
               ) : null}
               <Typography
                 className={classes.typography}
@@ -265,6 +271,9 @@ class List extends React.Component {
               </Typography>
             </div>
             <div style={{ display: "flex" }}>
+              {this.props.cardLists[this.props.cardlist_id].cardlist_secret ? (
+                <Icon style={{ opacity: 0.5 }}>lock</Icon>
+              ) : null}
               <Icon
                 className={classes.delete}
                 fontSize="small"
@@ -276,33 +285,47 @@ class List extends React.Component {
           </div>
         )}
         {this.state.displayColorPicker ? (
-          <Paper className={classes.popover}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={
-                    !this.props.cardLists[this.props.cardlist_id]
-                      .cardlist_secret
+          <React.Fragment>
+            {this.props.date ? (
+              <Paper className={classes.popover}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={
+                        !this.props.cardLists[this.props.cardlist_id]
+                          .cardlist_secret
+                      }
+                      onChange={this.handleSecret}
+                      color="primary"
+                    />
                   }
-                  onChange={this.handleSecret}
-                  color="primary"
+                  labelPlacement="top"
+                  label={
+                    this.props.cardLists[this.props.cardlist_id].cardlist_secret
+                      ? "비공개"
+                      : "공개"
+                  }
                 />
-              }
-              labelPlacement="top"
-              label={
-                this.props.cardLists[this.props.cardlist_id].cardlist_secret
-                  ? "비공개"
-                  : "공개"
-              }
-            />
-            <div onClick={this.handleClose} />
-            <TwitterPicker
-              style={{ marginRight: 0, border: null }}
-              color={color}
-              onChange={this.handleChangeColor}
-              triangle="hide"
-            />
-          </Paper>
+                <TwitterPicker
+                  style={{ marginRight: 0, border: null }}
+                  color={color}
+                  onChange={this.handleChangeColor}
+                  triangle="hide"
+                />
+              </Paper>
+            ) : (
+              <>
+                <div onClick={this.handleClose} />
+                <TwitterPicker
+                  className={classes.popover}
+                  style={{ marginRight: 0, border: null }}
+                  color={color}
+                  onChange={this.handleChangeColor}
+                  triangle="hide"
+                />
+              </>
+            )}
+          </React.Fragment>
         ) : null}
         <Droppable
           droppableId={String(this.props.cardlist_id)}
