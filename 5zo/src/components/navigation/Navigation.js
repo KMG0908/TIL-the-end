@@ -26,7 +26,7 @@ import { withRouter } from "react-router-dom";
 import TitleBreadcumbs from "./TitleBreadcumbs";
 
 import { Background } from "devextreme-react/vector-map";
-import history from '../../history'
+import history from "../../history";
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -109,7 +109,7 @@ function Navigation(props) {
   const logout = () => {
     storage.remove("loggedInfo");
     props.logout();
-    history.push('/')
+    history.push("/");
   };
 
   const handleMenu = event => {
@@ -120,28 +120,30 @@ function Navigation(props) {
     setAnchorEl(null);
   };
   const myPage = () => {
-    console.log('props')
-    console.log(props)
-    history.push('/mypage')
+    console.log("props");
+    console.log(props);
+    history.push("/mypage");
   };
   console.log(props.members.mem_info);
 
   const login = () => {
-    history.push('/login')
-  }
+    history.push("/login");
+  };
   const regist = () => {
-    history.push('/register')
-  }
+    history.push("/register");
+  };
   const mySetting = () => {
-    history.push('/my-setting')
-  }
+    history.push("/my-setting");
+  };
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
         style={{
-          backgroundColor: props.members.mem_info.mem_color
+          backgroundColor: props.members.mem_info
             ? props.members.mem_info.mem_color
+              ? props.members.mem_info.mem_color
+              : "#94C9A9"
             : "#94C9A9"
         }}
         position="fixed"
@@ -150,7 +152,7 @@ function Navigation(props) {
         })}
       >
         <Toolbar className={classes.toolbar}>
-          {props.mem_info ?
+          {props.mem_info ? (
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -160,7 +162,7 @@ function Navigation(props) {
             >
               <MenuIcon />
             </IconButton>
-            : null}
+          ) : null}
           <Typography variant="h6" noWrap className={classes.title}>
             <TitleBreadcumbs />
 
@@ -192,24 +194,24 @@ function Navigation(props) {
               open={anchorEl}
               onClose={handleClose}
             >
-              {props.mem_info ?
+              {props.mem_info ? (
                 <>
                   <MenuItem onClick={handleClose}>Profile</MenuItem>
                   <MenuItem onClick={myPage}>My Page</MenuItem>
                   <MenuItem onClick={mySetting}>My Setting</MenuItem>
                   <MenuItem onClick={logout}>Logout</MenuItem>
                 </>
-                :
+              ) : (
                 <>
                   <MenuItem onClick={login}>Sign In</MenuItem>
                   <MenuItem onClick={regist}>Sign Up</MenuItem>
                 </>
-              }
+              )}
             </Menu>
           </div>
         </Toolbar>
       </AppBar>
-      {props.mem_info ?
+      {props.mem_info ? (
         <>
           <Drawer
             className={classes.drawer}
@@ -222,12 +224,12 @@ function Navigation(props) {
           >
             <div className={classes.drawerHeader}>
               {props.mem_info.mem_nick}님 환영합니다
-          <IconButton onClick={handleDrawerClose}>
+              <IconButton onClick={handleDrawerClose}>
                 {theme.direction === "ltr" ? (
                   <ChevronLeftIcon />
                 ) : (
-                    <ChevronRightIcon />
-                  )}
+                  <ChevronRightIcon />
+                )}
               </IconButton>
             </div>
             <Divider />
@@ -235,7 +237,7 @@ function Navigation(props) {
             <SidebarList user_id={props.mem_info.user_id} />
           </Drawer>
         </>
-        : null}
+      ) : null}
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open
@@ -244,7 +246,6 @@ function Navigation(props) {
         <div className={classes.drawerHeader} />
         {props.children}
       </main>
-
     </div>
   );
 }
