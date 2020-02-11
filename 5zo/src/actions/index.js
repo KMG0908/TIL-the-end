@@ -17,6 +17,8 @@ import {
   EDIT_MYINFO,
   EDIT_MYINFO_ERR,
   EDIT_MYINFO_CHANGE_RESET,
+  EDIT_MY_COLOR_FAIL,
+  EDIT_MY_COLOR_RESET,
   EDIT_PASSWORD_FAIL,
   EDIT_PASSWORD_FAIL_RESET,
   EDIT_PASSWORD_SUCCESS,
@@ -253,6 +255,31 @@ export const editMyinfoErrReset = () => async (dispatch, getState) => {
 export const memInfoChangeReset = () => async (dispatch, getState) => {
   if (getState().members.mem_info_change) {
     dispatch({ type: EDIT_MYINFO_CHANGE_RESET });
+  }
+};
+
+export const editMyColor = (mem_id, color) => async(dispatch, getState) => {
+  const color_encode = encodeURIComponent(color)
+  const response = await apis.patch(`/member/${mem_id}/color/${color_encode}`)
+
+  const data = response.data.data
+
+  console.log('data')
+  console.log(data)
+  
+  if (data) {
+    const user = await (await apis.get(`/member/${mem_id}`)).data.data
+    console.log('user')
+    console.log(user)
+    dispatch({ type: EDIT_MYINFO, payload: user });
+  }else{
+    dispatch({ type : EDIT_MY_COLOR_FAIL})
+  }
+}
+
+export const editMyColorFailReset = () => async (dispatch, getState) => {
+  if (getState().members.mem_color_change_fail) {
+    dispatch({ type: EDIT_MY_COLOR_FAIL});
   }
 };
 

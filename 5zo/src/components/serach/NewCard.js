@@ -4,14 +4,15 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 import Avatar from '@material-ui/core/Avatar';
-
+import history from '../../history'
 class NewCard extends Component {
-  
-  
+  constructor(props) {
+    super(props);
+  }
   render() {
     const moveDetail = (e) => {
       console.log(cardList.board_date)
-      window.location.href=`/dayily/${cardList.mem_id}/${cardList.board_date.replace(/-/gi,'')}`
+      history.push(`/daily/${cardList.mem_id}/${cardList.board_date.replace(/-/gi,'')}`)
     }
     const styles = {
       root: {
@@ -19,6 +20,7 @@ class NewCard extends Component {
         marginBottom: 12,
         marginTop: 12,
         minWidth: this.props.widthPer,
+        cursor : 'pointer'
       },
       user: {
         fontSize: 14,

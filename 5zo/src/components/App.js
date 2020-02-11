@@ -25,6 +25,7 @@ import NewSearch from "./serach/NewSearch";
 import FindIdPage from './Auth/FindIdPage'
 import FindPwPage from './Auth/FindPwPage'
 import EditPasswordPage from "./Auth/EditPasswordPage";
+import Body from "./landing/Body";
 
 
 
@@ -49,25 +50,24 @@ class App extends React.Component {
   drawRouter() {
     if (!this.props.members.mem_info) {
       return (
-        <LandingPage>
-          <div>
-            <Switch>
-              <Route path="/login" exact component={Login} />
-              <Route path="/register" exact component={Register} />
-              {/* <Route path="/search" exact component={NewSearch}/>      <Route path="/find-id" exact component = {FindIdPage}/> */}
-              <Route path="/find-id" exact component={FindIdPage} />
-              <Route path="/find-pw" exact component={FindPwPage} />
-              <Route path="/" component={DefLand} />
-            </Switch>
-          </div>
-        </LandingPage>
+        <Navigation>
+          <>
+          <Switch>
+            <Route path="/login" exact component={Login} />
+            <Route path="/register" exact component={Register}/>
+            <Route path="/find-id" exact component={FindIdPage} />
+            <Route path="/find-pw" exact component={FindPwPage} />
+            <Route path="/" component={Body} />
+          </Switch>
+          </>
+        </Navigation>
+
       );
     } else {
       // 로그인했을 때
       return (
         <Navigation
-          nickname={this.props.members.mem_info.mem_nick}
-          user_id={this.props.members.mem_info.mem_id}
+          mem_info={this.props.members.mem_info.mem_nick}
         >
           <div>
             <Switch>

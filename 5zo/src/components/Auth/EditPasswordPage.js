@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { editPassword, editPasswordFailReset, editPasswordSuccessReset } from "actions";
 import { AuthWrapper, AuthContent, AuthButton, RightAlignedLink, TextWithLabel } from '.';
 import PasswordWithLabel from './PasswordWithLabel';
-
+import history from '../../history'
 class EditPasswordPage extends Component {
     constructor(props) {
         super(props);
@@ -45,14 +45,14 @@ class EditPasswordPage extends Component {
 
     }
     cancel = () => {
-        window.location.href = "/mypage"
+        history.push("/mypage")
     }
     render() {
         if (this.props.edit_password_success) {
             this.props.editPasswordFailReset()
             this.props.editPasswordSuccessReset()
             alert(`비밀번호 수정 완료`)
-            window.location.href = '/mypage'
+            history.push("/mypage")
         }
         return (
 

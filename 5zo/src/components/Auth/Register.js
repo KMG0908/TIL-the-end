@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { register, registerReset } from "../../actions";
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton } from '../Auth';
 import PasswordWithLabel from './PasswordWithLabel';
-
+import history from '../../history'
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -47,31 +47,31 @@ class Register extends Component {
     this.props.register(this.state.loginId, this.state.loginPw, this.state.email, this.state.nick)
   }
   cancelRegister() {
-    window.location.href = "/"
+    history.push("/")
   }
   render() {
     if (this.props.register_id && this.props.register_id !== "") {
       this.props.registerReset();
       alert('회원가입 완료')
-      window.location.href = '/login'
+      history.push("/login")
     }
     return (
 
       <div style={{ textAlign: 'center' }}>
-      <div style={{ display: 'inline-block', width: 500 }}>
-        <AuthWrapper>
-          <AuthContent title="회원가입" id="register">
-            <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디( 5 ~ 20 자 )" onChange={this.handleChange} />
-            <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호 ( 8 ~ 16 자 )" onChange={this.handleChange}  />
-            <InputWithLabel label="이메일" id="email" name="email" placeholder="이메일" type="email" onChange={this.handleChange} />
-            <InputWithLabel label="닉네임" id="nick" name="nick" placeholder="닉네임" onChange={this.handleChange} />
-            {this.props.register_err}
-            <AuthButton onClick={this.register}> 회원가입 </AuthButton>
+        <div style={{ display: 'inline-block', width: 500 }}>
+          <AuthWrapper>
+            <AuthContent title="회원가입" id="register">
+              <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디( 5 ~ 20 자 )" onChange={this.handleChange} />
+              <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호 ( 8 ~ 16 자 )" onChange={this.handleChange} />
+              <InputWithLabel label="이메일" id="email" name="email" placeholder="이메일" type="email" onChange={this.handleChange} />
+              <InputWithLabel label="닉네임" id="nick" name="nick" placeholder="닉네임" onChange={this.handleChange} />
+              {this.props.register_err}
+              <AuthButton onClick={this.register}> 회원가입 </AuthButton>
 
-            {this.props.location.pathname === "/" ? null : <AuthButton onClick={this.cancelRegister}> 취소 </AuthButton>}
-          </AuthContent>
-        </AuthWrapper>
-      </div>
+              {this.props.location.pathname === "/" ? null : <AuthButton onClick={this.cancelRegister}> 취소 </AuthButton>}
+            </AuthContent>
+          </AuthWrapper>
+        </div>
       </div>
     );
   }

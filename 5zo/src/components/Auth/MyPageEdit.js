@@ -4,7 +4,7 @@ import { login, loginErrReset, editMyinfo, editMyinfoErrReset, memInfoChangeRese
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
 import storage from 'lib/storage';
 import PasswordWithLabel from './PasswordWithLabel';
-
+import history from '../../history'
 class MyPageEdit extends Component {
   constructor(props) {
     super(props);
@@ -49,7 +49,7 @@ class MyPageEdit extends Component {
     this.props.editMyinfo(this.props.mem_info.mem_id, this.state.nowPw, this.state.email, this.state.nick)
   }
   cancelEditMyinfo = () => {
-    window.location.href = "/mypage"
+    history.push("/mypage")
   }
   uploadImage(e) {
     const file = e.target.files;
@@ -98,7 +98,7 @@ class MyPageEdit extends Component {
       this.props.editMyinfoErrReset();
       this.props.memInfoChangeReset();
       alert('회원정보 수정 완료')
-      window.location.href = "/mypage"
+      history.push("/mypage")
     }
     console.log(this.state);
     return (

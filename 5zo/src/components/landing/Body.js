@@ -31,7 +31,7 @@ class Body extends React.Component {
                             <Subhead  color="white" textAlign='left'>TIL's boards, lists, and cards enable you to organize and prioritize your learing process in effective, flexible, and showable way.</Subhead>
                         </Box>
                         <Box width={[1, 1, 1/2]} p={4}>
-                            <Register location = {this.props.location} />
+                            <Register location = {this.props.location} key={'landingPageRegister'} />
                         </Box>
                     </Flex>
 
