@@ -23,12 +23,12 @@ class Body extends React.Component {
     render() {
         return (
             <Provider >
-                <Hero backgroundImage='https://cdn.pixabay.com/photo/2015/12/01/15/43/black-1072366_1280.jpg' >
-                    <Flex  mt={3}>
+                <Hero >
+                    <Flex  mt={3} >
                         <Box width= "500px" p={4}>
                             <br /><br /><br /><br /><br /><br />
-                            <Heading color="white" textAlign='left'>TIL lets you work more effectively and get more done</Heading>
-                            <Subhead  color="white" textAlign='left'>TIL's boards, lists, and cards enable you to organize and prioritize your learing process in effective, flexible, and showable way.</Subhead>
+                            <Heading color="#457B82" textAlign='left'>TIL lets you work more effectively and get more done</Heading>
+                            <Subhead  color="#457B82" textAlign='left'>TIL's boards, lists, and cards enable you to organize and prioritize your learing process in effective, flexible, and showable way.</Subhead>
                         </Box>
                         <Box width={[1, 1, 1/2]} p={4}>
                             <Register location = {this.props.location} />
@@ -36,7 +36,7 @@ class Body extends React.Component {
                     </Flex>
 
                 </Hero>
-                <Hero color="hotpink" bg="white">
+                <Hero color="#457B82" bg="white">
                     <Heading>TIL THE END </Heading>
                     <Subhead>a couple more words</Subhead>
                 </Hero>
