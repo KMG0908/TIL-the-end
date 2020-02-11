@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { deleteAccountErrReset, deleteAccount, logout, deleteAccountSuccessReset } from "actions";
 import { AuthWrapper, AuthContent, PasswordWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
 import storage from 'lib/storage';
-
+import history from '../../history'
 class MyAccountDelete extends Component {
     componentDidMount() {
         this.props.deleteAccountErrReset();
@@ -39,7 +39,7 @@ class MyAccountDelete extends Component {
 
     }
     cancel = () => {
-        window.location.href = "/mypage"
+        history.push("/mypage")
     }
     render() {
         if (this.props.delete_account_success) {
@@ -48,7 +48,7 @@ class MyAccountDelete extends Component {
             this.props.deleteAccountSuccessReset()
             this.props.deleteAccountErrReset()
             alert('왜탈퇴하뮤ㅠㅠㅠㅠㅠ')
-            window.location.href = "/"
+            history.push("/")
         }
 
         return (

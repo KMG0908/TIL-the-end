@@ -4,6 +4,9 @@ import oc from 'open-color';
 import { shadow } from 'lib/styleUtil';
 
 const Wrapper = styled.div`
+
+    height : 3rem;
+
     margin-top : 1rem;
     padding-top : 0.6rem;
     padding-bottom : 0.5rem;
@@ -30,8 +33,8 @@ const Wrapper = styled.div`
         background : ${oc.teal[7]};
     }
 `;
-const AuthButton = ({ children, onClick, onSubmit, type }) => (
-    <Wrapper onClick={onClick}>
+const AuthButton = ({ children, onClick, onSubmit, type, backgroundColor }) => (
+    <Wrapper onClick={onClick} style={{background : backgroundColor}}>
         {children}
     </Wrapper>
 )

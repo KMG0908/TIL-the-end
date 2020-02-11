@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { findPwFailReset, findPwSuccessReset, findPw } from "actions";
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
-
+import history from '../../history'
 class FindPwPage extends Component {
     constructor(props) {
         super(props);
@@ -39,23 +39,23 @@ class FindPwPage extends Component {
             return;
         }
 
-        this.props.findPw( this.state.mem_id, this.state.email)
+        this.props.findPw(this.state.mem_id, this.state.email)
 
     }
     cancel = () => {
-        window.location.href = "/"
+        history.push("/login")
     }
     render() {
-        if(this.props.find_pw_success){
+        if (this.props.find_pw_success) {
             this.props.findPwSuccessReset()
             this.props.findPwFailReset()
             alert(`입력하신 ${this.state.email} 로 임시 비밀번호를 전송하였습니다.`)
-            window.location.href = '/login'
+            history.push("/login")
         }
         return (
 
             <div style={{ textAlign: 'center' }}>
-            <div style={{ display: 'inline-block', width: 500 }}>
+                <div style={{ display: 'inline-block', width: 500 }}>
                     <AuthWrapper>
                         <AuthContent title="비밀번호 찾기">
                             <InputWithLabel label="아이디" id="mem_id" name="mem_id" placeholder={"아이디를 입력하세요"} value={this.state.mem_id} onChange={this.handleChange} />
@@ -73,9 +73,9 @@ class FindPwPage extends Component {
 
 const mapStatetoProps = state => {
     return {
-        find_pw_fail : state.members.find_pw_fail,
-        find_pw_success : state.members.find_pw_success,
+        find_pw_fail: state.members.find_pw_fail,
+        find_pw_success: state.members.find_pw_success,
     };
 };
 
-export default connect(mapStatetoProps, { findPw, findPwFailReset, findPwSuccessReset  })(FindPwPage);
+export default connect(mapStatetoProps, { findPw, findPwFailReset, findPwSuccessReset })(FindPwPage);

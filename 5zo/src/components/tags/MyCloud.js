@@ -8,6 +8,7 @@ import ReactWordcloud from 'react-wordcloud';
 
 import words_ from './words';
 
+import history from '../../history'
 
 function getCallback(callback) {
     return function (word, event) {
@@ -17,7 +18,7 @@ function getCallback(callback) {
         text
             .on('click', () => {
                 if (isActive) {
-                    window.location.href = `/search/${word.text}/type:tag`;
+                    history.push(`/search/${word.text}/type:tag`);
                 }
             })
             .transition()
@@ -50,7 +51,7 @@ const SimpleCloud = ({ tags }) => {
         'count': tag.tag_id
     }))
     const handleClick = (tag) => {
-        window.location.href = `/search/${tag.value}?type:tag`
+        history(`/search/${tag.value}?type:tag`)
     }
     return (
         <>
