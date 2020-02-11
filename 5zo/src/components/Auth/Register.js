@@ -5,6 +5,7 @@ import { AuthWrapper, AuthWrapper_tmp, AuthContent, InputWithLabel, AuthButton }
 import PasswordWithLabel from './PasswordWithLabel';
 import { isEmail, matches } from "validator";
 
+import history from '../../history'
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -112,7 +113,7 @@ class Register extends Component {
     this.props.register(this.state.loginId, this.state.loginPw, this.state.email, this.state.nick)
   }
   cancelRegister() {
-    window.location.href = "/"
+    history.push("/")
   }
   keyDown(e){
     if(e.keyCode == 13) this.register();
@@ -121,7 +122,7 @@ class Register extends Component {
     if (this.props.register_id && this.props.register_id !== "") {
       this.props.registerReset();
       alert('회원가입 완료')
-      window.location.href = '/login'
+      history.push("/login")
     }
 
     return (

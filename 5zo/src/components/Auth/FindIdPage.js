@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { findIdFailReset, findIdSuccessReset, findId } from "actions";
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
-
+import history from '../../history'
 class FindIdPage extends Component {
     constructor(props) {
         super(props);
@@ -30,23 +30,24 @@ class FindIdPage extends Component {
             return;
         }
 
-        this.props.findId( this.state.email)
+        this.props.findId(this.state.email)
 
     }
     cancel = () => {
-        window.location.href = "/"
+        history.push("/")
     }
     render() {
-        if(this.props.find_id_success){
+        if (this.props.find_id_success) {
             this.props.findIdSuccessReset()
             this.props.findIdFailReset()
             alert(`입력하신 ${this.state.email} 로 아이디를 전송하였습니다.`)
-            window.location.href = '/login'
+
+            history.push("/login")
         }
         return (
 
             <div style={{ textAlign: 'center' }}>
-            <div style={{ display: 'inline-block', width: 500 }}>
+                <div style={{ display: 'inline-block', width: 500 }}>
                     <AuthWrapper>
                         <AuthContent title="아이디 찾기">
                             <InputWithLabel label="이메일" id="email" name="email" type="email" placeholder={"이메일의 입력하세요"} value={this.state.email} onChange={this.handleChange} />
@@ -63,9 +64,9 @@ class FindIdPage extends Component {
 
 const mapStatetoProps = state => {
     return {
-        find_id_fail : state.members.find_id_fail,
-        find_id_success : state.members.find_id_success,
+        find_id_fail: state.members.find_id_fail,
+        find_id_success: state.members.find_id_success,
     };
 };
 
-export default connect(mapStatetoProps, { findId, findIdFailReset, findIdSuccessReset  })(FindIdPage);
+export default connect(mapStatetoProps, { findId, findIdFailReset, findIdSuccessReset })(FindIdPage);

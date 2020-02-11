@@ -85,7 +85,7 @@ class Chips extends Component {
   }
 
   renderChips = () => {
-    return this.props.value.map((chip, idx) => {
+    return this.props.value.map((chip, idx) => { 
       return (
         React.cloneElement(this.props.renderChip(chip, this.props.chipTheme), {
           selected: this.state.chipSelected && idx === this.props.value.length - 1,

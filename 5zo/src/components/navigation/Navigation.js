@@ -25,6 +25,8 @@ import Menu from "@material-ui/core/Menu";
 import { withRouter } from "react-router-dom";
 import TitleBreadcumbs from "./TitleBreadcumbs";
 
+import { Background } from "devextreme-react/vector-map";
+import history from '../../history'
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -107,7 +109,7 @@ function Navigation(props) {
   const logout = () => {
     storage.remove("loggedInfo");
     props.logout();
-    window.location.href = "/";
+    history.push('/')
   };
 
   const handleMenu = event => {
@@ -118,10 +120,21 @@ function Navigation(props) {
     setAnchorEl(null);
   };
   const myPage = () => {
-    window.location.href = "/mypage";
+    console.log('props')
+    console.log(props)
+    history.push('/mypage')
   };
   console.log(props.members.mem_info);
 
+  const login = () => {
+    history.push('/login')
+  }
+  const regist = () => {
+    history.push('/register')
+  }
+  const mySetting = () => {
+    history.push('/my-setting')
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -137,15 +150,17 @@ function Navigation(props) {
         })}
       >
         <Toolbar className={classes.toolbar}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
+          {props.mem_info ?
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, open && classes.hide)}
+            >
+              <MenuIcon />
+            </IconButton>
+            : null}
           <Typography variant="h6" noWrap className={classes.title}>
             <TitleBreadcumbs />
 
@@ -177,36 +192,50 @@ function Navigation(props) {
               open={anchorEl}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={myPage}>MyPage</MenuItem>
-              <MenuItem onClick={logout}>Logout</MenuItem>
+              {props.mem_info ?
+                <>
+                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={myPage}>My Page</MenuItem>
+                  <MenuItem onClick={mySetting}>My Setting</MenuItem>
+                  <MenuItem onClick={logout}>Logout</MenuItem>
+                </>
+                :
+                <>
+                  <MenuItem onClick={login}>Sign In</MenuItem>
+                  <MenuItem onClick={regist}>Sign Up</MenuItem>
+                </>
+              }
             </Menu>
           </div>
         </Toolbar>
       </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper
-        }}
-      >
-        <div className={classes.drawerHeader}>
-          {props.nickname}님 환영합니다
+      {props.mem_info ?
+        <>
+          <Drawer
+            className={classes.drawer}
+            variant="persistent"
+            anchor="left"
+            open={open}
+            classes={{
+              paper: classes.drawerPaper
+            }}
+          >
+            <div className={classes.drawerHeader}>
+              {props.mem_info.mem_nick}님 환영합니다
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </div>
-        <Divider />
+                {theme.direction === "ltr" ? (
+                  <ChevronLeftIcon />
+                ) : (
+                    <ChevronRightIcon />
+                  )}
+              </IconButton>
+            </div>
+            <Divider />
 
-        <SidebarList user_id={props.user_id} />
-      </Drawer>
+            <SidebarList user_id={props.mem_info.user_id} />
+          </Drawer>
+        </>
+        : null}
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open
@@ -215,6 +244,7 @@ function Navigation(props) {
         <div className={classes.drawerHeader} />
         {props.children}
       </main>
+
     </div>
   );
 }
