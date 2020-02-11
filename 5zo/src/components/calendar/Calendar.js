@@ -6,6 +6,10 @@ import { getDailyCal, fetchDailyLists } from "../../actions";
 import { getLoggedInfo } from "../../actions";
 import { connect } from "react-redux";
 import Container from "@material-ui/core/Container";
+import history from "../../history";
+import MonthPicker from "./MonthPicker";
+import ReactModal from 'react-modal';
+
 const localizer = momentLocalizer(moment)
 const today = new Date();
 
@@ -28,15 +32,25 @@ function shiftDate(date, numDays) {
   newDate.setDate(newDate.getDate() + numDays);
   return newDate;
 }
+
 class Event extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       cal_events: [],
-    }
+      showModal: false
+    };
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
+  handleOpenModal() {
+    this.setState({ showModal: true });
+  }
 
+  handleCloseModal() {
+    this.setState({ showModal: false });
+  }
   componentDidMount() {
     let endDate = shiftDate(today, 100);
     if (this.props.members.mem_info) {
@@ -50,17 +64,16 @@ class Event extends React.Component {
   }
 
   onEventClick(event) {
-    console.log(event)
     this.state.cur_date = event.start;
     const start = date_to_str(event.start, "");
-    let id = this.props.members.mem_info.mem_id
-    window.location.href = "http://localhost:3000/daily/" + id + "/" + start;
+    let id = this.props.members.mem_info.mem_id;
+    history.push('/daily/' + id + '/' + start);
   }
 
   eventStyleGetter = (event, start, end, isSelected) => {
     let newStyle = {
-      backgroundColor: "#94C9A9",
-      color: 'white',
+      backgroundColor: "white",
+      color: event.color,
       borderRadius: "10px",
       border: "none",
       display: 'block'
@@ -93,17 +106,15 @@ class Event extends React.Component {
       style: newStyle
     };
   }
-  ColoredDateCellWrapper = ({ children }) =>
-    React.cloneElement(React.Children.only(children), {
-      style: {
-        backgroundColor: 'lightblue',
+ 
 
-      },
-    })
-  
   setCalendar() {
+    let formats = {
+      dateFormat: "DD",
+      monthHeaderFormat: "MMMM YYYY",
+      dayHeaderFormat: "ddd YYYY/MM/DD",
+    };
     const { classes } = this.props;
-    console.log(this.props.daily)
     if (this.props.daily.info) {
       const app = this.props.daily.info;
       const data = []
@@ -113,6 +124,7 @@ class Event extends React.Component {
           title: app[i].cardlist_name,
           start: app[i].date,
           end: app[i].date,
+          color: app[i].cardlist_color
         })
       }
 
@@ -122,6 +134,14 @@ class Event extends React.Component {
         appointments[i].end = moment.utc(appointments[i].end).toDate();
       }
       let cal_events = appointments
+      const calendarOptions = {
+        popup: true,
+        selectable: true,
+        step: 60,
+        timeslots: 2,
+        className: "isomorphicCalendar",
+        formats
+      };
       return (
         <Calendar
           selectable
@@ -138,18 +158,32 @@ class Event extends React.Component {
           step={30}
           timeslots={2}
           eventPropGetter={(this.eventStyleGetter)}
-
+          {...calendarOptions}
         />
+
       );
     }
   }
   render() {
+
+
     return (
       <div>
         <Container maxWidth="m">
           {this.setCalendar()}
+{/*
+          <div>
+            <button onClick={this.handleOpenModal}>Trigger Modal</button>
+            <ReactModal
+              isOpen={this.state.showModal}
+              contentLabel="Minimal Modal Example"
+            >
+              <MonthPicker />
+              <button onClick={this.handleCloseModal}>Close Modal</button>
+            </ReactModal>
+          </div>
+*/}
         </Container>
-
       </div>
     )
   }
