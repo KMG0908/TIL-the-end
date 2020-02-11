@@ -6,6 +6,7 @@ import {} from "../../actions";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import LockIcon from '@material-ui/icons/Lock';
 import "typeface-roboto";
 import SubPost from "./SubPost";
 import Tag from "./Tag";
@@ -48,6 +49,10 @@ const useStyles = makeStyles(theme => ({
   },
   hideContent: {
     display: 'none'
+  },
+  lock: {
+    marginTop: '4px',
+    marginRight : '2px'
   }
 }));
 
@@ -92,6 +97,9 @@ const Post = props => {
             }
           }
         }}>
+        <div style={{display : props.cardLists[props.list_id].cardlist_secret ? 'inline-block' : 'none'}} className={classes.lock}>
+          <LockIcon></LockIcon>
+        </div>
         <Typography variant="h1" className={classes.title}>
           {props.cardLists[props.list_id].cardlist_name}
         </Typography>
