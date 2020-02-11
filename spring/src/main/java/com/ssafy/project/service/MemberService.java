@@ -33,4 +33,6 @@ public interface MemberService {
 	public void patchpassword(String mem_id, String old_pw, String new_pw);
 
 	public Member naverLogin(Member naver);
+
+	public void patchcolor(String mem_id, String mem_color);
 }

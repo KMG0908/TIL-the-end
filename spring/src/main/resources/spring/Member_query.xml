@@ -180,4 +180,11 @@
 		where mem_email = #{mem_email}
 	</select>
 
+	<update id="patchcolor">
+		update mem_info
+		set
+		mem_color = #{mem_color}
+		where mem_id = #{mem_id}
+	</update>
+
 </mapper>

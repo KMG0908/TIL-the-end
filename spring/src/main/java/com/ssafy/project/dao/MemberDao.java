@@ -64,4 +64,6 @@ public interface MemberDao {
 
 	public String searchSNSIdByEmail(String mem_email);
 
+	public void patchcolor(@Param("mem_id")String mem_id, @Param("mem_color")String mem_color);
+
 }

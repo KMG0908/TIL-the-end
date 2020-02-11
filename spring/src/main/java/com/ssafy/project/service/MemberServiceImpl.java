@@ -149,7 +149,7 @@ public class MemberServiceImpl implements MemberService {
 		try {
 			Member diff = dao.search(mem_id);
 			if (!diff.getMem_pw().equals(old_pw)) {
-				throw new MemberException("비밀번호가 틀립니다");
+				throw new MemberException("현재 비밀번호가 틀립니다");
 			}
 			dao.updatePassword(mem_id, new_pw);
 		} catch (Exception e) {
@@ -238,6 +238,18 @@ public class MemberServiceImpl implements MemberService {
 			e.printStackTrace();
 			throw new MemberException("네이버 아이디 로그인 중 오류 발생");
 		}
+	}
+	
+	
+	@Override
+	public void patchcolor(String mem_id, String mem_color) {
+		try {
+			dao.patchcolor(mem_id, mem_color);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException("멤버 색상 변경 중 오류 발생");
+		}
+		
 	}
 
 }

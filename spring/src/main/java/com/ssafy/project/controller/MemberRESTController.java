@@ -97,6 +97,14 @@ public class MemberRESTController {
 		service.patchpassword(mem_id, (String)payload.get("old_pw"), (String)payload.get("new_pw"));
 		return handleSuccess(service.search(mem_id));
 	}
+	
+	@PatchMapping("/api/member/{mem_id}/color/{mem_color}")
+	@ApiOperation("member의 선호하는 색상 수정, 아이디와 색상만 전달")
+	public ResponseEntity<Map<String, Object>> patchcolor(@PathVariable String mem_id, @PathVariable String mem_color) {	
+		service.patchcolor(mem_id, mem_color);
+		return handleSuccess(mem_color);
+	}
+	
 
 	// DELETE
 	@DeleteMapping("/api/member/{mem_id}")

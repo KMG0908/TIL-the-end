@@ -73,7 +73,7 @@ public class Application implements WebMvcConfigurer {
 				.title("Project Management API")
 				.description("프로젝트를 위한 <b>CRUD</b>")
 				.license("5zo company")
-				.version("0.1.28")
+				.version("0.1.29")
 				.build();
 	}
 
