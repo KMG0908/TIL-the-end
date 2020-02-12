@@ -8,6 +8,8 @@ import './heatmap.css';
 import moment from "moment"
 import storage from 'lib/storage';
 
+
+
 let lastDay = new Date();
 class Heatmap extends React.Component {
   constructor(props){
