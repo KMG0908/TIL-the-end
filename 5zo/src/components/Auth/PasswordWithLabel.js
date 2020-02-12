@@ -33,10 +33,7 @@ const Input = styled.input`
     padding: 10px;
     border-radius: 5px;
     border: 0;
-    background-color: #fafbfc;
-    &:focus{
-      background-color: white;
-    }
+    background-color: white;
 `;
 
 const InputBox = styled.div`
@@ -45,15 +42,12 @@ const InputBox = styled.div`
     outline : none;
     border-radius: 5px;
     display : flex;
+    background-color: white;
 `;
 
 const useStyles = makeStyles(() => ({
-  input_back:  {
-    backgroundColor: 'white',
-  },
   Focus: {
-    backgroundColor: 'white',
-    border: '1px solid #94C9A9'
+    border: '1px solid #94C9A9 !important'
   }
 }))
 
@@ -74,10 +68,8 @@ function PasswordWithLabel({ id, label, ...rest }) {
     <Wrapper>
       <Label> {label} </Label>
       <InputBox id={box_id} onFocus={function(){
-        document.getElementById(id).classList.add(classes.input_back);
         document.getElementById(box_id).classList.add(classes.Focus);
       }} onBlur={function(){
-        document.getElementById(id).classList.remove(classes.input_back);
         document.getElementById(box_id).classList.remove(classes.Focus);
       }}>
         <Input id={id} type='password' {...rest}/>

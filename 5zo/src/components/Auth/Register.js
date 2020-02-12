@@ -7,6 +7,10 @@ import { isEmail, matches } from "validator";
 
 import history from '../../history'
 class Register extends Component {
+  componentDidMount(){
+    console.log(document.getElementById("loginId"))
+    document.getElementById("loginId").focus();
+  }
   constructor(props) {
     super(props);
 
@@ -117,6 +121,10 @@ class Register extends Component {
   }
   keyDown(e){
     if(e.keyCode == 13) this.register();
+    if(e.target.id === "loginPw" && e.keyCode === 9) {
+      document.getElementById("email").focus();
+      e.preventDefault();
+    }
   }
   render() {
     if (this.props.register_id && this.props.register_id !== "") {
@@ -130,9 +138,9 @@ class Register extends Component {
       <div style={{ display: 'inline-block', width: 500 }}>
         <AuthWrapper_tmp>
           {/* <AuthContent title="회원가입" id="register"> */}
-            <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디( 5 ~ 20 자 )" maxLength="20" onChange={this.handleChange} />
-            <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호 ( 8 ~ 16 자 )" maxLength="16" onChange={this.handleChange}  />
-            <InputWithLabel label="이메일" id="email" name="email" placeholder="이메일" type="email" onChange={this.handleChange} />
+            <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디( 5 ~ 20 자 )" maxLength="20" onChange={this.handleChange} onKeyDown={this.keyDown}/>
+            <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호 ( 8 ~ 16 자 )" maxLength="16" onChange={this.handleChange}  onKeyDown={this.keyDown}/>
+            <InputWithLabel label="이메일" id="email" name="email" placeholder="이메일" type="email" onChange={this.handleChange} onKeyDown={this.keyDown}/>
             <InputWithLabel label="닉네임" id="nick" name="nick" placeholder="닉네임" onChange={this.handleChange} onKeyDown={this.keyDown}/>
             <input type="text" className={this.props.register_err? "error" : "none"} readOnly value={this.props.register_err}/>
             <AuthButton onClick={this.register}> 회원가입 </AuthButton>
