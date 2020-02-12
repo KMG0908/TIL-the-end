@@ -5,6 +5,11 @@ import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink,
 import storage from 'lib/storage';
 import PasswordWithLabel from './PasswordWithLabel';
 import history from '../../history'
+import Dialog from '@material-ui/core/Dialog';
+
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
+
 class MyPageEdit extends Component {
   constructor(props) {
     super(props);
@@ -12,13 +17,99 @@ class MyPageEdit extends Component {
     this.state = {
       nowPw: '',
       email: this.props.mem_info ? this.props.mem_info.mem_email : '',
-      nick: this.props.mem_info ? this.props.mem_info.mem_nick : ''
+      nick: this.props.mem_info ? this.props.mem_info.mem_nick : '',
+      croppedImageUrl: this.props.mem_info ? this.props.mem_info.mem_thumb : null,
+      src: null,
+      crop: {
+        unit: '%',
+        width: 30,
+        height : 30,  
+        aspect: 1 / 1,
+      },
+      open: false,
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.editMyinfo = this.editMyinfo.bind(this)
     this.cancelEditMyinfo = this.cancelEditMyinfo.bind(this)
   }
+
+  onSelectFile = e => {
+    if (e.target.files && e.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () =>
+        this.setState({ src: reader.result })
+      );
+      reader.readAsDataURL(e.target.files[0]);
+      // 여기에 다이얼로그 여는거.
+      this.handleClickOpen()
+    }
+  };
+  // If you setState the crop in here you should return false.
+  onImageLoaded = image => {
+    this.imageRef = image;
+  };
+
+  onCropComplete = crop => {
+    this.makeClientCrop(crop);
+  };
+
+  onCropChange = (crop, percentCrop) => {
+    // You could also use percentCrop:
+    // this.setState({ crop: percentCrop });
+    this.setState({ crop });
+  };
+
+  async makeClientCrop(crop) {
+    if (this.imageRef && crop.width && crop.height) {
+      const croppedImageUrl = await this.getCroppedImg(
+        this.imageRef,
+        crop,
+        'newFile.jpeg'
+      );
+      this.setState({ croppedImageUrl });
+    }
+  }
+
+  getCroppedImg(image, crop, fileName) {
+    const canvas = document.createElement('canvas');
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+    const ctx = canvas.getContext('2d');
+
+    ctx.drawImage(
+      image,
+      crop.x * scaleX,
+      crop.y * scaleY,
+      crop.width * scaleX,
+      crop.height * scaleY,
+      0,
+      0,
+      crop.width,
+      crop.height
+    );
+      console.log('ctx=================')
+      console.log(ctx)
+      // return canvas.toDataURL('img/jpeg')
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(blob => {
+        if (!blob) {
+          //reject(new Error('Canvas is empty'));
+          console.error('Canvas is empty');
+          return;
+        }
+        blob.name = fileName;
+        window.URL.revokeObjectURL(this.fileUrl);
+        this.fileUrl = window.URL.createObjectURL(blob);
+        console.log('fileUrl')
+        console.log(this.fileUrl)
+        resolve(this.fileUrl);
+      }, 'image/jpeg');
+    });
+  }
+
   handleChange(event) {
     const { name, value } = event.target;
     switch (name) {
@@ -46,51 +137,25 @@ class MyPageEdit extends Component {
       return;
     }
 
-    this.props.editMyinfo(this.props.mem_info.mem_id, this.state.nowPw, this.state.email, this.state.nick, this.props.mem_info.mem_color)
+    this.props.editMyinfo(this.props.mem_info.mem_id, this.state.nowPw, this.state.email, this.state.nick, this.props.mem_info.mem_color, this.state.croppedImageUrl)
   }
   cancelEditMyinfo = () => {
     history.push("/mypage")
   }
-  uploadImage(e) {
-    const file = e.target.files;
+  handleClickOpen = () => {
+    this.setState({
+      open: true
+    })
+  };
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file[0]);
+  handleClose = () => {
+    this.setState({
+      open: false
+    })
+  };
 
-    reader.onload = function () {
-      var image = new Image();
-      image.src = reader.result;
-      image.onload = function () {
-        var canvas = document.createElement('canvas');
-        var canvasContext = canvas.getContext("2d");
-
-        var div = document.getElementById("image_div");
-        var divAspect = 120 / 120;
-        var imgAspect = image.height / image.width;
-
-        if (imgAspect <= divAspect) {
-          var imgWidthActual = div.offsetHeight / imgAspect;
-          var imgWidthToBe = div.offsetHeight / divAspect;
-          var marginLeft = -Math.round((imgWidthActual - imgWidthToBe) / 2);
-          canvasContext.drawImage(this, 0, 0, 120 * this.width / this.height, 120);
-          document.getElementById("profile_image").style.cssText = "margin-left: " + marginLeft + "px; margin-top: 0px;"
-        }
-        else {
-          var imgWidthActual = div.offsetHeight / imgAspect;
-          var imgWidthToBe = div.offsetHeight / divAspect;
-          var marginTop = -Math.round((imgWidthToBe - imgWidthActual) / 2);
-          canvasContext.drawImage(this, 0, 0, 120, 120 * this.height / this.width);
-          document.getElementById("profile_image").style.cssText = "margin-left: 0px; margin-top: " + marginTop + "px;"
-        }
-
-        var dataURI = canvas.toDataURL("image/png");
-
-        document.getElementById("profile_image").src = dataURI;
-        console.log(dataURI)
-      };
-    }
-  }
   render() {
+    const { crop, croppedImageUrl, src } = this.state
     if (this.props.mem_info_change) {
       const loggedInfo = this.props.mem_info_change;
       storage.set('loggedInfo', loggedInfo);
@@ -100,17 +165,34 @@ class MyPageEdit extends Component {
       alert('회원정보 수정 완료')
       history.push("/mypage")
     }
-    console.log(this.state);
+    console.log(this.state)
     return (
 
       <div style={{ textAlign: 'center' }}>
         <div style={{ display: 'inline-block', width: 500 }}>
           <AuthWrapper>
             <AuthContent title="내 정보 수정">
-              <div style={{ width: "120px", height: "120px", overflow: "hidden" }} id="image_div">
-                <img id="profile_image"></img>
+              <div>
+                <input type="file" accept="image/*" onChange={this.onSelectFile}  />
               </div>
-              <input type="file" accept="image/*" onChange={this.uploadImage} />
+              <Dialog aria-labelledby="simple-dialog-title" open={this.state.open}>
+                {src && (
+                  <ReactCrop
+                    locked
+                    src={src}
+                    crop={crop}
+                    ruleOfThirds
+                    onImageLoaded={this.onImageLoaded}
+                    onComplete={this.onCropComplete}
+                    onChange={this.onCropChange}
+                  />
+                )}
+              <AuthButton onClick={this.handleClose}> 확인 </AuthButton>
+              </Dialog>
+
+              {croppedImageUrl && (
+                <img alt="Crop" style={{ maxWidth: '100%' , borderRadius : '50%'}} src={croppedImageUrl} />
+              )}
               {/* 로그인한 member 의 데이터를 아래 TextWithLabel 들의 value 에 줘야함. */}
               <TextWithLabel label="아이디" name="id" value={this.props.mem_info ? this.props.mem_info.mem_id : ''} />
               <InputWithLabel label="이메일" name="email" type="email" value={this.state.email} onChange={this.handleChange} />

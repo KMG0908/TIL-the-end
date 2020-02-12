@@ -43,7 +43,7 @@ class NewCard extends Component {
         <Card style={styles.root} variant="outlined" onClick ={moveDetail}>
           <CardContent>
             <Typography style={styles.user} color="textSecondary" >
-              <Avatar style={styles.avatar} component={'span'} alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
+              <Avatar style={styles.avatar} component={'span'} alt="Remy Sharp" src={cardList.mem_thumb} />
               <span>{cardList.mem_id}</span>
             </Typography>
             <Typography variant="body2" component="p" style={styles.date}>

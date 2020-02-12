@@ -195,7 +195,7 @@ function Navigation(props) {
                 <>
                   <MenuItem onClick={handleClose}>Profile</MenuItem>
                   <MenuItem onClick={myPage}>My Page</MenuItem>
-                  <MenuItem onClick={mySetting}>My Setting</MenuItem>
+                  {/* <MenuItem onClick={mySetting}>My Setting</MenuItem> */}
                   <MenuItem onClick={logout}>Logout</MenuItem>
                 </>
               ) : (

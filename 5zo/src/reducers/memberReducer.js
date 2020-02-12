@@ -18,7 +18,7 @@ export default (state = {}, action) => {
     case REGISTER_RESET:
       return { ...state, "register_err": "", "register_id": "" }
     case SET_LOGGED_INFO:
-      return { ...state, "mem_info": action.payload }
+      return { ...state, "mem_info": action.payload, "mem_info_change" : undefined }
     case GET_LOGGED_INFO:
       return state
     case LOGOUT:
@@ -29,8 +29,6 @@ export default (state = {}, action) => {
       return { ...state, "mem_info_change": action.payload }
     case EDIT_MYINFO_ERR:
       return { ...state, "edit_myinfo_err": action.payload }
-    case EDIT_MYINFO_CHANGE_RESET:
-      return { ...state, "mem_info_change": undefined }
     // edit my color
     case EDIT_MY_COLOR_FAIL:
       return {...state, 'mem_color_change_fail' : '유저 색 변경 실패'}

@@ -13,24 +13,26 @@ const Wrapper = styled.div`
 
 const Label = styled.div`
     font-size : 1rem;
-    color : #24292e;
+    color : ${oc.gray[6]};
     margin-bottom : 0.25rem;
     text-align : left
 `;
 
 const Input = styled.input`
     width : 100%;
+    border : 1px solid ${oc.gray[3]};
+    border-radius: 5px;
     outline : none;
     font-size : 1rem;
-    ::placeholder {
-        color : ${oc.gray[3]};
-    }
     padding: 10px;
-    border-radius: 5px;
+
     border: 0;
     background-color: #fafbfc;
     &:focus{
       background-color: white;
+    }
+    ::placeholder {
+        color : ${oc.gray[3]};
     }
 `;
 
@@ -49,21 +51,21 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-function InputWithLabel ({ id, label, ...rest }) {
+function InputWithLabel({ id, label, ...rest }) {
   const classes = useStyles();
   const box_id = `${id}_box`
 
-  return(
+  return (
     <Wrapper>
       <Label> {label} </Label>
-      <InputBox id={box_id} onFocus={function(){
-          document.getElementById(box_id).classList.add(classes.Focus);
-        }} onBlur={function(){
-          document.getElementById(box_id).classList.remove(classes.Focus);
-        }}>
-        <Input id={id} {...rest}/>
+      <InputBox id={box_id} onFocus={function () {
+        document.getElementById(box_id).classList.add(classes.Focus);
+      }} onBlur={function () {
+        document.getElementById(box_id).classList.remove(classes.Focus);
+      }}>
+        <Input id={id} {...rest} />
       </InputBox>
-      <input type="text" id={`${rest.name}_msg`} className="none" readOnly disabled/>
+      <input type="text" id={`${rest.name}_msg`} className="none" readOnly disabled />
     </Wrapper>
   );
 }
