@@ -4,9 +4,6 @@ import oc from 'open-color';
 import { shadow } from 'lib/styleUtil';
 
 const Wrapper = styled.div`
-
-    height : 3rem;
-
     margin-top : 1rem;
     padding-top : 0.6rem;
     padding-bottom : 0.5rem;

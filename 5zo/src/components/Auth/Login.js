@@ -8,9 +8,7 @@ import PasswordWithLabel from './PasswordWithLabel';
 import apis from "../../apis/apis";
 import axios from 'axios';
 import history from '../../history'
-import styled from 'styled-components';
-import oc from 'open-color';
-import { shadow } from 'lib/styleUtil';
+import FindInfoLink from './FindInfoLink';
 
 class Login extends Component {
   componentDidMount() {
@@ -34,6 +32,8 @@ class Login extends Component {
     //     document.getElementById("naver_id_login").innerHTML = '<a href=\"' + url + '\"><img width="300" alt="네이버 아이디로 로그인" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" /></a>'
     //   }
     // }
+    
+    document.getElementById("loginId").focus();
   }
   constructor(props) {
     super(props);
@@ -91,7 +91,7 @@ class Login extends Component {
     window.location.href = this.state.url
   }
   keyDown(e){
-    if(e.keyCode == 13) this.login();
+    if(e.keyCode === 13) this.login();
   }
   render() {
     if (this.props.mem_info) {
@@ -104,19 +104,26 @@ class Login extends Component {
     return (
       <div style={{ textAlign: 'center', background: '#fafbfc' }}>
         <div style={{ display: 'inline-block', width: 500 }}>
-          <AuthWrapper >
-            <AuthContent title="로그인">
-              <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디" onChange={this.handleChange} />
-              <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호" onChange={this.handleChange} />
-              {this.props.login_err}
+          <AuthWrapper_tmp>
+            {/* <AuthContent title="로그인"> */}
+              <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디" onChange={this.handleChange} onKeyDown={this.keyDown}/>
+              <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호" onChange={this.handleChange} onKeyDown={this.keyDown}/>
+              <input type="text" className={this.props.login_err? "error" : "none"} readOnly value={this.props.login_err}/>
               <AuthButton onClick={this.login}> 로그인 </AuthButton>
               <AuthButton onClick={this.cancel}> 취소 </AuthButton>
               <AuthButton onClick={this.naver} backgroundColor={'#2DB400'}> 네이버 아이디로 로그인 </AuthButton>
-              <RightAlignedLink to="/register"> 회원가입 </RightAlignedLink>
+              <div style={{marginTop : '20px'}}>
+                <FindInfoLink to="/register"> 회원가입</FindInfoLink>
+                <span style={{margin: '0 6px', background: '#e4e4e5', width: '1px', textIndent: '-999em', display: 'inline-block'}}>|</span>
+                <FindInfoLink to="/find-id">아이디 찾기</FindInfoLink>
+                <span style={{margin: '0 6px', background: '#e4e4e5', width: '1px', textIndent: '-999em', display: 'inline-block'}}>|</span>
+                <FindInfoLink to="/find-pw">비밀번호 찾기</FindInfoLink>
+              </div>
+              {/* <RightAlignedLink to="/register"> 회원가입 </RightAlignedLink>
               <RightAlignedLink to="/find-id"> 아이디 찾기 </RightAlignedLink>
-              <RightAlignedLink to="/find-pw"> 비밀번호 찾기 </RightAlignedLink>
-            </AuthContent>
-          </AuthWrapper>
+              <RightAlignedLink to="/find-pw"> 비밀번호 찾기 </RightAlignedLink> */}
+            {/* </AuthContent> */}
+          </AuthWrapper_tmp>
         </div>
       </div>
     );
