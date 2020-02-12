@@ -1,24 +1,25 @@
 import React from 'react'
-import { Calendar, momentLocalizer } from 'react-big-calendar'
+import {
+  Calendar,
+  momentLocalizer,
+} from "react-big-calendar";
+
 import moment from 'moment'
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import "react-big-calendar-like-google/lib/css/react-big-calendar.css";
 import { getDailyCal, fetchDailyLists } from "../../actions";
 import { getLoggedInfo } from "../../actions";
 import { connect } from "react-redux";
 import Container from "@material-ui/core/Container";
 import history from "../../history";
-import MonthPicker from "./MonthPicker";
-import ReactModal from 'react-modal';
-
+import BigCalendar from 'react-big-calendar-like-google';
 const localizer = momentLocalizer(moment)
 const today = new Date();
-
 
 function date_to_str(format, separator) {
   let year = format.getFullYear();
   let month = format.getMonth() + 1;
   let date = format.getDate();
-
   return (
     year +
     separator +
@@ -32,7 +33,6 @@ function shiftDate(date, numDays) {
   newDate.setDate(newDate.getDate() + numDays);
   return newDate;
 }
-
 class Event extends React.Component {
   constructor(props) {
     super(props)
@@ -43,11 +43,9 @@ class Event extends React.Component {
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
-
   handleOpenModal() {
     this.setState({ showModal: true });
   }
-
   handleCloseModal() {
     this.setState({ showModal: false });
   }
@@ -62,27 +60,35 @@ class Event extends React.Component {
   onSlotChange(slotInfo) {
     var endDate = moment(slotInfo.end.toLocaleString()).format("YYYY-MM-DDm:ss");
   }
-
   onEventClick(event) {
     this.state.cur_date = event.start;
     const start = date_to_str(event.start, "");
     let id = this.props.members.mem_info.mem_id;
     history.push('/daily/' + id + '/' + start);
   }
-
   eventStyleGetter = (event, start, end, isSelected) => {
-    let newStyle = {
-      backgroundColor: "white",
-      color: event.color,
-      borderRadius: "10px",
-      border: "none",
-      display: 'block'
-    };
-
+    let newStyle;
+    if (!event.color) {
+      newStyle = {
+        backgroundColor: "white",
+        color: this.props.members.mem_info.mem_color,
+        borderRadius: "10px",
+        border: "none",
+        display: 'block'
+      };
+    }
+    else {
+      newStyle = {
+        backgroundColor: "white",
+        color: event.color,
+        borderRadius: "10px",
+        border: "none",
+        display: 'block'
+      };
+    }
     if (event.isMine) {
       newStyle.backgroundColor = "lightgreen"
     }
-
     return {
       className: "",
       style: newStyle
@@ -90,29 +96,24 @@ class Event extends React.Component {
   }
   dayStyleGetter = (event, start, end, isSelected) => {
     let newStyle = {
-      backgroundColor: "#94C9A9",
-      color: 'white',
-      borderRadius: "10px",
-      border: "none",
+
+      borderRadius: "3px",
+
       display: 'block'
     };
-
     if (event.isMine) {
       newStyle.backgroundColor = "lightgreen"
     }
-
     return {
       className: "",
       style: newStyle
     };
   }
- 
 
   setCalendar() {
     let formats = {
       dateFormat: "DD",
-      monthHeaderFormat: "MMMM YYYY",
-      dayHeaderFormat: "ddd YYYY/MM/DD",
+      monthHeaderFormat: " YYYY년 MM월",
     };
     const { classes } = this.props;
     if (this.props.daily.info) {
@@ -159,39 +160,29 @@ class Event extends React.Component {
           timeslots={2}
           eventPropGetter={(this.eventStyleGetter)}
           {...calendarOptions}
+          dayPropGetter={this.dayStyleGetter}
+          formats={formats}
         />
 
       );
     }
   }
+
+
   render() {
-
-
     return (
       <div>
         <Container maxWidth="m">
           {this.setCalendar()}
-{/*
-          <div>
-            <button onClick={this.handleOpenModal}>Trigger Modal</button>
-            <ReactModal
-              isOpen={this.state.showModal}
-              contentLabel="Minimal Modal Example"
-            >
-              <MonthPicker />
-              <button onClick={this.handleCloseModal}>Close Modal</button>
-            </ReactModal>
-          </div>
-*/}
         </Container>
       </div>
     )
   }
 }
+//미리 계획된 페이지?
 Event.defaultProps = {
   title: 'Calendar'
 }
-
 const mapStateToProps = state => {
   return {
     boards: state.boards,
