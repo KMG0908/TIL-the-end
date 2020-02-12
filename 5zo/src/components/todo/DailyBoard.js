@@ -12,6 +12,8 @@ import Typography from "@material-ui/core/Typography";
 import { Icon } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import { withRouter } from "react-router-dom";
+import history from "../../history";
 
 const styles = theme => ({
   root: {
@@ -45,8 +47,15 @@ class DailyBoard extends React.Component {
   };
 
   componentDidMount() {
-    const { date } = this.state;
-    if (this.props.members.mem_info) {
+    let { date } = this.state;
+    if (this.props.match.params.date && this.props.members.mem_info) {
+      date = this.props.match.params.date;
+      date = `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`;
+      this.setState({ date: date });
+      this.props.fetchDailyLists(this.props.members.mem_info.mem_id, date);
+    }
+
+    if (!this.props.match.params.date && this.props.members.mem_info) {
       this.props.fetchDailyLists(this.props.members.mem_info.mem_id, date);
     }
   }
@@ -148,12 +157,13 @@ class DailyBoard extends React.Component {
               <DatePicker
                 onChangeDate={val => {
                   this.setState({ date: val });
-                  console.log(val);
                   this.props.fetchDailyLists(
                     this.props.members.mem_info.mem_id,
                     val
                   );
+                  history.push(`/dashboard/${val.replace(/-/gi, "")}`);
                 }}
+                date={this.state.date}
               />
               {this.RenderList()}
               {provided.placeholder}
@@ -185,5 +195,7 @@ const mapStateToProps = state => {
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { fetchDailyLists, setEditModeList })(DailyBoard)
+  connect(mapStateToProps, { fetchDailyLists, setEditModeList })(
+    withRouter(DailyBoard)
+  )
 );

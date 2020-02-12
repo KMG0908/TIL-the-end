@@ -163,11 +163,6 @@ function Navigation(props) {
           ) : null}
           <Typography variant="h6" noWrap className={classes.title}>
             <TitleBreadcumbs />
-            {props.members.mem_info
-              ? props.members.mem_info.mem_color
-                ? props.members.mem_info.mem_color
-                : "#94C9A9"
-              : "#94C9A9"}
             <WithTitle />
           </Typography>
           <div>
