@@ -120,8 +120,6 @@ function Navigation(props) {
     setAnchorEl(null);
   };
   const myPage = () => {
-    console.log("props");
-    console.log(props);
     history.push("/mypage");
   };
   console.log(props.members.mem_info);
@@ -152,7 +150,7 @@ function Navigation(props) {
         })}
       >
         <Toolbar className={classes.toolbar}>
-          {props.mem_info ? (
+          {props.members.mem_info ? (
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -165,7 +163,11 @@ function Navigation(props) {
           ) : null}
           <Typography variant="h6" noWrap className={classes.title}>
             <TitleBreadcumbs />
-
+            {props.members.mem_info
+              ? props.members.mem_info.mem_color
+                ? props.members.mem_info.mem_color
+                : "#94C9A9"
+              : "#94C9A9"}
             <WithTitle />
           </Typography>
           <div>
@@ -223,7 +225,7 @@ function Navigation(props) {
             }}
           >
             <div className={classes.drawerHeader}>
-              {props.mem_info.mem_nick}님 환영합니다
+              {props.members.mem_info.mem_nick}님 환영합니다
               <IconButton onClick={handleDrawerClose}>
                 {theme.direction === "ltr" ? (
                   <ChevronLeftIcon />
@@ -234,7 +236,7 @@ function Navigation(props) {
             </div>
             <Divider />
 
-            <SidebarList user_id={props.mem_info.user_id} />
+            <SidebarList user_id={props.members.mem_info.user_id} />
           </Drawer>
         </>
       ) : null}
