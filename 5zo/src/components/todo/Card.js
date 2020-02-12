@@ -1,13 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
 import Paper from "@material-ui/core/Paper";
-import { editCard, setEditModeCard, deleteCard } from "../../actions";
+import {
+  editCard,
+  setEditModeCard,
+  setEditModeList,
+  deleteCard
+} from "../../actions";
 import TrelloForm from "./TrelloForm";
 import { Draggable } from "react-beautiful-dnd";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Icon from "@material-ui/core/Icon";
 import CardForm from "./CardForm";
+import DeleteModal from "../helper/DeleteModal";
 
 const styles = theme => ({
   paper: {
@@ -79,9 +85,27 @@ class Card extends React.Component {
       this.props.editModeList === this.props.cardlist_id
     ) {
       this.props.setEditModeCard(this.props.card.card_id);
-      console.log(this.props.editModeCard)
     }
   };
+  handleContextMenu = event => {
+    if (this.props.date && this.props.date === today) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (this.props.date) {
+        if (this.props.editModeList === this.props.cardlist_id) {
+          if (this.props.editModeCard === this.props.card.card_id) {
+            this.props.setEditModeCard(null);
+          } else {
+            this.props.setEditModeCard(this.props.card.card_id);
+          }
+        } else {
+          this.props.setEditModeList(this.props.cardlist_id);
+          this.props.setEditModeCard(this.props.card.card_id);
+        }
+      }
+    }
+  };
+
   render = () => {
     const { classes } = this.props;
     return (
@@ -98,6 +122,7 @@ class Card extends React.Component {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
+            onContextMenu={this.handleContextMenu}
             onDoubleClick={() => this.setState({ isEditing: true })}
             expanded={this.props.editModeList === this.props.cardList}
           >
@@ -117,13 +142,14 @@ class Card extends React.Component {
                     {this.props.card.card_name}
                   </Typography>
                 )}
-
-                <Icon
-                  className={classes.delete}
-                  fontSize="small"
-                  onMouseDown={this.handleDeleteCard}
-                >
-                  delete
+                <Icon className={classes.delete} fontSize="small">
+                  <DeleteModal
+                    onDelete={this.handleDeleteCard}
+                    type="소주제"
+                    title={this.props.card.card_name}
+                  >
+                    delete
+                  </DeleteModal>
                 </Icon>
               </div>
               <CardForm
@@ -144,5 +170,10 @@ const mapStateToProps = state => {
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { setEditModeCard, editCard, deleteCard })(Card)
+  connect(mapStateToProps, {
+    setEditModeCard,
+    setEditModeList,
+    editCard,
+    deleteCard
+  })(Card)
 );

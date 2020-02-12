@@ -18,17 +18,15 @@ import storage from "lib/storage";
 import MyPage from "./Auth/MyPage";
 import MyPageEdit from "./Auth/MyPageEdit";
 import MyAccountDelete from "./Auth/MyAccountDelete";
-import Imgur from "./image_test/Imgur"
-import Daily from "./daily/Main"
+import Imgur from "./image_test/Imgur";
+import Daily from "./daily/Main";
 import Redirecting from "./redirectingPage/RedirectBody";
 import NewSearch from "./serach/NewSearch";
-import FindIdPage from './Auth/FindIdPage'
-import FindPwPage from './Auth/FindPwPage'
+import FindIdPage from "./Auth/FindIdPage";
+import FindPwPage from "./Auth/FindPwPage";
 import EditPasswordPage from "./Auth/EditPasswordPage";
 import Body from "./landing/Body";
 import NewMySetting from "./Auth/NewMySetting";
-
-
 
 class App extends React.Component {
   initializeUserInfo = async () => {
@@ -53,23 +51,20 @@ class App extends React.Component {
       return (
         <Navigation>
           <>
-          <Switch>
-            <Route path="/login" exact component={Login} />
-            <Route path="/register" exact component={Register}/>
-            <Route path="/find-id" exact component={FindIdPage} />
-            <Route path="/find-pw" exact component={FindPwPage} />
-            <Route path="/" component={Body} />
-          </Switch>
+            <Switch>
+              <Route path="/login" exact component={Login} />
+              <Route path="/register" exact component={Register} />
+              <Route path="/find-id" exact component={FindIdPage} />
+              <Route path="/find-pw" exact component={FindPwPage} />
+              <Route path="/" component={Body} />
+            </Switch>
           </>
         </Navigation>
-
       );
     } else {
       // 로그인했을 때
       return (
-        <Navigation
-          mem_info={this.props.members.mem_info.mem_nick}
-        >
+        <Navigation mem_info={this.props.members.mem_info.mem_nick}>
           <div>
             <Switch>
               <Route path="/" exact component={Daily} />
@@ -77,25 +72,33 @@ class App extends React.Component {
               <Route path="/statistics/:user_id" exact component={Statistics} />
               <Route path="/tags" exact component={TagPage} />
               <Route path="/dashboard" exact component={Todo} />
+              <Route path="/dashboard/:date" component={Todo} />
               <Route path="/login" exact component={Login} />
 
               <Route path="/mypage" exact component={MyPage} />
               <Route path="/mypage/edit" exact component={MyPageEdit} />
-              <Route path="/mypage/edit-password" exact component={EditPasswordPage} />
+              <Route
+                path="/mypage/edit-password"
+                exact
+                component={EditPasswordPage}
+              />
               <Route path="/mypage/delete" exact component={MyAccountDelete} />
 
               {/* test */}
-              <Route path='/my-setting' exact component={NewMySetting}/>
+              <Route path="/my-setting" exact component={NewMySetting} />
 
               <Route path="/imgur" exact component={Imgur}></Route>
               <Route path="/daily" exact component={Daily}></Route>
               <Route path="/daily/:user_id" exact component={Daily}></Route>
-              <Route path="/daily/:user_id/:date" exact component={Daily}></Route>
+              <Route
+                path="/daily/:user_id/:date"
+                exact
+                component={Daily}
+              ></Route>
               <Route path="/search" exact component={NewSearch}></Route>
               <Route component={Redirecting} />
             </Switch>
           </div>
-
         </Navigation>
       );
     }

@@ -64,8 +64,10 @@ class CardForm extends React.Component {
     event.stopPropagation();
     this.props.setEditModeCard(null);
     const card = this.props.card;
-    card.card_contents = this.state.card_contents;
-    this.props.editCard(card);
+    if (this.state.card_contents && this.state.card_contents.length) {
+      card.card_contents = this.state.card_contents;
+      this.props.editCard(card);
+    }
   };
   handleCardClick = event => {
     event.stopPropagation();

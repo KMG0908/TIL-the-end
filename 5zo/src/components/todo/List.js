@@ -10,6 +10,7 @@ import {
   deleteList,
   editList,
   setEditModeList,
+  setEditModeCard,
   memTag,
   addTag,
   deleteTag
@@ -21,6 +22,7 @@ import { TwitterPicker } from "react-color";
 import Chips from "../serach/ChipLibrary/Chips";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+import DeleteModal from "../helper/DeleteModal";
 
 const styles = theme => ({
   root: {
@@ -215,6 +217,17 @@ class List extends React.Component {
       });
     }
   };
+  handleContextMenu = event => {
+    event.preventDefault();
+    if (this.props.date) {
+      if (this.props.editModeList === this.props.cardlist_id) {
+        this.props.setEditModeList(null);
+        this.props.setEditModeCard(null);
+      } else {
+        this.props.setEditModeList(this.props.cardlist_id);
+      }
+    }
+  };
   render() {
     const { classes } = this.props;
     const color = this.props.cardLists[this.props.cardlist_id].cardlist_color
@@ -223,11 +236,9 @@ class List extends React.Component {
       ? this.props.members.mem_info.mem_color
       : "#94C9A9";
 
-    if (this.props.tags[this.props.cardlist_id]) {
-      console.log(this.props.tags[this.props.cardlist_id]);
-    }
     return (
       <Paper
+        onContextMenu={this.handleContextMenu}
         className={classes.list}
         style={{
           backgroundColor: color,
@@ -274,20 +285,24 @@ class List extends React.Component {
               {this.props.cardLists[this.props.cardlist_id].cardlist_secret ? (
                 <Icon style={{ opacity: 0.5 }}>lock</Icon>
               ) : null}
-              <Icon
-                className={classes.delete}
-                fontSize="small"
-                onMouseDown={this.handleDeleteList}
+              <DeleteModal
+                onDelete={this.handleDeleteList}
+                type="글"
+                title={
+                  this.props.cardLists[this.props.cardlist_id].cardlist_name
+                }
               >
-                delete
-              </Icon>
+                <Icon className={classes.delete} fontSize="small">
+                  delete
+                </Icon>
+              </DeleteModal>
             </div>
           </div>
         )}
         {this.state.displayColorPicker ? (
           <React.Fragment>
             {this.props.date ? (
-              <Paper className={classes.popover}>
+              <Paper className={classes.popover} onBlur={this.handleClose}>
                 <FormControlLabel
                   control={
                     <Switch
@@ -390,6 +405,7 @@ export default withStyles(styles, { withTheme: true })(
     deleteList,
     editList,
     setEditModeList,
+    setEditModeCard,
     memTag,
     addTag,
     deleteTag

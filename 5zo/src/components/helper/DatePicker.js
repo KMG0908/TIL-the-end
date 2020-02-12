@@ -6,13 +6,26 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from "@material-ui/pickers";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { setEditModeList, setEditModeCard } from "../../actions";
 import moment from "moment";
-import MomentUtils from "@date-io/moment";
+import DateFnsUtils from "@date-io/date-fns";
+import format from "date-fns/format";
+import koLocale from "date-fns/locale/ko";
+import { Badge } from "@material-ui/core";
 
-const useStyles = makeStyles({
+class koLocalizedUtils extends DateFnsUtils {
+  getCalendarHeaderText(date) {
+    return format(date, "M월", { locale: this.locale });
+  }
+
+  getDatePickerHeaderText(date) {
+    return format(date, "M월 d일", { locale: this.locale });
+  }
+}
+
+const styles = theme => ({
   Keyboard: {
     margin: 0
   },
@@ -31,98 +44,135 @@ const useStyles = makeStyles({
     display: "inline"
   }
 });
-moment.locale("kr");
 
+const selectedDays = [1, 2, 3, 12];
 const today = new Date().toISOString().split("T")[0];
-function DatePicker(props) {
-  const classes = useStyles();
 
-  let [selectedDate, setSelectedDate] = React.useState(new Date());
-  if (props.date) {
-    selectedDate = new Date(props.date);
+class DatePicker extends React.Component {
+  state = { selectedDate: new Date() };
+  componentDidMount() {
+    if (this.props.date) {
+      const date = new Date(this.props.date);
+      this.setState({ selectedDate: date });
+      this.handleMonthChange(date);
+    }
   }
+  handleMonthChange = date => {
+    const firstDate = new Date(date.getFullYear(), date.getMonth(), 2);
+    const lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+    console.log(
+      firstDate
+        .toISOString()
+        .split("T")[0]
+        .replace(/-/gi, "")
+    );
+    console.log(
+      lastDate
+        .toISOString()
+        .split("T")[0]
+        .replace(/-/gi, "")
+    );
+  };
 
-  const handleDateChange = date => {
-    setSelectedDate(date);
+  handleDateChange = date => {
+    this.setState({ selectedDate: date });
     let isoDate = date.toISOString().split("T")[0];
-    props.onChangeDate(isoDate);
+    this.props.onChangeDate(isoDate);
     if (isoDate > today) {
-      props.setEditModeList(null);
-      props.setEditModeCard(null);
+      this.props.setEditModeList(null);
+      this.props.setEditModeCard(null);
     }
   };
-  const toNextDate = () => {
-    const date = selectedDate;
-    date.setDate(selectedDate.getDate() + 1);
-    setSelectedDate(date);
-    handleDateChange(date);
+  toNextDate = () => {
+    const date = this.state.selectedDate;
+    date.setDate(this.state.selectedDate.getDate() + 1);
+    this.setState({ selectedDate: date });
+    this.handleDateChange(date);
   };
-  const toPrevDate = () => {
-    const date = selectedDate;
-    date.setDate(selectedDate.getDate() - 1);
-    setSelectedDate(date);
-    handleDateChange(date);
+  toPrevDate = () => {
+    const date = this.state.selectedDate;
+    date.setDate(this.state.selectedDate.getDate() - 1);
+    this.setState({ selectedDate: date });
+    this.handleDateChange(date);
   };
-
-  return (
-    <MuiPickersUtilsProvider
-      utils={MomentUtils}
-      libInstance={moment}
-      locale="kr"
-    >
-      <Grid container>
-        <Grid xs={1} container item justify="flex-start"></Grid>
-        <Grid
-          xs={10}
-          style={{ flexWrap: "nowrap" }}
-          container
-          item
-          justify="center"
-        >
-          <Icon className={classes.arrow} onClick={toPrevDate}>
-            arrow_back_ios
-          </Icon>
-          <KeyboardDatePicker
-            ToolbarComponent={({ year, month, date }) => <div>{year}</div>}
-            className={classes.Keyboard}
-            variant="inline"
-            format="YYYY년 MM월 DD일"
-            margin="normal"
-            id="date-picker-inline"
-            label="날짜"
-            value={selectedDate}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-              "aria-label": "change date"
-            }}
-          />
-          <Icon className={classes.arrow} onClick={toNextDate}>
-            arrow_forward_ios
-          </Icon>
-        </Grid>
-        <Grid xs={1} container item justify="flex-end">
-          {props.editModeList ? (
-            <Icon
-              onClick={() => {
-                props.setEditModeList(null);
-              }}
-              className={classes.expand}
-            >
-              close
+  render() {
+    const { classes } = this.props;
+    return (
+      <MuiPickersUtilsProvider utils={koLocalizedUtils} locale={koLocale}>
+        <Grid container>
+          <Grid xs={1} container item justify="flex-start"></Grid>
+          <Grid
+            xs={10}
+            style={{ flexWrap: "nowrap" }}
+            container
+            item
+            justify="center"
+          >
+            <Icon className={classes.arrow} onClick={this.toPrevDate}>
+              arrow_back_ios
             </Icon>
-          ) : null}
+            <KeyboardDatePicker
+              className={classes.Keyboard}
+              views={["year", "month", "date"]}
+              variant="inline"
+              format="yyyy년 MM월 dd일"
+              margin="normal"
+              id="date-picker-inline"
+              label="날짜"
+              value={this.state.selectedDate}
+              onChange={this.handleDateChange}
+              onMonthChange={this.handleMonthChange}
+              KeyboardButtonProps={{
+                "aria-label": "change date"
+              }}
+              renderDay={(
+                day,
+                selectedDate,
+                isInCurrentMonth,
+                dayComponent
+              ) => {
+                const isSelected =
+                  isInCurrentMonth && selectedDays.includes(day.getDate());
+                return (
+                  <div
+                    style={{
+                      backgroundColor: isSelected ? "green" : undefined
+                    }}
+                  >
+                    {dayComponent}
+                  </div>
+                );
+              }}
+            />
+            <Icon className={classes.arrow} onClick={this.toNextDate}>
+              arrow_forward_ios
+            </Icon>
+          </Grid>
+          <Grid xs={1} container item justify="flex-end">
+            {this.props.editModeList ? (
+              <Icon
+                onClick={() => {
+                  this.props.setEditModeList(null);
+                }}
+                className={classes.expand}
+              >
+                close
+              </Icon>
+            ) : null}
+          </Grid>
         </Grid>
-      </Grid>
-    </MuiPickersUtilsProvider>
-  );
+      </MuiPickersUtilsProvider>
+    );
+  }
 }
 
 const mapStateToProps = state => {
   return {
-    editModeList: state.editModeList
+    editModeList: state.editModeList,
+    board_info: state.heatmaps.info
   };
 };
 
-export default connect(mapStateToProps, { setEditModeList, setEditModeCard })(
-  DatePicker
+export default withStyles(styles, { withTheme: true })(
+  connect(mapStateToProps, { setEditModeList, setEditModeCard })(DatePicker)
 );
