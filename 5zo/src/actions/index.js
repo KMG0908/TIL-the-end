@@ -178,7 +178,9 @@ export const deleteAccountSuccessReset = () => async (dispatch, getState) => {
   }
 };
 
-export const editMyinfo = (loginId, nowPw, email, nick, color) => async dispatch => {
+export const editMyinfo = (loginId, nowPw, email, nick, color, thumb) => async dispatch => {
+  console.log('index')
+  console.log(thumb)
   if (!nowPw) {
     dispatch({ type: EDIT_MYINFO_ERR, payload: "비밀번호를 입력해주세요." });
   }
@@ -193,7 +195,8 @@ export const editMyinfo = (loginId, nowPw, email, nick, color) => async dispatch
     mem_pw: nowPw,
     mem_email: email,
     mem_nick: nick,
-    mem_color:color
+    mem_color:color,
+    mem_thumb : thumb
   });
 
   const data = response.data.data;
@@ -206,6 +209,11 @@ export const editMyinfo = (loginId, nowPw, email, nick, color) => async dispatch
     dispatch({ type: EDIT_MYINFO_ERR, payload: data });
   }
 };
+
+export const changeMemInfo = (beforeMyInfo, afterMyInfo) => async (dispatch, getState) => {
+  dispatch({ type : SET_LOGGED_INFO, payload : afterMyInfo})
+}
+
 export const editMyinfoErrReset = () => async (dispatch, getState) => {
   if (getState().members.edit_myinfo_err) {
     dispatch({ type: EDIT_MYINFO_ERR, payload: "" });

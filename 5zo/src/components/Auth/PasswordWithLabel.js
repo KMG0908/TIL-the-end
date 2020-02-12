@@ -17,10 +17,10 @@ const Wrapper = styled.div`
 `;
 
 const Label = styled.div`
-    font-size : 1rem;
-    color : #24292e;
-    margin-bottom : 0.25rem;
-    text-align : left
+font-size : 1rem;
+color : ${oc.gray[6]};
+margin-bottom : 0.25rem;
+text-align : left
 `;
 
 const Input = styled.input`

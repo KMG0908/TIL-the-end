@@ -7,7 +7,7 @@ const Wrapper = styled.div`
     & + & {
         margin-tip : 1rem;
     }
-    textAlign : 'left'
+    margin-bottom: 15px;
 `;
 
 const Label = styled.div`
@@ -20,12 +20,12 @@ const Label = styled.div`
 const Input = styled.input`
     width : 100%;
     border : 1px solid ${oc.gray[3]};
+    border-radius: 5px;
     outline : none;
-    border-radius : 0px;
-    line-height : 2.5rem;
-    font-size : 1.2rem;
-    padding-left : 0.5rem;
-    padding-right : 0.5rem;
+    font-size : 1rem;
+    padding: 10px;
+
+    background-color: #fafbfc;
     ::placeholder {
         color : ${oc.gray[3]};
     }
