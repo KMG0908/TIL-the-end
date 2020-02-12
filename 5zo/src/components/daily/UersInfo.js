@@ -13,12 +13,15 @@ class UserInfo extends React.Component{
       const year = reg_date.getFullYear();
       const month = reg_date.getMonth() + 1;
       const date = reg_date.getDate();
-      // const image = this.props.info.mem_thumb.replace("blob:", "");
+      let image;
+      if(this.props.info.mem_thumb) image = this.props.info.mem_thumb;
+      else image = "https://www.gravatar.com/avatar/bc05615a975020a24c81da899a113e23?d=mm&s=90"
+      image = this.props.info.mem_thumb.replace("blob:", "");
       
       return(
         <div>
           <div className="user_image">
-            {/* <img src={image}></img> */}
+            <img src={image}></img>
           </div>
           <div className="user_info">
             <span className="user_nick">{this.props.info.mem_nick}</span>
