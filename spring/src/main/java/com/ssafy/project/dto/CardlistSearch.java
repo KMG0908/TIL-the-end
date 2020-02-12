@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class CardlistSearch implements Serializable {
 	private String mem_id;
+	private String mem_thumb;
 	private int board_id;
 	private String board_date;
 	private int cardlist_id;

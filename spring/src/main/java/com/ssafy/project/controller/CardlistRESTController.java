@@ -109,21 +109,21 @@ public class CardlistRESTController {
 		service.movecardlist(cardlist_id, board_id);
 		return handleSuccess("이동 완료");
 	}
-	
-	@GetMapping("/api/search/public/cardlist/{mem_id}/by/{keyword}")
-	@ApiOperation("A유저가 B유저를 검색)  querystring 으로 limit, page 변수 받아서 limit * (page-1) 부터 limit 개의 cardlist 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchPublicCardlist(@PathVariable String mem_id,
-			@PathVariable String keyword, @RequestParam int limit, @RequestParam int page) {
-		return handleSuccess(service.searchPublicCardlist(mem_id, keyword, limit, page));
-	}
-	
-	@GetMapping("/api/search/private/cardlist/{mem_id}/by/{keyword}")
-	@ApiOperation("A유저가 A유저를 검색)  querystring 으로 limit, page 변수 받아서 limit * (page-1) 부터 limit 개의 cardlist 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchPrivateCardlist(@PathVariable String mem_id,
-			@PathVariable String keyword, @RequestParam int limit, @RequestParam int page) {
-		return handleSuccess(service.searchPrivateCardlist(mem_id, keyword, limit, page));
-	}
-	
+//	
+//	@GetMapping("/api/search/public/cardlist/{mem_id}/by/{keyword}")
+//	@ApiOperation("A유저가 B유저를 검색)  querystring 으로 limit, page 변수 받아서 limit * (page-1) 부터 limit 개의 cardlist 배열 반환하는 쿼리문")
+//	public ResponseEntity<Map<String, Object>> searchPublicCardlist(@PathVariable String mem_id,
+//			@PathVariable String keyword, @RequestParam int limit, @RequestParam int page) {
+//		return handleSuccess(service.searchPublicCardlist(mem_id, keyword, limit, page));
+//	}
+//	
+//	@GetMapping("/api/search/private/cardlist/{mem_id}/by/{keyword}")
+//	@ApiOperation("A유저가 A유저를 검색)  querystring 으로 limit, page 변수 받아서 limit * (page-1) 부터 limit 개의 cardlist 배열 반환하는 쿼리문")
+//	public ResponseEntity<Map<String, Object>> searchPrivateCardlist(@PathVariable String mem_id,
+//			@PathVariable String keyword, @RequestParam int limit, @RequestParam int page) {
+//		return handleSuccess(service.searchPrivateCardlist(mem_id, keyword, limit, page));
+//	}
+//	
 	@GetMapping("/api/search/global/cardlist/by/{keyword}")
 	@ApiOperation("키워드로 카드리스트 전체 검색) querystring 으로 limit, page 변수 받아서 limit * (page-1) 부터 limit 개의 cardlist 배열 반환하는 쿼리문")
 	public ResponseEntity<Map<String, Object>> searchGlobalCardlist(@PathVariable String keyword, @RequestParam int limit, @RequestParam int page) {

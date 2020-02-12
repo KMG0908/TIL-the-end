@@ -117,14 +117,15 @@
 
 	<select id="searchGlobalCardlist" parameterType="hashMap" resultType="cardlistsearch">
     <![CDATA[
-    select b.mem_id, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
-        from cardlist cl, card c, board b,
+    select b.mem_id, m.mem_thumb, cl.board_id, b.board_date, c.cardlist_id, cl.cardlist_name, tag.tag_name
+        from cardlist cl, card c, board b, mem_info m,
             (select cl.cardlist_id, ifnull(tag.tag_name, "") as tag_name
 			from cardlist cl left outer join (select ct.cardlist_id, group_concat(t.tag_name) as tag_name
 			from cardlist_tag ct, tag t
 			where ct.tag_id = t.tag_id
 			group by ct.cardlist_id) tag on cl.cardlist_id = tag.cardlist_id) tag
     where 1=1 
+    and b.mem_id = m.mem_id
     and b.board_date < now()
     ]]>
 

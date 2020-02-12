@@ -11,7 +11,7 @@
 <script type="text/javascript">
 	$(function() {
 		$.ajax({ //axios // baseURL / api/naver/login 
-			url : 'https://localhost:8443/spring/api/naver/login',			
+			url : 'https://i02a101.p.ssafy.io:8443/spring/api/naver/login',			
 			success : function(data) {
 				url = data.data;
 				$("#naver_id_login").html('<a href=\"' + url + '\"><img width="300" alt="네이버 아이디로 로그인" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" /></a> ');
