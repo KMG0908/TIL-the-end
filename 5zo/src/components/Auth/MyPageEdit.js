@@ -92,22 +92,22 @@ class MyPageEdit extends Component {
     );
       console.log('ctx=================')
       console.log(ctx)
-      // return canvas.toDataURL('img/jpeg')
-    return new Promise((resolve, reject) => {
-      canvas.toBlob(blob => {
-        if (!blob) {
-          //reject(new Error('Canvas is empty'));
-          console.error('Canvas is empty');
-          return;
-        }
-        blob.name = fileName;
-        window.URL.revokeObjectURL(this.fileUrl);
-        this.fileUrl = window.URL.createObjectURL(blob);
-        console.log('fileUrl')
-        console.log(this.fileUrl)
-        resolve(this.fileUrl);
-      }, 'image/jpeg');
-    });
+      return canvas.toDataURL('img/jpeg')
+    // return new Promise((resolve, reject) => {
+    //   canvas.toBlob(blob => {
+    //     if (!blob) {
+    //       //reject(new Error('Canvas is empty'));
+    //       console.error('Canvas is empty');
+    //       return;
+    //     }
+    //     blob.name = fileName;
+    //     window.URL.revokeObjectURL(this.fileUrl);
+    //     this.fileUrl = window.URL.createObjectURL(blob);
+    //     console.log('fileUrl')
+    //     console.log(this.fileUrl)
+    //     resolve(this.fileUrl);
+    //   }, 'image/jpeg');
+    // });
   }
 
   handleChange(event) {
