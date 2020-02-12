@@ -302,7 +302,7 @@ class List extends React.Component {
         {this.state.displayColorPicker ? (
           <React.Fragment>
             {this.props.date ? (
-              <Paper className={classes.popover} onBlur={this.handleClose}>
+              <Paper className={classes.popover} on={this.handleClose}>
                 <FormControlLabel
                   control={
                     <Switch

@@ -22,11 +22,11 @@ class Body extends React.Component {
     }
     render() {
         return (
-            <Provider >
-                <Hero >
+            <Provider>
+                <Hero style={{paddingBottom: '100px'}}>
                     <Flex  mt={3} >
                         <Box width= "500px" p={4}>
-                            <br /><br /><br /><br /><br /><br />
+                            <br /><br /><br /><br /><br />
                             <Heading color="#457B82" textAlign='left'>TIL lets you work more effectively and get more done</Heading>
                             <Subhead  color="#457B82" textAlign='left'>TIL's boards, lists, and cards enable you to organize and prioritize your learing process in effective, flexible, and showable way.</Subhead>
                         </Box>

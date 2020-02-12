@@ -28,12 +28,7 @@ const Input = styled.input`
 
     border: 0;
     background-color: #fafbfc;
-    &:focus{
-      background-color: white;
-    }
-    ::placeholder {
-        color : ${oc.gray[3]};
-    }
+    background-color: white;
 `;
 
 const InputBox = styled.div`
@@ -42,12 +37,12 @@ const InputBox = styled.div`
     outline : none;
     border-radius: 5px;
     display : flex;
+    background-color: white;
 `;
 
 const useStyles = makeStyles(() => ({
   Focus: {
-    backgroundColor: 'white',
-    border: '1px solid #94C9A9'
+    border: '1px solid #94C9A9 !important'
   }
 }))
 

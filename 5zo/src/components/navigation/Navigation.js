@@ -78,6 +78,14 @@ const useStyles = makeStyles(theme => ({
     }),
     marginLeft: -drawerWidth
   },
+  content_before_login: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
   contentShift: {
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
@@ -110,6 +118,7 @@ function Navigation(props) {
     storage.remove("loggedInfo");
     props.logout();
     history.push("/");
+    setAnchorEl(null);
   };
 
   const handleMenu = event => {
@@ -121,17 +130,21 @@ function Navigation(props) {
   };
   const myPage = () => {
     history.push("/mypage");
+    setAnchorEl(null);
   };
   console.log(props.members.mem_info);
 
   const login = () => {
     history.push("/login");
+    setAnchorEl(null);
   };
   const regist = () => {
     history.push("/register");
+    setAnchorEl(null);
   };
   const mySetting = () => {
     history.push("/my-setting");
+    setAnchorEl(null);
   };
   return (
     <div className={classes.root}>
@@ -145,9 +158,9 @@ function Navigation(props) {
             : "#94C9A9"
         }}
         position="fixed"
-        className={clsx(classes.appBar, {
+        className={props.mem_info? clsx(classes.appBar, {
           [classes.appBarShift]: open
-        })}
+        }) : ""}
       >
         <Toolbar className={classes.toolbar}>
           {props.members.mem_info ? (
@@ -236,9 +249,9 @@ function Navigation(props) {
         </>
       ) : null}
       <main
-        className={clsx(classes.content, {
+        className={props.mem_info ? clsx(classes.content, {
           [classes.contentShift]: open
-        })}
+        }) : classes.content_before_login}
       >
         <div className={classes.drawerHeader} />
         {props.children}
