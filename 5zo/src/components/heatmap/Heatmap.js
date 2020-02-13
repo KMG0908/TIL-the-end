@@ -1,43 +1,42 @@
-import CalendarHeatmap from 'react-calendar-heatmap'
-import React from 'react'
+import CalendarHeatmap from "react-calendar-heatmap";
+import React from "react";
 import { connect } from "react-redux";
 import { getDailyTask } from "../../actions";
-import 'react-calendar-heatmap/dist/styles.css'
-import ReactTooltip from 'react-tooltip';
-import './heatmap.css';
-import moment from "moment"
-import storage from 'lib/storage';
-
-
+import "react-calendar-heatmap/dist/styles.css";
+import ReactTooltip from "react-tooltip";
+import "./heatmap.css";
+import moment from "moment";
+import storage from "lib/storage";
 
 let lastDay = new Date();
 class Heatmap extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
       data: []
-    }
+    };
   }
   componentDidMount() {
     const user_id = this.props.user_id;
-    
+
     lastDay = new Date();
-    if(user_id !== storage.get('loggedInfo').mem_id) lastDay.setDate(lastDay.getDate() - 1);
+    if (user_id !== storage.get("loggedInfo").mem_id)
+      lastDay.setDate(lastDay.getDate() - 1);
     this.props.getDailyTask(user_id, shiftDate(lastDay, -365), lastDay);
   }
-  getTooltipDataAttrs = (value) => {
-    let date = moment(value.date).format('YYYY년 MM월 DD일')
-    if(value.count === 0){
+  getTooltipDataAttrs = value => {
+    let date = moment(value.date).format("YYYY년 MM월 DD일");
+    if (value.count === 0) {
       return {
-        'data-tip': `No task, ${date}`,
+        "data-tip": `No task, ${date}`
       };
     }
     return {
-      'data-tip': `${value.count} task, ${date}`,
+      "data-tip": `${value.count} task, ${date}`
     };
   };
-  handleClick = (value) => {
+  handleClick = value => {
     if (value.count == 0) {
       return null;
     }
@@ -45,81 +44,89 @@ class Heatmap extends React.Component {
   };
   setHeatMap() {
     if (this.props.board_info) {
-      const state = this.props.board_info
+      const state = this.props.board_info;
       let data = [];
 
       let startDate = shiftDate(lastDay, -365);
       let endDate = lastDay;
 
       let date = startDate;
-      while(true){
+      while (true) {
         data.push({
-          count : 0,
-          date : date_to_str(date, "-")
-        })
+          count: 0,
+          date: date_to_str(date, "-")
+        });
 
-        if(date_to_str(date, "-") === date_to_str(endDate, "-")) break;
-        
+        if (date_to_str(date, "-") === date_to_str(endDate, "-")) break;
+
         date = shiftDate(date, 1);
       }
-      
+
       for (let i = 0; i < state.length; i++) {
-        data[dateDiff(startDate, state[i].board_date)].count = state[i].board_id
+        if (data[dateDiff(startDate, state[i].board_date)]) {
+          data[dateDiff(startDate, state[i].board_date)].count =
+            state[i].board_id;
+        }
       }
 
-      return(
-        <div className='user-heatmap'>
+      return (
+        <div className="user-heatmap">
           <CalendarHeatmap
             startDate={shiftDate(lastDay, -365)}
             endDate={lastDay}
             values={data}
             tooltipDataAttrs={this.getTooltipDataAttrs}
             onClick={this.handleClick}
-            classForValue={(value) => {
+            classForValue={value => {
               if (value.count == 0) {
                 return `color-empty`;
-              }
-              else if(value.count <= 5){
+              } else if (value.count <= 5) {
                 return `color-scale-1`;
-              }
-              else if(value.count <= 10){
+              } else if (value.count <= 10) {
                 return `color-scale-2`;
-              }
-              else if(value.count <= 15){
+              } else if (value.count <= 15) {
                 return `color-scale-3`;
-              }
-              else{
+              } else {
                 return `color-scale-4`;
               }
             }}
             showWeekdayLabels={true}
-            monthLabels={['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']}
-            weekdayLabels={['월', '월', '수', '수', '금', '금', '일']}
+            monthLabels={[
+              "1월",
+              "2월",
+              "3월",
+              "4월",
+              "5월",
+              "6월",
+              "7월",
+              "8월",
+              "9월",
+              "10월",
+              "11월",
+              "12월"
+            ]}
+            weekdayLabels={["월", "월", "수", "수", "금", "금", "일"]}
           />
           <ReactTooltip />
         </div>
-      )
+      );
     }
   }
   render() {
-    return (
-      <div>
-        {this.setHeatMap()}
-      </div >
-    );
+    return <div>{this.setHeatMap()}</div>;
   }
 }
 
-function dateDiff(date1, date2){
+function dateDiff(date1, date2) {
   date1 = new Date(date1);
   date2 = new Date(date2);
 
-  date1 = new Date(date1.getFullYear(), date1.getMonth()+1, date1.getDate());
-  date2 = new Date(date2.getFullYear(), date2.getMonth()+1, date2.getDate());
- 
+  date1 = new Date(date1.getFullYear(), date1.getMonth() + 1, date1.getDate());
+  date2 = new Date(date2.getFullYear(), date2.getMonth() + 1, date2.getDate());
+
   var diff = Math.abs(date2.getTime() - date1.getTime());
   diff = Math.ceil(diff / (1000 * 3600 * 24));
- 
+
   return diff - 1;
 }
 

@@ -57,7 +57,11 @@ import {
   SET_EDIT_MODE_LIST,
   SET_EDIT_MODE_CARD,
   ADD_TAG,
-  DELETE_TAG
+  DELETE_TAG,
+  FETCH_COMMENTS,
+  ADD_COMMENT,
+  DELETE_COMMENT,
+  PUT_COMMENT
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -178,9 +182,16 @@ export const deleteAccountSuccessReset = () => async (dispatch, getState) => {
   }
 };
 
-export const editMyinfo = (loginId, nowPw, email, nick, color, thumb) => async dispatch => {
-  console.log('index')
-  console.log(thumb)
+export const editMyinfo = (
+  loginId,
+  nowPw,
+  email,
+  nick,
+  color,
+  thumb
+) => async dispatch => {
+  console.log("index");
+  console.log(thumb);
   if (!nowPw) {
     dispatch({ type: EDIT_MYINFO_ERR, payload: "비밀번호를 입력해주세요." });
   }
@@ -195,8 +206,8 @@ export const editMyinfo = (loginId, nowPw, email, nick, color, thumb) => async d
     mem_pw: nowPw,
     mem_email: email,
     mem_nick: nick,
-    mem_color:color,
-    mem_thumb : thumb
+    mem_color: color,
+    mem_thumb: thumb
   });
 
   const data = response.data.data;
@@ -210,9 +221,12 @@ export const editMyinfo = (loginId, nowPw, email, nick, color, thumb) => async d
   }
 };
 
-export const changeMemInfo = (beforeMyInfo, afterMyInfo) => async (dispatch, getState) => {
-  dispatch({ type : SET_LOGGED_INFO, payload : afterMyInfo})
-}
+export const changeMemInfo = (beforeMyInfo, afterMyInfo) => async (
+  dispatch,
+  getState
+) => {
+  dispatch({ type: SET_LOGGED_INFO, payload: afterMyInfo });
+};
 
 export const editMyinfoErrReset = () => async (dispatch, getState) => {
   if (getState().members.edit_myinfo_err) {
@@ -225,28 +239,28 @@ export const memInfoChangeReset = () => async (dispatch, getState) => {
   }
 };
 
-export const editMyColor = (mem_id, color) => async(dispatch, getState) => {
-  const color_encode = encodeURIComponent(color)
-  const response = await apis.patch(`/member/${mem_id}/color/${color_encode}`)
+export const editMyColor = (mem_id, color) => async (dispatch, getState) => {
+  const color_encode = encodeURIComponent(color);
+  const response = await apis.patch(`/member/${mem_id}/color/${color_encode}`);
 
-  const data = response.data.data
+  const data = response.data.data;
 
-  console.log('data')
-  console.log(data)
-  
+  console.log("data");
+  console.log(data);
+
   if (data) {
-    const user = await (await apis.get(`/member/${mem_id}`)).data.data
-    console.log('user')
-    console.log(user)
+    const user = await (await apis.get(`/member/${mem_id}`)).data.data;
+    console.log("user");
+    console.log(user);
     dispatch({ type: EDIT_MYINFO, payload: user });
-  }else{
-    dispatch({ type : EDIT_MY_COLOR_FAIL})
+  } else {
+    dispatch({ type: EDIT_MY_COLOR_FAIL });
   }
-}
+};
 
 export const editMyColorFailReset = () => async (dispatch, getState) => {
   if (getState().members.mem_color_change_fail) {
-    dispatch({ type: EDIT_MY_COLOR_FAIL});
+    dispatch({ type: EDIT_MY_COLOR_FAIL });
   }
 };
 
@@ -338,7 +352,7 @@ export const addBoard = (mem_id, board_date) => async dispatch => {
 
 export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
   let own = false;
-  if(mem_id === storage.get('loggedInfo').mem_id) own = true;
+  if (mem_id === storage.get("loggedInfo").mem_id) own = true;
 
   const response = await apis.get(`/board/member/${mem_id}/date/${board_date}`);
   if (response.data.data.length) {
@@ -347,7 +361,7 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
     response.data.data[0].board_lists.map(async cardlist_id => {
       let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
       if (cardlist.data.state === "ok") {
-        if(own || (!own && cardlist.data.data.cardlist_secret === false)){
+        if (own || (!own && cardlist.data.data.cardlist_secret === false)) {
           dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
           cardlist.data.data.cardlist_cards.map(async card_id => {
             let card = await apis.get(`/card/${card_id}`);
@@ -746,13 +760,19 @@ export const getAllTag = () => async (dispatch, getState) => {
 
 export const getDailyTask = (mem_id, from, to) => async dispatch => {
   let own = false;
-  if(mem_id === storage.get('loggedInfo').mem_id) own = true;
+  if (mem_id === storage.get("loggedInfo").mem_id) own = true;
 
   const start = date_to_str(from, "");
   const end = date_to_str(to, "");
   let response;
-  if(own) response = await apis.get(`/card/daily/private/${mem_id}/from/${start}/to/${end}` );
-  else response = await apis.get(`/card/daily/public/${mem_id}/from/${start}/to/${end}` );
+  if (own)
+    response = await apis.get(
+      `/card/daily/private/${mem_id}/from/${start}/to/${end}`
+    );
+  else
+    response = await apis.get(
+      `/card/daily/public/${mem_id}/from/${start}/to/${end}`
+    );
   dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
 };
 
@@ -819,4 +839,45 @@ export const deleteTag = (cardlist_id, tag_id) => async (
     type: DELETE_TAG,
     payload: { cardlist_id, tag_id }
   });
+};
+
+export const fetchComments = cardlist_id => async dispatch => {
+  const response = await apis.get(`/comment/${cardlist_id}`);
+  dispatch({
+    type: FETCH_COMMENTS,
+    payload: { cardlist_id, comments: response.data.data }
+  });
+};
+
+export const addComment = (
+  cardlist_id,
+  comment_contents,
+  comment_reply
+) => async (dispatch, getState) => {
+  const comment_secret = 0;
+  const { mem_id } = getState().members.mem_info;
+  const response = await apis.post(`/comment`, {
+    cardlist_id,
+    comment_contents,
+    comment_reply,
+    comment_secret,
+    mem_id
+  });
+  dispatch(fetchComments(cardlist_id));
+};
+
+export const deleteComment = (cardlist_id, comment_id) => async dispatch => {
+  const response = await apis.delete(`/comment/${comment_id}`);
+  dispatch({ type: FETCH_COMMENTS, payload: { cardlist_id, comment_id } });
+};
+
+export const editComment = (
+  cardlist_id,
+  comment_id,
+  comment_contents
+) => async (dispatch, getState) => {
+  const comment = getState()[cardlist_id][comment_id];
+  comment.comment_contents = comment_contents;
+  const response = await apis.put(`/comment/${comment_id}`, { comment });
+  dispatch({ type: FETCH_COMMENTS, payload: comment });
 };

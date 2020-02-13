@@ -12,7 +12,7 @@ export default (state = {}, action) => {
   switch (action.type) {
     case ADD_BOARD:
       const board = action.payload;
-      board.board_lists = []
+      board.board_lists = [];
       return { ...state, [action.payload.board_id]: board };
 
     case FETCH_DAILY_LIST: {
@@ -22,7 +22,7 @@ export default (state = {}, action) => {
     }
     case GET_DAILY_CAL: {
       const board = action.payload;
-      return{...state, 'info' : action.payload};
+      return { ...state, info: action.payload };
     }
     case FETCH_TODO_LIST: {
       const board = action.payload;
