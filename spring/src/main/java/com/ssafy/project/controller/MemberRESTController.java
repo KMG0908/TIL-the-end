@@ -69,7 +69,7 @@ public class MemberRESTController {
 
 	// READ
 	@GetMapping("/api/member")
-	@ApiOperation("(운영자) 회원 목록 8개 컬럼 조회, 아이디, 이메일, 닉네임, 권한, 가입일, 썸네일, 컬러, 폰트")
+	@ApiOperation("(운영자) 회원 목록 9개 컬럼 조회, 아이디, 이메일, 닉네임, 권한, 가입일, 썸네일, 컬러, 폰트, 자기소개")
 	public ResponseEntity<Map<String, Object>> searchAll() {
 		return handleSuccess(service.searchAll());
 	}
@@ -81,13 +81,13 @@ public class MemberRESTController {
 	}
 	
 	@GetMapping("/api/member/searchByNickLike/{mem_nick}")
-	@ApiOperation("회원 아이디로 조회하는 기능, like % 사용으로 검색")
+	@ApiOperation("회원 닉네임으로 조회하는 기능, like % 사용으로 검색")
 	public ResponseEntity<Map<String, Object>> searchByNickLike(@PathVariable String mem_nick) {
 		return handleSuccess(service.searchByNickLike(mem_nick));
 	}
 
 	@GetMapping("/api/member/{mem_id}")
-	@ApiOperation("회원 한명을 정확히 조회 하는 기능")
+	@ApiOperation("회원 한명을 정확한 아이디로 조회 하는 기능")
 	public ResponseEntity<Map<String, Object>> search(@PathVariable String mem_id) {
 		return handleSuccess(service.search(mem_id));
 	}
@@ -95,10 +95,10 @@ public class MemberRESTController {
 	
 	// UPDATE
 	@PutMapping("/api/member")
-	@ApiOperation("member 정보 수정, 변경 가능 : email, nick, thumb, color, font 변경 성공시 member를 리턴합니다")
+	@ApiOperation("member 정보 수정, 변경 가능 : email, nick, thumb, color, font, self_intro 변경 성공시 member를 리턴합니다")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody updateMemberRequest umr) {	
 		service.updateMember(umr.getMem_id(), umr.getMem_email(), umr.getMem_nick(),
-							umr.getMem_thumb(), umr.getMem_color(), umr.getMem_font());
+							umr.getMem_thumb(), umr.getMem_color(), umr.getMem_font(), umr.getMem_self_intro());
 		return handleSuccess(umr);
 	}
 	
@@ -111,6 +111,7 @@ public class MemberRESTController {
 		private String mem_thumb;
 		private String mem_color;
 		private int mem_font;
+		private String mem_self_intro;
 	}
 	
 	

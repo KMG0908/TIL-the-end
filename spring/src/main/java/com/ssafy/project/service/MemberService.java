@@ -16,7 +16,7 @@ public interface MemberService {
 	
 	public Member search(String mem_id);
 
-	public void updateMember(String mem_id, String mem_email, String mem_nick, String mem_thumb, String mem_color, int mem_font);
+	public void updateMember(String mem_id, String mem_email, String mem_nick, String mem_thumb, String mem_color, int mem_font, String mem_self_intro);
 	
 	public void deleteMember(String mem_id);
 	

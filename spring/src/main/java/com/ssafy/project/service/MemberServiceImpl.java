@@ -110,7 +110,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void updateMember(String id, String email, String nick, String thumb, String color, int font) {
+	public void updateMember(String id, String email, String nick, String thumb, String color, int font, String mem_self_intro) {
 		try {
 			Member member = new Member();
 			member.setMem_id(id);
@@ -119,7 +119,9 @@ public class MemberServiceImpl implements MemberService {
 			member.setMem_thumb(thumb);
 			member.setMem_color(color);
 			member.setMem_font(font);			
+			member.setMem_self_intro(mem_self_intro);
 			dao.updateMember(member);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (e instanceof MemberException) {

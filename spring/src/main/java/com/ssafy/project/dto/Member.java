@@ -17,5 +17,6 @@ public class Member implements Serializable {
 	private int mem_font;
 	private int mem_auth;
 	private boolean mem_post_def_secret;
+	private String mem_self_intro;
 
 }
