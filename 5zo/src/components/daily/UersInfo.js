@@ -47,7 +47,7 @@ class UserInfo extends React.Component {
       return (
         <div>
           <div className="user_image">
-            <img src={image}></img>
+            <img src={image} style={{width: '100%', height: '100%'}}></img>
           </div>
           <div className="user_info">
             <span className="user_nick">{this.props.info.mem_nick}</span>

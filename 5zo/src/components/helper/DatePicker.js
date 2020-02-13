@@ -72,13 +72,10 @@ const theme = color =>
   });
 
 class DatePicker extends React.Component {
-<<<<<<< HEAD
-=======
   state = { selectedDate: new Date() };
   constructor(props){
     super(props);
   }
->>>>>>> kmg
   componentDidMount() {
     if (this.props.date) {
       const date = new Date(this.props.date);

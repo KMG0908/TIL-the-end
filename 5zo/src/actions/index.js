@@ -200,7 +200,8 @@ export const editMyinfo = (
   email,
   nick,
   color,
-  thumb
+  thumb,
+  intro
 ) => async dispatch => {
   console.log("index");
   console.log(thumb);
@@ -272,11 +273,12 @@ export const editMyColor = (mem_id, color) => async (dispatch, getState) => {
   const color_encode = encodeURIComponent(color);
   const response = await apis.patch(`/member/${mem_id}/color/${color_encode}`);
 
+  const data = response.data.data
   console.log("data");
   console.log(data);
 
   if (data) {
-    const user = await apis.get(`/member/${mem_id}`).data.data;
+    const user = (await apis.get(`/member/${mem_id}`)).data.data;
     console.log("user");
     console.log(user);
     dispatch({ type: EDIT_MYINFO, payload: user });

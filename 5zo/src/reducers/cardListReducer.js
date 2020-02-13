@@ -31,6 +31,7 @@ export default (state = {}, action) => {
       return { ...state, [cardlist.cardlist_id] :{...cardlist, cardlist_cards:[]} };
     case FETCH_LIST:
       const card = action.payload[0];
+      console.log('fetch-list')
       console.log(card)
       card.cardlist_cards = JSON.parse(card.cardlist_cards);
       return { ...state, [card.cardlist_id]: card };
