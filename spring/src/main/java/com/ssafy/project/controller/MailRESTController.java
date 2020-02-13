@@ -64,11 +64,25 @@ public class MailRESTController {
 		private String authCode;
 	}
 
-	@PostMapping("/api/email/")
+	@PostMapping("/api/email")
 	@ApiOperation("이메일 인증번호를 받는 api 입니다")
 	public ResponseEntity<Map<String, Object>> postAuth(@RequestBody RequestEmailAuth rea) {
 		service.postAuth(rea.getMem_id(), rea.getMem_email(), rea.getAuthCode());
 		return handleSuccess("이메일 인증이 완료되었습니다.");
+	}
+	
+	@NoArgsConstructor
+	@Data
+	private static class RequestEmailAsk {
+		private String mem_id;
+		private String ask_contents;
+	}
+	
+	@PostMapping("/api/email/ask")
+	@ApiOperation("운영자에게 문의 보내기 기능입니다")
+	public ResponseEntity<Map<String, Object>> emailask(@RequestBody RequestEmailAsk rea) {
+		service.emailask(rea.getMem_id(), rea.getAsk_contents());
+		return handleSuccess("이메일로 문의사항이 전달되었습니다. 불편을 드려 죄송합니다.");
 	}
 
 	@GetMapping("/api/email/findId/{mem_email}")

@@ -213,23 +213,23 @@ public class CardRESTController {
 	public ResponseEntity<Map<String, Object>> countAllDailyCard(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
 		return handleSuccess(service.countAllDailyCard(mem_id, from, to));
 	}
-
-	@GetMapping("/api/search/public/card/{mem_id}/by/{keyword}")
-	@ApiOperation("A유저가 B유저를 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchPublicCard(@PathVariable String mem_id, @PathVariable String keyword) {
-		return handleSuccess(service.searchPublicCard(mem_id, keyword));
-	}
-
-	@GetMapping("/api/search/private/card/{mem_id}/by/{keyword}")
-	@ApiOperation("A유저가 A유저를 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchPrivateCard(@PathVariable String mem_id, @PathVariable String keyword) {
-		return handleSuccess(service.searchPrivateCard(mem_id, keyword));
-	}
-
-	@GetMapping("/api/search/global/card/by/{keyword}")
-	@ApiOperation("키워드로 카드 전체 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchGlobalCard(@PathVariable String keyword) {
-		return handleSuccess(service.searchGlobalCard(keyword));
-	}
+//
+//	@GetMapping("/api/search/public/card/{mem_id}/by/{keyword}")
+//	@ApiOperation("A유저가 B유저를 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
+//	public ResponseEntity<Map<String, Object>> searchPublicCard(@PathVariable String mem_id, @PathVariable String keyword) {
+//		return handleSuccess(service.searchPublicCard(mem_id, keyword));
+//	}
+//
+//	@GetMapping("/api/search/private/card/{mem_id}/by/{keyword}")
+//	@ApiOperation("A유저가 A유저를 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
+//	public ResponseEntity<Map<String, Object>> searchPrivateCard(@PathVariable String mem_id, @PathVariable String keyword) {
+//		return handleSuccess(service.searchPrivateCard(mem_id, keyword));
+//	}
+//
+//	@GetMapping("/api/search/global/card/by/{keyword}")
+//	@ApiOperation("키워드로 카드 전체 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
+//	public ResponseEntity<Map<String, Object>> searchGlobalCard(@PathVariable String keyword) {
+//		return handleSuccess(service.searchGlobalCard(keyword));
+//	}
 
 }
