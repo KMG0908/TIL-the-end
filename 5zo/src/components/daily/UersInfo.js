@@ -34,7 +34,9 @@ class UserInfo extends React.Component {
             }} onClick={() => {
               history.push(`/search?member=${this.props.info.mem_id}`)
             }}>@{this.props.info.mem_id}</span>
-            <div>{year}년 {month}월 {date}일에 가입함</div>
+            <br></br>
+            <span classname="user_intro"> {this.props.info.mem_self_intro} </span>
+            {/* <div>{year}년 {month}월 {date}일에 가입함</div> */}
           </div>
         </div>
       )

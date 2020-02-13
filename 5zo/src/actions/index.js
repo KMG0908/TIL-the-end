@@ -188,7 +188,7 @@ export const deleteAccountSuccessReset = () => async (dispatch, getState) => {
   }
 };
 
-export const editMyinfo = (loginId, nowPw, email, nick, color, thumb) => async dispatch => {
+export const editMyinfo = (loginId, nowPw, email, nick, color, thumb, intro) => async dispatch => {
   console.log('index')
   console.log(thumb)
   if (!nowPw) {
@@ -206,7 +206,8 @@ export const editMyinfo = (loginId, nowPw, email, nick, color, thumb) => async d
     mem_email: email,
     mem_nick: nick,
     mem_color:color,
-    mem_thumb : thumb
+    mem_thumb : thumb,
+    mem_self_intro : intro
   });
 
   const data = response.data.data;

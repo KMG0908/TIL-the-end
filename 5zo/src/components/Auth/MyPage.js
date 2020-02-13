@@ -42,6 +42,7 @@ class MyPage extends Component {
               <TextWithLabel label="아이디" name="ID" value={this.props.mem_info ? this.props.mem_info.mem_id : ''} />
               <TextWithLabel label="이메일" name="email" value={this.props.mem_info ? this.props.mem_info.mem_email : ''} type="email" />
               <TextWithLabel label="닉네임" name="nick" value={this.props.mem_info ? this.props.mem_info.mem_nick : ''} />
+              <TextWithLabel label="소개글" name="intro" value={this.props.mem_info ? this.props.mem_info.mem_self_intro : ''} />
               {/* <div style={{background : this.props.mem_info.mem_color, width : '10', heigth : '10'}}/> */}
               <br></br>
 
