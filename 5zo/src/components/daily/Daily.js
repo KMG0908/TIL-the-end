@@ -11,7 +11,7 @@ class Daily extends React.Component {
       const board_lists = this.props.boards[board_id].board_lists;
       return board_lists.map(list_id => {
         if (this.props.cardLists[list_id]) {
-          return <Post list_id={list_id} key={list_id} />;
+          return <Post user_id={this.props.user_id} list_id={list_id} key={list_id} />;
         }
       });
     }

@@ -1,8 +1,8 @@
 import React from "react";
-
+import apis from '../../apis/apis'
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import {} from "../../actions";
+import { } from "../../actions";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -10,20 +10,22 @@ import LockIcon from '@material-ui/icons/Lock';
 import "typeface-roboto";
 import SubPost from "./SubPost";
 import Tag from "./Tag";
+import Switch from '@material-ui/core/Switch';
+import storage from "lib/storage";
 
 const useStyles = makeStyles(theme => ({
   paper: {
     margin: theme.spacing(2),
     padding: theme.spacing(3)
   },
-  category:{
+  category: {
     display: 'flex',
     alignItems: 'center',
     '&:hover': {
       cursor: 'pointer'
     }
   },
-  showBorder:{
+  showBorder: {
     display: 'flex',
     alignItems: 'center',
     marginBottom: '17px',
@@ -33,7 +35,7 @@ const useStyles = makeStyles(theme => ({
       cursor: 'pointer'
     }
   },
-  noContent:{
+  noContent: {
     display: 'flex',
     alignItems: 'center'
   },
@@ -52,7 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
   lock: {
     marginTop: '4px',
-    marginRight : '2px'
+    marginRight: '2px'
   }
 }));
 
@@ -66,7 +68,7 @@ const renderSubPost = props => {
 };
 
 const renderTags = props => {
-  if(props.tags[props.list_id]){
+  if (props.tags[props.list_id]) {
     return props.tags[props.list_id].map(tag => {
       return <Tag name={tag.tag_name} key={tag.tag_id}></Tag>
     })
@@ -79,13 +81,44 @@ const Post = props => {
   const icon_id = `icon${props.list_id}`
   const content_id = `content${props.list_id}`;
 
+  const [state, setState] = React.useState({
+    checked: props.cardLists[props.list_id].cardlist_secret,
+  });
+  const handleChange = name => async e => {
+    e.stopPropagation();
+    setState({ ...state, checked: e.target.checked });
+    const cardList = props.cardLists[props.list_id]
+    cardList.cardlist_secret = e.target.checked
+    // card 배열 String 으로
+    let cardList_cards_string = '['
+    cardList.cardlist_cards.map(card => cardList_cards_string = cardList_cards_string.concat(card + ','))
+    cardList_cards_string = cardList_cards_string.substr(0, cardList_cards_string.length - 1)
+    cardList_cards_string = cardList_cards_string.concat(']')
+
+    const response = await apis.put(`/cardlist`, {
+      board_id: cardList.board_id,
+      cardlist_cards: cardList_cards_string,
+      cardlist_color: cardList.cardlist_color,
+      cardlist_heart: cardList.cardlist_heard,
+      cardlist_id: cardList.cardlist_id,
+      cardlist_name: cardList.cardlist_name,
+      cardlist_secret: e.target.checked
+    })
+    console.log(response.data.data)
+  };
+  const handleClick = e => {
+    e.stopPropagation();
+  }
+
+  const loggedUser = storage.get('loggedInfo').mem_id
+
   return (
     <Paper className={classes.paper}>
-      <div id={title_id} className={!props.cardLists[props.list_id].cardlist_cards.length && !props.tags[props.list_id] ? classes.noContent : classes.showBorder} 
-        onClick={function(){
-          if(document.getElementById(icon_id).style.display !== "none"){
+      <div id={title_id} className={!props.cardLists[props.list_id].cardlist_cards.length && !props.tags[props.list_id] ? classes.noContent : classes.showBorder}
+        onClick={function () {
+          if (document.getElementById(icon_id).style.display !== "none") {
             const icon = document.getElementById(icon_id).childNodes[0].childNodes[0];
-            if(icon.getAttribute("d") === "M7 14l5-5 5 5z") {
+            if (icon.getAttribute("d") === "M7 14l5-5 5 5z") {
               icon.setAttribute("d", "M7 10l5 5 5-5z")
               document.getElementById(title_id).className = classes.showBorder;
               document.getElementById(content_id).className = classes.showContent;
@@ -97,13 +130,24 @@ const Post = props => {
             }
           }
         }}>
-        <div style={{display : props.cardLists[props.list_id].cardlist_secret ? 'inline-block' : 'none'}} className={classes.lock}>
+        <div id={'lock'} style={{ display: state.checked ? 'inline-block' : 'none' }} className={classes.lock}>
           <LockIcon></LockIcon>
         </div>
         <Typography variant="h1" className={classes.title}>
           {props.cardLists[props.list_id].cardlist_name}
         </Typography>
-        <div style={{display : !props.cardLists[props.list_id].cardlist_cards.length && !props.tags[props.list_id] ? 'none' : 'inline-block'}} id={icon_id}>
+        {props.user_id === loggedUser || 'admin' === loggedUser ?
+          <Switch
+            checked={state.checked}
+            onChange={handleChange('checked')}
+            onClick={handleClick}
+            value="checked"
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
+          />
+          :
+          null
+        }
+        <div style={{ display: !props.cardLists[props.list_id].cardlist_cards.length && !props.tags[props.list_id] ? 'none' : 'inline-block' }} id={icon_id}>
           <ArrowDropDownIcon></ArrowDropDownIcon>
         </div>
       </div>
