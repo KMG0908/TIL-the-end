@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.project.dto.Cardlist_Tag;
 import com.ssafy.project.service.Cardlist_TagService;
 
 import io.swagger.annotations.ApiOperation;
@@ -55,19 +53,17 @@ public class Cardlist_TagRESTController {
 //		int cardlist_tag_id = service.getMaxCardlistTagId();
 //		return handleSuccess(cardlist_tag_id);
 //	}
-	
+
 	@NoArgsConstructor
 	@Data
-	private static class CardlistTagRequest {
-
+	private static class RequestCardlistTag {
 		private int cardlist_id;
-
 		private String tag_name;
-	}	
-	
+	}
+
 	@PostMapping("/api/cardlist_tag/")
 	@ApiOperation("cardlist_tag 관계 신규 생성, 생성 성공시 cardlist_tag_id 반환, 태그가 없으면 만들고 있으면 그 태그를 사용한다, 대소문자 구별 있음")
-	public ResponseEntity<Map<String, Object>> insertcardlisttag(@RequestBody CardlistTagRequest request) {
+	public ResponseEntity<Map<String, Object>> insertcardlisttag(@RequestBody RequestCardlistTag request) {
 		service.insertCardlist_Tag(request.cardlist_id, request.tag_name);
 		int cardlist_tag_id = service.getMaxCardlistTagId();
 		return handleSuccess(cardlist_tag_id);

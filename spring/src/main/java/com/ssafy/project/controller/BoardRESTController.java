@@ -23,7 +23,6 @@ import com.ssafy.project.service.BoardService;
 
 import io.swagger.annotations.ApiOperation;
 
-
 @RestController
 public class BoardRESTController {
 
@@ -53,13 +52,6 @@ public class BoardRESTController {
 	}
 
 	// CREATE
-	/**
-	 * Create a Board
-	 * 
-	 * @param Board     object to be created
-	 * @param ucBuilder UriComponentBuilder
-	 * @return ResponseEntity<Void>
-	 */
 	@PostMapping("/api/board")
 	@ApiOperation("board 신규 생성, 사용자 사용 불가, 개발시에만 사용해 주세요, board_id 이외 전체 지정 가능, 생성 성공시 board_id 반환")
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Board board) {
@@ -71,15 +63,13 @@ public class BoardRESTController {
 	// READ
 	@GetMapping("/api/board/member/{mem_id}/date/{board_date}")
 	@ApiOperation("보드 유저 - 특정 날짜 조회 (오늘 이전 날짜, 오늘 날짜, 이후 날짜 (9999-12-31) 이 셋만 가능합니다")
-	public ResponseEntity<Map<String, Object>> searchUserBoardDate(@PathVariable String mem_id,
-			@PathVariable String board_date) {
+	public ResponseEntity<Map<String, Object>> searchUserBoardDate(@PathVariable String mem_id, @PathVariable String board_date) {
 		return handleSuccess(service.searchUserBoardDate(mem_id, board_date));
 	}
-	
+
 	@GetMapping("/api/board/member/{mem_id}/from/{from}/to/{to}")
 	@ApiOperation("보드 유저 - 날짜 조회")
-	public ResponseEntity<Map<String, Object>> searchUserBoardDaily(@PathVariable String mem_id,
-			@PathVariable String from ,@PathVariable String to) {
+	public ResponseEntity<Map<String, Object>> searchUserBoardDaily(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
 		return handleSuccess(service.searchUserBoardDaily(mem_id, from, to));
 	}
 
@@ -88,7 +78,7 @@ public class BoardRESTController {
 	public ResponseEntity<Map<String, Object>> boardPage(@PathVariable String mem_id, @PathVariable int page_number) {
 		return handleSuccess(service.boardPage(mem_id, page_number));
 	}
-	
+
 	@GetMapping("/api/board/{board_id}")
 	@ApiOperation("보드의 카드 리스트 조회")
 	@ResponseBody
@@ -99,8 +89,7 @@ public class BoardRESTController {
 	// UPDATE
 	@PatchMapping("/api/board/{board_id}")
 	@ApiOperation("board 정보 수정, board_lists 만 패치 가능, RequestParam이라서 주소에 lists가 노출됩니다")
-	public ResponseEntity<Map<String, Object>> patch(@PathVariable("board_id") int board_id,
-			@RequestParam("board_lists") String lists) {
+	public ResponseEntity<Map<String, Object>> patch(@PathVariable("board_id") int board_id, @RequestParam("board_lists") String lists) {
 		Board board = new Board();
 		board.setBoard_id(board_id);
 		board.setBoard_lists(lists);
@@ -108,8 +97,7 @@ public class BoardRESTController {
 		return handleSuccess(board_id + "번 보드 수정 완료");
 	}
 
-	
-	/* 사용자 사용 불가 */	
+	/* 사용자 사용 불가 */
 	@PutMapping("/api/board/")
 	@ApiOperation("board 업데이트, 사용자 사용 불가, 개발시에만 사용해 주세요")
 	public ResponseEntity<Map<String, Object>> updateBoard(@RequestBody Board board) {

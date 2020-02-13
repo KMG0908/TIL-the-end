@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.project.dao.TagDao;
-import com.ssafy.project.dto.Card;
-import com.ssafy.project.dto.CardException;
 import com.ssafy.project.dto.Cardlist_TagException;
 import com.ssafy.project.dto.Tag;
 import com.ssafy.project.dto.TagException;

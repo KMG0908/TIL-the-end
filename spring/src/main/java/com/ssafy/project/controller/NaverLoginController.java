@@ -1,6 +1,5 @@
 package com.ssafy.project.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,18 +47,16 @@ public class NaverLoginController {
 	public ResponseEntity<Map<String, Object>> handler(Exception e) {
 		return handleFail(e.getMessage(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/api/naver/login")
 	@ApiOperation("네이버로그인")
-	public ResponseEntity<Map<String, Object>> naverlogin(HttpSession session) throws Exception {		
+	public ResponseEntity<Map<String, Object>> naverlogin(HttpSession session) throws Exception {
 		return handleSuccess(naverLoginBO.getAuthorizationUrl(session));
 	}
-	
 
 	@GetMapping("/api/naver/callback")
 	@ApiOperation("네이버로그인 리다이렉트")
-	public ResponseEntity<Map<String, Object>> callback(@RequestParam String code, @RequestParam String state,
-			HttpSession session) throws Exception {
+	public ResponseEntity<Map<String, Object>> callback(@RequestParam String code, @RequestParam String state, HttpSession session) throws Exception {
 		/* 네이버 로그인, 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
 		JsonParser jp = new JsonParser();
 		OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);

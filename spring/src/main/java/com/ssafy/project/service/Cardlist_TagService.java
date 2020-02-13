@@ -2,7 +2,6 @@ package com.ssafy.project.service;
 
 import java.util.List;
 
-import com.ssafy.project.dto.Cardlist_Tag;
 import com.ssafy.project.dto.Tag;
 
 public interface Cardlist_TagService {

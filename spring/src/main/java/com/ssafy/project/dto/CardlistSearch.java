@@ -6,6 +6,9 @@ import lombok.Data;
 
 @Data
 public class CardlistSearch implements Serializable {
+	
+	private static final long serialVersionUID = 5042250024636098173L;
+	
 	private String mem_id;
 	private String mem_thumb;
 	private int board_id;

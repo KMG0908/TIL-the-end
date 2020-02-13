@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.ssafy.project.dao.BoardDao;
 import com.ssafy.project.dto.Board;
 import com.ssafy.project.dto.BoardException;
-import com.ssafy.project.dto.MemberException;
 
 @Service
 public class BoardServiceImpl implements BoardService {

@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,7 +66,7 @@ public class CommentRESTController {
 	@ApiOperation("comment 수정")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Comment comment) {
 		service.updateComment(comment);
-		return handleSuccess(comment.getComment_id()  +"번 코멘트 수정 완료");
+		return handleSuccess(comment.getComment_id() + "번 코멘트 수정 완료");
 	}
 
 	// DELETE

@@ -1,7 +1,5 @@
 package com.ssafy.project.oauth.bo;
 
-import java.util.HashMap;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 

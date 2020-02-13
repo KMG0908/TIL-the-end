@@ -89,8 +89,7 @@ public class CardRESTController {
 
 	@PostMapping("/api/file/upload/{card_id}")
 	@ApiOperation("card에 파일 추가, 파일은 서버의 upload 폴더에 카드번호 + _ + original 파일 이름으로 들어갑니다")
-	public ResponseEntity<Map<String, Object>> uploadFile(@PathVariable int card_id,
-			@RequestParam("sourceFile") MultipartFile sourceFile) throws IOException {
+	public ResponseEntity<Map<String, Object>> uploadFile(@PathVariable int card_id, @RequestParam("sourceFile") MultipartFile sourceFile) throws IOException {
 		String sourceFileName = sourceFile.getOriginalFilename();
 //		System.out.println(sourceFileName);
 //        String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
@@ -122,7 +121,7 @@ public class CardRESTController {
 
 		service.uploadFile(card_id, destinationFileName);
 
-		UploadAttachmentResponse response = new UploadAttachmentResponse();
+		ResponseCardAttachmentFileUpload response = new ResponseCardAttachmentFileUpload();
 		response.setFileName(sourceFile.getOriginalFilename());
 		response.setFileSize(sourceFile.getSize());
 		response.setFileContentType(sourceFile.getContentType());
@@ -131,8 +130,7 @@ public class CardRESTController {
 
 	@GetMapping("/api/file/download/{card_id}")
 	@ApiOperation("카드에 첨부된 파일 다운로드")
-	public ResponseEntity<Map<String, Object>> downloadFile(@PathVariable int card_id, HttpServletResponse response)
-			throws Exception {
+	public ResponseEntity<Map<String, Object>> downloadFile(@PathVariable int card_id, HttpServletResponse response) throws Exception {
 
 		// 카드 번호에 저장된 파일 이름을 불러온다
 		String storedFileName = service.getFileName(card_id);
@@ -140,8 +138,7 @@ public class CardRESTController {
 
 		response.setContentType("application/octet-stream");
 		response.setContentLength(fileByte.length);
-		response.setHeader("Content-Disposition",
-				"attachment; fileName=\"" + URLEncoder.encode(storedFileName.split("_")[1], "UTF-8") + "\";");
+		response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(storedFileName.split("_")[1], "UTF-8") + "\";");
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.getOutputStream().write(fileByte);
 		response.getOutputStream().flush();
@@ -152,12 +149,9 @@ public class CardRESTController {
 
 	@NoArgsConstructor
 	@Data
-	private static class UploadAttachmentResponse {
-
+	private static class ResponseCardAttachmentFileUpload {
 		private String fileName;
-
 		private String fileContentType;
-
 		private long fileSize;
 	}
 
@@ -165,7 +159,7 @@ public class CardRESTController {
 	@DeleteMapping("/api/card/{card_id}")
 	@ApiOperation("card 정보 전체 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int card_id) {
-		
+
 		String storedFileName = service.getFileName(card_id);
 		if (storedFileName != null) {
 			File file = new File("/home/ubuntu/upload/" + storedFileName);
@@ -179,7 +173,7 @@ public class CardRESTController {
 				System.out.println("기존 파일이 존재하지 않습니다.");
 			}
 		}
-		
+
 		service.deleteCard(card_id);
 		return handleSuccess("삭제 완료");
 	}
@@ -187,7 +181,7 @@ public class CardRESTController {
 	@DeleteMapping("/api/file/delete/{card_id}")
 	@ApiOperation("card 첨부 파일만 삭제")
 	public ResponseEntity<Map<String, Object>> deleteFile(@PathVariable int card_id) {
-		
+
 		String storedFileName = service.getFileName(card_id);
 		if (storedFileName != null) {
 			File file = new File("/home/ubuntu/upload/" + storedFileName);
@@ -201,7 +195,7 @@ public class CardRESTController {
 				System.out.println("기존 파일이 존재하지 않습니다.");
 			}
 		}
-		
+
 		service.deleteFile(card_id);
 		return handleSuccess("삭제 완료");
 	}
@@ -210,29 +204,25 @@ public class CardRESTController {
 
 	@GetMapping("/api/card/daily/public/{mem_id}/from/{from}/to/{to}")
 	@ApiOperation("사용자 아이디를 통해 날짜별로 공개된 카드의 개수를 구하는 기능, 날짜가 board_date, 개수가 board_id로 출력됩니다.")
-	public ResponseEntity<Map<String, Object>> countPublicDailyCard(@PathVariable String mem_id,
-			@PathVariable String from, @PathVariable String to) {
+	public ResponseEntity<Map<String, Object>> countPublicDailyCard(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
 		return handleSuccess(service.countPublicDailyCard(mem_id, from, to));
 	}
 
 	@GetMapping("/api/card/daily/private/{mem_id}/from/{from}/to/{to}")
 	@ApiOperation("사용자 아이디를 통해 날짜별로 전체(비공개 포함) 카드의 개수를 구하는 기능, 날짜가 board_date, 개수가 board_id로 출력됩니다.")
-	public ResponseEntity<Map<String, Object>> countAllDailyCard(@PathVariable String mem_id, @PathVariable String from,
-			@PathVariable String to) {
+	public ResponseEntity<Map<String, Object>> countAllDailyCard(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
 		return handleSuccess(service.countAllDailyCard(mem_id, from, to));
 	}
 
 	@GetMapping("/api/search/public/card/{mem_id}/by/{keyword}")
 	@ApiOperation("A유저가 B유저를 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchPublicCard(@PathVariable String mem_id,
-			@PathVariable String keyword) {
+	public ResponseEntity<Map<String, Object>> searchPublicCard(@PathVariable String mem_id, @PathVariable String keyword) {
 		return handleSuccess(service.searchPublicCard(mem_id, keyword));
 	}
 
 	@GetMapping("/api/search/private/card/{mem_id}/by/{keyword}")
 	@ApiOperation("A유저가 A유저를 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchPrivateCard(@PathVariable String mem_id,
-			@PathVariable String keyword) {
+	public ResponseEntity<Map<String, Object>> searchPrivateCard(@PathVariable String mem_id, @PathVariable String keyword) {
 		return handleSuccess(service.searchPrivateCard(mem_id, keyword));
 	}
 

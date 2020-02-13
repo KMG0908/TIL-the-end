@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class Member implements Serializable {
 
+	private static final long serialVersionUID = 1264392908608406523L;
+	
 	private String mem_id;
 	private String mem_email;
 	private String mem_pw;

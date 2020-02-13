@@ -125,7 +125,7 @@
 			where ct.tag_id = t.tag_id
 			group by ct.cardlist_id) tag on cl.cardlist_id = tag.cardlist_id) tag
     where 1=1 
-    and b.board_date < now()
+    and b.board_date < curdate()
     and b.mem_id = m.mem_id
     ]]>
 		<if test="mem_id != null">

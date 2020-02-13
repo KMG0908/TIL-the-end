@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,40 +87,35 @@ public class TagRESTController {
 	public ResponseEntity<Map<String, Object>> privatetagcloud(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
 		return handleSuccess(service.privatetagcloud(mem_id, from, to));
 	}
-	
+
 	@GetMapping("/api/tag/public/{mem_id}/from/{from}/to/{to}")
 	@ApiOperation("공개된 회원의 태그를 목록으로 조회하는 기능, *주의* tag_id가 공개된 카드리스트에서의 태그 사용횟수입니다")
 	public ResponseEntity<Map<String, Object>> publictagcloud(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
 		return handleSuccess(service.publictagcloud(mem_id, from, to));
 	}
-	
-	
-	
+
 	@GetMapping("/api/search/public/tag/{mem_id}/by/{keyword}")
 	@ApiOperation("A유저가 B유저를 검색) 특정문자열을 tag_name 에서 포함여부를 찾아서 tag 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchPublicTag(@PathVariable String mem_id,
-			@PathVariable String keyword) {
+	public ResponseEntity<Map<String, Object>> searchPublicTag(@PathVariable String mem_id, @PathVariable String keyword) {
 		return handleSuccess(service.searchPublicTag(mem_id, keyword));
 	}
-	
+
 	@GetMapping("/api/search/private/tag/{mem_id}/by/{keyword}")
 	@ApiOperation("A유저가 A유저를 검색) 특정문자열을 tag_name 에서 포함여부를 찾아서 tag 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchPrivateTag(@PathVariable String mem_id,
-			@PathVariable String keyword) {
+	public ResponseEntity<Map<String, Object>> searchPrivateTag(@PathVariable String mem_id, @PathVariable String keyword) {
 		return handleSuccess(service.searchPrivateTag(mem_id, keyword));
 	}
-	
+
 	@GetMapping("/api/search/global/tag/by/{keyword}")
 	@ApiOperation("키워드로 카드 전체 검색) 특정문자열을 tag_name 에서 포함여부를 찾아서 tag 배열 반환하는 쿼리문")
 	public ResponseEntity<Map<String, Object>> searchGlobalTag(@PathVariable String keyword) {
 		return handleSuccess(service.searchGlobalTag(keyword));
 	}
-	
+
 	@GetMapping("/api/search/global/tag/")
 	@ApiOperation("공개된 전체 tag 배열을 반환하는 쿼리문")
 	public ResponseEntity<Map<String, Object>> globalTag() {
 		return handleSuccess(service.globalTag());
 	}
-	
 
 }
