@@ -3,6 +3,7 @@ import apis from "../apis/apis";
 import {
   // MEMBER
   FETCH_MEMBERS,
+  GET_ALL_MEMBERS,
   LOGIN,
   LOGIN_ERR,
   REGISTER,
@@ -71,6 +72,17 @@ import storage from "lib/storage";
 export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
   await dispatch({ type: FETCH_MEMBERS, payload: response.data.data });
+};
+export const getAllMember = () => async dispatch => {
+  const response = await apis.get("/member");
+
+  const datas = response.data.data;
+  const data_ = [];
+  datas.map(data =>
+    data.mem_id !== "admin" ? data_.push("@" + data.mem_id) : null
+  );
+  data_.sort();
+  await dispatch({ type: GET_ALL_MEMBERS, payload: data_ });
 };
 
 export const login = (loginId, loginPw) => async dispatch => {
@@ -207,7 +219,8 @@ export const editMyinfo = (
     mem_email: email,
     mem_nick: nick,
     mem_color: color,
-    mem_thumb: thumb
+    mem_thumb: thumb,
+    mem_self_intro: intro
   });
 
   const data = response.data.data;
@@ -238,18 +251,16 @@ export const memInfoChangeReset = () => async (dispatch, getState) => {
     dispatch({ type: EDIT_MYINFO_CHANGE_RESET });
   }
 };
-
-export const editMyColor = (mem_id, color) => async (dispatch, getState) => {
-  const color_encode = encodeURIComponent(color);
-  const response = await apis.patch(`/member/${mem_id}/color/${color_encode}`);
-
+export const editMyDefSecret = (mem_id, checked) => async (
+  dispatch,
+  getState
+) => {
+  const response = await apis.patch(`/member/postdef/${mem_id}`);
+  console.log(response);
   const data = response.data.data;
 
-  console.log("data");
-  console.log(data);
-
   if (data) {
-    const user = await (await apis.get(`/member/${mem_id}`)).data.data;
+    const user = (await apis.get(`/member/${mem_id}`)).data.data;
     console.log("user");
     console.log(user);
     dispatch({ type: EDIT_MYINFO, payload: user });
@@ -257,7 +268,22 @@ export const editMyColor = (mem_id, color) => async (dispatch, getState) => {
     dispatch({ type: EDIT_MY_COLOR_FAIL });
   }
 };
+export const editMyColor = (mem_id, color) => async (dispatch, getState) => {
+  const color_encode = encodeURIComponent(color);
+  const response = await apis.patch(`/member/${mem_id}/color/${color_encode}`);
 
+  console.log("data");
+  console.log(data);
+
+  if (data) {
+    const user = await apis.get(`/member/${mem_id}`).data.data;
+    console.log("user");
+    console.log(user);
+    dispatch({ type: EDIT_MYINFO, payload: user });
+  } else {
+    dispatch({ type: EDIT_MY_COLOR_FAIL });
+  }
+};
 export const editMyColorFailReset = () => async (dispatch, getState) => {
   if (getState().members.mem_color_change_fail) {
     dispatch({ type: EDIT_MY_COLOR_FAIL });
@@ -423,7 +449,7 @@ export const addList = (board_id, cardlist_name, board_date) => async (
   }
 
   const cardlist_cards = "[]";
-  const cardlist_secret = 0;
+  const cardlist_secret = getState().members.mem_info.mem_post_def_secret;
   const cardlist_color = "#94C9A9";
   const response = await apis.post(`/cardlist`, {
     board_id,
