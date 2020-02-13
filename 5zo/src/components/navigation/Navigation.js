@@ -206,7 +206,7 @@ function Navigation(props) {
             >
               {props.mem_info ? (
                 <>
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
                   <MenuItem onClick={myPage}>My Page</MenuItem>
                   {/* <MenuItem onClick={mySetting}>My Setting</MenuItem> */}
                   <MenuItem onClick={logout}>Logout</MenuItem>

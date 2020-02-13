@@ -18,12 +18,13 @@ class MyPageEdit extends Component {
       nowPw: '',
       email: this.props.mem_info ? this.props.mem_info.mem_email : '',
       nick: this.props.mem_info ? this.props.mem_info.mem_nick : '',
+      intro : this.props.mem_info ? this.props.mem_info.mem_self_intro : '',
       croppedImageUrl: this.props.mem_info ? this.props.mem_info.mem_thumb : null,
       src: null,
       crop: {
         unit: '%',
         width: 30,
-        height : 30,  
+        height: 30,
         aspect: 1 / 1,
       },
       open: false,
@@ -90,9 +91,9 @@ class MyPageEdit extends Component {
       crop.width,
       crop.height
     );
-      console.log('ctx=================')
-      console.log(ctx)
-      return canvas.toDataURL('img/jpeg')
+    console.log('ctx=================')
+    console.log(ctx)
+    return canvas.toDataURL('img/jpeg')
     // return new Promise((resolve, reject) => {
     //   canvas.toBlob(blob => {
     //     if (!blob) {
@@ -128,6 +129,10 @@ class MyPageEdit extends Component {
           nick: value
         })
         break;
+      case 'intro':
+        this.setState({
+          intro: value
+        })
     }
   }
   editMyinfo() {
@@ -137,7 +142,7 @@ class MyPageEdit extends Component {
       return;
     }
 
-    this.props.editMyinfo(this.props.mem_info.mem_id, this.state.nowPw, this.state.email, this.state.nick, this.props.mem_info.mem_color, this.state.croppedImageUrl)
+    this.props.editMyinfo(this.props.mem_info.mem_id, this.state.nowPw, this.state.email, this.state.nick, this.props.mem_info.mem_color, this.state.croppedImageUrl, this.state.intro)
   }
   cancelEditMyinfo = () => {
     history.push("/mypage")
@@ -173,7 +178,7 @@ class MyPageEdit extends Component {
           <AuthWrapper>
             <AuthContent title="내 정보 수정">
               <div>
-                <input type="file" accept="image/*" onChange={this.onSelectFile}  />
+                <input type="file" accept="image/*" onChange={this.onSelectFile} />
               </div>
               <Dialog aria-labelledby="simple-dialog-title" open={this.state.open}>
                 {src && (
@@ -187,16 +192,17 @@ class MyPageEdit extends Component {
                     onChange={this.onCropChange}
                   />
                 )}
-              <AuthButton onClick={this.handleClose}> 확인 </AuthButton>
+                <AuthButton onClick={this.handleClose}> 확인 </AuthButton>
               </Dialog>
 
               {croppedImageUrl && (
-                <img alt="Crop" style={{ maxWidth: '100%' , borderRadius : '50%'}} src={croppedImageUrl} />
+                <img alt="Crop" style={{ maxWidth: '100%', borderRadius: '50%' }} src={croppedImageUrl} />
               )}
               {/* 로그인한 member 의 데이터를 아래 TextWithLabel 들의 value 에 줘야함. */}
               <TextWithLabel label="아이디" name="id" value={this.props.mem_info ? this.props.mem_info.mem_id : ''} />
               <InputWithLabel label="이메일" name="email" type="email" value={this.state.email} onChange={this.handleChange} />
               <InputWithLabel label="닉네임" name="nick" value={this.state.nick} onChange={this.handleChange} />
+              <InputWithLabel label="소개글" name="intro" value={this.state.intro} onChange={this.handleChange} />
               <br /><br />
               <PasswordWithLabel label="현재 비밀번호" id="nowPw" name="nowPw" placeholder={"수정하려면 현재 비밀번호를 입력하세요"} value={this.state.nowPw} onChange={this.handleChange} />
               {this.props.edit_myinfo_err}

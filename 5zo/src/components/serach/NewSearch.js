@@ -1,30 +1,31 @@
 import React, { Component } from 'react';
 import Chips from './ChipLibrary/Chips'
 import { connect } from 'react-redux';
-import { getAllTag, searchCardlist } from 'actions';
+import { getAllTag, searchCardlist, getAllMember } from 'actions';
 import NewCard from './NewCard'
 import apis from "../../apis/apis";
 import InfiniteScroll from 'react-infinite-scroller';
+import queryString from 'query-string'
 
 const widthPer = 600
 
 class NewSearch extends Component {
   componentDidMount() {
     this.props.getAllTag()
-
+    this.props.getAllMember()
   }
 
   constructor(props) {
     super(props);
+    const query = queryString.parse(props.location.search)
     this.state = {
-      chips: [],
+      chips: query ? (query.tag ? [`#${query.tag}`] : (query.member ? [`@${query.member}`] : [])) : [],
       cardLists: [],
       page: 1,
       limit: 5,
       stateFun : this.loader(),
       state : 'loader'
     }
-    let update = false
   }
 
   onChange = chips => {
@@ -70,6 +71,7 @@ class NewSearch extends Component {
 
 
   render() {
+    const {tags, members} = this.props
     return (
       <>
         <div style={{ position: "relative", textAlign: "center" }}>
@@ -78,9 +80,9 @@ class NewSearch extends Component {
             <div style={{ textAlign: 'left' }}>
               <Chips
                 value={this.state.chips}
-                placeholder={`태그 : # + keyword , 유저 : @ + keyword , 검색 키워드 : keyword`}
+                placeholder={`태그 : # + tag , 유저 : @ + user_id , 검색 키워드 : keyword`}
                 onChange={this.onChange}
-                suggestions={this.props.tags ? this.props.tags : []}
+                suggestions={(tags || members) ? tags.concat(members) : []}
               />
             </div>
             <div>
@@ -104,8 +106,9 @@ class NewSearch extends Component {
 const mapStatetoProps = state => {
   return {
     tags: state.tag.tags,
+    members : state.members.members,
     cardLists: state.search.cardLists
   };
 }
 
-export default connect(mapStatetoProps, { getAllTag, searchCardlist })(NewSearch)
+export default connect(mapStatetoProps, { getAllTag, getAllMember, searchCardlist })(NewSearch)
