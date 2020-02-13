@@ -3,6 +3,7 @@ import apis from "../apis/apis";
 import {
   // MEMBER
   FETCH_MEMBERS,
+  GET_ALL_MEMBERS,
   LOGIN,
   LOGIN_ERR,
   REGISTER,
@@ -67,6 +68,15 @@ import storage from "lib/storage";
 export const fetchMembers = () => async dispatch => {
   const response = await apis.get("/member");
   await dispatch({ type: FETCH_MEMBERS, payload: response.data.data });
+};
+export const getAllMember = () => async dispatch => {
+  const response = await apis.get("/member");
+  
+  const datas = response.data.data;
+  const data_ = [];
+  datas.map(data => data.mem_id !== "admin" ? data_.push("@" + data.mem_id) : null);
+  data_.sort();
+  await dispatch({ type: GET_ALL_MEMBERS, payload: data_ });
 };
 
 export const login = (loginId, loginPw) => async dispatch => {

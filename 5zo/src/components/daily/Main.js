@@ -12,7 +12,7 @@ class Main extends React.Component{
 
     let user_id = this.props.match.params.user_id
     if(!user_id) user_id = storage.get('loggedInfo').mem_id
-    
+    console.log('=========== now state.id : ' + user_id)
     let date = this.props.match.params.date;
     if(!date) date = new Date();
     else date = new Date(date.substr(0, 4), date.substr(4, 2) * 1 - 1, date.substr(6, 2));
@@ -39,6 +39,7 @@ class Main extends React.Component{
     this.onHandleDate = this.onHandleDate.bind(this);
   }
   componentDidMount(){
+    console.log('mount')
     this.props.setEditModeList(null);
     this.props.fetchDailyLists(
       this.state.user_id,
@@ -84,12 +85,18 @@ class Main extends React.Component{
     );
   }
   render(){
+    const now_user_id = (this.props.match.params.user_id || storage.get('loggedInfo').mem_id)
+    if(this.state.user_id !== (this.props.match.params.user_id || storage.get('loggedInfo').mem_id)){
+      this.setState({
+        user_id : now_user_id
+      })
+    }
     return(
-      <>
+      <div key={`div${this.state.user_id}`}>
         <UserInfo user_id={this.state.user_id}></UserInfo>
-        <Heatmap user_id={this.state.user_id} onHandleDate={this.onHandleDate}></Heatmap>
-        <Daily user_id={this.state.user_id} date={this.state.date} onHandleDate={this.onHandleDate}></Daily>
-      </>
+        <Heatmap user_id={this.state.user_id}  onHandleDate={this.onHandleDate}></Heatmap>
+        <Daily user_id={this.state.user_id}  date={this.state.date} onHandleDate={this.onHandleDate}></Daily>
+      </div>
     );
   }
 }
