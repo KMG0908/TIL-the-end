@@ -14,24 +14,24 @@
 	</insert>
 	
 	<select id="searchAll" resultType="member">
-		select mem_id, mem_email, mem_nick, mem_auth, mem_reg_date, mem_thumb, mem_color, mem_font, mem_self_intro
+		select mem_id, mem_email, mem_nick, mem_auth, mem_reg_date, mem_thumb, mem_color, mem_font, mem_post_def_secret, mem_self_intro
 		from mem_info
 	</select>
 	
 	<select id="searchByIdLike" parameterType="string" resultType="member">
-		select mem_id, mem_email, mem_nick, mem_auth, mem_reg_date, mem_thumb, mem_color, mem_font, mem_self_intro
+		select mem_id, mem_email, mem_nick, mem_auth, mem_reg_date, mem_thumb, mem_color, mem_font, mem_post_def_secret, mem_self_intro
 		from mem_info
 		where mem_id LIKE concat('%',#{mem_id},'%')
 	</select>
 	
 	<select id="searchByNickLike" parameterType="string" resultType="member">
-		select mem_id, mem_email, mem_nick, mem_auth, mem_reg_date, mem_thumb, mem_color, mem_font, mem_self_intro
+		select mem_id, mem_email, mem_nick, mem_auth, mem_reg_date, mem_thumb, mem_color, mem_font, mem_post_def_secret, mem_self_intro
 		from mem_info
 		where mem_nick LIKE concat('%',#{mem_nick},'%')
 	</select>
 	
 	<select id="search" parameterType="string" resultType="member">
-		select mem_id, mem_email, mem_nick, mem_auth, mem_reg_date, mem_thumb, mem_color, mem_font, mem_self_intro
+		select mem_id, mem_email, mem_nick, mem_auth, mem_reg_date, mem_thumb, mem_color, mem_font, mem_post_def_secret, mem_self_intro
 		from mem_info
 		where mem_id = #{mem_id}
 	</select>

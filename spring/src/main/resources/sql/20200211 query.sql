@@ -52,11 +52,14 @@ CREATE TABLE `card` (
 CREATE TABLE `comment` (
 	`comment_id`			int				NOT NULL 		primary key		auto_increment,
 	`cardlist_id`			int				NOT NULL,
+	`mem_id`				varchar(255)	NOT NULL,
 	`comment_time`			datetime		NULL,
 	`comment_contents`		text			NULL,
-	`comment_modified`		boolean			NULL,
-	`comment_deleted`		boolean			NULL,
-	`comment_secret`		boolean			NULL
+	`comment_modified`		boolean			DEFAULT			false,
+	`comment_modified_time` datetime		NULL,
+	`comment_deleted`		boolean			DEFAULT			false,
+	`comment_secret`		boolean			DEFAULT			false,
+	`comment_reply` 		int				DEFAULT			0
 );
 
 CREATE TABLE `tag` (

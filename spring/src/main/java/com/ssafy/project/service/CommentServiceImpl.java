@@ -16,8 +16,14 @@ public class CommentServiceImpl implements CommentService {
 	private CommentDao dao;
 
 	@Override
-	public void insertComment(Comment comment) {
+	public void insertComment(String mem_id, int cardlist_id, String comment_contents, boolean comment_secret, int comment_reply) {
 		try {
+			Comment comment = new Comment();
+			comment.setCardlist_id(cardlist_id);
+			comment.setMem_id(mem_id);
+			comment.setComment_contents(comment_contents);
+			comment.setComment_secret(comment_secret);
+			comment.setComment_reply(comment_reply);
 			dao.insertComment(comment);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -36,12 +42,16 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void updateComment(Comment comment) {
+	public void updateComment(int comment_id, String comment_contents, boolean comment_secret) {
 		try {
+			Comment comment = new Comment();
+			comment.setComment_id(comment_id);
+			comment.setComment_contents(comment_contents);
+			comment.setComment_secret(comment_secret);			
 			dao.updateComment(comment);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new CommentException(comment.getComment_id() + "번 코멘트 수정 중 오류 발생");
+			throw new CommentException(comment_id + "번 코멘트 수정 중 오류 발생");
 		}
 
 	}

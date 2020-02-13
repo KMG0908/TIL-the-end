@@ -73,7 +73,7 @@ public class Application implements WebMvcConfigurer {
 				.title("TIL THE END PROJECT REST API")
 				.description("프론트에서 사용할 수 있는 api입니다.")
 				.license("5zo company")
-				.version("0.1.36")
+				.version("0.1.37")
 				.build();
 	}
 
