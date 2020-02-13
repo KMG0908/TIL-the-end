@@ -162,6 +162,7 @@ public class CardlistServiceImpl implements CardlistService {
 			String[] list = keyword.split(",");
 			List<String> keywordlist = new ArrayList<String>();
 			List<String> taglist = new ArrayList<String>();
+			String mem_id = null;
 			for (int i = 0; i < list.length; i++) {
 //				if (list[i].equals("")) {
 //					continue;
@@ -169,6 +170,8 @@ public class CardlistServiceImpl implements CardlistService {
 
 				if (list[i].startsWith("#")) {
 					taglist.add(list[i].substring(1));
+				} else if (list[i].startsWith("@")) {
+					mem_id = list[i].substring(1);
 				} else {
 					keywordlist.add(list[i]);
 				}
@@ -178,6 +181,7 @@ public class CardlistServiceImpl implements CardlistService {
 
 			params.put("keywordlist", keywordlist); // map에 list를 넣는다.
 			params.put("taglist", taglist); // map에 list를 넣는다.
+			params.put("mem_id", mem_id);
 			// limit * (page-1) 부터 limit 개
 			// 0부터 시작한다
 			params.put("start", limit * (page - 1));

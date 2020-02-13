@@ -125,10 +125,12 @@
 			where ct.tag_id = t.tag_id
 			group by ct.cardlist_id) tag on cl.cardlist_id = tag.cardlist_id) tag
     where 1=1 
-    and b.mem_id = m.mem_id
     and b.board_date < now()
+    and b.mem_id = m.mem_id
     ]]>
-
+		<if test="mem_id != null">
+			and b.mem_id = #{mem_id}
+		</if>
 		<if test="keywordlist.size != 0">
 			<foreach collection="keywordlist" item="item" index="index">
 				and ( c.card_contents like concat ('%',#{item},'%')
