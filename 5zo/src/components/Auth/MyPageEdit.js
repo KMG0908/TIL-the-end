@@ -6,7 +6,9 @@ import storage from 'lib/storage';
 import PasswordWithLabel from './PasswordWithLabel';
 import history from '../../history'
 import Dialog from '@material-ui/core/Dialog';
-
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import ClearIcon from '@material-ui/icons/Clear';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -23,8 +25,13 @@ class MyPageEdit extends Component {
       src: null,
       crop: {
         unit: '%',
+<<<<<<< HEAD
         width: 30,
         height: 30,
+=======
+        width: 70,
+        height: 70,
+>>>>>>> kmg
         aspect: 1 / 1,
       },
       open: false,
@@ -44,6 +51,7 @@ class MyPageEdit extends Component {
       reader.readAsDataURL(e.target.files[0]);
       // 여기에 다이얼로그 여는거.
       this.handleClickOpen()
+      e.target.value = null;
     }
   };
   // If you setState the crop in here you should return false.
@@ -91,6 +99,7 @@ class MyPageEdit extends Component {
       crop.width,
       crop.height
     );
+<<<<<<< HEAD
     console.log('ctx=================')
     console.log(ctx)
     return canvas.toDataURL('img/jpeg')
@@ -109,6 +118,9 @@ class MyPageEdit extends Component {
     //     resolve(this.fileUrl);
     //   }, 'image/jpeg');
     // });
+=======
+    return canvas.toDataURL('image/jpeg')
+>>>>>>> kmg
   }
 
   handleChange(event) {
@@ -152,7 +164,11 @@ class MyPageEdit extends Component {
       open: true
     })
   };
+  setProfileImg = () => {
+    document.getElementById("profile_image").src = this.state.croppedImageUrl;
+    this.handleClose();
 
+  }
   handleClose = () => {
     this.setState({
       open: false
@@ -170,20 +186,38 @@ class MyPageEdit extends Component {
       alert('회원정보 수정 완료')
       history.push("/mypage")
     }
-    console.log(this.state)
-    return (
 
+    let image;
+    if (this.props.mem_info.mem_thumb) image = this.props.mem_info.mem_thumb;
+    else image = "https://www.gravatar.com/avatar/bc05615a975020a24c81da899a113e23?d=mm&s=90"
+    image = image.replace("blob:", "");
+
+    return (
       <div style={{ textAlign: 'center' }}>
         <div style={{ display: 'inline-block', width: 500 }}>
           <AuthWrapper>
             <AuthContent title="내 정보 수정">
               <div>
+<<<<<<< HEAD
                 <input type="file" accept="image/*" onChange={this.onSelectFile} />
+=======
+                <input accept="image/*" style={{display: 'none'}} id="upload_btn" type="file" onChange={this.onSelectFile}/>
+                <label htmlFor="upload_btn">
+                  <Button variant="outlined" component="span">
+                    Upload
+                  </Button>
+                </label>
+>>>>>>> kmg
               </div>
               <Dialog aria-labelledby="simple-dialog-title" open={this.state.open}>
+                <div>
+                  <IconButton aria-label="clear" onClick={this.handleClose}>
+                    <ClearIcon />
+                  </IconButton>
+                  <Button color="primary" style={{float: 'right', height: '48px'}} onClick={this.setProfileImg}>확인</Button>
+                </div>
                 {src && (
                   <ReactCrop
-                    locked
                     src={src}
                     crop={crop}
                     ruleOfThirds
@@ -192,12 +226,19 @@ class MyPageEdit extends Component {
                     onChange={this.onCropChange}
                   />
                 )}
+<<<<<<< HEAD
                 <AuthButton onClick={this.handleClose}> 확인 </AuthButton>
               </Dialog>
 
               {croppedImageUrl && (
                 <img alt="Crop" style={{ maxWidth: '100%', borderRadius: '50%' }} src={croppedImageUrl} />
               )}
+=======
+              </Dialog>
+
+              <img id="profile_image" src={image} alt="image" style={{ width: '90px', height: '90px', borderRadius: '50%' }} />
+
+>>>>>>> kmg
               {/* 로그인한 member 의 데이터를 아래 TextWithLabel 들의 value 에 줘야함. */}
               <TextWithLabel label="아이디" name="id" value={this.props.mem_info ? this.props.mem_info.mem_id : ''} />
               <InputWithLabel label="이메일" name="email" type="email" value={this.state.email} onChange={this.handleChange} />

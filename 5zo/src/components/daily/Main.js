@@ -39,9 +39,6 @@ class Main extends React.Component {
       user_id: user_id
     };
 
-    // const d = date.replace(/-/gi, "");
-    // this.props.history.replace(`/daily/${user_id}/${d}`);
-
     this.onHandleDate = this.onHandleDate.bind(this);
   }
   componentDidMount() {
@@ -63,8 +60,8 @@ class Main extends React.Component {
       }
     }
 
-    // const d = date.replace(/-/gi, "");
-    // this.props.history.replace(`/daily/${this.state.user_id}/${d}`);
+    const d = date.replace(/-/gi, "");
+    this.props.history.replace(`/daily/${this.state.user_id}/${d}`);
   }
   date_to_str(format, separator) {
     let year = format.getFullYear();
