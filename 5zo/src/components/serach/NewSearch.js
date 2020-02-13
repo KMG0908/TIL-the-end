@@ -26,7 +26,6 @@ class NewSearch extends Component {
       stateFun : this.loader(),
       state : 'loader'
     }
-    let update = false
   }
 
   onChange = chips => {

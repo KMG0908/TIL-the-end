@@ -235,7 +235,20 @@ export const memInfoChangeReset = () => async (dispatch, getState) => {
     dispatch({ type: EDIT_MYINFO_CHANGE_RESET });
   }
 };
+export const editMyDefSecret = (mem_id, checked) => async(dispatch, getState) => {
+  const response = await apis.patch(`/member/postdef/${mem_id}`)
+  console.log(response)
+  const data = response.data.data
 
+  if(data) {
+    const user =  (await apis.get(`/member/${mem_id}`)).data.data
+    console.log('user')
+    console.log(user)
+    dispatch({ type: EDIT_MYINFO, payload: user });
+  }else{
+    dispatch({ type : EDIT_MY_COLOR_FAIL})
+  }
+}
 export const editMyColor = (mem_id, color) => async(dispatch, getState) => {
   const color_encode = encodeURIComponent(color)
   const response = await apis.patch(`/member/${mem_id}/color/${color_encode}`)
@@ -246,7 +259,7 @@ export const editMyColor = (mem_id, color) => async(dispatch, getState) => {
   console.log(data)
   
   if (data) {
-    const user = await (await apis.get(`/member/${mem_id}`)).data.data
+    const user =  await (apis.get(`/member/${mem_id}`)).data.data
     console.log('user')
     console.log(user)
     dispatch({ type: EDIT_MYINFO, payload: user });
@@ -254,7 +267,6 @@ export const editMyColor = (mem_id, color) => async(dispatch, getState) => {
     dispatch({ type : EDIT_MY_COLOR_FAIL})
   }
 }
-
 export const editMyColorFailReset = () => async (dispatch, getState) => {
   if (getState().members.mem_color_change_fail) {
     dispatch({ type: EDIT_MY_COLOR_FAIL});
@@ -420,7 +432,7 @@ export const addList = (board_id, cardlist_name, board_date) => async (
   }
 
   const cardlist_cards = "[]";
-  const cardlist_secret = 0;
+  const cardlist_secret = getState().members.mem_info.mem_post_def_secret;
   const cardlist_color = "#94C9A9";
   const response = await apis.post(`/cardlist`, {
     board_id,

@@ -61,7 +61,6 @@ const useStyles = makeStyles(theme => ({
 const renderSubPost = props => {
   return props.cardLists[props.list_id].cardlist_cards.map(card_id => {
     if (props.cards[card_id]) {
-      console.log(props.cards[card_id])
       return <SubPost card_id={card_id} key={card_id} />;
     }
   });
@@ -104,7 +103,6 @@ const Post = props => {
       cardlist_name: cardList.cardlist_name,
       cardlist_secret: e.target.checked
     })
-    console.log(response.data.data)
   };
   const handleClick = e => {
     e.stopPropagation();
@@ -141,7 +139,6 @@ const Post = props => {
             checked={state.checked}
             onChange={handleChange('checked')}
             onClick={handleClick}
-            value="checked"
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
           :
