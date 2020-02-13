@@ -7,28 +7,45 @@ import ReactTooltip from 'react-tooltip';
 import './heatmap.css';
 import moment from "moment"
 import storage from 'lib/storage';
-
-
-
+import Button from '@material-ui/core/Button';
 let lastDay = new Date();
-class Heatmap extends React.Component {
-  constructor(props){
-    super(props);
 
+class Heatmap extends React.Component {
+  
+  constructor(props) {
+    super(props);
     this.state = {
-      data: []
+      data: [],
+      col0: false,
+      col1: false,
+      col2: false,
+      col3: false,
+      col4: false
     }
+  }
+  getTintedColor(color, v) {
+    if (color.length > 6) { color = color.substring(1, color.length) }
+    var rgb = parseInt(color, 16);
+    var r = Math.abs(((rgb >> 16) & 0xFF) + v); if (r > 255) r = r - (r - 255);
+    var g = Math.abs(((rgb >> 8) & 0xFF) + v); if (g > 255) g = g - (g - 255);
+    var b = Math.abs((rgb & 0xFF) + v); if (b > 255) b = b - (b - 255);
+    r = Number(r < 0 || isNaN(r)) ? 0 : ((r > 255) ? 255 : r).toString(16);
+    if (r.length == 1) r = '0' + r;
+    g = Number(g < 0 || isNaN(g)) ? 0 : ((g > 255) ? 255 : g).toString(16);
+    if (g.length == 1) g = '0' + g;
+    b = Number(b < 0 || isNaN(b)) ? 0 : ((b > 255) ? 255 : b).toString(16);
+    if (b.length == 1) b = '0' + b;
+    return "#" + r + g + b;
   }
   componentDidMount() {
     const user_id = this.props.user_id;
-    
     lastDay = new Date();
-    if(user_id !== storage.get('loggedInfo').mem_id) lastDay.setDate(lastDay.getDate() - 1);
-    this.props.getDailyTask(user_id, shiftDate(lastDay, -365), lastDay);
+    if (user_id !== storage.get('loggedInfo').mem_id) lastDay.setDate(lastDay.getDate() - 1);
+    this.props.getDailyTask(user_id, shiftDate(lastDay, -1000), lastDay);
   }
   getTooltipDataAttrs = (value) => {
     let date = moment(value.date).format('YYYY년 MM월 DD일')
-    if(value.count === 0){
+    if (value.count === 0) {
       return {
         'data-tip': `No task, ${date}`,
       };
@@ -43,54 +60,72 @@ class Heatmap extends React.Component {
     }
     this.props.onHandleDate(value.date);
   };
+  
   setHeatMap() {
+    let EndDate = this.props.cur_date;
+    // console.log(EndDate)
+    // console.log(this.props.board_info)
+    
+    // console.log(ndate)
     if (this.props.board_info) {
       const state = this.props.board_info
       let data = [];
-
-      let startDate = shiftDate(lastDay, -365);
+      let def_color = this.props.members.mem_info.mem_color
+      this.state.col1 = this.getTintedColor(def_color, 40)
+      this.state.col2 = this.getTintedColor(def_color, 20)
+      this.state.col3 = this.getTintedColor(def_color, 0)
+      this.state.col4 = this.getTintedColor(def_color, -20)
+      let startDate = shiftDate(lastDay, -2000);
       let endDate = lastDay;
-
       let date = startDate;
-      while(true){
+      while (true) {
         data.push({
-          count : 0,
-          date : date_to_str(date, "-")
+          count: 0,
+          date: date_to_str(date, "-")
         })
 
-        if(date_to_str(date, "-") === date_to_str(endDate, "-")) break;
-        
+        if (date_to_str(date, "-") === date_to_str(endDate, "-")) break;
         date = shiftDate(date, 1);
       }
-      
-      for (let i = 0; i < state.length; i++) {
-        data[dateDiff(startDate, state[i].board_date)].count = state[i].board_id
+
+      const state1 = this.props.board_info
+      for (let i = 0; i < state1.length; i++) {
+        data.push({
+          count: state1[i].board_id,
+          date: state1[i].board_date
+        })
       }
 
-      return(
+      return (
         <div className='user-heatmap'>
+          
           <CalendarHeatmap
-            startDate={shiftDate(lastDay, -365)}
-            endDate={lastDay}
+            startDate={shiftDate(EndDate, -365)}
+            endDate={EndDate}
             values={data}
             tooltipDataAttrs={this.getTooltipDataAttrs}
             onClick={this.handleClick}
-            classForValue={(value) => {
-              if (value.count == 0) {
-                return `color-empty`;
+            transformDayElement={(element, value) => {
+              let color;
+              if(!value.count) {
+                color = "#eeeeee";
               }
-              else if(value.count <= 5){
-                return `color-scale-1`;
+              else if (value.count == 0) {
+                color = "#eeeeee";
               }
-              else if(value.count <= 10){
-                return `color-scale-2`;
+              else if (value.count <= 3) {
+                color = this.state.col1;
               }
-              else if(value.count <= 15){
-                return `color-scale-3`;
+              else if (value.count <= 6) {
+                color = this.state.col2;
               }
-              else{
-                return `color-scale-4`;
+              else if (value.count <= 9) {
+                color = this.state.col3;
               }
+              else {
+                color = this.state.col4;
+              }
+              return React.cloneElement(element, { style: { fill: color } });
             }}
             showWeekdayLabels={true}
             monthLabels={['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']}
@@ -105,23 +140,12 @@ class Heatmap extends React.Component {
     return (
       <div>
         {this.setHeatMap()}
-      </div >
+      </div>
     );
   }
 }
 
-function dateDiff(date1, date2){
-  date1 = new Date(date1);
-  date2 = new Date(date2);
 
-  date1 = new Date(date1.getFullYear(), date1.getMonth()+1, date1.getDate());
-  date2 = new Date(date2.getFullYear(), date2.getMonth()+1, date2.getDate());
- 
-  var diff = Math.abs(date2.getTime() - date1.getTime());
-  diff = Math.ceil(diff / (1000 * 3600 * 24));
- 
-  return diff - 1;
-}
 
 function date_to_str(format, separator) {
   let year = format.getFullYear();
@@ -145,6 +169,7 @@ function shiftDate(date, numDays) {
 
 const mapStatetoProps = state => {
   return {
+    members: state.members,
     board_info: state.heatmaps.info
   };
 };
