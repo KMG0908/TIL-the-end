@@ -33,7 +33,6 @@ class MyPage extends Component {
     this.props.mem_info.mem_color = color.hex
     this.props.editMyColor(this.props.mem_info.mem_id, color.hex)
   };
-<<<<<<< HEAD
 
   handleChange = async e => {
     this.setState({
@@ -42,8 +41,6 @@ class MyPage extends Component {
     this.props.editMyDefSecret(this.props.mem_info.mem_id, e.target.checked)
   }
 
-=======
->>>>>>> kmg
   render() {
     if (this.props.mem_info_change) {
       const loggedInfo = this.props.mem_info_change;
