@@ -50,12 +50,25 @@ const today = new Date().toISOString().split("T")[0];
 
 class DatePicker extends React.Component {
   state = { selectedDate: new Date() };
+  constructor(props){
+    super(props);
+  }
   componentDidMount() {
     if (this.props.date) {
       const date = new Date(this.props.date);
       this.setState({ selectedDate: date });
       this.handleMonthChange(date);
     }
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let year = prevState.selectedDate.getFullYear();
+    let month = prevState.selectedDate.getMonth() + 1;
+    let date = prevState.selectedDate.getDate();
+    const selectedDate = year + "-" + ("0" + month).slice(-2) + "-" + ("0" + date).slice(-2);
+    if(nextProps.date !== selectedDate){
+      return {selectedDate : new Date(nextProps.date)};
+    }
+    return null;
   }
   handleMonthChange = date => {
     const firstDate = new Date(date.getFullYear(), date.getMonth(), 2);

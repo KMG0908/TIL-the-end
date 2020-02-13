@@ -1,8 +1,30 @@
 import React from "react";
 import DatePicker from "../helper/DatePicker";
 import { connect } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Tooltip from "@material-ui/core/Tooltip";
+import { Icon } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import Post from "./Post";
+
+const styles = theme => ({
+  icon: {
+    textDecoration: "inherit",
+    color: "grey",
+    opacity: "0.5",
+    "&:hover": {
+      opacity: "0.8"
+    }
+  },
+  go_dashboard:{
+    textAlign: 'right',
+    marginRight: '16px',
+    marginTop: '12px',
+    marginBottom: '-16px'
+  }
+});
+
 
 class Daily extends React.Component {
   renderPost() {
@@ -17,6 +39,7 @@ class Daily extends React.Component {
     }
   };
   render() {
+    const { classes } = this.props;
     return (
       <Container>
         <DatePicker
@@ -25,6 +48,18 @@ class Daily extends React.Component {
             this.props.onHandleDate(changedDate);
           }}
         />
+        <div style={{display: this.props.boardDict[this.props.date] ? '' : 'none'}} className={classes.go_dashboard}>
+          <Tooltip title="Dashboard에서 확인하기">
+            <Icon
+              button
+              component={Link}
+              className={classes.icon}
+              to={`/dashboard/${this.props.date.replace(/-/gi, "")}`}
+            >
+              open_in_new
+            </Icon>
+          </Tooltip>
+        </div>
         {this.renderPost()}
       </Container>
     );
@@ -39,4 +74,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Daily);
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(Daily));

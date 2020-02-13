@@ -16,7 +16,7 @@ class UserInfo extends React.Component{
       let image;
       if(this.props.info.mem_thumb) image = this.props.info.mem_thumb;
       else image = "https://www.gravatar.com/avatar/bc05615a975020a24c81da899a113e23?d=mm&s=90"
-      image = this.props.info.mem_thumb.replace("blob:", "");
+      image = image.replace("blob:", "");
       
       return(
         <div>
