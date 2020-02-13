@@ -48,15 +48,15 @@ class DailyBoard extends React.Component {
 
   componentDidMount() {
     let { date } = this.state;
-    if (this.props.match.params.date && this.props.members.mem_info) {
+    if (this.props.match.params.date) {
       date = this.props.match.params.date;
       date = `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`;
       this.setState({ date: date });
       this.props.fetchDailyLists(this.props.members.mem_info.mem_id, date);
-    }
-
-    if (!this.props.match.params.date && this.props.members.mem_info) {
+    } else if (this.props.members.mem_info) {
+      date = new Date().toISOString().split("T")[0]
       this.props.fetchDailyLists(this.props.members.mem_info.mem_id, date);
+      this.setState({date : date})
     }
   }
   handleDoubleClick = list_id => {

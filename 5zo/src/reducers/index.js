@@ -13,6 +13,7 @@ import calendarReducer from "./calendarReducer";
 import calendarListReducer from "./calendarListReducer";
 import editModeList from "./editModeList";
 import editModeCard from "./editModeCard";
+import commentReducer from "./commentReducer"
 
 export default combineReducers({
   members: memberReducer,
@@ -27,5 +28,6 @@ export default combineReducers({
   dailyCalendar: calendarReducer,
   listCalendar: calendarListReducer,
   editModeList: editModeList,
-  editModeCard: editModeCard
+  editModeCard: editModeCard,
+  comments : commentReducer
 });

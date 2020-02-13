@@ -70,3 +70,9 @@ export const SET_EDIT_MODE_CARD = "SET_EDIT_MODE_CARD";
 //cardlist - tag action
 export const DELETE_TAG = "DELETE_TAG";
 export const ADD_TAG = "ADD_TAG"
+
+//comment
+export const FETCH_COMMENTS = "FETCH_COMMENTS"
+export const ADD_COMMENT = "ADD_COMMENT"
+export const DELETE_COMMENT = "DELETE_COMMENT"
+export const PUT_COMMENT = "PUT_COMMENT"
