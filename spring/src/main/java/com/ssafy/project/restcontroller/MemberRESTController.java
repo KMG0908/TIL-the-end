@@ -99,10 +99,10 @@ public class MemberRESTController {
 	}
 	
 	@PutMapping("/api/member/email")
-	@ApiOperation("member email 정보 수정")
+	@ApiOperation("member email 정보 수정, member 리턴")
 	public ResponseEntity<Map<String, Object>> updateEmail(@RequestBody RequestMemberEmail rme) {
 		service.updateEmail(rme.getMem_id(), rme.getMem_email());
-		return handler.success(rme.getMem_email());
+		return handler.success(service.search(rme.getMem_id()));
 	}
 	
 
