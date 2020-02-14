@@ -41,13 +41,13 @@ class UserInfo extends React.Component {
       if (this.props.info.mem_thumb) image = this.props.info.mem_thumb;
       else image = "https://www.gravatar.com/avatar/bc05615a975020a24c81da899a113e23?d=mm&s=90"
       image = image.replace("blob:", "");
-      
+
       const login_id = storage.get('loggedInfo').mem_id
 
       return (
         <div>
           <div className="user_image">
-            <img src={image} style={{width: '100%', height: '100%'}}></img>
+            <img src={image} style={{ width: '100%', height: '100%' }}></img>
           </div>
           <div className="user_info">
             <span className="user_nick">{this.props.info.mem_nick}</span>
@@ -57,20 +57,22 @@ class UserInfo extends React.Component {
             }} onClick={() => {
               history.push(`/search?member=${this.props.info.mem_id}`)
             }}>@{this.props.info.mem_id}</span>
+            {/* 여기에 팔로우 */}            
             <br></br>
             <p className="user_intro"> {this.props.info.mem_self_intro} </p>
             {/* <div>{year}년 {month}월 {date}일에 가입함</div> */}
-            { login_id ==='admin' && this.props.info.mem_id !== 'admin'? 
-          <Switch
-            checked={this.state.checked}
-            onChange={this.handleChange}
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-          />
-          :
-          null}
+            {login_id === 'admin' && this.props.info.mem_id !== 'admin' ?
+              <>
+                {this.state.checked ? <span> 카드리스트 기본 비공개 </span> : <span> 카드리스트 기본 공개</span>}
+                <Switch
+                  checked={this.state.checked}
+                  onChange={this.handleChange}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              </>
+              :
+              null}
           </div>
-
-
         </div>
       )
     }

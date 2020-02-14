@@ -4,6 +4,7 @@ import {
   // MEMBER
   FETCH_MEMBERS,
   GET_ALL_MEMBERS,
+  GET_ALL_MEMBER_DATA,
   LOGIN,
   LOGIN_ERR,
   REGISTER,
@@ -82,8 +83,24 @@ export const getAllMember = () => async dispatch => {
     data.mem_id !== "admin" ? data_.push("@" + data.mem_id) : null
   );
   data_.sort();
+  console.log(data_)
   await dispatch({ type: GET_ALL_MEMBERS, payload: data_ });
 };
+
+
+
+export const getAllMemberData = (keyword) => async dispatch => {
+  let response
+  if(keyword ===''){
+    response = await apis.get(`/member`)
+  }else{
+    response = await apis.get(`/member/searchByIdLike/${keyword}`)
+  }
+  const data = response.data.data
+  if(data){
+    dispatch({ type : GET_ALL_MEMBER_DATA , payload : data})
+  }
+}
 
 export const login = (loginId, loginPw) => async dispatch => {
   const response = await apis.post(`/member/login`, {

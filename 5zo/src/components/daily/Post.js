@@ -152,16 +152,25 @@ const Post = props => {
         <Typography variant="h1" className={classes.title}>
           {props.cardLists[props.list_id].cardlist_name}
         </Typography>
-        {props.user_id === loggedUser || 'admin' === loggedUser ?
+
+
+
+        {
+        props.user_id === loggedUser || 'admin' === loggedUser ?
+          <>
+          {state.checked ? <span> 비공개 </span> : <span> 공개</span>}
           <Switch
             checked={state.checked}
             onChange={handleChange('checked')}
             onClick={handleClick}
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
+          </>
           :
           null
         }
+
+
         <div style={{ display: !props.cardLists[props.list_id].cardlist_cards.length && !props.tags[props.list_id] ? 'none' : 'inline-block' }} id={icon_id}>
           <ArrowDropDownIcon></ArrowDropDownIcon>
         </div>

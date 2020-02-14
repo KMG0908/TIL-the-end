@@ -146,6 +146,10 @@ function Navigation(props) {
     history.push("/my-setting");
     setAnchorEl(null);
   };
+  const admin = () => {
+    history.push('/admin')
+    setAnchorEl(null);
+  }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -158,7 +162,7 @@ function Navigation(props) {
             : "#94C9A9"
         }}
         position="fixed"
-        className={props.mem_info? clsx(classes.appBar, {
+        className={props.mem_info ? clsx(classes.appBar, {
           [classes.appBarShift]: open
         }) : ""}
       >
@@ -206,17 +210,22 @@ function Navigation(props) {
             >
               {props.mem_info ? (
                 <>
+                  {props.mem_info.mem_id === 'admin' ?
+                    <MenuItem onClick={admin}>Admin</MenuItem>
+                    :
+                    null
+                  }
                   {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
                   <MenuItem onClick={myPage}>My Page</MenuItem>
                   {/* <MenuItem onClick={mySetting}>My Setting</MenuItem> */}
                   <MenuItem onClick={logout}>Logout</MenuItem>
                 </>
               ) : (
-                <>
-                  <MenuItem onClick={login}>Sign In</MenuItem>
-                  <MenuItem onClick={regist}>Sign Up</MenuItem>
-                </>
-              )}
+                  <>
+                    <MenuItem onClick={login}>Sign In</MenuItem>
+                    <MenuItem onClick={regist}>Sign Up</MenuItem>
+                  </>
+                )}
             </Menu>
           </div>
         </Toolbar>
@@ -238,8 +247,8 @@ function Navigation(props) {
                 {theme.direction === "ltr" ? (
                   <ChevronLeftIcon />
                 ) : (
-                  <ChevronRightIcon />
-                )}
+                    <ChevronRightIcon />
+                  )}
               </IconButton>
             </div>
             <Divider />
