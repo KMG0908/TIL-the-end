@@ -23,6 +23,7 @@ class Login extends Component {
     this.props.loginErrReset();
 
     if (!this.props.mem_info) {
+      // axios.get("https://i02a101.p.ssafy.io:8443/spring/api/naver/login")
       axios.get('http://13.124.67.187:8080/spring/api/naver/login')
         .then(response => {
           const url = response.data.data;

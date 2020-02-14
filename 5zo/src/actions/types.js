@@ -1,6 +1,6 @@
 export const FETCH_MEMBERS = "FETCH_MEMBERS";
-export const GET_ALL_MEMBERS = "GET_ALL_MEMBERS"
-export const GET_ALL_MEMBER_DATA = "GET_ALL_MEMBER_DATA"
+export const GET_ALL_MEMBERS = "GET_ALL_MEMBERS";
+export const GET_ALL_MEMBER_DATA = "GET_ALL_MEMBER_DATA";
 export const LOGIN = "LOGIN";
 export const LOGIN_ERR = "LOGIN_ERR";
 export const REGISTER = "REGISTER";
@@ -19,8 +19,8 @@ export const EDIT_MYINFO = "EDIT_MYINFO";
 export const EDIT_MYINFO_ERR = "EDIT_MYINFO_ERR";
 export const EDIT_MYINFO_CHANGE_RESET = "EDIT_MYINFO_CHANGE_RESET";
 // edit my color
-export const EDIT_MY_COLOR_FAIL = 'EDIT_MY_COLOR_FAIL'
-export const EDIT_MY_COLOR_FAIL_RESET = 'EDIT_MY_COLOR_FAIL_RESET'
+export const EDIT_MY_COLOR_FAIL = "EDIT_MY_COLOR_FAIL";
+export const EDIT_MY_COLOR_FAIL_RESET = "EDIT_MY_COLOR_FAIL_RESET";
 // edit password
 export const EDIT_PASSWORD_SUCCESS = "EDIT_PASSWORD_SUCCESS";
 export const EDIT_PASSWORD_SUCCESS_RESET = "EDIT_PASSWORD_SUCCESS_RESET";
@@ -77,10 +77,14 @@ export const SET_EDIT_MODE_CARD = "SET_EDIT_MODE_CARD";
 
 //cardlist - tag action
 export const DELETE_TAG = "DELETE_TAG";
-export const ADD_TAG = "ADD_TAG"
+export const ADD_TAG = "ADD_TAG";
 
 //comment
-export const FETCH_COMMENTS = "FETCH_COMMENTS"
-export const ADD_COMMENT = "ADD_COMMENT"
-export const DELETE_COMMENT = "DELETE_COMMENT"
-export const PUT_COMMENT = "PUT_COMMENT"
+export const FETCH_COMMENTS = "FETCH_COMMENTS";
+export const ADD_COMMENT = "ADD_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";
+export const PUT_COMMENT = "PUT_COMMENT";
+
+export const FETCH_ALARMS = "FETCH_ALARMS";
+export const READ_ALARM = "READ_ALARM";
+export const ADD_ALARM = "ADD_ALARM";

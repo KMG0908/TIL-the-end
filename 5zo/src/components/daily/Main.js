@@ -29,7 +29,7 @@ class Main extends React.Component {
 
     let date = this.props.match.params.date;
     if (!date) date = new Date();
-    else
+    else  
       date = new Date(
         date.substr(0, 4),
         date.substr(4, 2) * 1 - 1,
@@ -52,7 +52,10 @@ class Main extends React.Component {
     this.state = {
       date: date,
       cur_date: lastDay,
-      user_id: user_id
+      user_id: user_id,
+      bu1: "secondary",
+      bu2: "white",
+      bu3: "white"
     };
 
     this.onHandleDate = this.onHandleDate.bind(this);

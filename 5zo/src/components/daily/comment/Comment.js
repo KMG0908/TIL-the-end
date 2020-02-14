@@ -6,7 +6,7 @@ import { fetchComments, addComment } from "../../../actions";
 
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
-
+import moment from "moment";
 class Comment extends React.Component {
   componentDidMount() {
     const { fetchComments, list_id } = this.props;
