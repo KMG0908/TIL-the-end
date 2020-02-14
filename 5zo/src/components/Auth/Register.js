@@ -4,8 +4,16 @@ import { register, registerReset } from "../../actions";
 import { AuthWrapper, AuthWrapper_tmp, AuthContent, InputWithLabel, AuthButton } from '../Auth';
 import PasswordWithLabel from './PasswordWithLabel';
 import { isEmail, matches } from "validator";
-
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from "@material-ui/core/styles";
 import history from '../../history'
+
+const styles = theme => ({
+  paper: {
+    padding: '20px'
+  }
+});
+
 class Register extends Component {
   componentDidMount(){
     console.log(document.getElementById("loginId"))
@@ -127,6 +135,8 @@ class Register extends Component {
     }
   }
   render() {
+    const {classes} = this.props;
+
     if (this.props.register_id && this.props.register_id !== "") {
       this.props.registerReset();
       alert('회원가입 완료')
@@ -136,18 +146,18 @@ class Register extends Component {
     return (
       <div style={{ textAlign: 'center' }}>
       <div style={{ display: 'inline-block', width: 500 }}>
-        <AuthWrapper_tmp>
+        <Paper className={classes.paper}>
           {/* <AuthContent title="회원가입" id="register"> */}
-            <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디( 5 ~ 20 자 )" maxLength="20" onChange={this.handleChange} onKeyDown={this.keyDown}/>
-            <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호 ( 8 ~ 16 자 )" maxLength="16" onChange={this.handleChange}  onKeyDown={this.keyDown}/>
-            <InputWithLabel label="이메일" id="email" name="email" placeholder="이메일" type="email" onChange={this.handleChange} onKeyDown={this.keyDown}/>
-            <InputWithLabel label="닉네임" id="nick" name="nick" placeholder="닉네임" onChange={this.handleChange} onKeyDown={this.keyDown}/>
+            <InputWithLabel label="아이디" id="loginId" name="loginId" maxLength="20" onChange={this.handleChange} onKeyDown={this.keyDown}/>
+            <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" maxLength="16" onChange={this.handleChange}  onKeyDown={this.keyDown}/>
+            <InputWithLabel label="이메일" id="email" name="email" type="email" onChange={this.handleChange} onKeyDown={this.keyDown}/>
+            <InputWithLabel label="닉네임" id="nick" name="nick" onChange={this.handleChange} onKeyDown={this.keyDown}/>
             <input type="text" className={this.props.register_err? "error" : "none"} readOnly value={this.props.register_err}/>
             <AuthButton onClick={this.register}> 회원가입 </AuthButton>
 
             {this.props.location.pathname === "/" ? null : <AuthButton onClick={this.cancelRegister}> 취소 </AuthButton>}
           {/* </AuthContent> */}
-        </AuthWrapper_tmp>
+        </Paper>
       </div>
       </div>
     );
@@ -161,4 +171,4 @@ const mapStatetoProps = state => {
   };
 };
 
-export default connect(mapStatetoProps, { register, registerReset })(Register);
+export default withStyles(styles, { withTheme: true })(connect(mapStatetoProps, { register, registerReset })(Register));
