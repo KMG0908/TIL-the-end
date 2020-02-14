@@ -84,24 +84,22 @@ export const getAllMember = () => async dispatch => {
     data.mem_id !== "admin" ? data_.push("@" + data.mem_id) : null
   );
   data_.sort();
-  console.log(data_)
+  console.log(data_);
   await dispatch({ type: GET_ALL_MEMBERS, payload: data_ });
 };
 
-
-
-export const getAllMemberData = (keyword) => async dispatch => {
-  let response
-  if(keyword ===''){
-    response = await apis.get(`/member`)
-  }else{
-    response = await apis.get(`/member/searchByIdLike/${keyword}`)
+export const getAllMemberData = keyword => async dispatch => {
+  let response;
+  if (keyword === "") {
+    response = await apis.get(`/member`);
+  } else {
+    response = await apis.get(`/member/searchByIdLike/${keyword}`);
   }
-  const data = response.data.data
-  if(data){
-    dispatch({ type : GET_ALL_MEMBER_DATA , payload : data})
+  const data = response.data.data;
+  if (data) {
+    dispatch({ type: GET_ALL_MEMBER_DATA, payload: data });
   }
-}
+};
 
 export const login = (loginId, loginPw) => async dispatch => {
   const response = await apis.post(`/member/login`, {
@@ -214,7 +212,7 @@ export const deleteAccountSuccessReset = () => async (dispatch, getState) => {
 
 export const editMyProfile = (
   loginId,
-  nick, 
+  nick,
   intro,
   checked,
   color,
@@ -866,10 +864,14 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
     cardList_id_string = cardList_id_string.replace("[", "");
     cardList_id_string = cardList_id_string.replace("]", "");
     const cardlist_id_array = [];
-    cardList_id_string.split(',').map(cardList => cardList === '' ? null :cardlist_id_array.push(Number(cardList)))
-    console.log('cardList_id_string ')
-    console.log(cardList_id_string)
-    console.log(cardlist_id_array)
+    cardList_id_string
+      .split(",")
+      .map(cardList =>
+        cardList === "" ? null : cardlist_id_array.push(Number(cardList))
+      );
+    console.log("cardList_id_string ");
+    console.log(cardList_id_string);
+    console.log(cardlist_id_array);
     for (let j = 0; j < cardlist_id_array.length; j++) {
       cardlist_id = cardlist_id_array[j];
       console.log(cardlist_id)
@@ -961,3 +963,7 @@ export const editComment = (
   });
   // dispatch({ type: FETCH_COMMENTS, payload: comment });
 };
+
+export const fetchAlarm = () => async (dispatch, getState) => {};
+export const readAlarm = () => async (dispatch, getState) => {};
+export const addAlarm = () => async (dispatch, getState) => {};
