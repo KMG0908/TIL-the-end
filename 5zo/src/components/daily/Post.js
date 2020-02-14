@@ -15,6 +15,22 @@ import Switch from "@material-ui/core/Switch";
 import storage from "lib/storage";
 import { Flex } from "react-landing-page";
 import { Grid } from "@material-ui/core";
+import styled from 'styled-components';
+import oc from 'open-color';
+import {TextWithLabel} from '../Auth'
+
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+
+
+const Label = styled.div`
+    font-size : 1rem;
+    color : ${oc.gray[6]};
+    margin-bottom : 0.25rem;
+    text-align : left;
+`;
+
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -184,14 +200,26 @@ const Post = props => {
           <ArrowDropDownIcon></ArrowDropDownIcon>
         </div>
       </div>
+      
       <div id={content_id}>
         {renderSubPost(props)}
         {renderTags(props)}
+        <br/>
+        <br/>
+        <ExpansionPanel style={{marginBottom : 5}} >
+        <ExpansionPanelSummary>
+          {/* <Avatar component={'span'} style={{marginRight : 10}} alt="Remy Sharp" src={this.props.member ? this.props.member.mem_thumb : ''} /> */}
+          <Typography > 댓글</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails style={{display : 'inline-block' , width : '100%'}}>
         <Grid container direction="row" justify="center" alignItems="center">
           <Grid item style={{ width: "90%" }}>
             <Comment list_id={props.list_id} />
           </Grid>
         </Grid>
+
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
       </div>
     </Paper>
   );
