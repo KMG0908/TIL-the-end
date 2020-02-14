@@ -22,7 +22,7 @@ CREATE TABLE `mem_info` (
 	`mem_font`				int				NULL,
 	`mem_auth`				int				NULL,
 	`mem_post_def_secret`	boolean			NULL,
-	`mem_self_intro`		varchar(3000)	NULL			DEFAULT 		`자기소개를 입력해주세요`	
+	`mem_self_intro`		varchar(3000)	DEFAULT 		'자기소개를 입력해주세요'	
 );
 
 CREATE TABLE `font` (

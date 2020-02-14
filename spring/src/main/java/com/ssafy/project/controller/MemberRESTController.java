@@ -91,9 +91,9 @@ public class MemberRESTController {
 
 	// UPDATE
 	@PutMapping("/api/member")
-	@ApiOperation("member 정보 수정, 변경 가능 : email, nick, thumb, color, font, self_intro 변경 성공시 member를 리턴합니다")
+	@ApiOperation("member 정보 수정, 변경 가능 : nick, thumb, color, font, self_intro, post_def_secret 변경 성공시 member를 리턴합니다")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody RequestMemberUpdate rmu) {
-		service.updateMember(rmu.getMem_id(), rmu.getMem_email(), rmu.getMem_nick(), rmu.getMem_thumb(), rmu.getMem_color(), rmu.getMem_font(), rmu.getMem_self_intro());
+		service.updateMember(rmu.getMem_id(), rmu.getMem_nick(), rmu.getMem_thumb(), rmu.getMem_color(), rmu.getMem_font(), rmu.getMem_self_intro(), rmu.isMem_post_def_secret());
 		return handleSuccess(rmu);
 	}
 
@@ -101,12 +101,27 @@ public class MemberRESTController {
 	@Data
 	private static class RequestMemberUpdate {
 		private String mem_id;
-		private String mem_email;
 		private String mem_nick;
 		private String mem_thumb;
 		private String mem_color;
 		private int mem_font;
 		private String mem_self_intro;
+		private boolean mem_post_def_secret;
+	}
+	
+	@PutMapping("/api/member/email")
+	@ApiOperation("member email 정보 수정")
+	public ResponseEntity<Map<String, Object>> updateEmail(@RequestBody RequestMemberEmail rme) {
+		service.updateEmail(rme.getMem_id(), rme.getMem_email());
+		return handleSuccess("이메일 변경에 성공했습니다.");
+	}
+	
+
+	@NoArgsConstructor
+	@Data
+	private static class RequestMemberEmail {
+		private String mem_id;
+		private String mem_email;
 	}
 
 	// DELETE

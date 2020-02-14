@@ -39,12 +39,19 @@
 	<update id="updateMember" parameterType="member">
 		update mem_info
 		set
-		mem_email = #{mem_email},
 		mem_nick = #{mem_nick},
 		mem_thumb = #{mem_thumb},
 		mem_color = #{mem_color},
 		mem_font = #{mem_font},
-		mem_self_intro = #{mem_self_intro}
+		mem_self_intro = #{mem_self_intro},
+		mem_post_def_secret = #{mem_post_def_secret}
+		where mem_id = #{mem_id}
+	</update>
+	
+	<update id="updateEmail" parameterType="string" >
+		update mem_info
+		set
+		mem_email = #{mem_email}
 		where mem_id = #{mem_id}
 	</update>
 	

@@ -12,6 +12,8 @@
 		<typeAlias type="com.ssafy.project.dto.Comment" alias="comment" />
 		<typeAlias type="com.ssafy.project.dto.Board" alias="board" />
 		<typeAlias type="com.ssafy.project.dto.SNS" alias="sns" />
+		<typeAlias type="com.ssafy.project.dto.Follow" alias="follow" />
+		<typeAlias type="com.ssafy.project.dto.Heart" alias="heart" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="spring/Member_query.xml" />
@@ -21,5 +23,7 @@
 		<mapper resource="spring/Tag_query.xml" />
 		<mapper resource="spring/Cardlist_Tag_query.xml" />
 		<mapper resource="spring/Comment_query.xml" />
+		<mapper resource="spring/Follow_query.xml" />
+		<mapper resource="spring/Heart_query.xml" />
 	</mappers>
 </configuration>

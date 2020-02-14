@@ -70,6 +70,8 @@ public interface MemberDao {
 
 	public void setPw(@Param("mem_id") String mem_id,  @Param("authCode") String authCode);
 
+	public void updateEmail(@Param("mem_id")String mem_id, @Param("mem_email")String mem_email);
+
 	
 
 }
