@@ -1,6 +1,10 @@
 package com.ssafy.project;
 
+import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.SpringApplication;
@@ -32,6 +36,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableTransactionManagement
 @EnableSwagger2
 public class Application implements WebMvcConfigurer {
+	
+	@PostConstruct
+	public void started() {
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+		System.out.println("현재시작 : " + new Date());
+	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
