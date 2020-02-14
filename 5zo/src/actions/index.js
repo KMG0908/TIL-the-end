@@ -389,6 +389,8 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
     response.data.data[0].board_lists.map(async cardlist_id => {
       let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
       if (cardlist.data.state === "ok") {
+        console.log('392')
+        console.log(cardlist.data.data)
         if (own || (!own && cardlist.data.data.cardlist_secret === false)) {
           dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
           cardlist.data.data.cardlist_cards.map(async card_id => {
@@ -815,14 +817,16 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
   for (let i = 0; i < board_data.length; i++) {
     board = board_data[i];
     response = await apis.get(`/board/${board_data[i].board_id}`);
-    const cardList_id_string = response.data.data;
-    const cardlist_id_array_ = cardList_id_string
-      .substring(1, cardList_id_string.length - 1)
-      .split(",");
+    let cardList_id_string = response.data.data;
+    console.log(cardList_id_string)
+    
+    cardList_id_string = cardList_id_string.replace('[', '')
+    cardList_id_string = cardList_id_string.replace(']', '')
     const cardlist_id_array = [];
-    cardlist_id_array_.map(cardlist_id =>
-      cardlist_id === "" ? null : cardlist_id_array.push(Number(cardlist_id))
-    );
+    cardList_id_string.split(',').map(cardList => cardlist_id_array.push(Number(cardList)))
+    console.log('cardList_id_string ')
+    console.log(cardList_id_string)
+    console.log(cardlist_id_array)
     for (let j = 0; j < cardlist_id_array.length; j++) {
       cardlist_id = cardlist_id_array[j];
       response = await apis.get(`/cardlist/${cardlist_id}`);
