@@ -273,7 +273,7 @@ export const editMyColor = (mem_id, color) => async (dispatch, getState) => {
   const color_encode = encodeURIComponent(color);
   const response = await apis.patch(`/member/${mem_id}/color/${color_encode}`);
 
-  const data = response.data.data
+  const data = response.data.data;
   console.log("data");
   console.log(data);
 
@@ -389,8 +389,8 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
     response.data.data[0].board_lists.map(async cardlist_id => {
       let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
       if (cardlist.data.state === "ok") {
-        console.log('392')
-        console.log(cardlist.data.data)
+        console.log("392");
+        console.log(cardlist.data.data);
         if (own || (!own && cardlist.data.data.cardlist_secret === false)) {
           dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
           cardlist.data.data.cardlist_cards.map(async card_id => {
@@ -818,15 +818,17 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
     board = board_data[i];
     response = await apis.get(`/board/${board_data[i].board_id}`);
     let cardList_id_string = response.data.data;
-    console.log(cardList_id_string)
-    
-    cardList_id_string = cardList_id_string.replace('[', '')
-    cardList_id_string = cardList_id_string.replace(']', '')
+    console.log(cardList_id_string);
+
+    cardList_id_string = cardList_id_string.replace("[", "");
+    cardList_id_string = cardList_id_string.replace("]", "");
     const cardlist_id_array = [];
-    cardList_id_string.split(',').map(cardList => cardlist_id_array.push(Number(cardList)))
-    console.log('cardList_id_string ')
-    console.log(cardList_id_string)
-    console.log(cardlist_id_array)
+    cardList_id_string
+      .split(",")
+      .map(cardList => cardlist_id_array.push(Number(cardList)));
+    console.log("cardList_id_string ");
+    console.log(cardList_id_string);
+    console.log(cardlist_id_array);
     for (let j = 0; j < cardlist_id_array.length; j++) {
       cardlist_id = cardlist_id_array[j];
       response = await apis.get(`/cardlist/${cardlist_id}`);
@@ -900,7 +902,7 @@ export const addComment = (
 
 export const deleteComment = (cardlist_id, comment_id) => async dispatch => {
   const response = await apis.delete(`/comment/${comment_id}`);
-  dispatch({ type: FETCH_COMMENTS, payload: { cardlist_id, comment_id } });
+  dispatch({ type: DELETE_COMMENT, payload: { cardlist_id, comment_id } });
 };
 
 export const editComment = (
@@ -908,8 +910,12 @@ export const editComment = (
   comment_id,
   comment_contents
 ) => async (dispatch, getState) => {
-  const comment = getState()[cardlist_id][comment_id];
+  const comment = getState().comments[cardlist_id][comment_id];
   comment.comment_contents = comment_contents;
-  const response = await apis.put(`/comment/${comment_id}`, { comment });
-  dispatch({ type: FETCH_COMMENTS, payload: comment });
+  const response = await apis.put(`/comment/${comment_id}`, {
+    comment_id,
+    comment_secret: comment.comment_secret,
+    comment_contents
+  });
+  // dispatch({ type: FETCH_COMMENTS, payload: comment });
 };
