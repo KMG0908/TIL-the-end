@@ -6,25 +6,9 @@
   display: block;
   font-size: 12px;
   line-height: 16px;
-  margin-top: 4px;
+  margin: 4px 0 -10px;
   color: #ff1616;
   border: 0px;
   width : 100%;
   background-color: white;
-}
-
-.error_{
-  display: block;
-  font-size: 12px;
-  line-height: 16px;
-  margin: -7px 0 7px;
-  color: #ff1616;
-  border: 0px;
-  width : 100%;
-  background-color: white;
-}
-
-.MuiFormLabel-root.Mui-focused, .MuiInputLabel-outlined.MuiInputLabel-shrink{
-  background-color: white !important;
-  padding-right: 2px;
 }

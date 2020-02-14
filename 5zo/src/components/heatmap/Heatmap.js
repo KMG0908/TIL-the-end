@@ -68,7 +68,7 @@ class Heatmap extends React.Component {
     let lastDay = new Date(this.props.cur_date);
 
     if (this.props.board_info) {
-      const state = this.props.board_info;
+      const state = this.props.board_info
       let data = [];
       let def_color = this.props.members.mem_info.mem_color;
       this.state.col1 = this.getTintedColor(def_color, 60);

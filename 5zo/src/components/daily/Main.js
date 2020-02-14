@@ -24,7 +24,7 @@ class Main extends React.Component {
 
     let user_id = this.props.match.params.user_id;
     if (!user_id) user_id = storage.get("loggedInfo").mem_id;
-
+    
     let lastDay = new Date();
 
     let date = this.props.match.params.date;
