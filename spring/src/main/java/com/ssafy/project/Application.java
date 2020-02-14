@@ -1,10 +1,10 @@
 package com.ssafy.project;
 
-import java.util.Date;
+//import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
+//import java.util.TimeZone;
 
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.SpringApplication;
@@ -37,11 +37,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class Application implements WebMvcConfigurer {
 	
-	@PostConstruct
-	public void started() {
-		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
-		System.out.println("현재시작 : " + new Date());
-	}
+//	제대로 적용되지 않아 0.2.1 에서 뺐습니다.
+//	@PostConstruct
+//	public void started() {
+//		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+//		System.out.println("현재시작 : " + new Date());
+//	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -83,7 +84,7 @@ public class Application implements WebMvcConfigurer {
 				.title("TIL THE END PROJECT REST API")
 				.description("프론트에서 사용할 수 있는 api입니다.")
 				.license("5zo company")
-				.version("0.2.0")
+				.version("0.2.1")
 				.build();
 	}
 

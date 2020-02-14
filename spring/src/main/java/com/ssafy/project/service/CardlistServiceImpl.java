@@ -36,7 +36,7 @@ public class CardlistServiceImpl implements CardlistService {
 		try {
 			Cardlist cardlist = dao.search(cardlist_id);
 			if (cardlist == null) {
-				throw new CardlistException("존재하지 않는 카드 리스트 번호입니다");
+				throw new CardlistException(cardlist_id + "번 카드 리스트는 존재하지 않습니다.");
 			}
 			return cardlist;
 		} catch (Exception e) {
