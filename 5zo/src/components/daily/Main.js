@@ -12,7 +12,7 @@ import { ThemeProvider } from "@material-ui/styles";
 const GlobalTheme = createMuiTheme({
   palette: {
     secondary: {
-      main: storage.get("loggedInfo").mem_color,
+      main: storage.get("loggedInfo") ? storage.get("loggedInfo").mem_color : "#ffffff",
       contrastText: "white"
     }
   }

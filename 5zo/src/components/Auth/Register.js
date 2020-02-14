@@ -16,7 +16,6 @@ const styles = theme => ({
 
 class Register extends Component {
   componentDidMount(){
-    console.log(document.getElementById("loginId"))
     document.getElementById("loginId").focus();
   }
   constructor(props) {
@@ -152,7 +151,7 @@ class Register extends Component {
             <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" maxLength="16" onChange={this.handleChange}  onKeyDown={this.keyDown}/>
             <InputWithLabel label="이메일" id="email" name="email" type="email" onChange={this.handleChange} onKeyDown={this.keyDown}/>
             <InputWithLabel label="닉네임" id="nick" name="nick" onChange={this.handleChange} onKeyDown={this.keyDown}/>
-            <input type="text" className={this.props.register_err? "error" : "none"} readOnly value={this.props.register_err}/>
+            <input type="text" className={this.props.register_err? "error_" : "none"} readOnly disabled value={this.props.register_err}/>
             <AuthButton onClick={this.register}> 회원가입 </AuthButton>
 
             {this.props.location.pathname === "/" ? null : <AuthButton onClick={this.cancelRegister}> 취소 </AuthButton>}

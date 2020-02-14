@@ -106,7 +106,7 @@ class Login extends Component {
           <Paper className={classes.paper}>
             <InputWithLabel label="아이디" id="loginId" name="loginId" onChange={this.handleChange} onKeyDown={this.keyDown} />
             <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" onChange={this.handleChange} onKeyDown={this.keyDown} />
-            <input type="text" className={this.props.login_err ? "error" : "none"} readOnly value={this.props.login_err} />
+            <input type="text" className={this.props.login_err ? "error_" : "none"} readOnly disabled value={this.props.login_err} />
             <AuthButton onClick={this.login}> 로그인 </AuthButton>
             <AuthButton onClick={this.naver} backgroundColor={'#2DB400'}> 네이버 아이디로 로그인 </AuthButton>
             <div style={{ marginTop: '20px' }}>

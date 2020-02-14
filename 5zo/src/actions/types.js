@@ -8,6 +8,10 @@ export const REGISTER_ERR = "REGISTER_ERR";
 export const REGISTER_RESET = "REGISTER_RESET";
 export const SET_LOGGED_INFO = "SET_LOGGED_INFO";
 export const GET_LOGGED_INFO = "GET_LOGGED_INFO";
+export const CHECK_PASSWORD = 'CHECK_PASSWORD';
+export const CHECK_PASSWORD_RESET = 'CHECK_PASSWORD_RESET';
+export const EDIT_EMAIL = 'EDIT_EMAIL'
+export const EDIT_EMAIL_RESET = 'EDIT_EMAIL_RESET'
 // edit my profile
 export const EDIT_MYPROFILE = "EDIT_MYPROFILE";
 // edit my info
