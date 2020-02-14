@@ -43,7 +43,7 @@ class Heatmap extends React.Component {
     const user_id = this.props.user_id;
 
     const lastDay = new Date(this.props.cur_date);
-    this.props.getDailyTask(user_id, shiftDate(lastDay, -365), lastDay);
+    this.props.getDailyTask(user_id, shiftDate(lastDay, -1000), lastDay);
   }
   getTooltipDataAttrs = value => {
     let date = moment(value.date).format("YYYY년 MM월 DD일");
