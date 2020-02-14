@@ -33,3 +33,16 @@ ADD CONSTRAINT `FK_cardlist_TO_heart_1`
 FOREIGN KEY (`cardlist_id`)
 REFERENCES `cardlist` (`cardlist_id`)
 ON DELETE CASCADE;
+
+
+
+CREATE TABLE `alarm_id` (
+	`alarm_id`		int				NOT NULL	primary key auto_increment,
+	`mem_id`		varchar(255)	NOT NULL,
+	`alarm_text`	varchar(3000)	NULL,
+	`alarm_url`		varchar(255)	NULL
+);
+ALTER TABLE `alarm_id`
+ADD CONSTRAINT `FK_mem_info_TO_alarm_id_1` 
+FOREIGN KEY (`mem_id`)
+REFERENCES `mem_info` (`mem_id`);
