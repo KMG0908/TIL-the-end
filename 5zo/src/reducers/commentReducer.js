@@ -14,13 +14,16 @@ export default (state = {}, action) => {
         )
       };
     case DELETE_COMMENT:
-      return {
-        ...state,
-        [action.payload.cardlist_id]: _.omit(
-          state[action.payload.cardlist_id],
-          action.payload.comment_id
-        )
-      };
+    return {
+      ...state,
+      [action.payload.cardlist_id]: {
+        ...state[action.payload.cardlist_id],
+        [action.payload.comment_id]: {
+          ...state[action.payload.cardlist_id][action.payload.comment_id],
+          comment_deleted: 1
+        }
+      }
+    };
     case PUT_COMMENT:
       return {
         ...state,

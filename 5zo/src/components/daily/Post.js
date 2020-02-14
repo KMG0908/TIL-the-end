@@ -1,8 +1,8 @@
 import React from "react";
-import apis from '../../apis/apis'
+import apis from "../../apis/apis";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { } from "../../actions";
+import {} from "../../actions";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
@@ -10,9 +10,11 @@ import LockIcon from "@material-ui/icons/Lock";
 import "typeface-roboto";
 import SubPost from "./SubPost";
 import Tag from "./Tag";
-import Comment from "./Comment";
-import Switch from '@material-ui/core/Switch';
+import Comment from "./comment/Comment";
+import Switch from "@material-ui/core/Switch";
 import storage from "lib/storage";
+import { Flex } from "react-landing-page";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -82,18 +84,23 @@ const Post = props => {
   const content_id = `content${props.list_id}`;
 
   const [state, setState] = React.useState({
-    checked: props.cardLists[props.list_id].cardlist_secret,
+    checked: props.cardLists[props.list_id].cardlist_secret
   });
   const handleChange = name => async e => {
     e.stopPropagation();
     setState({ ...state, checked: e.target.checked });
-    const cardList = props.cardLists[props.list_id]
-    cardList.cardlist_secret = e.target.checked
+    const cardList = props.cardLists[props.list_id];
+    cardList.cardlist_secret = e.target.checked;
     // card 배열 String 으로
-    let cardList_cards_string = '['
-    cardList.cardlist_cards.map(card => cardList_cards_string = cardList_cards_string.concat(card + ','))
-    cardList_cards_string = cardList_cards_string.substr(0, cardList_cards_string.length - 1)
-    cardList_cards_string = cardList_cards_string.concat(']')
+    let cardList_cards_string = "[";
+    cardList.cardlist_cards.map(
+      card => (cardList_cards_string = cardList_cards_string.concat(card + ","))
+    );
+    cardList_cards_string = cardList_cards_string.substr(
+      0,
+      cardList_cards_string.length - 1
+    );
+    cardList_cards_string = cardList_cards_string.concat("]");
 
     const response = await apis.put(`/cardlist`, {
       board_id: cardList.board_id,
@@ -103,13 +110,13 @@ const Post = props => {
       cardlist_id: cardList.cardlist_id,
       cardlist_name: cardList.cardlist_name,
       cardlist_secret: e.target.checked
-    })
+    });
   };
   const handleClick = e => {
     e.stopPropagation();
-  }
+  };
 
-  const loggedUser = storage.get('loggedInfo').mem_id
+  const loggedUser = storage.get("loggedInfo").mem_id;
 
   return (
     <Paper className={classes.paper}>
@@ -152,24 +159,35 @@ const Post = props => {
         <Typography variant="h1" className={classes.title}>
           {props.cardLists[props.list_id].cardlist_name}
         </Typography>
-        {props.user_id === loggedUser || 'admin' === loggedUser ?
+        {props.user_id === loggedUser || "admin" === loggedUser ? (
           <Switch
             checked={state.checked}
-            onChange={handleChange('checked')}
+            onChange={handleChange("checked")}
             onClick={handleClick}
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
+            inputProps={{ "aria-label": "secondary checkbox" }}
           />
-          :
-          null
-        }
-        <div style={{ display: !props.cardLists[props.list_id].cardlist_cards.length && !props.tags[props.list_id] ? 'none' : 'inline-block' }} id={icon_id}>
+        ) : null}
+        <div
+          style={{
+            display:
+              !props.cardLists[props.list_id].cardlist_cards.length &&
+              !props.tags[props.list_id]
+                ? "none"
+                : "inline-block"
+          }}
+          id={icon_id}
+        >
           <ArrowDropDownIcon></ArrowDropDownIcon>
         </div>
       </div>
       <div id={content_id}>
         {renderSubPost(props)}
         {renderTags(props)}
-        <Comment list_id={props.list_id} />
+        <Grid container direction="row" justify="center" alignItems="center">
+          <Grid item style={{ width: "90%" }}>
+            <Comment list_id={props.list_id} />
+          </Grid>
+        </Grid>
       </div>
     </Paper>
   );
