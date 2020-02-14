@@ -23,6 +23,7 @@ class Login extends Component {
     this.props.loginErrReset();
 
     if (!this.props.mem_info) {
+      // axios.get("https://i02a101.p.ssafy.io:8443/spring/api/naver/login")
       axios.get('http://13.124.67.187:8080/spring/api/naver/login')
         .then(response => {
           const url = response.data.data;
@@ -107,6 +108,7 @@ class Login extends Component {
             <InputWithLabel label="아이디" id="loginId" name="loginId" onChange={this.handleChange} onKeyDown={this.keyDown} />
             <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" onChange={this.handleChange} onKeyDown={this.keyDown} />
             <input type="text" className={this.props.login_err ? "error" : "none"} readOnly value={this.props.login_err} />
+            <br/>
             <AuthButton onClick={this.login}> 로그인 </AuthButton>
             <AuthButton onClick={this.naver} backgroundColor={'#2DB400'}> 네이버 아이디로 로그인 </AuthButton>
             <div style={{ marginTop: '20px' }}>

@@ -109,15 +109,21 @@ const Post = props => {
     cardList.cardlist_secret = e.target.checked;
     // card 배열 String 으로
     let cardList_cards_string = "[";
+
     cardList.cardlist_cards.map(
       card => (cardList_cards_string = cardList_cards_string.concat(card + ","))
     );
-    cardList_cards_string = cardList_cards_string.substr(
-      0,
-      cardList_cards_string.length - 1
-    );
+    if(cardList_cards_string.length === 1){
+      
+    }else{
+      cardList_cards_string = cardList_cards_string.substr(
+        0,
+        cardList_cards_string.length - 1
+      );
+    }
     cardList_cards_string = cardList_cards_string.concat("]");
-
+    console.log('카드리스트 스트링')
+    console.log(cardList_cards_string)
     const response = await apis.put(`/cardlist`, {
       board_id: cardList.board_id,
       cardlist_cards: cardList_cards_string,
