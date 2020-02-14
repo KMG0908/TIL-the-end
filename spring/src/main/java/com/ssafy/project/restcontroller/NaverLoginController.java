@@ -1,6 +1,5 @@
-package com.ssafy.project.controller;
+package com.ssafy.project.restcontroller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.ssafy.project.controller.CommonHandler;
 import com.ssafy.project.dto.Member;
 import com.ssafy.project.oauth.bo.JsonParser;
 import com.ssafy.project.oauth.bo.NaverLoginBO;
@@ -29,29 +29,18 @@ public class NaverLoginController {
 
 	NaverLoginBO naverLoginBO = new NaverLoginBO();
 
-	public ResponseEntity<Map<String, Object>> handleSuccess(Object data) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "ok");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-	}
-
-	public ResponseEntity<Map<String, Object>> handleFail(Object data, HttpStatus status) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "fail");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
+	@Autowired
+	public CommonHandler handler;
 
 	@ExceptionHandler
 	public ResponseEntity<Map<String, Object>> handler(Exception e) {
-		return handleFail(e.getMessage(), HttpStatus.OK);
+		return handler.fail(e.getMessage(), HttpStatus.OK);
 	}
 
 	@GetMapping("/api/naver/login")
 	@ApiOperation("네이버로그인")
 	public ResponseEntity<Map<String, Object>> naverlogin(HttpSession session) throws Exception {
-		return handleSuccess(naverLoginBO.getAuthorizationUrl(session));
+		return handler.success(naverLoginBO.getAuthorizationUrl(session));
 	}
 
 	@GetMapping("/api/naver/callback")
@@ -65,6 +54,6 @@ public class NaverLoginController {
 		// 경우의 수 1 : 네이버 이메일로 가입된 아이디가 없다면 멤버 신규 생성 sns 신규 생성 연결 및 리턴
 		// 경우의 수 2 : 네이버 이메일로 가입된 아이디가 있다면 sns 테이블을 확인해 있다면 바로 리턴
 		// 경우의 수 3 : 네이버 이메일로 가입된 아이디가 있지만 sns 테이블에 없다면 sns 생성 후 연결 리턴
-		return handleSuccess(service.naverLogin(naver));
+		return handler.success(service.naverLogin(naver));
 	}
 }

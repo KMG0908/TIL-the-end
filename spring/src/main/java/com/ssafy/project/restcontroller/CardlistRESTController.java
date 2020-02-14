@@ -1,6 +1,5 @@
-package com.ssafy.project.controller;
+package com.ssafy.project.restcontroller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.project.controller.CommonHandler;
 import com.ssafy.project.dto.Cardlist;
 import com.ssafy.project.service.CardlistService;
 
@@ -29,24 +29,13 @@ public class CardlistRESTController {
 
 	@Autowired
 	private CardlistService service;
-
-	public ResponseEntity<Map<String, Object>> handleSuccess(Object data) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "ok");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-	}
-
-	public ResponseEntity<Map<String, Object>> handleFail(Object data, HttpStatus status) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "fail");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
+	
+	@Autowired
+	public CommonHandler handler;	
 
 	@ExceptionHandler
 	public ResponseEntity<Map<String, Object>> handler(Exception e) {
-		return handleFail(e.getMessage(), HttpStatus.OK);
+		return handler.fail(e.getMessage(), HttpStatus.OK);
 	}
 
 	// CREATE
@@ -55,14 +44,14 @@ public class CardlistRESTController {
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Cardlist cardlist) {
 		service.insertCardlist(cardlist);
 		int cardlist_id = service.getMaxCardlistId();
-		return handleSuccess(cardlist_id);
+		return handler.success(cardlist_id);
 	}
 
 	// READ
 	@GetMapping("/api/cardlist/{cardlist_id}")
-	@ApiOperation("카드리스트 하나를 조회하는 기능, 아이디(숫자)를 넘기면 이름과 카드들(string)이 반환됩니다")
+	@ApiOperation("카드리스트 하나를 조회하는 기능")
 	public ResponseEntity<Map<String, Object>> search(@PathVariable int cardlist_id) {
-		return handleSuccess(service.search(cardlist_id));
+		return handler.success(service.search(cardlist_id));
 	}
 
 	// UPDATE
@@ -70,7 +59,7 @@ public class CardlistRESTController {
 	@ApiOperation("cardlist 정보 수정, 수정이 가능한 정보는 name, cards, board_id, _secret, color 다섯가지입니다.")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Cardlist cardlist) {
 		service.updateCardlist(cardlist);
-		return handleSuccess(cardlist.getCardlist_id() + "번 카드리스트 수정 완료");
+		return handler.success(cardlist.getCardlist_id() + "번 카드리스트 수정 완료");
 	}
 
 	// DELETE
@@ -78,7 +67,7 @@ public class CardlistRESTController {
 	@ApiOperation("cardlist 정보 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int cardlist_id) {
 		service.deleteCardlist(cardlist_id);
-		return handleSuccess(cardlist_id + "번 카드리스트 삭제 완료");
+		return handler.success(cardlist_id + "번 카드리스트 삭제 완료");
 	}
 	
 	// PATCH
@@ -86,14 +75,14 @@ public class CardlistRESTController {
 	@ApiOperation("cardlist의 cards만 수정하는 patch rest api 입니다")
 	public ResponseEntity<Map<String, Object>> patch(@RequestBody Cardlist cardlist) {
 		service.patch(cardlist);
-		return handleSuccess(cardlist.getCardlist_id() + "번 카드리스트의 패치 완료");
+		return handler.success(cardlist.getCardlist_id() + "번 카드리스트의 패치 완료");
 	}
 	
 	@PatchMapping("/api/cardlist/{cardlist_id}/color/{cardlist_color}")
 	@ApiOperation("cardlist의 색상만 바꾸는 patch rest api 입니다")
 	public ResponseEntity<Map<String, Object>> cardlistcolorpatch(@RequestBody Cardlistcolorpatch cp) {
 		service.cardlistcolorpatch(cp.getCardlist_id(), cp.getCardlist_color());
-		return handleSuccess(cp.getCardlist_id() + "번 카드리스트의 색상 패치 완료");
+		return handler.success(cp.getCardlist_id() + "번 카드리스트의 색상 패치 완료");
 	}
 	
 	@NoArgsConstructor
@@ -107,27 +96,27 @@ public class CardlistRESTController {
 	@ApiOperation("card를 이동할 때 카드의 외래키를 바꾸는 api 입니다")
 	public ResponseEntity<Map<String, Object>> movecardlist(@PathVariable int cardlist_id, @PathVariable int board_id) {
 		service.movecardlist(cardlist_id, board_id);
-		return handleSuccess("이동 완료");
+		return handler.success("이동 완료");
 	}
 //	
 //	@GetMapping("/api/search/public/cardlist/{mem_id}/by/{keyword}")
 //	@ApiOperation("A유저가 B유저를 검색)  querystring 으로 limit, page 변수 받아서 limit * (page-1) 부터 limit 개의 cardlist 배열 반환하는 쿼리문")
 //	public ResponseEntity<Map<String, Object>> searchPublicCardlist(@PathVariable String mem_id,
 //			@PathVariable String keyword, @RequestParam int limit, @RequestParam int page) {
-//		return handleSuccess(service.searchPublicCardlist(mem_id, keyword, limit, page));
+//		return handler.success(service.searchPublicCardlist(mem_id, keyword, limit, page));
 //	}
 //	
 //	@GetMapping("/api/search/private/cardlist/{mem_id}/by/{keyword}")
 //	@ApiOperation("A유저가 A유저를 검색)  querystring 으로 limit, page 변수 받아서 limit * (page-1) 부터 limit 개의 cardlist 배열 반환하는 쿼리문")
 //	public ResponseEntity<Map<String, Object>> searchPrivateCardlist(@PathVariable String mem_id,
 //			@PathVariable String keyword, @RequestParam int limit, @RequestParam int page) {
-//		return handleSuccess(service.searchPrivateCardlist(mem_id, keyword, limit, page));
+//		return handler.success(service.searchPrivateCardlist(mem_id, keyword, limit, page));
 //	}
 //	
 	@GetMapping("/api/search/global/cardlist/by/{keyword}")
 	@ApiOperation("키워드로 카드리스트 전체 검색) querystring 으로 limit, page 변수 받아서 limit * (page-1) 부터 limit 개의 cardlist 배열 반환하는 쿼리문")
 	public ResponseEntity<Map<String, Object>> searchGlobalCardlist(@PathVariable String keyword, @RequestParam int limit, @RequestParam int page) {
-		return handleSuccess(service.searchGlobalCardlist(keyword, limit, page));
+		return handler.success(service.searchGlobalCardlist(keyword, limit, page));
 	}
 
 }

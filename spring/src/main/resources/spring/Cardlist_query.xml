@@ -9,9 +9,9 @@
 	</insert>
 
 	<select id="search" parameterType="int" resultType="cardlist">
-		select *
-		from cardlist
-		where cardlist_id = #{cardlist_id}
+		select c.cardlist_id, c.board_id, c.cardlist_name, c.cardlist_cards, c.cardlist_secret, h.cardlist_heart, c.cardlist_color
+		from cardlist c, (select cardlist_id, count(*) as cardlist_heart from heart where cardlist_id = #{cardlist_id}) h 
+		where c.cardlist_id = h.cardlist_id   
 	</select>
 
 	<update id="updateCardlist" parameterType="cardlist">

@@ -150,7 +150,7 @@ public class MemberServiceImpl implements MemberService {
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else {
-				throw new MemberException("회원 정보 수정 중 오류 발생");
+				throw new MemberException("회원 이메일 수정 중 오류 발생");
 			}
 		}
 	}

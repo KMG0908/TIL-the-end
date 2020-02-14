@@ -1,6 +1,5 @@
-package com.ssafy.project.controller;
+package com.ssafy.project.restcontroller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.project.controller.CommonHandler;
 import com.ssafy.project.service.Cardlist_TagService;
 
 import io.swagger.annotations.ApiOperation;
@@ -26,23 +26,12 @@ public class Cardlist_TagRESTController {
 	@Autowired
 	private Cardlist_TagService service;
 
-	public ResponseEntity<Map<String, Object>> handleSuccess(Object data) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "ok");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-	}
-
-	public ResponseEntity<Map<String, Object>> handleFail(Object data, HttpStatus status) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "fail");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
+	@Autowired
+	public CommonHandler handler;
 
 	@ExceptionHandler
 	public ResponseEntity<Map<String, Object>> handler(Exception e) {
-		return handleFail(e.getMessage(), HttpStatus.OK);
+		return handler.fail(e.getMessage(), HttpStatus.OK);
 	}
 
 //	// CREATE
@@ -51,7 +40,7 @@ public class Cardlist_TagRESTController {
 //	public ResponseEntity<Map<String, Object>> insert(@RequestBody Cardlist_Tag cardlist_tag) {
 //		service.insertCardlist_Tag(cardlist_tag);
 //		int cardlist_tag_id = service.getMaxCardlistTagId();
-//		return handleSuccess(cardlist_tag_id);
+//		return handler.success(cardlist_tag_id);
 //	}
 
 	@NoArgsConstructor
@@ -66,14 +55,14 @@ public class Cardlist_TagRESTController {
 	public ResponseEntity<Map<String, Object>> insertcardlisttag(@RequestBody RequestCardlistTag request) {
 		service.insertCardlist_Tag(request.cardlist_id, request.tag_name);
 		int cardlist_tag_id = service.getMaxCardlistTagId();
-		return handleSuccess(cardlist_tag_id);
+		return handler.success(cardlist_tag_id);
 	}
 
 	// READ
 	@GetMapping("/api/cardlist_tag/{cardlist_id}")
 	@ApiOperation("카드리스트 하나의 태그들을 조회하는 기능, 리턴되는 tag_id는 cardlist_tag_id이므로 카드리스트에서 태그 삭제시 tag api를 사용하지 않도록 주의바랍니다")
 	public ResponseEntity<Map<String, Object>> searchAll(@PathVariable int cardlist_id) {
-		return handleSuccess(service.searchAll(cardlist_id));
+		return handler.success(service.searchAll(cardlist_id));
 	}
 
 	// DELETE
@@ -81,7 +70,7 @@ public class Cardlist_TagRESTController {
 	@ApiOperation("cardlist_tag 정보 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int cardlist_tag_id) {
 		service.deleteCardlist_Tag(cardlist_tag_id);
-		return handleSuccess(cardlist_tag_id + "번 카드-태그 삭제 완료");
+		return handler.success(cardlist_tag_id + "번 카드-태그 삭제 완료");
 	}
 
 }

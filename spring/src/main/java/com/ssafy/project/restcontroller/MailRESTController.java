@@ -1,6 +1,5 @@
-package com.ssafy.project.controller;
+package com.ssafy.project.restcontroller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.project.controller.CommonHandler;
 import com.ssafy.project.service.MailService;
 
 import io.swagger.annotations.ApiOperation;
@@ -25,23 +25,12 @@ public class MailRESTController {
 	@Autowired
 	private MailService service;
 
-	public ResponseEntity<Map<String, Object>> handleSuccess(Object data) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "ok");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-	}
-
-	public ResponseEntity<Map<String, Object>> handleFail(Object data, HttpStatus status) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "fail");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
+	@Autowired
+	public CommonHandler handler;
 
 	@ExceptionHandler
 	public ResponseEntity<Map<String, Object>> handler(Exception e) {
-		return handleFail(e.getMessage(), HttpStatus.OK);
+		return handler.fail(e.getMessage(), HttpStatus.OK);
 	}
 
 	@GetMapping("/api/email/{mem_id}/{mem_email}")
@@ -52,7 +41,7 @@ public class MailRESTController {
 		// 비밀번호 찾기 역시 임시 비밀번호를 발급해 이메일로 전송하는 것으로 대체
 
 		service.sendAuth(mem_id, mem_email);
-		return handleSuccess("인증메일을 발송하였습니다.");
+		return handler.success("인증메일을 발송하였습니다.");
 	}
 
 	@NoArgsConstructor
@@ -68,7 +57,7 @@ public class MailRESTController {
 	@ApiOperation("이메일 인증번호를 받는 api 입니다")
 	public ResponseEntity<Map<String, Object>> postAuth(@RequestBody RequestEmailAuth rea) {
 		service.postAuth(rea.getMem_id(), rea.getMem_email(), rea.getAuthCode());
-		return handleSuccess("이메일 인증이 완료되었습니다.");
+		return handler.success("이메일 인증이 완료되었습니다.");
 	}
 	
 	@NoArgsConstructor
@@ -82,21 +71,21 @@ public class MailRESTController {
 	@ApiOperation("운영자에게 문의 보내기 기능입니다")
 	public ResponseEntity<Map<String, Object>> emailask(@RequestBody RequestEmailAsk rea) {
 		service.emailask(rea.getMem_id(), rea.getAsk_contents());
-		return handleSuccess("이메일로 문의사항이 전달되었습니다. 불편을 드려 죄송합니다.");
+		return handler.success("이메일로 문의사항이 전달되었습니다. 불편을 드려 죄송합니다.");
 	}
 
 	@GetMapping("/api/email/findId/{mem_email}")
 	@ApiOperation("mem_email로 등록된 이메일로 아이디를 발송")
 	public ResponseEntity<Map<String, Object>> findId(@PathVariable String mem_email) {
 		service.findId(mem_email);
-		return handleSuccess("등록된 이메일로 아이디를 발송하였습니다.");
+		return handler.success("등록된 이메일로 아이디를 발송하였습니다.");
 	}
 
 	@GetMapping("/api/email/findPw/{mem_id}/{mem_email}")
 	@ApiOperation("mem_email로 등록된 이메일로 임시 비밀번호를 발송")
 	public ResponseEntity<Map<String, Object>> findPw(@PathVariable String mem_id, @PathVariable String mem_email) {
 		service.findPw(mem_id, mem_email);
-		return handleSuccess("등록된 이메일로 임시 비밀번호를 발송하였습니다.");
+		return handler.success("등록된 이메일로 임시 비밀번호를 발송하였습니다.");
 	}
 
 }

@@ -1,6 +1,5 @@
-package com.ssafy.project.controller;
+package com.ssafy.project.restcontroller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.project.controller.CommonHandler;
 import com.ssafy.project.service.CommentService;
 
 import io.swagger.annotations.ApiOperation;
@@ -27,23 +27,12 @@ public class CommentRESTController {
 	@Autowired
 	private CommentService service;
 
-	public ResponseEntity<Map<String, Object>> handleSuccess(Object data) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "ok");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-	}
-
-	public ResponseEntity<Map<String, Object>> handleFail(Object data, HttpStatus status) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "fail");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
+	@Autowired
+	public CommonHandler handler;
 
 	@ExceptionHandler
 	public ResponseEntity<Map<String, Object>> handler(Exception e) {
-		return handleFail(e.getMessage(), HttpStatus.OK);
+		return handler.fail(e.getMessage(), HttpStatus.OK);
 	}
 
 	// CREATE
@@ -52,7 +41,7 @@ public class CommentRESTController {
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody RequestCommentCreate rcc) {
 		service.insertComment(rcc.getMem_id(), rcc.getCardlist_id(), rcc.getComment_contents(), rcc.isComment_secret(), rcc.getComment_reply());
 		int comment_id = service.getMaxCommentId();
-		return handleSuccess(comment_id);
+		return handler.success(comment_id);
 	}
 	
 	@NoArgsConstructor
@@ -69,7 +58,7 @@ public class CommentRESTController {
 	@GetMapping("/api/comment/{cardlist_id}")
 	@ApiOperation("카드 리스트의 코멘트들을 조회하는 기능")
 	public ResponseEntity<Map<String, Object>> searchAll(@PathVariable int cardlist_id) {
-		return handleSuccess(service.searchAll(cardlist_id));
+		return handler.success(service.searchAll(cardlist_id));
 	}
 
 	@NoArgsConstructor
@@ -85,7 +74,7 @@ public class CommentRESTController {
 	@ApiOperation("comment 수정")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody RequestCommentUpdate rcu) {
 		service.updateComment(rcu.getComment_id(), rcu.getComment_contents(), rcu.isComment_secret());
-		return handleSuccess(rcu.getComment_id() + "번 코멘트 수정 완료");
+		return handler.success(rcu.getComment_id() + "번 코멘트 수정 완료");
 	}
 
 	// DELETE
@@ -93,7 +82,7 @@ public class CommentRESTController {
 	@ApiOperation("comment 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int comment_id) {
 		service.deleteComment(comment_id);
-		return handleSuccess(comment_id + "번 코멘트 삭제 완료");
+		return handler.success(comment_id + "번 코멘트 삭제 완료");
 	}
 
 }

@@ -1,6 +1,5 @@
-package com.ssafy.project.controller;
+package com.ssafy.project.restcontroller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.project.controller.CommonHandler;
 import com.ssafy.project.dto.Board;
 import com.ssafy.project.service.BoardService;
 
@@ -28,27 +28,13 @@ public class BoardRESTController {
 
 	@Autowired
 	private BoardService service;
-
-	public ResponseEntity<Map<String, Object>> handleSuccess(Object data) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "ok");
-		resultMap.put("data", data);
-		if (data == null) {
-			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-	}
-
-	public ResponseEntity<Map<String, Object>> handleFail(Object data, HttpStatus status) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "fail");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
+	
+	@Autowired
+	public CommonHandler handler;
 
 	@ExceptionHandler
 	public ResponseEntity<Map<String, Object>> handler(Exception e) {
-		return handleFail(e.getMessage(), HttpStatus.OK);
+		return handler.fail(e.getMessage(), HttpStatus.OK);
 	}
 
 	// CREATE
@@ -57,33 +43,33 @@ public class BoardRESTController {
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Board board) {
 		service.insertBoard(board);
 		int board_id = service.getMaxBoardId();
-		return handleSuccess(board_id);
+		return handler.success(board_id);
 	}
 
 	// READ
 	@GetMapping("/api/board/member/{mem_id}/date/{board_date}")
 	@ApiOperation("보드 유저 - 특정 날짜 조회 (오늘 이전 날짜, 오늘 날짜, 이후 날짜 (9999-12-31) 이 셋만 가능합니다")
 	public ResponseEntity<Map<String, Object>> searchUserBoardDate(@PathVariable String mem_id, @PathVariable String board_date) {
-		return handleSuccess(service.searchUserBoardDate(mem_id, board_date));
+		return handler.success(service.searchUserBoardDate(mem_id, board_date));
 	}
 
 	@GetMapping("/api/board/member/{mem_id}/from/{from}/to/{to}")
 	@ApiOperation("보드 유저 - 날짜 조회")
 	public ResponseEntity<Map<String, Object>> searchUserBoardDaily(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
-		return handleSuccess(service.searchUserBoardDaily(mem_id, from, to));
+		return handler.success(service.searchUserBoardDaily(mem_id, from, to));
 	}
 
 	@GetMapping("/api/board/member/{mem_id}/page/{page_number}")
 	@ApiOperation("최신 날짜 기준 보드 5개 리턴")
 	public ResponseEntity<Map<String, Object>> boardPage(@PathVariable String mem_id, @PathVariable int page_number) {
-		return handleSuccess(service.boardPage(mem_id, page_number));
+		return handler.success(service.boardPage(mem_id, page_number));
 	}
 
 	@GetMapping("/api/board/{board_id}")
 	@ApiOperation("보드의 카드 리스트 조회")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> searchAllCardLists(@PathVariable int board_id) {
-		return handleSuccess(service.searchAllCardLists(board_id));
+		return handler.success(service.searchAllCardLists(board_id));
 	}
 
 	// UPDATE
@@ -94,7 +80,7 @@ public class BoardRESTController {
 		board.setBoard_id(board_id);
 		board.setBoard_lists(lists);
 		service.patchBoard(board);
-		return handleSuccess(board_id + "번 보드 수정 완료");
+		return handler.success(board_id + "번 보드 수정 완료");
 	}
 
 	/* 사용자 사용 불가 */
@@ -102,14 +88,14 @@ public class BoardRESTController {
 	@ApiOperation("board 업데이트, 사용자 사용 불가, 개발시에만 사용해 주세요")
 	public ResponseEntity<Map<String, Object>> updateBoard(@RequestBody Board board) {
 		service.updateBoard(board);
-		return handleSuccess(board.getBoard_id() + "번 보드 수정 완료");
+		return handler.success(board.getBoard_id() + "번 보드 수정 완료");
 	}
 
 	@DeleteMapping("/api/board/{board_id}")
 	@ApiOperation("board 정보 삭제, 사용자 사용 불가, 개발시에만 사용해 주세요")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int board_id) {
 		service.deleteBoard(board_id);
-		return handleSuccess(board_id + "번 보드 삭제 완료");
+		return handler.success(board_id + "번 보드 삭제 완료");
 	}
 
 }
