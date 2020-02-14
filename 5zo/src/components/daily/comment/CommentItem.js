@@ -13,18 +13,46 @@ import { Link } from "@material-ui/core";
 import { connect } from "react-redux";
 import { addComment, deleteComment, editComment } from "../../../actions";
 import CommentForm from "./CommentForm";
+import moment from "moment";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@material-ui/core/Button";
+import history from "../../../history";
 
-const CommentItem = ({
+function CommentItem({
   members,
   comment,
   cardlist_id,
   deleteComment,
   addComment,
   editComment
-}) => {
+}) {
   const [mode, setMode] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const handleDelete = () => {
     deleteComment(cardlist_id, comment.comment_id);
+  };
+
+  const handleClick = event => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = event => {
+    event.stopPropagation();
+    setAnchorEl(null);
+  };
+  const renderTime = time => {
+    if (moment().diff(moment(time), "months")) {
+      return time;
+    } else {
+      return moment(time).fromNow();
+    }
+  };
+  const routeToSearch = () => {
+    history.push(`/search?member=${comment.mem_id}`);
+  };
+  const routeToUserPage = () => {
+    history.push(`/daily/${comment.mem_id}`);
   };
 
   const renderItem = () => {
@@ -36,14 +64,20 @@ const CommentItem = ({
         <ListItemText
           primary={
             <>
-              {comment.mem_nick}{" "}
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                {comment.mem_nick} {`@${comment.mem_id}`}{" "}
+              </Button>
               <Typography
                 variant="caption"
                 display="inline"
                 color="textSecondary"
                 gutterBottom
               >
-                {comment.comment_time}
+                {renderTime(comment.comment_time)}
               </Typography>
             </>
           }
@@ -64,6 +98,23 @@ const CommentItem = ({
             </React.Fragment>
           }
         />
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem
+            to={`/search?member=${comment.mem_id}`}
+            onClick={routeToSearch}
+          >
+            유저 포스트 검색
+          </MenuItem>
+          <MenuItem to={`/daily/${comment.mem_id}`} onClick={routeToUserPage}>
+            유저 페이지로
+          </MenuItem>
+        </Menu>
         <ListItemSecondaryAction>
           {comment.mem_id === members.mem_info.mem_id ? (
             <Typography
@@ -128,14 +179,14 @@ const CommentItem = ({
         <div style={{ width: "90%", marginTop: "1em", float: "right" }}>
           <CommentForm
             inputRef={refs}
-            comment_contents={`@${comment.mem_nick} `}
+            comment_contents={`@${comment.mem_id} `}
             onSubmit={onReplying}
           />
         </div>
       ) : null}
     </>
   );
-};
+}
 
 const mapStateToProps = state => {
   return {

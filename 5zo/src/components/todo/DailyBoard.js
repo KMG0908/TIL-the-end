@@ -54,9 +54,9 @@ class DailyBoard extends React.Component {
       this.setState({ date: date });
       this.props.fetchDailyLists(this.props.members.mem_info.mem_id, date);
     } else if (this.props.members.mem_info) {
-      date = new Date().toISOString().split("T")[0]
+      date = new Date().toISOString().split("T")[0];
       this.props.fetchDailyLists(this.props.members.mem_info.mem_id, date);
-      this.setState({date : date})
+      this.setState({ date: date });
     }
   }
   handleDoubleClick = list_id => {
@@ -126,6 +126,7 @@ class DailyBoard extends React.Component {
           droppableId={String(this.props.boardDict[date])}
           direction="vertical"
           type="list"
+          isDropDisabled={date < today}
         >
           {provided => (
             <Box
