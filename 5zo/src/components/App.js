@@ -16,7 +16,6 @@ import Register from "./Auth/Register";
 import Login from "./Auth/Login";
 import storage from "lib/storage";
 import MyPage from "./Auth/MyPage";
-import MyPageEdit from "./Auth/MyPageEdit";
 import MyAccountDelete from "./Auth/MyAccountDelete";
 import Imgur from "./image_test/Imgur";
 import Daily from "./daily/Main";
@@ -76,12 +75,6 @@ class App extends React.Component {
               <Route path="/login" exact component={Login} />
 
               <Route path="/mypage" exact component={MyPage} />
-              <Route path="/mypage/edit" exact component={MyPageEdit} />
-              <Route
-                path="/mypage/edit-password"
-                exact
-                component={EditPasswordPage}
-              />
               <Route path="/mypage/delete" exact component={MyAccountDelete} />
 
               {/* test */}

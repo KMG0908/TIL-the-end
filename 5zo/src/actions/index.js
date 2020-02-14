@@ -62,7 +62,8 @@ import {
   FETCH_COMMENTS,
   ADD_COMMENT,
   DELETE_COMMENT,
-  PUT_COMMENT
+  PUT_COMMENT,
+  EDIT_MYPROFILE
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -191,6 +192,31 @@ export const deleteAccountErrReset = () => async (dispatch, getState) => {
 export const deleteAccountSuccessReset = () => async (dispatch, getState) => {
   if (getState().members.delete_account_success) {
     dispatch({ type: DELETE_ACCOUNT_SUCCESS, payload: "" });
+  }
+};
+
+export const editMyProfile = (
+  loginId,
+  nick, 
+  intro,
+  checked,
+  color,
+  thumb
+) => async dispatch => {
+  const response = await apis.put(`/member`, {
+    mem_id: loginId,
+    mem_nick: nick,
+    mem_color: color,
+    mem_thumb: thumb,
+    mem_self_intro: intro
+  });
+
+  const data = response.data.data;
+
+  console.log("profile");
+  console.log(data);
+  if (data.mem_id) {
+    dispatch({ type: EDIT_MYPROFILE, payload: data });
   }
 };
 

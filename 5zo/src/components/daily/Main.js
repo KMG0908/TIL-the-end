@@ -7,12 +7,13 @@ import { connect } from "react-redux";
 import { fetchDailyLists, setEditModeList } from "../../actions";
 import Button from "@material-ui/core/Button";
 
-let lastDay = new Date();
 class Main extends React.Component {
   constructor(props) {
     super(props);
     let user_id = this.props.match.params.user_id;
     if (!user_id) user_id = storage.get("loggedInfo").mem_id;
+    
+    let lastDay = new Date();
 
     let date = this.props.match.params.date;
     if (!date) date = new Date();
@@ -31,11 +32,14 @@ class Main extends React.Component {
 
         date = this.date_to_str(date, "-");
       }
+
+      lastDay.setDate(lastDay.getDate() - 1);
+      lastDay = this.date_to_str(lastDay, "-");
     }
 
     this.state = {
       date: date,
-      cur_date: date,
+      cur_date: lastDay,
       user_id: user_id
     };
 

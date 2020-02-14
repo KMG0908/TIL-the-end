@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { login, loginErrReset } from "../../actions";
-import { AuthWrapper_tmp, AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink } from '../Auth';
+import { InputWithLabel, AuthButton } from '../Auth';
 import storage from 'lib/storage';
-import "./login.css"
+import "./error.css"
 import PasswordWithLabel from './PasswordWithLabel';
-import apis from "../../apis/apis";
 import axios from 'axios';
 import history from '../../history'
 import FindInfoLink from './FindInfoLink';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+  paper: {
+    padding: '20px'
+  }
+});
+
 
 class Login extends Component {
   componentDidMount() {
@@ -25,14 +33,6 @@ class Login extends Component {
         })
     }
 
-    // if (!this.props.mem_info) {
-    //   const response = await apis.get('/naver/login');
-    //   if(response.status === 200){
-    //     const url = response.data.data;
-    //     document.getElementById("naver_id_login").innerHTML = '<a href=\"' + url + '\"><img width="300" alt="네이버 아이디로 로그인" src="https://developers.naver.com/doc/review_201802/CK_bEFnWMeEBjXpQ5o8N_20180202_7aot50.png" /></a>'
-    //   }
-    // }
-    
     document.getElementById("loginId").focus();
   }
   constructor(props) {
@@ -84,16 +84,15 @@ class Login extends Component {
 
     this.props.login(this.state.loginId, this.state.loginPw);
   }
-  cancel() {
-    history.push("/")
-  }
-  naver = ()  => {
+  naver = () => {
     window.location.href = this.state.url
   }
-  keyDown(e){
-    if(e.keyCode === 13) this.login();
+  keyDown(e) {
+    if (e.keyCode === 13) this.login();
   }
   render() {
+    const { classes } = this.props;
+
     if (this.props.mem_info) {
       const loggedInfo = this.props.mem_info;
       storage.set('loggedInfo', loggedInfo);
@@ -104,26 +103,20 @@ class Login extends Component {
     return (
       <div style={{ textAlign: 'center', background: '#fafbfc' }}>
         <div style={{ display: 'inline-block', width: 500 }}>
-          <AuthWrapper_tmp>
-            {/* <AuthContent title="로그인"> */}
-              <InputWithLabel label="아이디" id="loginId" name="loginId" placeholder="아이디" onChange={this.handleChange} onKeyDown={this.keyDown}/>
-              <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" placeholder="비밀번호" onChange={this.handleChange} onKeyDown={this.keyDown}/>
-              <input type="text" className={this.props.login_err? "error" : "none"} readOnly value={this.props.login_err}/>
-              <AuthButton onClick={this.login}> 로그인 </AuthButton>
-              <AuthButton onClick={this.cancel}> 취소 </AuthButton>
-              <AuthButton onClick={this.naver} backgroundColor={'#2DB400'}> 네이버 아이디로 로그인 </AuthButton>
-              <div style={{marginTop : '20px'}}>
-                <FindInfoLink to="/register"> 회원가입</FindInfoLink>
-                <span style={{margin: '0 6px', background: '#e4e4e5', width: '1px', textIndent: '-999em', display: 'inline-block'}}>|</span>
-                <FindInfoLink to="/find-id">아이디 찾기</FindInfoLink>
-                <span style={{margin: '0 6px', background: '#e4e4e5', width: '1px', textIndent: '-999em', display: 'inline-block'}}>|</span>
-                <FindInfoLink to="/find-pw">비밀번호 찾기</FindInfoLink>
-              </div>
-              {/* <RightAlignedLink to="/register"> 회원가입 </RightAlignedLink>
-              <RightAlignedLink to="/find-id"> 아이디 찾기 </RightAlignedLink>
-              <RightAlignedLink to="/find-pw"> 비밀번호 찾기 </RightAlignedLink> */}
-            {/* </AuthContent> */}
-          </AuthWrapper_tmp>
+          <Paper className={classes.paper}>
+            <InputWithLabel label="아이디" id="loginId" name="loginId" onChange={this.handleChange} onKeyDown={this.keyDown} />
+            <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" onChange={this.handleChange} onKeyDown={this.keyDown} />
+            <input type="text" className={this.props.login_err ? "error" : "none"} readOnly value={this.props.login_err} />
+            <AuthButton onClick={this.login}> 로그인 </AuthButton>
+            <AuthButton onClick={this.naver} backgroundColor={'#2DB400'}> 네이버 아이디로 로그인 </AuthButton>
+            <div style={{ marginTop: '20px' }}>
+              <FindInfoLink to="/register"> 회원가입</FindInfoLink>
+              <span style={{ margin: '0 6px', background: '#e4e4e5', width: '1px', textIndent: '-999em', display: 'inline-block' }}>|</span>
+              <FindInfoLink to="/find-id">아이디 찾기</FindInfoLink>
+              <span style={{ margin: '0 6px', background: '#e4e4e5', width: '1px', textIndent: '-999em', display: 'inline-block' }}>|</span>
+              <FindInfoLink to="/find-pw">비밀번호 찾기</FindInfoLink>
+            </div>
+          </Paper>
         </div>
       </div>
     );
@@ -137,4 +130,4 @@ const mapStatetoProps = state => {
   };
 };
 
-export default connect(mapStatetoProps, { login, loginErrReset })(Login);
+export default withStyles(styles, { withTheme: true })(connect(mapStatetoProps, { login, loginErrReset })(Login));
