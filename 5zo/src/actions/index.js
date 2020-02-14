@@ -840,7 +840,7 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
     cardList_id_string = cardList_id_string.replace('[', '')
     cardList_id_string = cardList_id_string.replace(']', '')
     const cardlist_id_array = [];
-    cardList_id_string.split(',').map(cardList => cardlist_id_array.push(Number(cardList)))
+    cardList_id_string.split(',').map(cardList => cardList === '' ? null :cardlist_id_array.push(Number(cardList)))
     console.log('cardList_id_string ')
     console.log(cardList_id_string)
     console.log(cardlist_id_array)
