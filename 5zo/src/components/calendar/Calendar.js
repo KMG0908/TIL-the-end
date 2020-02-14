@@ -77,10 +77,11 @@ class Event extends React.Component {
     if (!event.color) {
       newStyle = {
         backgroundColor: "white",
-        color: this.props.members.mem_info.mem_color,
+        color:  this.props.members.mem_info.mem_color,
         borderRadius: "10px",
         border: "none",
-        display: "block"
+        display: "block",
+        fontWeight: 'bold'
       };
     } else {
       newStyle = {
@@ -88,7 +89,8 @@ class Event extends React.Component {
         color: event.color,
         borderRadius: "10px",
         border: "none",
-        display: "block"
+        display: "block",
+        fontWeight: 'bold'
       };
     }
     if (event.isMine) {
@@ -102,7 +104,6 @@ class Event extends React.Component {
   dayStyleGetter = (event, start, end, isSelected) => {
     let newStyle = {
       borderRadius: "3px",
-
       display: "block"
     };
     if (event.isMine) {
