@@ -27,20 +27,12 @@ import FindPwPage from "./Auth/FindPwPage";
 import EditPasswordPage from "./Auth/EditPasswordPage";
 import Body from "./landing/Body";
 import NewMySetting from "./Auth/NewMySetting";
-
+import AdminPage from './Admin/AdminPage'
 class App extends React.Component {
   initializeUserInfo = async () => {
     const loggedInfo = storage.get("loggedInfo");
     if (!loggedInfo) return;
 
-    // const { UserActions } = this.props;
-    // UserActions.setLoggedInfo(loggedInfo);
-    // try {
-    //   await UserActions.checkStatus();
-    // } catch (e) {
-    //   storage.remove('loggedInfo');
-    //   window.location.href = '/auth/login?expired';
-    // }
     this.props.setLoggedInfo(loggedInfo);
   };
   componentDidMount() {
@@ -64,7 +56,7 @@ class App extends React.Component {
     } else {
       // 로그인했을 때
       return (
-        <Navigation mem_info={this.props.members.mem_info.mem_nick}>
+        <Navigation mem_info={this.props.members.mem_info}>
           <div>
             <Switch>
               <Route path="/" exact component={Daily} />
@@ -96,6 +88,13 @@ class App extends React.Component {
                 component={Daily}
               ></Route>
               <Route path="/search" exact component={NewSearch}></Route>
+              {
+                this.props.members.mem_info.mem_id === 'admin' ? 
+                <Route path='/admin' component = {AdminPage}></Route>
+                :
+                null
+              }
+
               <Route component={Redirecting} />
             </Switch>
           </div>
