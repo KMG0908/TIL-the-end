@@ -6,26 +6,27 @@ import storage from "lib/storage";
 import { connect } from "react-redux";
 import { fetchDailyLists, setEditModeList } from "../../actions";
 import Button from "@material-ui/core/Button";
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from "@material-ui/core/styles";
 
 import { ThemeProvider } from "@material-ui/styles";
 const GlobalTheme = createMuiTheme({
   palette: {
     secondary: {
       main: storage.get("loggedInfo").mem_color,
-      contrastText: 'white',
-    },
-  },
+      contrastText: "white"
+    }
+  }
 });
-
-let lastDay = new Date();
 
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    
+
     let user_id = this.props.match.params.user_id;
     if (!user_id) user_id = storage.get("loggedInfo").mem_id;
+
+    let lastDay = new Date();
+
     let date = this.props.match.params.date;
     if (!date) date = new Date();
     else
@@ -43,15 +44,15 @@ class Main extends React.Component {
 
         date = this.date_to_str(date, "-");
       }
+
+      lastDay.setDate(lastDay.getDate() - 1);
+      lastDay = this.date_to_str(lastDay, "-");
     }
 
     this.state = {
       date: date,
-      cur_date: date,
-      user_id: user_id,
-      bu1: "white",
-      bu2: "white",
-      bu3: "white"
+      cur_date: lastDay,
+      user_id: user_id
     };
 
     this.onHandleDate = this.onHandleDate.bind(this);
@@ -93,36 +94,32 @@ class Main extends React.Component {
   }
   setHeatMap(year) {
     let local_date = false;
-    
+
     if (year == 2020) {
-      this.state.bu1 = "secondary"
-      this.state.bu2 = "white"
-      this.state.bu3 = "white"
+      this.state.bu1 = "secondary";
+      this.state.bu2 = "white";
+      this.state.bu3 = "white";
       local_date = new Date();
       this.setState({
         cur_date: local_date
       });
-    }
-    else if (year == 2019) {
-      this.state.bu2 = "secondary"
-      this.state.bu1 = "white"
-      this.state.bu3 = "white"
+    } else if (year == 2019) {
+      this.state.bu2 = "secondary";
+      this.state.bu1 = "white";
+      this.state.bu3 = "white";
       this.setState({
-
-        cur_date: new Date('december 31 2019')
-      })
-    }
-    else {
-      this.state.bu3 = "secondary"
-      this.state.bu2 = "white"
-      this.state.bu1 = "white"
+        cur_date: new Date("december 31 2019")
+      });
+    } else {
+      this.state.bu3 = "secondary";
+      this.state.bu2 = "white";
+      this.state.bu1 = "white";
       this.setState({
-        cur_date: new Date('december 31 2018')
-      })
+        cur_date: new Date("december 31 2018")
+      });
     }
   }
   render() {
-
     const now_user_id =
       this.props.match.params.user_id || storage.get("loggedInfo").mem_id;
     if (
@@ -133,8 +130,7 @@ class Main extends React.Component {
         user_id: now_user_id
       });
     }
-    
-    
+
     return (
       <>
         <UserInfo user_id={this.state.user_id}></UserInfo>
@@ -148,7 +144,7 @@ class Main extends React.Component {
               }}
             >
               2020
-          </Button>
+            </Button>
             <Button
               color={this.state.bu2}
               variant="contained"

@@ -8,8 +8,6 @@ import "./heatmap.css";
 import moment from "moment";
 import storage from "lib/storage";
 
-let lastDay = new Date();
-
 class Heatmap extends React.Component {
   constructor(props) {
     super(props);
@@ -20,27 +18,31 @@ class Heatmap extends React.Component {
       col2: false,
       col3: false,
       col4: false
-    }
+    };
   }
   getTintedColor(color, v) {
-    if (color.length > 6) { color = color.substring(1, color.length) }
+    if (color.length > 6) {
+      color = color.substring(1, color.length);
+    }
     var rgb = parseInt(color, 16);
-    var r = Math.abs(((rgb >> 16) & 0xFF) + v); if (r > 255) r = r - (r - 255);
-    var g = Math.abs(((rgb >> 8) & 0xFF) + v); if (g > 255) g = g - (g - 255);
-    var b = Math.abs((rgb & 0xFF) + v); if (b > 255) b = b - (b - 255);
-    r = Number(r < 0 || isNaN(r)) ? 0 : ((r > 255) ? 255 : r).toString(16);
-    if (r.length == 1) r = '0' + r;
-    g = Number(g < 0 || isNaN(g)) ? 0 : ((g > 255) ? 255 : g).toString(16);
-    if (g.length == 1) g = '0' + g;
-    b = Number(b < 0 || isNaN(b)) ? 0 : ((b > 255) ? 255 : b).toString(16);
-    if (b.length == 1) b = '0' + b;
+    var r = Math.abs(((rgb >> 16) & 0xff) + v);
+    if (r > 255) r = r - (r - 255);
+    var g = Math.abs(((rgb >> 8) & 0xff) + v);
+    if (g > 255) g = g - (g - 255);
+    var b = Math.abs((rgb & 0xff) + v);
+    if (b > 255) b = b - (b - 255);
+    r = Number(r < 0 || isNaN(r)) ? 0 : (r > 255 ? 255 : r).toString(16);
+    if (r.length == 1) r = "0" + r;
+    g = Number(g < 0 || isNaN(g)) ? 0 : (g > 255 ? 255 : g).toString(16);
+    if (g.length == 1) g = "0" + g;
+    b = Number(b < 0 || isNaN(b)) ? 0 : (b > 255 ? 255 : b).toString(16);
+    if (b.length == 1) b = "0" + b;
     return "#" + r + g + b;
   }
   componentDidMount() {
     const user_id = this.props.user_id;
-    lastDay = new Date();
-    if (user_id !== storage.get("loggedInfo").mem_id){
-      lastDay.setDate(lastDay.getDate() - 1);}
+
+    const lastDay = new Date(this.props.cur_date);
     this.props.getDailyTask(user_id, shiftDate(lastDay, -365), lastDay);
   }
   getTooltipDataAttrs = value => {
@@ -60,35 +62,36 @@ class Heatmap extends React.Component {
     }
     this.props.onHandleDate(value.date);
   };
-  
+
   setHeatMap() {
     let EndDate = this.props.cur_date;
+    let lastDay = new Date(this.props.cur_date);
+
     if (this.props.board_info) {
+      const state = this.props.board_info;
       let data = [];
-      let def_color = this.props.members.mem_info.mem_color
-      this.state.col1 = this.getTintedColor(def_color, 60)
-      this.state.col2 = this.getTintedColor(def_color, 30)
-      this.state.col3 = this.getTintedColor(def_color, 0)
-      this.state.col4 = this.getTintedColor(def_color, -30)
-      let startDate = shiftDate(lastDay, -2000);
+      let def_color = this.props.members.mem_info.mem_color;
+      this.state.col1 = this.getTintedColor(def_color, 60);
+      this.state.col2 = this.getTintedColor(def_color, 30);
+      this.state.col3 = this.getTintedColor(def_color, 0);
+      this.state.col4 = this.getTintedColor(def_color, -30);
+      let startDate = shiftDate(lastDay, -365);
       let endDate = lastDay;
       let date = startDate;
       while (true) {
         data.push({
           count: 0,
           date: date_to_str(date, "-")
-        })
-        if (date_to_str(date, "-") === date_to_str(endDate, "-")) {
-          break;
-        } 
+        });
+        if (date_to_str(date, "-") === date_to_str(endDate, "-")) break;
         date = shiftDate(date, 1);
       }
-      const state1 = this.props.board_info
+      const state1 = this.props.board_info;
       for (let i = 0; i < state1.length; i++) {
         data.push({
           count: state1[i].board_id,
           date: state1[i].board_date
-        })
+        });
       }
       return (
         <div className="user-heatmap">
@@ -100,21 +103,16 @@ class Heatmap extends React.Component {
             onClick={this.handleClick}
             transformDayElement={(element, value) => {
               let color;
-              if(!value) {
-              }
-              else if (value.count == 0) {
+              if (!value) {
+              } else if (value.count == 0) {
                 color = "#eeeeee";
-              }
-              else if (value.count <= 3) {
+              } else if (value.count <= 3) {
                 color = this.state.col1;
-              }
-              else if (value.count <= 6) {
+              } else if (value.count <= 6) {
                 color = this.state.col2;
-              }
-              else if (value.count <= 9) {
+              } else if (value.count <= 9) {
                 color = this.state.col3;
-              }
-              else {
+              } else {
                 color = this.state.col4;
               }
               return React.cloneElement(element, { style: { fill: color } });
