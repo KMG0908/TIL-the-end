@@ -872,6 +872,7 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
     console.log(cardlist_id_array)
     for (let j = 0; j < cardlist_id_array.length; j++) {
       cardlist_id = cardlist_id_array[j];
+      console.log(cardlist_id)
       response = await apis.get(`/cardlist/${cardlist_id}`);
       cardlist = response.data.data;
       cardlist.date = board.board_date;
