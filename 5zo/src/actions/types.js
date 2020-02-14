@@ -1,5 +1,6 @@
 export const FETCH_MEMBERS = "FETCH_MEMBERS";
 export const GET_ALL_MEMBERS = "GET_ALL_MEMBERS"
+export const GET_ALL_MEMBER_DATA = "GET_ALL_MEMBER_DATA"
 export const LOGIN = "LOGIN";
 export const LOGIN_ERR = "LOGIN_ERR";
 export const REGISTER = "REGISTER";

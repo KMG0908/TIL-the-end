@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel, ColorPicker } from '../Auth';
-import { editMyColor, editMyColorFailReset, changeMemInfo, editMyDefSecret } from "actions";
-import { TwitterPicker } from "react-color";
+import { editMyColor, changeMemInfo, editMyDefSecret } from "actions";
 import storage from 'lib/storage';
 import Switch from '@material-ui/core/Switch';
-import apis from '../../apis/apis'
 
 import styled from 'styled-components';
 import oc from 'open-color';
@@ -65,7 +63,11 @@ class MyPage extends Component {
               {/* <div style={{background : this.props.mem_info.mem_color, width : '10', heigth : '10'}}/> */}
               <br></br>
               <div>
-                <Label> 기본 카드리스트 공개 여부 </Label>
+                {this.state.checked ? 
+                <Label> 카드리스트 기본 비공개 설정</Label>
+                :
+                <Label> 카드리스트 기본 공개 설정</Label>
+                }
                 <Switch
                   checked={this.state.checked}
                   onChange={this.handleChange}
@@ -92,4 +94,4 @@ const mapStatetoProps = state => {
   };
 };
 
-export default connect(mapStatetoProps, { editMyColor, editMyColorFailReset, changeMemInfo, editMyDefSecret })(MyPage);
+export default connect(mapStatetoProps, { editMyColor, changeMemInfo, editMyDefSecret })(MyPage);
