@@ -12,7 +12,7 @@ import { ThemeProvider } from "@material-ui/styles";
 const GlobalTheme = createMuiTheme({
   palette: {
     secondary: {
-      main: storage.get("loggedInfo").mem_color,
+      main: storage.get("loggedInfo") ? storage.get('loggedInfo').mem_color : '#FFFFFF',
       contrastText: "white"
     }
   }
@@ -29,7 +29,7 @@ class Main extends React.Component {
 
     let date = this.props.match.params.date;
     if (!date) date = new Date();
-    else
+    else  
       date = new Date(
         date.substr(0, 4),
         date.substr(4, 2) * 1 - 1,
