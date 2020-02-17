@@ -13,7 +13,8 @@ import calendarReducer from "./calendarReducer";
 import calendarListReducer from "./calendarListReducer";
 import editModeList from "./editModeList";
 import editModeCard from "./editModeCard";
-import commentReducer from "./commentReducer"
+import commentReducer from "./commentReducer";
+import alarmReducer from "./alarmReducer";
 
 export default combineReducers({
   members: memberReducer,
@@ -29,5 +30,6 @@ export default combineReducers({
   listCalendar: calendarListReducer,
   editModeList: editModeList,
   editModeCard: editModeCard,
-  comments : commentReducer
+  comments: commentReducer,
+  alarms: alarmReducer
 });

@@ -25,7 +25,9 @@ function CommentItem({
   cardlist_id,
   deleteComment,
   addComment,
-  editComment
+  editComment,
+  user_id,
+  date
 }) {
   const [mode, setMode] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -161,7 +163,7 @@ function CommentItem({
       ? comment.comment_reply
       : comment.comment_id;
     if (comment_contents) {
-      addComment(cardlist_id, comment_contents, comment_reply);
+      addComment(cardlist_id, comment_contents, comment_reply, user_id, date);
       setMode(false);
     }
   };
