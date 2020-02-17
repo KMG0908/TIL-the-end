@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.project.controller.CommonHandler;
-import com.ssafy.project.dto.Alarm;
 import com.ssafy.project.service.AlarmService;
 
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @RestController
 public class AlarmRESTController {
@@ -33,11 +34,19 @@ public class AlarmRESTController {
 		return handler.fail(e.getMessage(), HttpStatus.OK);
 	}
 
+	@NoArgsConstructor
+	@Data
+	private static class RequestAlarmBody {
+		private String mem_id;
+		private String alarm_text;
+		private String alarm_url;
+	}
+	
 	@PostMapping("/api/alarm")
 	@ApiOperation("알람 추가, mem_id는 알람을 받을 사람, alarm_text는 보여줄 내용, alarm_url은 알람 발생 장소")
-	public ResponseEntity<Map<String, Object>> insertAlarm(@RequestBody Alarm alarm) {
-		service.insertAlarm(alarm);
-		return handler.success(alarm.getMem_id() + "에게 전달될 알람이 생성되었습니다.");
+	public ResponseEntity<Map<String, Object>> insertAlarm(@RequestBody RequestAlarmBody rab) {
+		service.insertAlarm(rab.getMem_id(), rab.getAlarm_text(), rab.getAlarm_url());
+		return handler.success(rab.getMem_id() + "에게 전달될 알람이 생성되었습니다.");
 	}
 
 	@DeleteMapping("/api/alarm/{alarm_id}")

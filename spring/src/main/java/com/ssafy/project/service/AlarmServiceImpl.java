@@ -16,8 +16,12 @@ public class AlarmServiceImpl implements AlarmService {
 	private AlarmDao dao;
 
 	@Override
-	public void insertAlarm(Alarm alarm) {
+	public void insertAlarm(String mem_id, String alarm_text, String alarm_url) {
 		try {
+			Alarm alarm = new Alarm();
+			alarm.setMem_id(mem_id);
+			alarm.setAlarm_text(alarm_text);
+			alarm.setAlarm_url(alarm_url);
 			dao.insertAlarm(alarm);
 		} catch (Exception e) {
 			e.printStackTrace();
