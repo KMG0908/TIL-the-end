@@ -18,9 +18,16 @@ import {
   DELETE_ACCOUNT_ERR,
   DELETE_ACCOUNT_SUCCESS,
   FIND_ID_FAIL,
+  FIND_ID_FAIL_RESET,
   FIND_ID_SUCCESS,
+  EXIST_EMAIL_SUCCESS,
+  EXIST_EMAIL_FAIL,
   FIND_PW_SUCCESS,
   FIND_PW_FAIL,
+  FIND_PW_FAIL_RESET,
+  MATCH_ID_EMAIL_FAIL,
+  MATCH_ID_EMAIL_SUCCESS,
+  MATCH_ID_EMAIL_SUCCESS_RESET,
   EDIT_PASSWORD_SUCCESS,
   EDIT_PASSWORD_FAIL,
   EDIT_PASSWORD_SUCCESS_RESET,
@@ -31,7 +38,9 @@ import {
   CHECK_PASSWORD,
   CHECK_PASSWORD_RESET,
   EDIT_EMAIL,
-  EDIT_EMAIL_RESET
+  EDIT_EMAIL_RESET,
+  EXIST_EMAIL_FAIL_RESET,
+  EXIST_EMAIL_SUCCESS_RESET,
 } from "../actions/types";
 import _ from "lodash";
 import { combineReducers } from "redux";
@@ -104,14 +113,30 @@ export default (state = {}, action) => {
 
     // find ID
     case FIND_ID_FAIL:
-      return { ...state, find_id_fail: action.payload };
+      return { ...state, find_id_fail: "메일 API 오류" };
+    case FIND_ID_FAIL_RESET:
+      return { ...state, find_id_fail: undefined };
     case FIND_ID_SUCCESS:
       return { ...state, find_id_success: true };
+    case EXIST_EMAIL_SUCCESS:
+      return { ...state, exist_email_success: true }
+    case EXIST_EMAIL_SUCCESS_RESET:
+      return { ...state, exist_email_success: undefined }
+    case EXIST_EMAIL_FAIL:
+      return { ...state, find_id_fail: "해당 이메일의 유저가 존재하지 않습니다." }
     // find PW
     case FIND_PW_FAIL:
-      return { ...state, find_pw_fail: action.payload };
+      return { ...state, find_pw_fail: "메일 API 오류" };
+    case FIND_PW_FAIL_RESET:
+      return { ...state, find_pw_fail: undefined };
     case FIND_PW_SUCCESS:
       return { ...state, find_pw_success: true };
+    case MATCH_ID_EMAIL_SUCCESS:
+      return { ...state, match_id_email_success: true }
+    case MATCH_ID_EMAIL_SUCCESS_RESET:
+      return { ...state, match_id_email_success: undefined }
+    case MATCH_ID_EMAIL_FAIL:
+      return { ...state, find_pw_fail: "입력한 아이디와 이메일 정보가 일치하지 않습니다." }
     default:
       return state;
   }

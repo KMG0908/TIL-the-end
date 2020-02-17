@@ -8,8 +8,9 @@ import Switch from '@material-ui/core/Switch';
 import styled from 'styled-components';
 import oc from 'open-color';
 import Avatar from '@material-ui/core/Avatar';
-import { editMyColor, changeMemInfo, editMyDefSecret } from "actions";
+import { } from "actions";
 import {TextWithLabel} from '../Auth'
+import apis from '../../apis/apis'
 const Label = styled.div`
     font-size : 1rem;
     color : ${oc.gray[6]};
@@ -21,17 +22,31 @@ class MemberCard extends Component {
 
   constructor(props) {
     super(props);
+    console.log(props.member)
     this.state = {
-      checked: props.member ? props.member.mem_post_def_secret : false
+      checked: props.member ? (props.member.mem_auth === 1 ? false : true ) : false
     }
   }
   handleChange = async e => {
     this.setState({
       checked: e.target.checked
     })
-    this.props.editMyDefSecret(this.props.member.mem_id, e.target.checked)
+    this.props.member.mem_auth = e.target.checked ? 2 : 1 // checked : 벤
+
+    let response = await apis.get(`/member/auth/${this.props.member ? this.props.member.mem_id : ''}`)
+    if(response.data.data === this.props.member_mem_auth){
+      // 가만히
+    }else{
+      response = await apis.patch(`/member/auth/${this.props.member ? this.props.member.mem_id : ''}`)
+    }
+
+    // this.props.editPostAuth(this.props.member.mem_id, e.target.checked)
   }
   render() {
+    if(this.props.member_){
+      this.props.memberUpdate(this.props.member_)
+      this.props.memberReset()
+    }
     return (
       <ExpansionPanel style={{width : 600, marginBottom : 5}} >
         <ExpansionPanelSummary>
@@ -41,16 +56,16 @@ class MemberCard extends Component {
         <ExpansionPanelDetails style={{display : 'inline-block' , width : '100%'}}>
           <div>
             <div id="image_div">
-              <img id="profile_image" src={this.props.mem_info ? this.props.mem_info.mem_thumb : null} key={new Date().getTime()} style={{ borderRadius: '50%' }}></img>
+              <img id="profile_image" src={this.props.member ? this.props.member.mem_thumb : null} key={new Date().getTime()} style={{ borderRadius: '50%' }}></img>
             </div>
             <TextWithLabel label="아이디" name="ID" value={this.props.member ? this.props.member.mem_id : ''} />
             <TextWithLabel label="이메일" name="email" value={this.props.member ? this.props.member.mem_email : ''} type="email" />
             <TextWithLabel label="닉네임" name="nick" value={this.props.member ? this.props.member.mem_nick : ''} />
             <TextWithLabel label="소개글" name="intro" value={this.props.member ? this.props.member.mem_self_intro : ''} />
             {this.state.checked ?
-              <Label> 카드리스트 기본 비공개 설정</Label>
+              <Label> 글 권한 X </Label>
               :
-              <Label> 카드리스트 기본 공개 설정</Label>
+              <Label> 글 권한 O </Label>
             }
             <Switch
               checked={this.state.checked}
@@ -65,7 +80,8 @@ class MemberCard extends Component {
 }
 const mapStatetoProps = state => {
   return {
+    member_ : state.members.member
   };
 }
 
-export default connect(mapStatetoProps, {editMyDefSecret})(MemberCard)
+export default connect(mapStatetoProps, {})(MemberCard)

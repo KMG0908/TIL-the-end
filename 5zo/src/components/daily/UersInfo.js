@@ -61,17 +61,6 @@ class UserInfo extends React.Component {
             <br></br>
             <p className="user_intro"> {this.props.info.mem_self_intro} </p>
             {/* <div>{year}년 {month}월 {date}일에 가입함</div> */}
-            {login_id === 'admin' && this.props.info.mem_id !== 'admin' ?
-              <>
-                {this.state.checked ? <span> 카드리스트 기본 비공개 </span> : <span> 카드리스트 기본 공개</span>}
-                <Switch
-                  checked={this.state.checked}
-                  onChange={this.handleChange}
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
-                />
-              </>
-              :
-              null}
           </div>
         </div>
       )

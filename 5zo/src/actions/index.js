@@ -25,14 +25,27 @@ import {
   EDIT_PASSWORD_FAIL_RESET,
   EDIT_PASSWORD_SUCCESS,
   EDIT_PASSWORD_SUCCESS_RESET,
+
   FIND_ID_SUCCESS,
   FIND_ID_SUCCESS_RESET,
   FIND_ID_FAIL,
   FIND_ID_FAIL_RESET,
+
+  EXIST_EMAIL_FAIL,
+  EXIST_EMAIL_FAIL_RESET,
+  EXIST_EMAIL_SUCCESS,
+  EXIST_EMAIL_SUCCESS_RESET,
+
   FIND_PW_SUCCESS,
   FIND_PW_SUCCESS_RESET,
   FIND_PW_FAIL,
   FIND_PW_FAIL_RESET,
+
+  MATCH_ID_EMAIL_SUCCESS,
+  MATCH_ID_EMAIL_SUCCESS_RESET,
+  MATCH_ID_EMAIL_FAIL,
+  MATCH_ID_EMAIL_FAIL_RESET,
+
   DRAG_HAPPENED,
   ADD_BOARD,
   FETCH_DAILY_LIST,
@@ -367,9 +380,6 @@ export const editPassword = (mem_id, old_pw, new_pw) => async (
   dispatch,
   getState
 ) => {
-  console.log("mem_id : " + mem_id);
-  console.log("old_pw : " + old_pw);
-  console.log("new_pw : " + new_pw);
   const response = await apis.patch(`/member/password/${mem_id}`, {
     old_pw,
     new_pw
@@ -417,13 +427,45 @@ export const findIdFailReset = () => async (dispatch, getState) => {
   }
 };
 
+export const existEmail = (email) => async dispatch => {
+  const response = await apis.get(`/email/countEmail/${email}`)
+  if(response.data.data === 1){
+    console.log('이메일 존재O')
+    dispatch({ type: EXIST_EMAIL_SUCCESS})
+  }else{
+    console.log('이메일 존재X')
+    dispatch({ type: EXIST_EMAIL_FAIL})
+  }
+}
+export const existEmailSuccessReset = () => async (dispatch, getState) => {
+  if (getState().members.exist_email_success) {
+    dispatch({ type: EXIST_EMAIL_SUCCESS_RESET });
+  }
+};
+export const matchIdEmail = (mem_id,email) => async dispatch => {
+  const response = await apis.get(`/member/${mem_id}`)
+  if(response.data.state !== 'ok'){
+    dispatch({ type: MATCH_ID_EMAIL_FAIL})
+  }else{
+    const data = response.data.data
+    if(data.mem_email === email){
+      dispatch({ type : MATCH_ID_EMAIL_SUCCESS})
+    }else{
+      dispatch({type : MATCH_ID_EMAIL_FAIL})
+    }
+  }
+}
+
+export const matchIdEmailSuccessReset = () => async (dispatch, getState) => {
+  if (getState().members.exist_email_success_reset) {
+    dispatch({ type: MATCH_ID_EMAIL_SUCCESS_RESET });
+  }
+};
 export const findPw = (mem_id, email) => async dispatch => {
   const response = await apis.get(`/email/findPw/${mem_id}/${email}`);
   if (response.data.state === "ok") {
     dispatch({ type: FIND_PW_SUCCESS });
-  } else {
-    dispatch({ type: FIND_PW_FAIL, payload: response.data.data });
-  }
+  } 
 };
 export const findPwSuccessReset = () => async (dispatch, getState) => {
   if (getState().members.find_pw_success) {
