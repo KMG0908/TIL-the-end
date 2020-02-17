@@ -157,7 +157,6 @@ class MyProfile extends Component {
   setProfileImg = () => {
     document.getElementById("profile_image").src = this.state.croppedImageUrl;
     this.handleClose();
-
   }
   handleClose = () => {
     this.setState({
@@ -230,7 +229,7 @@ class MyProfile extends Component {
               <Grid item>공개</Grid>
             </Grid>
           </div>
-          <Label>카드리스트 기본 색</Label>
+          <Label>테마 색</Label>
           <ColorPicker value={this.state.color} handleChangeColor={this.handleChangeColor}></ColorPicker>
           <br /><br />
           <AuthButton onClick={this.editMyinfo}> Update My Profile </AuthButton>

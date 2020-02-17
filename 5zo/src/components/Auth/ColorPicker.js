@@ -6,6 +6,8 @@ import { SketchPicker } from 'react-color'
 import { CompactPicker } from 'react-color'
 import Button from '@material-ui/core/Button';
 import "./color.css"
+import Dialog from '@material-ui/core/Dialog';
+import PaletteIcon from '@material-ui/icons/Palette';
 
 export default class ColorPicker extends Component {
   constructor(props) {
@@ -13,18 +15,31 @@ export default class ColorPicker extends Component {
 
     this.state = {
       color: {
-        "hex" : this.props.value
+        "hex": this.props.value
       },
       displayColorPicker: false,
     }
+
+    this.handleReset = this.handleReset.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
   handleClick = () => {
+    this.setState({
+      color: {
+        "hex" : this.props.value
+      }
+    })
     this.setState({ displayColorPicker: !this.state.displayColorPicker })
-    document.body.scrollTop = document.body.scrollHeight;
   };
-  handleClose = () => {
-    this.setState({ displayColorPicker: false })
-  };
+  handleReset() {
+    this.props.handleChangeColor(this.state.color);
+    this.handleClose();
+  }
+  handleClose() {
+    this.setState({
+      displayColorPicker: false
+    })
+  }
   render() {
     const styles = reactCSS({
       'default': {
@@ -36,6 +51,10 @@ export default class ColorPicker extends Component {
           backgroundClip: 'content-box',
           padding: '1px',
           border: '1px solid gray'
+        },
+        icon: {
+          width: '36px',
+          height: '36px',
         },
         swatch: {
           padding: '5px',
@@ -60,19 +79,27 @@ export default class ColorPicker extends Component {
     return (
       <>
         <div style={{ display: 'flex', width: `100%` }} className="container">
-          <div style={ styles.swatch } >
-            <div style={ styles.color } />
+          <div style={styles.swatch} >
+            <div style={styles.color} />
             <label>색</label>
           </div>
-          <CompactPicker onChange={ this.props.handleChangeColor }></CompactPicker>
-          <div>
-            <SketchPicker color={ this.props.value } onChange={ this.props.handleChangeColor } disableAlpha={true} presetColors={[]} />
+          <CompactPicker onChange={this.props.handleChangeColor} onSwatchHover={this.swatchHoverHandler}></CompactPicker>
+          <div onClick={this.handleClick} className="selectColor">
+            <PaletteIcon style={styles.icon} color="primary"></PaletteIcon>
+            <br/>
+            <label>팔레트</label>
           </div>
-          {/* { this.state.displayColorPicker ? <div style={ styles.popover }>
-          <div style={ styles.cover } onClick={ this.handleClose }/>
-            <SketchPicker color={ this.props.value } onChange={ this.props.handleChangeColor } disableAlpha={true}
-            presetColors = {['#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#9900EF']} />
-          </div> : null } */}
+          <Dialog aria-labelledby="simple-dialog-title" open={this.state.displayColorPicker}>
+            <div id="photoshop" style={{ position: "relative"}}>
+              <PhotoshopPicker
+                onChange={this.props.handleChangeColor}
+                color={this.props.value}
+                onAccept={this.handleClose}
+                onCancel={this.handleReset}
+                header="Select Color"
+              />
+            </div>
+          </Dialog>
         </div>
       </>
     )
