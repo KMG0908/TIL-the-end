@@ -64,7 +64,11 @@ import {
   ADD_COMMENT,
   DELETE_COMMENT,
   PUT_COMMENT,
-  EDIT_MYPROFILE
+  EDIT_MYPROFILE,
+  CHECK_PASSWORD,
+  CHECK_PASSWORD_RESET,
+  EDIT_EMAIL,
+  EDIT_EMAIL_RESET
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -210,6 +214,33 @@ export const deleteAccountSuccessReset = () => async (dispatch, getState) => {
   }
 };
 
+export const checkPassword = (loginId, loginPw) => async dispatch => {
+  const response = await apis.post(`/member/login`, {
+    mem_id: loginId,
+    mem_pw: loginPw
+  });
+  if(response.data.state === "fail") dispatch({type: CHECK_PASSWORD, payload: false});
+  else dispatch({type: CHECK_PASSWORD, payload: true});
+}
+
+export const checkPasswordReset = () => async dispatch => {
+  dispatch({type: CHECK_PASSWORD_RESET, payload: ""});
+}
+
+export const editEmail = (loginId, email) => async dispatch => {
+  const response = await apis.put(`/member/email`, {
+    mem_email: email,
+    mem_id: loginId
+  });
+
+  if(response.data.state === "fail") dispatch({type: EDIT_EMAIL, payload: false});
+  else dispatch({type: EDIT_MYPROFILE, payload: response.data.data});
+}
+
+export const editEmailReset = () => async dispatch => {
+  dispatch({type: EDIT_EMAIL_RESET, payload: ""});
+}
+
 export const editMyProfile = (
   loginId,
   nick,
@@ -223,13 +254,12 @@ export const editMyProfile = (
     mem_nick: nick,
     mem_color: color,
     mem_thumb: thumb,
-    mem_self_intro: intro
+    mem_self_intro: intro,
+    mem_post_def_secret: checked
   });
 
   const data = response.data.data;
 
-  console.log("profile");
-  console.log(data);
   if (data.mem_id) {
     dispatch({ type: EDIT_MYPROFILE, payload: data });
   }
@@ -267,8 +297,6 @@ export const editMyinfo = (
 
   const data = response.data.data;
 
-  console.log("data");
-  console.log(data);
   if (data.mem_id) {
     dispatch({ type: EDIT_MYINFO, payload: data });
   } else {

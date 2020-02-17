@@ -42,6 +42,7 @@ class MyProfile extends Component {
     }
 
     this.handleChange = this.handleChange.bind(this)
+    this.keyDown = this.keyDown.bind(this)
     this.handleChangeChecked = this.handleChangeChecked.bind(this)
     this.handleChangeColor = this.handleChangeColor.bind(this)
     this.editMyinfo = this.editMyinfo.bind(this)
@@ -119,6 +120,9 @@ class MyProfile extends Component {
         })
     }
   }
+  keyDown(e) {
+    if (e.keyCode === 13) this.editMyinfo();
+  }
   handleChangeChecked(e) {
     this.setState({
       checked: e.target.checked
@@ -131,11 +135,6 @@ class MyProfile extends Component {
     })
   }
   editMyinfo() {
-    // if (!document.getElementById("nowPw").value) {
-    //   document.getElementById("nowPw").focus();
-
-    //   return;
-    // }
     if (!this.state.nick) {
       document.getElementById("nick_msg").value = '닉네임을 입력해주세요';
       document.getElementById("nick_msg").classList.add("error");
@@ -171,8 +170,6 @@ class MyProfile extends Component {
       const loggedInfo = this.props.mem_info_change;
       storage.set('loggedInfo', loggedInfo);
       this.props.setLoggedInfo(loggedInfo);
-      console.log(loggedInfo);
-      console.log(this.props.mem_info);
 
       this.props.editMyinfoErrReset();
       this.props.memInfoChangeReset();
@@ -193,7 +190,7 @@ class MyProfile extends Component {
               <label htmlFor="upload_btn" style={{position: 'relative', top: '-40px', left: '10px'}}>
                 <Button variant="outlined" component="span">
                   Upload
-                  </Button>
+                </Button>
               </label>
             </div>
             <Dialog aria-labelledby="simple-dialog-title" open={this.state.open}>
@@ -215,8 +212,8 @@ class MyProfile extends Component {
               )}
             </Dialog>
           </div>
-          <InputWithLabel label="닉네임" id="nick" name="nick" value={this.state.nick} onChange={this.handleChange} />
-          <InputWithLabel label="소개글" name="intro" value={this.state.intro} onChange={this.handleChange} />
+          <InputWithLabel label="닉네임" id="nick" name="nick" value={this.state.nick} onChange={this.handleChange} onKeyDown={this.keyDown}/>
+          <InputWithLabel label="소개글" name="intro" value={this.state.intro} onChange={this.handleChange} onKeyDown={this.keyDown}/>
           <div>
             <Label> 기본 카드리스트 공개 여부 </Label>
             <Switch
@@ -225,7 +222,6 @@ class MyProfile extends Component {
               inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
           </div>
-
           <Label>카드리스트 기본 색</Label>
           <ColorPicker value={this.state.color} handleChangeColor={this.handleChangeColor}></ColorPicker>
           <br /><br />

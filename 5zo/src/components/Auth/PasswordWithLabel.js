@@ -21,6 +21,9 @@ const Wrapper = styled.div`
 const useStyles = makeStyles(() => ({
   textField: {
     width: '100%'
+  },
+  label: {
+    backgroundColor: 'white'
   }
 }))
 

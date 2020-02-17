@@ -27,7 +27,11 @@ import {
   EDIT_PASSWORD_FAIL_RESET,
   EDIT_MY_COLOR_FAIL,
   EDIT_MY_COLOR_FAIL_RESET,
-  EDIT_MYPROFILE
+  EDIT_MYPROFILE,
+  CHECK_PASSWORD,
+  CHECK_PASSWORD_RESET,
+  EDIT_EMAIL,
+  EDIT_EMAIL_RESET
 } from "../actions/types";
 import _ from "lodash";
 import { combineReducers } from "redux";
@@ -57,6 +61,14 @@ export default (state = {}, action) => {
     case LOGOUT:
       state = {};
       return combineReducers({ state: (state = {}) => state });
+    case CHECK_PASSWORD:
+      return { ...state, check_password: action.payload };
+     case CHECK_PASSWORD_RESET:
+      return { ...state, check_password: "" };
+    case EDIT_EMAIL:
+      return { ...state, edit_email: action.payload };
+    case EDIT_EMAIL_RESET:
+      return { ...state, edit_email: "" };
     case EDIT_MYPROFILE:
       return { ...state, mem_info_change: action.payload };
     // edit my info
