@@ -11,6 +11,7 @@ public class Alarm implements Serializable {
 	private int alarm_id;
 	private String mem_id;
 	private String alarm_text;
+	private String alarm_date;
 	private String alarm_url;
 
 }

@@ -8,6 +8,8 @@ public interface AlarmService {
 
 	public void insertAlarm(Alarm alarm);
 
+	public void deleteAll(String mem_id);
+	
 	public void deleteAlarm(int alarm_id);
 
 	public List<Alarm> searchAll(String mem_id);

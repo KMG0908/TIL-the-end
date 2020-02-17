@@ -21,7 +21,7 @@ public class AlarmServiceImpl implements AlarmService {
 			dao.insertAlarm(alarm);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new AlarmException();
+			throw new AlarmException("알람 생성 중 오류 발생");
 		}
 	}
 
@@ -31,7 +31,18 @@ public class AlarmServiceImpl implements AlarmService {
 			dao.deleteAlarm(alarm_id);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new AlarmException();
+			throw new AlarmException(alarm_id + "번 알람 삭제 중 오류 발생");
+		}
+
+	}
+
+	@Override
+	public void deleteAll(String mem_id) {
+		try {
+			dao.deleteAll(mem_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new AlarmException(mem_id + "의 알람 전체 삭제 중 오류 발생");
 		}
 
 	}
@@ -42,7 +53,7 @@ public class AlarmServiceImpl implements AlarmService {
 			return dao.searchAll(mem_id);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new AlarmException();
+			throw new AlarmException(mem_id + "의 알람 조회 중 오류 발생");
 		}
 	}
 }

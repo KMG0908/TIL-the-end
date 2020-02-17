@@ -4,8 +4,8 @@
 <mapper namespace="com.ssafy.project.dao.AlarmDao">
 
 	<insert id="insertAlarm" parameterType="alarm" useGeneratedKeys="true" keyProperty="alarm_id">
-		insert into alarm(mem_id, alarm_date, alarm_lists)
-		values(#{mem_id}, #{alarm_date}, #{alarm_lists})
+		insert into alarm(mem_id, alarm_text, alarm_date, alarm_url)
+		values(#{mem_id}, #{alarm_text}, #{alarm_date}, #{alarm_url})
 	</insert>
 
 	<delete id="deleteAlarm" parameterType="int">
@@ -14,10 +14,18 @@
 		where alarm_id = #{alarm_id}
 	</delete>
 
+	<delete id="deleteAll" parameterType="string">
+		delete
+		from alarm
+		where mem_id = #{mem_id}
+	</delete>
+
 	<select id="searchAll" parameterType="string" resultType="alarm">
 		select *
 		from alarm
 		where mem_id = #{mem_id}
 	</select>
+	
+	
 
 </mapper>

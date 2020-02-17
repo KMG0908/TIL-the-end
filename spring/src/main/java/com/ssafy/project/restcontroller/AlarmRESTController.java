@@ -46,6 +46,13 @@ public class AlarmRESTController {
 		service.deleteAlarm(alarm_id);
 		return handler.success(alarm_id + "번 알람이 정상적으로 삭제되었습니다.");
 	}
+	
+	@DeleteMapping("/api/alarm/deleteAll/{mem_id}")
+	@ApiOperation("mem_id의 알람 전체 삭제")
+	public ResponseEntity<Map<String, Object>> deleteAll(@PathVariable String mem_id) {
+		service.deleteAll(mem_id);
+		return handler.success(mem_id + "의 알람이 정상적으로 삭제되었습니다.");
+	}
 
 	@GetMapping("/api/alarm/{mem_id}")
 	@ApiOperation("mem_id의 알람 목록을 리턴합니다")

@@ -15,4 +15,6 @@ public interface AlarmDao {
 
 	List<Alarm> searchAll(String mem_id);
 
+	void deleteAll(String mem_id);
+
 }

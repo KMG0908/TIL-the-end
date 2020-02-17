@@ -163,12 +163,12 @@ public class MailServiceImpl implements MailService {
 			javaMailSender.send(message);
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else if (e instanceof MailException) {
 				throw (MailException) e;
 			} else {
+				e.printStackTrace();
 				throw new MailException("아이디 찾기 메일 발송에 실패하였습니다");
 			}
 		}
@@ -205,12 +205,12 @@ public class MailServiceImpl implements MailService {
 			javaMailSender.send(message);
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else if (e instanceof MailException) {
 				throw (MailException) e;
 			} else {
+				e.printStackTrace();
 				throw new MailException("비밀번호 찾기 메일 발송에 실패하였습니다");
 			}
 		}
