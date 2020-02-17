@@ -37,14 +37,14 @@ public class AlarmRESTController {
 	@ApiOperation("알람 추가, mem_id는 알람을 받을 사람, alarm_text는 보여줄 내용, alarm_url은 알람 발생 장소")
 	public ResponseEntity<Map<String, Object>> insertAlarm(@RequestBody Alarm alarm) {
 		service.insertAlarm(alarm);
-		return handler.success(alarm.getAlarm_id() + "번 알람이 생성되었습니다.");
+		return handler.success(alarm.getMem_id() + "에게 전달될 알람이 생성되었습니다.");
 	}
 
 	@DeleteMapping("/api/alarm/{alarm_id}")
 	@ApiOperation("알람 삭제, 알람을 받는 대상인 사용자가 삭제하는 기능")
 	public ResponseEntity<Map<String, Object>> deleteAlarm(@PathVariable int alarm_id) {
 		service.deleteAlarm(alarm_id);
-		return handler.success("알람이 정상적으로 삭제되었습니다.");
+		return handler.success(alarm_id + "번 알람이 정상적으로 삭제되었습니다.");
 	}
 
 	@GetMapping("/api/alarm/{mem_id}")
