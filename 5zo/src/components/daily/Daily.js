@@ -18,17 +18,10 @@ const styles = theme => ({
     }
   },
   go_dashboard: {
-<<<<<<< HEAD
-    textAlign: 'right',
-    marginRight: '16px',
-    marginTop: '12px',
-    marginBottom: '-16px'
-=======
     textAlign: "right",
     marginRight: "16px",
     marginTop: "12px",
     marginBottom: "-16px"
->>>>>>> merg8
   }
 });
 
@@ -62,16 +55,12 @@ class Daily extends React.Component {
             this.props.onHandleDate(changedDate);
           }}
         />
-<<<<<<< HEAD
-        <div style={{ display: this.props.boardDict[this.props.date] ? '' : 'none' }} className={classes.go_dashboard}>
-=======
         <div
           style={{
             display: this.props.boardDict[this.props.date] ? "" : "none"
           }}
           className={classes.go_dashboard}
         >
->>>>>>> merg8
           <Tooltip title="Dashboard에서 확인하기">
             <Icon
               button

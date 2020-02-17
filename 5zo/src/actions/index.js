@@ -80,17 +80,14 @@ import {
   DELETE_COMMENT,
   PUT_COMMENT,
   EDIT_MYPROFILE,
-<<<<<<< HEAD
   CHECK_PASSWORD,
   CHECK_PASSWORD_RESET,
   EDIT_EMAIL,
-  EDIT_EMAIL_RESET
-=======
+  EDIT_EMAIL_RESET,
   FETCH_ALARMS,
   READ_ALARM,
   ADD_ALARM,
   READ_ALL_ALARM
->>>>>>> merg8
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
