@@ -11,4 +11,6 @@ public interface MailService {
 	public void findPw(String mem_id, String mem_email);
 
 	public void emailask(String mem_id, String ask_contents);
+
+	public int countEmail(String mem_email);
 }

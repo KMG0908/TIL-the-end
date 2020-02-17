@@ -74,6 +74,12 @@ public class MailRESTController {
 		return handler.success("이메일로 문의사항이 전달되었습니다. 불편을 드려 죄송합니다.");
 	}
 
+	@GetMapping("/api/email/countEmail/{mem_email}")
+	@ApiOperation("mem_email로 등록된 아이디가 있는지 확인하는 api 입니다. 있으면 1을 반환합니다")
+	public ResponseEntity<Map<String, Object>> countEmail(@PathVariable String mem_email) {		
+		return handler.success(service.countEmail(mem_email));
+	}
+	
 	@GetMapping("/api/email/findId/{mem_email}")
 	@ApiOperation("mem_email로 등록된 이메일로 아이디를 발송")
 	public ResponseEntity<Map<String, Object>> findId(@PathVariable String mem_email) {

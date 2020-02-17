@@ -38,15 +38,19 @@ public class NaverLoginController {
 	}
 
 	@GetMapping("/api/naver/login")
-	@ApiOperation("네이버로그인")
+	@ApiOperation("네이버 로그인")
 	public ResponseEntity<Map<String, Object>> naverlogin(HttpSession session) throws Exception {
+		System.out.println("로그인 버튼에 url 부여");
+		System.out.println("login session : " + session);
 		return handler.success(naverLoginBO.getAuthorizationUrl(session));
 	}
 
 	@GetMapping("/api/naver/callback")
-	@ApiOperation("네이버로그인 리다이렉트")
+	@ApiOperation("네이버 로그인 리다이렉트")
 	public ResponseEntity<Map<String, Object>> callback(@RequestParam String code, @RequestParam String state, HttpSession session) throws Exception {
 		/* 네이버 로그인, 인증이 성공적으로 완료되면 code 파라미터가 전달되며 이를 통해 access token을 발급 */
+		System.out.println("네이버 로그인 성공");
+		System.out.println("callback session : " + session);
 		JsonParser jp = new JsonParser();
 		OAuth2AccessToken oauthToken = naverLoginBO.getAccessToken(session, code, state);
 		String apiResult = naverLoginBO.getUserProfile(oauthToken);

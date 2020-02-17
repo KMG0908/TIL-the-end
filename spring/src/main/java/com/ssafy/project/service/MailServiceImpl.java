@@ -145,9 +145,18 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
+	public int countEmail(String mem_email) {
+		try {
+			return dao.countEmail(mem_email);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MailException("메일 확인에 실패하였습니다");
+		}
+	}
+	
+	@Override
 	public void findId(String mem_email) {
 		try {
-
 			if (dao.countEmail(mem_email) == 0)
 				throw new MailException("해당 이메일로 등록된 계정이 없습니다.");
 			SimpleMailMessage message = new SimpleMailMessage();
