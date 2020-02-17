@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { TwitterPicker } from "react-color";
 import { PhotoshopPicker } from 'react-color';
+import reactCSS from 'reactcss'
+import { SketchPicker } from 'react-color'
+import { CompactPicker } from 'react-color'
+import Button from '@material-ui/core/Button';
+import "./color.css"
 
 export default class ColorPicker extends Component {
   constructor(props) {
@@ -9,58 +14,65 @@ export default class ColorPicker extends Component {
     this.state = {
       color: {
         "hex" : this.props.value
-      }
+      },
+      displayColorPicker: false,
     }
-
-    this.showColor = this.showColor.bind(this);
-    this.handleReset = this.handleReset.bind(this);
   }
-  showColor(e) {
-    const photoshop = document.getElementById("photoshop");
-    const selectColor = document.getElementById("selectColor");
-    const x = e.clientX;
-    const y = e.clientY;
-    photoshop.style.display = "inline-block";
-    photoshop.style.left = x - selectColor.getBoundingClientRect().left + "px";
-    photoshop.style.bottom = -(y - selectColor.getBoundingClientRect().top) + 100 + "px";
-
-    this.setState({
-      color: {
-        "hex" : this.props.value
-      }
-    })
-  }
-  handleReset(){
-    this.props.handleChangeColor(this.state.color);
-    this.handleClose();
-  }
-  handleClose(){
-    document.getElementById("photoshop").style.display = "none";
-  }
+  handleClick = () => {
+    this.setState({ displayColorPicker: !this.state.displayColorPicker })
+    document.body.scrollTop = document.body.scrollHeight;
+  };
+  handleClose = () => {
+    this.setState({ displayColorPicker: false })
+  };
   render() {
+    const styles = reactCSS({
+      'default': {
+        color: {
+          width: '36px',
+          height: '36px',
+          borderRadius: '2px',
+          background: `${this.props.value}`,
+          backgroundClip: 'content-box',
+          padding: '1px',
+          border: '1px solid gray'
+        },
+        swatch: {
+          padding: '5px',
+          background: '#fff',
+          display: 'inline-block',
+        },
+        popover: {
+          position: 'absolute',
+          zIndex: '2',
+          marginLeft: '226px'
+        },
+        cover: {
+          position: 'fixed',
+          top: '0px',
+          right: '0px',
+          bottom: '0px',
+          left: '0px',
+        },
+      },
+    });
+
     return (
       <>
-        <div style={{ display: 'inline-block', width: `100%` }} >
-          <div id="selectColor" style={{ display: 'inline-block', float: 'left', width: '100px', height: '100px' }}>
-            <div id='myColor' style={{ background: this.props.value, width: '100%', height: '100%', cursor: 'pointer' }} onClick={this.showColor} />
+        <div style={{ display: 'flex', width: `100%` }} className="container">
+          <div style={ styles.swatch } >
+            <div style={ styles.color } />
+            <label>색</label>
           </div>
-          <div style={{ display: 'inline-block', float: 'right' }}>
-            <TwitterPicker
-              style={{ marginRight: 0, border: null, display: 'inline-block' }}
-              onChange={this.props.handleChangeColor}
-              triangle="hide"
-              color={this.props.value}
-            />
+          <CompactPicker onChange={ this.props.handleChangeColor }></CompactPicker>
+          <div>
+            <SketchPicker color={ this.props.value } onChange={ this.props.handleChangeColor } disableAlpha={true} presetColors={[]} />
           </div>
-          <div id="photoshop" style={{ display: "none", position: "relative" }}>
-            <PhotoshopPicker 
-              onChange={this.props.handleChangeColor}
-              color={this.props.value} 
-              onAccept={this.handleClose} 
-              onCancel={this.handleReset}
-              header="Color"
-            />
-          </div>
+          {/* { this.state.displayColorPicker ? <div style={ styles.popover }>
+          <div style={ styles.cover } onClick={ this.handleClose }/>
+            <SketchPicker color={ this.props.value } onChange={ this.props.handleChangeColor } disableAlpha={true}
+            presetColors = {['#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#9900EF']} />
+          </div> : null } */}
         </div>
       </>
     )

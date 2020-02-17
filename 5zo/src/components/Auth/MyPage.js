@@ -10,7 +10,9 @@ import EditEmailPage from "./EditEmailPage";
 
 const styles = theme => ({
   paper: {
-    flexGrow: 1
+    flexGrow: 1,
+    position: 'relative',
+    zIndex: 1
   },
   typography: {
     backgroundColor: "white",

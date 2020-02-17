@@ -19,11 +19,12 @@ const Wrapper = styled.div`
 `;
 
 const useStyles = makeStyles(() => ({
-  textField: {
-    width: '100%'
+  root: {
+    width: '100%',
   },
   label: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    marginRight: '3px'
   }
 }))
 
@@ -45,8 +46,8 @@ function PasswordWithLabel({ id, label, maxLength, ...rest }) {
 
   return (
     <Wrapper>
-      <FormControl variant="outlined" className={classes.textField}>
-        <InputLabel htmlFor={id}>{label}</InputLabel>
+      <FormControl variant="outlined" className={classes.root}>
+        <InputLabel htmlFor={id} className={classes.label}>{label}</InputLabel>
         <OutlinedInput
           id={id}
           type={values.showPassword ? 'text' : 'password'}

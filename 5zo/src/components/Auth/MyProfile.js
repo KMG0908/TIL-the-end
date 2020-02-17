@@ -11,6 +11,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import Switch from '@material-ui/core/Switch';
+import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components';
 import oc from 'open-color';
 
@@ -125,11 +126,11 @@ class MyProfile extends Component {
   }
   handleChangeChecked(e) {
     this.setState({
-      checked: e.target.checked
+      checked: !e.target.checked
     })
   }
   handleChangeColor = color => {
-    document.getElementById('myColor').style.backgroundColor = color.hex
+    // document.getElementById('myColor').style.backgroundColor = color.hex
     this.setState({
       color: color.hex
     })
@@ -168,6 +169,7 @@ class MyProfile extends Component {
     const { crop, croppedImageUrl, src } = this.state
     if (this.props.mem_info_change) {
       const loggedInfo = this.props.mem_info_change;
+      console.log(this.props.mem_info_change)
       storage.set('loggedInfo', loggedInfo);
       this.props.setLoggedInfo(loggedInfo);
 
@@ -214,13 +216,19 @@ class MyProfile extends Component {
           </div>
           <InputWithLabel label="닉네임" id="nick" name="nick" value={this.state.nick} onChange={this.handleChange} onKeyDown={this.keyDown}/>
           <InputWithLabel label="소개글" name="intro" value={this.state.intro} onChange={this.handleChange} onKeyDown={this.keyDown}/>
-          <div>
+          <div style={{display: 'flex', alignItems: 'center', justifyContent:'space-between'}}>
             <Label> 기본 카드리스트 공개 여부 </Label>
-            <Switch
-              checked={this.state.checked}
-              onChange={this.handleChangeChecked}
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
-            />
+            <Grid component="label" container alignItems="center" spacing={1} style={{width: '163px'}}>
+              <Grid item>비공개</Grid>
+              <Grid item>
+                <Switch
+                  checked={!this.state.checked}
+                  onChange={this.handleChangeChecked}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              </Grid>
+              <Grid item>공개</Grid>
+            </Grid>
           </div>
           <Label>카드리스트 기본 색</Label>
           <ColorPicker value={this.state.color} handleChangeColor={this.handleChangeColor}></ColorPicker>
