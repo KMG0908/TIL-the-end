@@ -20,14 +20,14 @@ import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { isEmail } from "validator";
 
+import { isThisSecond } from "date-fns";
+// import classes from "*.module.css";
 const styles = theme => ({
   paper: {
     padding: "20px"
   }
 });
 
-import { isThisSecond } from "date-fns";
-import classes from "*.module.css";
 class FindIdPage extends Component {
   constructor(props) {
     super(props);

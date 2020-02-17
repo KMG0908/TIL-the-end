@@ -25,27 +25,22 @@ import {
   EDIT_PASSWORD_FAIL_RESET,
   EDIT_PASSWORD_SUCCESS,
   EDIT_PASSWORD_SUCCESS_RESET,
-
   FIND_ID_SUCCESS,
   FIND_ID_SUCCESS_RESET,
   FIND_ID_FAIL,
   FIND_ID_FAIL_RESET,
-
   EXIST_EMAIL_FAIL,
   EXIST_EMAIL_FAIL_RESET,
   EXIST_EMAIL_SUCCESS,
   EXIST_EMAIL_SUCCESS_RESET,
-
   FIND_PW_SUCCESS,
   FIND_PW_SUCCESS_RESET,
   FIND_PW_FAIL,
   FIND_PW_FAIL_RESET,
-
   MATCH_ID_EMAIL_SUCCESS,
   MATCH_ID_EMAIL_SUCCESS_RESET,
   MATCH_ID_EMAIL_FAIL,
   MATCH_ID_EMAIL_FAIL_RESET,
-
   DRAG_HAPPENED,
   ADD_BOARD,
   FETCH_DAILY_LIST,
@@ -66,7 +61,6 @@ import {
   GET_ALL_TAG,
   FETCH_TAG,
   GET_DAILY_TASK,
-
   GET_DAILY_TASK2,
   GET_DAILY_CAL,
   GET_DAILY_LIST,
@@ -80,17 +74,14 @@ import {
   DELETE_COMMENT,
   PUT_COMMENT,
   EDIT_MYPROFILE,
-<<<<<<< HEAD
   CHECK_PASSWORD,
   CHECK_PASSWORD_RESET,
   EDIT_EMAIL,
-  EDIT_EMAIL_RESET
-=======
+  EDIT_EMAIL_RESET,
   FETCH_ALARMS,
   READ_ALARM,
   ADD_ALARM,
   READ_ALL_ALARM
->>>>>>> merg8
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -241,13 +232,14 @@ export const checkPassword = (loginId, loginPw) => async dispatch => {
     mem_id: loginId,
     mem_pw: loginPw
   });
-  if(response.data.state === "fail") dispatch({type: CHECK_PASSWORD, payload: false});
-  else dispatch({type: CHECK_PASSWORD, payload: true});
-}
+  if (response.data.state === "fail")
+    dispatch({ type: CHECK_PASSWORD, payload: false });
+  else dispatch({ type: CHECK_PASSWORD, payload: true });
+};
 
 export const checkPasswordReset = () => async dispatch => {
-  dispatch({type: CHECK_PASSWORD_RESET, payload: ""});
-}
+  dispatch({ type: CHECK_PASSWORD_RESET, payload: "" });
+};
 
 export const editEmail = (loginId, email) => async dispatch => {
   const response = await apis.put(`/member/email`, {
@@ -255,13 +247,14 @@ export const editEmail = (loginId, email) => async dispatch => {
     mem_id: loginId
   });
 
-  if(response.data.state === "fail") dispatch({type: EDIT_EMAIL, payload: false});
-  else dispatch({type: EDIT_MYPROFILE, payload: response.data.data});
-}
+  if (response.data.state === "fail")
+    dispatch({ type: EDIT_EMAIL, payload: false });
+  else dispatch({ type: EDIT_MYPROFILE, payload: response.data.data });
+};
 
 export const editEmailReset = () => async dispatch => {
-  dispatch({type: EDIT_EMAIL_RESET, payload: ""});
-}
+  dispatch({ type: EDIT_EMAIL_RESET, payload: "" });
+};
 
 export const editMyProfile = (
   loginId,
@@ -434,34 +427,34 @@ export const findIdFailReset = () => async (dispatch, getState) => {
   }
 };
 
-export const existEmail = (email) => async dispatch => {
-  const response = await apis.get(`/email/countEmail/${email}`)
-  if(response.data.data === 1){
-    console.log('이메일 존재O')
-    dispatch({ type: EXIST_EMAIL_SUCCESS})
-  }else{
-    console.log('이메일 존재X')
-    dispatch({ type: EXIST_EMAIL_FAIL})
+export const existEmail = email => async dispatch => {
+  const response = await apis.get(`/email/countEmail/${email}`);
+  if (response.data.data === 1) {
+    console.log("이메일 존재O");
+    dispatch({ type: EXIST_EMAIL_SUCCESS });
+  } else {
+    console.log("이메일 존재X");
+    dispatch({ type: EXIST_EMAIL_FAIL });
   }
-}
+};
 export const existEmailSuccessReset = () => async (dispatch, getState) => {
   if (getState().members.exist_email_success) {
     dispatch({ type: EXIST_EMAIL_SUCCESS_RESET });
   }
 };
-export const matchIdEmail = (mem_id,email) => async dispatch => {
-  const response = await apis.get(`/member/${mem_id}`)
-  if(response.data.state !== 'ok'){
-    dispatch({ type: MATCH_ID_EMAIL_FAIL})
-  }else{
-    const data = response.data.data
-    if(data.mem_email === email){
-      dispatch({ type : MATCH_ID_EMAIL_SUCCESS})
-    }else{
-      dispatch({type : MATCH_ID_EMAIL_FAIL})
+export const matchIdEmail = (mem_id, email) => async dispatch => {
+  const response = await apis.get(`/member/${mem_id}`);
+  if (response.data.state !== "ok") {
+    dispatch({ type: MATCH_ID_EMAIL_FAIL });
+  } else {
+    const data = response.data.data;
+    if (data.mem_email === email) {
+      dispatch({ type: MATCH_ID_EMAIL_SUCCESS });
+    } else {
+      dispatch({ type: MATCH_ID_EMAIL_FAIL });
     }
   }
-}
+};
 
 export const matchIdEmailSuccessReset = () => async (dispatch, getState) => {
   if (getState().members.exist_email_success_reset) {
@@ -472,7 +465,7 @@ export const findPw = (mem_id, email) => async dispatch => {
   const response = await apis.get(`/email/findPw/${mem_id}/${email}`);
   if (response.data.state === "ok") {
     dispatch({ type: FIND_PW_SUCCESS });
-  } 
+  }
 };
 export const findPwSuccessReset = () => async (dispatch, getState) => {
   if (getState().members.find_pw_success) {
@@ -970,7 +963,7 @@ export const getDailyCal = (mem_id, from, to) => async dispatch => {
     console.log(cardlist_id_array);
     for (let j = 0; j < cardlist_id_array.length; j++) {
       cardlist_id = cardlist_id_array[j];
-      console.log(cardlist_id)
+      console.log(cardlist_id);
       response = await apis.get(`/cardlist/${cardlist_id}`);
       cardlist = response.data.data;
       cardlist.date = board.board_date;
