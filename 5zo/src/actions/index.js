@@ -53,6 +53,8 @@ import {
   GET_ALL_TAG,
   FETCH_TAG,
   GET_DAILY_TASK,
+
+  GET_DAILY_TASK2,
   GET_DAILY_CAL,
   GET_DAILY_LIST,
   GET_OTHER_MEMBER,
@@ -875,6 +877,23 @@ export const getDailyTask = (mem_id, from, to) => async dispatch => {
   dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
 };
 
+export const getDailyTask2 = (mem_id, from, to) => async dispatch => {
+  let own = false;
+  if (mem_id === storage.get("loggedInfo").mem_id) own = true;
+
+  const start = date_to_str(from, "");
+  const end = date_to_str(to, "");
+  let response;
+  if (own)
+    response = await apis.get(
+      `/card/daily/private/${mem_id}/from/${start}/to/${end}`
+    );
+  else
+    response = await apis.get(
+      `/card/daily/public/${mem_id}/from/${start}/to/${end}`
+    );
+  dispatch({ type: GET_DAILY_TASK2, payload: response.data.data });
+};
 export const getDailyCal = (mem_id, from, to) => async dispatch => {
   const start = 20190101;
   const end = date_to_str(to, "");

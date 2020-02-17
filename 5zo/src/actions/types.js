@@ -69,6 +69,7 @@ export const FETCH_TAG = "FETCH_TAG";
 //heatmap action
 
 export const GET_DAILY_TASK = "GET_DAILY_TASK";
+export const GET_DAILY_TASK2 = "GET_DAILY_TASK2";
 export const GET_DAILY_CAL = "GET_DAILY_CAL";
 export const GET_DAILY_LIST = "GET_DAILY_LIST";
 

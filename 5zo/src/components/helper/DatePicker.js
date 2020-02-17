@@ -8,7 +8,7 @@ import {
 } from "@material-ui/pickers";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { setEditModeList, setEditModeCard, getDailyTask } from "../../actions";
+import { setEditModeList, setEditModeCard, getDailyTask2 } from "../../actions";
 
 import DateFnsUtils from "@date-io/date-fns";
 import format from "date-fns/format";
@@ -96,8 +96,8 @@ class DatePicker extends React.Component {
     const firstDate = new Date(date.getFullYear(), date.getMonth(), 2);
     const lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
     console.log(firstDate);
-    this.props.getDailyTask(
-      this.props.members.mem_info.mem_id,
+    this.props.getDailyTask2(
+      this.props.user_id,
       firstDate,
       lastDate
     );
@@ -179,7 +179,7 @@ class DatePicker extends React.Component {
                 ) => {
                   const isSelected =
                     isInCurrentMonth && selectedDays.includes(day.getDate());
-                  const days = _.mapKeys(this.props.board_info, "board_date");
+                  const days = _.mapKeys(this.props.boardInfo, "board_date");
 
                   return (
                     <div
@@ -228,13 +228,13 @@ class DatePicker extends React.Component {
 const mapStateToProps = state => {
   return {
     editModeList: state.editModeList,
-    board_info: state.heatmaps.info,
+    boardInfo: state.heatmaps.info,
     members: state.members
   };
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { getDailyTask, setEditModeList, setEditModeCard })(
+  connect(mapStateToProps, { getDailyTask2, setEditModeList, setEditModeCard })(
     DatePicker
   )
 );
