@@ -9,17 +9,6 @@ import Button from "@material-ui/core/Button";
 import { createMuiTheme } from "@material-ui/core/styles";
 
 import { ThemeProvider } from "@material-ui/styles";
-<<<<<<< HEAD
-=======
-const GlobalTheme = createMuiTheme({
-  palette: {
-    // secondary: {
-    //   main: storage.get("loggedInfo").mem_color,
-    //   contrastText: "white"
-    // }
-  }
-});
->>>>>>> merg8
 
 class Main extends React.Component {
   GlobalTheme = createMuiTheme({

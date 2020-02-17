@@ -38,9 +38,8 @@ class App extends React.Component {
   }
 
   stopDashBoard = () => {
-    alert('글 쓰기 권한이 없습니다.')
-
-  }
+    alert("글 쓰기 권한이 없습니다.");
+  };
 
   drawRouter() {
     if (!this.props.members.mem_info) {
@@ -87,18 +86,9 @@ class App extends React.Component {
                 component={Daily}
               ></Route>
               <Route path="/search" exact component={NewSearch}></Route>
-<<<<<<< HEAD
-              {
-                this.props.members.mem_info.mem_id === 'admin' ?
-                  <Route path='/admin' component={AdminPage}></Route>
-                  :
-                  null
-              }
-=======
               {this.props.members.mem_info.mem_id === "admin" ? (
                 <Route path="/admin" component={AdminPage}></Route>
               ) : null}
->>>>>>> merg8
 
               <Route component={Redirecting} />
             </Switch>
