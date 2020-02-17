@@ -120,6 +120,10 @@ class DailyBoard extends React.Component {
   render() {
     const { classes } = this.props;
     const { date } = this.state;
+    if(this.props.members.mem_info.mem_auth === 2){
+      alert('글 쓰기 권한이 없습니다.')
+      history.push('/')
+    }
     return (
       <Box style={{ overflow: "hidden" }}>
         <Droppable

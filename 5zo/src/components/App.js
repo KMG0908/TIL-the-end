@@ -37,6 +37,12 @@ class App extends React.Component {
   componentDidMount() {
     this.initializeUserInfo();
   }
+
+  stopDashBoard = () => {
+    alert('글 쓰기 권한이 없습니다.')
+
+  }
+
   drawRouter() {
     if (!this.props.members.mem_info) {
       return (
@@ -82,10 +88,10 @@ class App extends React.Component {
               ></Route>
               <Route path="/search" exact component={NewSearch}></Route>
               {
-                this.props.members.mem_info.mem_id === 'admin' ? 
-                <Route path='/admin' component = {AdminPage}></Route>
-                :
-                null
+                this.props.members.mem_info.mem_id === 'admin' ?
+                  <Route path='/admin' component={AdminPage}></Route>
+                  :
+                  null
               }
 
               <Route component={Redirecting} />

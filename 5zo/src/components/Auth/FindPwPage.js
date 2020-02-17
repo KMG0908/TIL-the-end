@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { findPwFailReset, findPwSuccessReset, findPw } from "actions";
+import { matchIdEmail, matchIdEmailSuccessReset, findPwFailReset, findPwSuccessReset, findPw } from "actions";
 import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
 import history from '../../history'
 import Paper from '@material-ui/core/Paper';
@@ -21,10 +21,11 @@ class FindPwPage extends Component {
         this.state = {
           mem_id: '',
             email: '',
+            mem_id : '',
         }
 
         this.handleChange = this.handleChange.bind(this)
-        this.findPw = this.findPw.bind(this)
+        this.check = this.check.bind(this)
     }
     componentDidMount(){
       document.getElementById("mem_id").focus();
@@ -44,14 +45,14 @@ class FindPwPage extends Component {
                 break;
         }
     }
-    findPw() {
-        if (!this.state.mem_id.value) {
-          document.getElementById("mem_id_msg").value = '아이디를 입력해주세요.';
-          document.getElementById("mem_id_msg").classList.add("error");
-            document.getElementById("mem_id").focus();
-            return;
-        }
+    check() {
+        this.props.findPwFailReset()
+        this.props.matchIdEmailSuccessReset()
         
+        if (!this.state.mem_id.value) {
+            document.getElementById("mem_id_msg").value = '아이디를 입력해주세요.';
+            document.getElementById("mem_id_msg").classList.add("error");
+        }
         if (!this.state.email) {
           document.getElementById("email_msg").value = '이메일을 입력해주세요.';
           document.getElementById("mem_id_msg").classList.remove("error");
@@ -67,34 +68,34 @@ class FindPwPage extends Component {
           document.getElementById("email").focus();
           return;
         }
-    
         document.getElementById("email_msg").classList.remove("error");
-
-        this.props.findPw(this.state.mem_id, this.state.email)
-
+        this.props.matchIdEmail(this.state.mem_id, this.state.email)
     }
     cancel = () => {
         history.push("/login")
     }
     render() {
+        if (this.props.match_id_email_success) {
+            this.props.findPwFailReset()
+            this.props.matchIdEmailSuccessReset()
+            alert(`입력하신 ${this.state.email} 로 임시 비밀번호를 전송하였습니다.`)
+            history.push("/login")
+            this.props.findPw(this.state.mem_id, this.state.email)
+        }
+
         if (this.props.find_pw_success) {
             this.props.findPwSuccessReset()
             this.props.findPwFailReset()
-            alert(`입력하신 ${this.state.email} 로 임시 비밀번호를 전송하였습니다.`)
-            history.push("/login")
         }
-
         const {classes} = this.props;
-
         return (
-
             <div style={{ textAlign: 'center' }}>
                 <div style={{ display: 'inline-block', width: 500 }}>
                     <Paper className={classes.paper}>
-                            <InputWithLabel label="아이디" id="mem_id" name="mem_id" value={this.state.mem_id} onChange={this.handleChange} />
-                            <InputWithLabel label="이메일" id="email" name="email" type="email" value={this.state.email} onChange={this.handleChange} />
-                            <input type="text" className={this.props.find_pw_fail ? "error_" : "none"} readOnly disabled value={this.props.find_pw_fail} />
-                            <AuthButton onClick={this.findPw}> 비밀번호 찾기 </AuthButton>
+                            <InputWithLabel label="아이디" id="mem_id" name="mem_id" placeholder={"아이디를 입력하세요"} value={this.state.mem_id} onChange={this.handleChange} />
+                            <InputWithLabel label="이메일" id="email" name="email" type="email" placeholder={"이메일을 입력하세요"} value={this.state.email} onChange={this.handleChange} />
+                            <input type="text" className={this.props.find_pw_fail ? "error" : "none"} readOnly value={this.props.find_pw_fail} />
+                            <AuthButton onClick={this.check}> 비밀번호 찾기 </AuthButton>
                             <AuthButton onClick={this.cancel}> 취소 </AuthButton>
                     </Paper>
                 </div>
@@ -107,7 +108,9 @@ const mapStatetoProps = state => {
     return {
         find_pw_fail: state.members.find_pw_fail,
         find_pw_success: state.members.find_pw_success,
+        match_id_email_fail: state.members.match_id_email_fail,
+        match_id_email_success: state.members.match_id_email_success
     };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStatetoProps, { findPw, findPwFailReset, findPwSuccessReset })(FindPwPage));
+export default connect(mapStatetoProps, { findPw, findPwFailReset, findPwSuccessReset, matchIdEmail, matchIdEmailSuccessReset })(FindPwPage);
