@@ -54,10 +54,10 @@ public class MemberServiceImpl implements MemberService {
 				dao.insertMember(member);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else {
+				e.printStackTrace();
 				throw new MemberException("회원 가입 중 오류 발생");
 			}
 		}
@@ -100,10 +100,10 @@ public class MemberServiceImpl implements MemberService {
 			}
 			return member;
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else {
+				e.printStackTrace();
 				throw new MemberException("회원 정보 조회 중 오류 발생");
 			}
 		}
@@ -123,10 +123,10 @@ public class MemberServiceImpl implements MemberService {
 			dao.updateMember(member);
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else {
+				e.printStackTrace();
 				throw new MemberException("회원 정보 수정 중 오류 발생");
 			}
 		}
@@ -146,10 +146,10 @@ public class MemberServiceImpl implements MemberService {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else {
+				e.printStackTrace();
 				throw new MemberException("회원 이메일 수정 중 오류 발생");
 			}
 		}
@@ -207,10 +207,10 @@ public class MemberServiceImpl implements MemberService {
 			}
 			dao.patchpassword(mem_id, pwdEncrypt(new_pw));
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else {
+				e.printStackTrace();
 				throw new MemberException("회원 비밀번호 수정 중 오류 발생");
 			}
 		}
