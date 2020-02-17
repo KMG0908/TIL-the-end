@@ -7,22 +7,24 @@
    		parameterType="comment" 
 		useGeneratedKeys="true"
 		keyProperty="comment_id">
-   		insert into comment(mem_id, cardlist_id, comment_author, comment_contents, comment_time)
-   		values(#{mem_id}, #{cardlist_id}, #{comment_author}, #{comment_contents}, now())
+   		insert into comment(mem_id, cardlist_id, comment_contents, comment_time, comment_secret, comment_reply)
+   		values(#{mem_id}, #{cardlist_id}, #{comment_contents}, now(), #{comment_secret}, #{comment_reply})
    	</insert>
    	
    	<select id="searchAll" parameterType = "int" resultType="comment">
-  		select * 
-  		from comment 
-  		where cardlist_id = #{cardlist_id}
+  		select c.*, m.mem_nick, m.mem_thumb
+  		from comment c, mem_info m 
+  		where c.cardlist_id = #{cardlist_id}
+  		and c.mem_id = m.mem_id
   	</select>  	  	
 	
 	<update id="updateComment" parameterType="comment">
 		update comment
 		set	
-		comment_time = #{comment_time},
+		comment_modified = true,
+		comment_modified_time = now(),
 		comment_contents = #{comment_contents},
-		comment_modified = true
+		comment_secret = #{comment_secret}
 		where comment_id = #{comment_id}
 	</update>
   	

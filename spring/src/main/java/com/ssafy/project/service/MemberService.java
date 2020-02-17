@@ -6,21 +6,27 @@ import com.ssafy.project.dto.Member;
 
 public interface MemberService {
 
-	public void insertMember(Member member);
+	public void insertMember(String mem_id, String mem_pw, String mem_email, String mem_nick);
 
 	public List<Member> searchAll();
 
+	public List<Member> searchByIdLike(String mem_id);
+
+	public List<Member> searchByNickLike(String mem_nick);
+
 	public Member search(String mem_id);
 
-	public void updateMember(Member member);
+	public void updateMember(String mem_id, String mem_email, String mem_nick, String mem_thumb, int mem_font, String mem_self_intro, boolean mem_post_def_secret);
 
 	public void deleteMember(String mem_id);
 
+	public void hidecardlists(String mem_id);
+
 	public Member login(String mem_id, String mem_pw);
 
-	public List<Member> searchIdLike(String mem_id);
+	public void patchpassword(String mem_id, String old_pw, String new_pw);
 
-	public List<Member> searchNickLike(String mem_nick);
+	public void patchcolor(String mem_id, String mem_color);
 
 	public int getAuth(String mem_id);
 
@@ -30,5 +36,8 @@ public interface MemberService {
 
 	public void patchpostdef(String mem_id);
 
-	public void patchpassword(String mem_id, String old_pw, String new_pw);
+	public Member naverLogin(Member naver);
+
+	public void updateEmail(String mem_id, String mem_email);
+
 }

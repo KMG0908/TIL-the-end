@@ -25,5 +25,6 @@ public interface TagService {
 	List<Tag> searchPrivateTag(String mem_id, String keyword);
 
 	List<Tag> searchGlobalTag(String keyword);
-
+	
+	List<Tag> globalTag();
 }

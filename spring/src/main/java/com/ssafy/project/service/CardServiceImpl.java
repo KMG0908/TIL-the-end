@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.project.dao.CardDao;
 import com.ssafy.project.dto.Board;
-import com.ssafy.project.dto.BoardException;
 import com.ssafy.project.dto.Card;
 import com.ssafy.project.dto.CardException;
 
@@ -32,12 +31,16 @@ public class CardServiceImpl implements CardService {
 		try {
 			Card card = dao.search(card_id);
 			if (card == null) {
-				throw new CardException("존재하지 않는 카드번호입니다");
+				throw new CardException(card_id + "번 카드는 존재하지 않습니다.");
 			}
 			return card;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new CardException(card_id + "번 카드 조회 중 오류 발생");
+			if (e instanceof CardException) {
+				throw (CardException) e;
+			} else {
+				throw new CardException(card_id + "번 카드 조회 중 오류 발생");
+			}
 		}
 	}
 

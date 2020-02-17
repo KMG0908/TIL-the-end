@@ -105,6 +105,15 @@
 		group by e.tag_id;
 	</select>
 	
-	
+	<select id="globalTag" resultType="tag">
+		select e.tag_id, e.tag_name 
+		from cardlist_tag c, tag e,
+				(select cardlist_id
+				from cardlist c						
+				where c.cardlist_secret = false ) d
+		where c.cardlist_id = d.cardlist_id
+		and c.tag_id = e.tag_id		
+		group by e.tag_id;
+	</select>
 
 </mapper>

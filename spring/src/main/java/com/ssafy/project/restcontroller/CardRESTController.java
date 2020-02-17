@@ -1,9 +1,8 @@
-package com.ssafy.project.controller;
+package com.ssafy.project.restcontroller;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.project.controller.CommonHandler;
 import com.ssafy.project.dto.Card;
 import com.ssafy.project.service.CardService;
 
@@ -36,24 +36,13 @@ public class CardRESTController {
 
 	@Autowired
 	private CardService service;
-
-	public ResponseEntity<Map<String, Object>> handleSuccess(Object data) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "ok");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
-	}
-
-	public ResponseEntity<Map<String, Object>> handleFail(Object data, HttpStatus status) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("state", "fail");
-		resultMap.put("data", data);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
+	
+	@Autowired
+	public CommonHandler handler;
 
 	@ExceptionHandler
 	public ResponseEntity<Map<String, Object>> handler(Exception e) {
-		return handleFail(e.getMessage(), HttpStatus.OK);
+		return handler.fail(e.getMessage(), HttpStatus.OK);
 	}
 
 	// CREATE
@@ -62,14 +51,14 @@ public class CardRESTController {
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody Card card) {
 		service.insertCard(card);
 		int card_id = service.getMaxCardId();
-		return handleSuccess(card_id);
+		return handler.success(card_id);
 	}
 
 	// READ
 	@GetMapping("/api/card/{card_id}")
 	@ApiOperation("카드 하나를 조회하는 기능")
 	public ResponseEntity<Map<String, Object>> search(@PathVariable int card_id) {
-		return handleSuccess(service.search(card_id));
+		return handler.success(service.search(card_id));
 	}
 
 	// UPDATE
@@ -77,20 +66,19 @@ public class CardRESTController {
 	@ApiOperation("card 정보 수정, 수정이 가능한 정보는 name, contents, secret, cardlist_id 네가지입니다")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody Card card) {
 		service.updateCard(card);
-		return handleSuccess("수정 완료");
+		return handler.success("수정 완료");
 	}
 
 	@PatchMapping("/api/card/{card_id}/to/{cardlist_id}")
 	@ApiOperation("card를 이동할 때 카드의 외래키를 바꾸는 api 입니다")
 	public ResponseEntity<Map<String, Object>> movecard(@PathVariable int card_id, @PathVariable int cardlist_id) {
 		service.movecard(card_id, cardlist_id);
-		return handleSuccess("이동 완료");
+		return handler.success("이동 완료");
 	}
 
 	@PostMapping("/api/file/upload/{card_id}")
-	@ApiOperation("(개발중, 사용X) card에 파일 추가, 파일은 서버의 upload 폴더에 카드번호 + _ + original 파일 이름으로 들어갑니다")
-	public ResponseEntity<Map<String, Object>> uploadFile(@PathVariable int card_id,
-			@RequestParam("sourceFile") MultipartFile sourceFile) throws IOException {
+	@ApiOperation("card에 파일 추가, 파일은 서버의 upload 폴더에 카드번호 + _ + original 파일 이름으로 들어갑니다")
+	public ResponseEntity<Map<String, Object>> uploadFile(@PathVariable int card_id, @RequestParam("sourceFile") MultipartFile sourceFile) throws IOException {
 		String sourceFileName = sourceFile.getOriginalFilename();
 //		System.out.println(sourceFileName);
 //        String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
@@ -122,17 +110,16 @@ public class CardRESTController {
 
 		service.uploadFile(card_id, destinationFileName);
 
-		UploadAttachmentResponse response = new UploadAttachmentResponse();
+		ResponseCardAttachmentFileUpload response = new ResponseCardAttachmentFileUpload();
 		response.setFileName(sourceFile.getOriginalFilename());
 		response.setFileSize(sourceFile.getSize());
 		response.setFileContentType(sourceFile.getContentType());
-		return handleSuccess(response);
+		return handler.success(response);
 	}
 
 	@GetMapping("/api/file/download/{card_id}")
 	@ApiOperation("카드에 첨부된 파일 다운로드")
-	public ResponseEntity<Map<String, Object>> downloadFile(@PathVariable int card_id, HttpServletResponse response)
-			throws Exception {
+	public ResponseEntity<Map<String, Object>> downloadFile(@PathVariable int card_id, HttpServletResponse response) throws Exception {
 
 		// 카드 번호에 저장된 파일 이름을 불러온다
 		String storedFileName = service.getFileName(card_id);
@@ -140,24 +127,20 @@ public class CardRESTController {
 
 		response.setContentType("application/octet-stream");
 		response.setContentLength(fileByte.length);
-		response.setHeader("Content-Disposition",
-				"attachment; fileName=\"" + URLEncoder.encode(storedFileName.split("_")[1], "UTF-8") + "\";");
+		response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(storedFileName.split("_")[1], "UTF-8") + "\";");
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.getOutputStream().write(fileByte);
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
 
-		return handleSuccess("파일 다운로드 완료 테스트");
+		return handler.success("파일 다운로드 완료 테스트");
 	}
 
 	@NoArgsConstructor
 	@Data
-	private static class UploadAttachmentResponse {
-
+	private static class ResponseCardAttachmentFileUpload {
 		private String fileName;
-
 		private String fileContentType;
-
 		private long fileSize;
 	}
 
@@ -165,7 +148,7 @@ public class CardRESTController {
 	@DeleteMapping("/api/card/{card_id}")
 	@ApiOperation("card 정보 전체 삭제")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable int card_id) {
-		
+
 		String storedFileName = service.getFileName(card_id);
 		if (storedFileName != null) {
 			File file = new File("/home/ubuntu/upload/" + storedFileName);
@@ -179,15 +162,15 @@ public class CardRESTController {
 				System.out.println("기존 파일이 존재하지 않습니다.");
 			}
 		}
-		
+
 		service.deleteCard(card_id);
-		return handleSuccess("삭제 완료");
+		return handler.success("삭제 완료");
 	}
 
 	@DeleteMapping("/api/file/delete/{card_id}")
 	@ApiOperation("card 첨부 파일만 삭제")
 	public ResponseEntity<Map<String, Object>> deleteFile(@PathVariable int card_id) {
-		
+
 		String storedFileName = service.getFileName(card_id);
 		if (storedFileName != null) {
 			File file = new File("/home/ubuntu/upload/" + storedFileName);
@@ -201,45 +184,41 @@ public class CardRESTController {
 				System.out.println("기존 파일이 존재하지 않습니다.");
 			}
 		}
-		
+
 		service.deleteFile(card_id);
-		return handleSuccess("삭제 완료");
+		return handler.success("삭제 완료");
 	}
 
 	// 기타 기능
 
 	@GetMapping("/api/card/daily/public/{mem_id}/from/{from}/to/{to}")
-	@ApiOperation("(수정중)사용자 아이디를 통해 날짜별로 공개된 카드의 개수를 구하는 기능, 날짜가 board_date, 개수가 board_id로 출력됩니다.")
-	public ResponseEntity<Map<String, Object>> countPublicDailyCard(@PathVariable String mem_id,
-			@PathVariable String from, @PathVariable String to) {
-		return handleSuccess(service.countPublicDailyCard(mem_id, from, to));
+	@ApiOperation("사용자 아이디를 통해 날짜별로 공개된 카드의 개수를 구하는 기능, 날짜가 board_date, 개수가 board_id로 출력됩니다.")
+	public ResponseEntity<Map<String, Object>> countPublicDailyCard(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
+		return handler.success(service.countPublicDailyCard(mem_id, from, to));
 	}
 
 	@GetMapping("/api/card/daily/private/{mem_id}/from/{from}/to/{to}")
-	@ApiOperation("(수정중)사용자 아이디를 통해 날짜별로 전체(비공개 포함) 카드의 개수를 구하는 기능, 날짜가 board_date, 개수가 board_id로 출력됩니다.")
-	public ResponseEntity<Map<String, Object>> countAllDailyCard(@PathVariable String mem_id, @PathVariable String from,
-			@PathVariable String to) {
-		return handleSuccess(service.countAllDailyCard(mem_id, from, to));
+	@ApiOperation("사용자 아이디를 통해 날짜별로 전체(비공개 포함) 카드의 개수를 구하는 기능, 날짜가 board_date, 개수가 board_id로 출력됩니다.")
+	public ResponseEntity<Map<String, Object>> countAllDailyCard(@PathVariable String mem_id, @PathVariable String from, @PathVariable String to) {
+		return handler.success(service.countAllDailyCard(mem_id, from, to));
 	}
-
-	@GetMapping("/api/search/public/card/{mem_id}/by/{keyword}")
-	@ApiOperation("A유저가 B유저를 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchPublicCard(@PathVariable String mem_id,
-			@PathVariable String keyword) {
-		return handleSuccess(service.searchPublicCard(mem_id, keyword));
-	}
-
-	@GetMapping("/api/search/private/card/{mem_id}/by/{keyword}")
-	@ApiOperation("A유저가 A유저를 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchPrivateCard(@PathVariable String mem_id,
-			@PathVariable String keyword) {
-		return handleSuccess(service.searchPrivateCard(mem_id, keyword));
-	}
-
-	@GetMapping("/api/search/global/card/by/{keyword}")
-	@ApiOperation("키워드로 카드 전체 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
-	public ResponseEntity<Map<String, Object>> searchGlobalCard(@PathVariable String keyword) {
-		return handleSuccess(service.searchGlobalCard(keyword));
-	}
+//
+//	@GetMapping("/api/search/public/card/{mem_id}/by/{keyword}")
+//	@ApiOperation("A유저가 B유저를 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
+//	public ResponseEntity<Map<String, Object>> searchPublicCard(@PathVariable String mem_id, @PathVariable String keyword) {
+//		return handler.success(service.searchPublicCard(mem_id, keyword));
+//	}
+//
+//	@GetMapping("/api/search/private/card/{mem_id}/by/{keyword}")
+//	@ApiOperation("A유저가 A유저를 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
+//	public ResponseEntity<Map<String, Object>> searchPrivateCard(@PathVariable String mem_id, @PathVariable String keyword) {
+//		return handler.success(service.searchPrivateCard(mem_id, keyword));
+//	}
+//
+//	@GetMapping("/api/search/global/card/by/{keyword}")
+//	@ApiOperation("키워드로 카드 전체 검색) 특정문자열을 card title, desc 에서 포함여부를 찾아서 card 배열 반환하는 쿼리문")
+//	public ResponseEntity<Map<String, Object>> searchGlobalCard(@PathVariable String keyword) {
+//		return handler.success(service.searchGlobalCard(keyword));
+//	}
 
 }

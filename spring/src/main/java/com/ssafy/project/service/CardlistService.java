@@ -3,6 +3,7 @@ package com.ssafy.project.service;
 import java.util.List;
 
 import com.ssafy.project.dto.Cardlist;
+import com.ssafy.project.dto.CardlistSearch;
 
 public interface CardlistService {
 
@@ -18,13 +19,16 @@ public interface CardlistService {
 
 	void patch(Cardlist cardlist);
 
-	List<Cardlist> searchPublicCardlist(String mem_id, String keyword);
+	List<CardlistSearch> searchPublicCardlist(String mem_id, String keyword, int limit, int page);
 
-	List<Cardlist> searchPrivateCardlist(String mem_id, String keyword);
+	List<CardlistSearch> searchPrivateCardlist(String mem_id, String keyword, int limit, int page);
 
-	List<Cardlist> searchGlobalCardlist(String keyword);
+	List<CardlistSearch> searchGlobalCardlist(String keyword, int limit, int page);
 
 	void movecardlist(int cardlist_id, int board_id);
+
+	void cardlistcolorpatch(int cardlist_id, String cardlist_color);
+
 
 
 }

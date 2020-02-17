@@ -1,5 +1,6 @@
 package com.ssafy.project.service;
 
+import java.security.MessageDigest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,34 +9,55 @@ import org.springframework.stereotype.Service;
 import com.ssafy.project.dao.MemberDao;
 import com.ssafy.project.dto.Member;
 import com.ssafy.project.dto.MemberException;
+import com.ssafy.project.dto.SNS;
 
 @Service
 public class MemberServiceImpl implements MemberService {
+
+	public static String pwdEncrypt(String pwd) {
+		StringBuffer hexString = new StringBuffer();
+
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] hash = digest.digest(pwd.getBytes("UTF-8"));
+
+			for (int i = 0; i < hash.length; i++) {
+				String hex = Integer.toHexString(0xff & hash[i]);
+
+				if (hex.length() == 1) {
+					hexString.append('0');
+				}
+				hexString.append(hex);
+			}
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+		return hexString.toString();
+	}
 
 	@Autowired
 	private MemberDao dao;
 
 	@Override
-	public void insertMember(Member member) {
+	public void insertMember(String id, String pw, String email, String nick) {
 		try {
-			if(dao.searchId(member.getMem_id())==1) {
+			if (dao.countId(id) == 1) {
 				throw new MemberException("동일한 아이디가 존재합니다");
-			} else if(dao.searchEmail(member.getMem_email())==1) {
+			} else if (dao.countEmail(email) == 1) {
 				throw new MemberException("동일한 이메일이 존재합니다");
-			} else if(dao.searchNick(member.getMem_nick())==1) {
-				throw new MemberException("동일한 닉네임이 존재합니다");
 			} else {
+				Member member = new Member();
+				member.setMem_id(id);
+				member.setMem_pw(pwdEncrypt(pw));
+				member.setMem_email(email);
+				member.setMem_nick(nick);
 				dao.insertMember(member);
-//				System.out.println("member 생성 통과");
-				dao.grantMember(member.getMem_id());
-//				System.out.println("member 권한 통과");
-//				dao.createBoard(member.getMem_id());
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else {
+				e.printStackTrace();
 				throw new MemberException("회원 가입 중 오류 발생");
 			}
 		}
@@ -52,18 +74,18 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Member> searchIdLike(String mem_id) {
+	public List<Member> searchByIdLike(String mem_id) {
 		try {
-			return dao.searchIdLike(mem_id);
+			return dao.searchByIdLike(mem_id);
 		} catch (Exception e) {
 			throw new MemberException("회원 아이디 검색 중 오류 발생");
 		}
 	}
 
 	@Override
-	public List<Member> searchNickLike(String mem_nick) {
+	public List<Member> searchByNickLike(String mem_nick) {
 		try {
-			return dao.searchNickLike(mem_nick);
+			return dao.searchByNickLike(mem_nick);
 		} catch (Exception e) {
 			throw new MemberException("회원 닉네임 검색 중 오류 발생");
 		}
@@ -76,31 +98,61 @@ public class MemberServiceImpl implements MemberService {
 			if (member == null) {
 				throw new MemberException("등록되지 않은 회원입니다.");
 			}
-			member.setMem_pw(null);
 			return member;
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else {
+				e.printStackTrace();
 				throw new MemberException("회원 정보 조회 중 오류 발생");
 			}
 		}
 	}
 
 	@Override
-	public void updateMember(Member member) {
+	public void updateMember(String id, String nick, String thumb, String color, int font, String mem_self_intro, boolean mem_post_def_secret) {
 		try {
-			Member diff = dao.search(member.getMem_id());
-			if(!member.getMem_pw().equals(diff.getMem_pw())) {
-				throw new MemberException("비밀번호가 틀립니다");
-			}
+			Member member = new Member();
+			member.setMem_id(id);
+			member.setMem_nick(nick);
+			member.setMem_thumb(thumb);
+			member.setMem_color(color);
+			member.setMem_font(font);
+			member.setMem_self_intro(mem_self_intro);
+			member.setMem_post_def_secret(mem_post_def_secret);
 			dao.updateMember(member);
+
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new MemberException("회원 정보 수정 중 오류 발생");
+			if (e instanceof MemberException) {
+				throw (MemberException) e;
+			} else {
+				e.printStackTrace();
+				throw new MemberException("회원 정보 수정 중 오류 발생");
+			}
 		}
 
+	}
+	
+	@Override
+	public void updateEmail(String mem_id, String mem_email) {
+		try {
+		
+			if(dao.countSNSByEmail(mem_email) != 0) {
+				throw new MemberException("sns 회원은 이메일 변경이 불가능합니다");
+			} else if(dao.countEmail(mem_email) != 0) {
+				throw new MemberException("해당 이메일은 사용중입니다");
+			} else {
+				dao.updateEmail(mem_id, mem_email);
+			}
+
+		} catch (Exception e) {
+			if (e instanceof MemberException) {
+				throw (MemberException) e;
+			} else {
+				e.printStackTrace();
+				throw new MemberException("회원 이메일 수정 중 오류 발생");
+			}
+		}
 	}
 
 	@Override
@@ -109,7 +161,17 @@ public class MemberServiceImpl implements MemberService {
 			dao.deleteMember(mem_id);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new MemberException("회원 정보 삭제 중 오류 발생");
+			throw new MemberException("회원 탈퇴 전환 중 오류 발생");
+		}
+	}
+
+	@Override
+	public void hidecardlists(String mem_id) {
+		try {
+			dao.hidecardlists(mem_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException("글 비공개 전환 실패");
 		}
 	}
 
@@ -117,39 +179,52 @@ public class MemberServiceImpl implements MemberService {
 	public Member login(String mem_id, String mem_pw) {
 		try {
 			Member member = dao.search(mem_id);
-			if (member == null) {
+			if (member.getMem_id() == null) {
 				throw new MemberException("등록되지 않은 회원입니다.");
-			}
-			if (!member.getMem_pw().equals(mem_pw)) {
-				throw new MemberException("비밀번호 오류");
+			} else if (dao.getAuth(mem_id) == 3) {
+				throw new MemberException("탈퇴한 회원입니다.");
+			} else if (!dao.findpw(mem_id).equals(pwdEncrypt(mem_pw))) {
+				throw new MemberException("잘못된 비밀번호입니다.");
 			} else {
-				member.setMem_pw(null);
 				return member;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else {
+				e.printStackTrace();
 				throw new MemberException("회원 로그인 중 오류 발생");
 			}
 		}
 	}
-	
+
 	@Override
 	public void patchpassword(String mem_id, String old_pw, String new_pw) {
 		try {
-			Member diff = dao.search(mem_id);
-			if(!diff.getMem_pw().equals(old_pw)) {
-				throw new MemberException("비밀번호가 틀립니다");
+
+			if (!dao.findpw(mem_id).equals(pwdEncrypt(old_pw))) {
+				throw new MemberException("현재 비밀번호가 틀립니다");
 			}
-			dao.updatePassword(mem_id, new_pw);
+			dao.patchpassword(mem_id, pwdEncrypt(new_pw));
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new MemberException("회원 비밀번호 수정 중 오류 발생");
+			if (e instanceof MemberException) {
+				throw (MemberException) e;
+			} else {
+				e.printStackTrace();
+				throw new MemberException("회원 비밀번호 수정 중 오류 발생");
+			}
 		}
 	}
-	
+
+	@Override
+	public void patchcolor(String mem_id, String mem_color) {
+		try {
+			dao.patchcolor(mem_id, mem_color);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException("멤버 색상 변경 중 오류 발생");
+		}
+	}
 
 	@Override
 	public int getAuth(String mem_id) {
@@ -175,7 +250,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean getpostdef(String mem_id) {
 		try {
-			return dao.getpostdef(mem_id)==1;
+			return dao.getpostdef(mem_id) == 1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MemberException(mem_id + "의 글쓰기 기본 설정 조회 중 오류 발생");
@@ -189,6 +264,43 @@ public class MemberServiceImpl implements MemberService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new MemberException(mem_id + "의 글쓰기 기본 설정 변경 중 오류 발생");
+		}
+	}
+
+	@Override
+	public Member naverLogin(Member naver) {
+		try {
+			// 경우의 수 1 : 네이버 이메일로 가입된 아이디가 없다면 멤버 신규 생성 sns 신규 생성 연결 및 리턴
+			if (dao.countEmail(naver.getMem_email()) == 0) {
+				// id, nick, email 세가지만 가지고 있다
+				dao.insertMember(naver);
+				SNS sns = new SNS();
+				sns.setMem_id(naver.getMem_id());
+				sns.setSns_nid(Integer.parseInt(naver.getMem_id().split("_")[1]));
+				sns.setMem_email(naver.getMem_email());
+				sns.setProvider("NAVER");
+				dao.insertSNS(sns);
+				return naver;
+
+				// 경우의 수 2 : 네이버 이메일로 가입된 아이디가 있지만 sns 테이블에 없다면 sns 생성 후 연결 리턴
+			} else if (dao.countSNSByEmail(naver.getMem_email()) == 0) {
+				SNS sns = new SNS();
+				String mem_email = naver.getMem_email();
+				String mem_id = dao.searchIdByEmail(mem_email);
+				sns.setMem_id(mem_id);
+				sns.setSns_nid(Integer.parseInt(naver.getMem_id().split("_")[1]));
+				sns.setMem_email(naver.getMem_email());
+				sns.setProvider("NAVER");
+				dao.insertSNS(sns);
+				return dao.search(mem_id);
+
+				// 경우의 수 3 : 네이버 이메일로 가입된 아이디가 있고 sns 테이블을 확인해 있다면 바로 리턴
+			} else {
+				return dao.search(dao.searchSNSIdByEmail(naver.getMem_email()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MemberException("네이버 아이디 로그인 중 오류 발생");
 		}
 	}
 
