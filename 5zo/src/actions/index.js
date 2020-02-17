@@ -80,10 +80,17 @@ import {
   DELETE_COMMENT,
   PUT_COMMENT,
   EDIT_MYPROFILE,
+<<<<<<< HEAD
   CHECK_PASSWORD,
   CHECK_PASSWORD_RESET,
   EDIT_EMAIL,
   EDIT_EMAIL_RESET
+=======
+  FETCH_ALARMS,
+  READ_ALARM,
+  ADD_ALARM,
+  READ_ALL_ALARM
+>>>>>>> merg8
 } from "./types";
 import moment from "moment";
 import { DisplayFormat } from "devextreme-react/date-box";
@@ -1019,7 +1026,9 @@ export const fetchComments = cardlist_id => async dispatch => {
 export const addComment = (
   cardlist_id,
   comment_contents,
-  comment_reply
+  comment_reply,
+  user_id,
+  date
 ) => async (dispatch, getState) => {
   const comment_secret = 0;
   const { mem_id } = getState().members.mem_info;
@@ -1031,6 +1040,26 @@ export const addComment = (
     mem_id
   });
   dispatch(fetchComments(cardlist_id));
+  const cardlist = getState().cardLists[cardlist_id];
+  dispatch(
+    addAlarm(
+      `'${cardlist.cardlist_name}'글에 댓글이 달렸습니다.`,
+      `/daily/${user_id}/${date.replace(/-/gi, "")}`,
+      user_id
+    )
+  );
+  if (comment_reply) {
+    const comment = getState().comments[cardlist_id][comment_reply];
+    if (comment.mem_id !== user_id) {
+      dispatch(
+        addAlarm(
+          `'${comment.comment_contents}'댓글에 댓글이 달렸습니다.`,
+          `/daily/${user_id}/${date.replace(/-/gi, "")}`,
+          comment.mem_id
+        )
+      );
+    }
+  }
 };
 
 export const deleteComment = (cardlist_id, comment_id) => async dispatch => {
@@ -1053,6 +1082,27 @@ export const editComment = (
   // dispatch({ type: FETCH_COMMENTS, payload: comment });
 };
 
-export const fetchAlarm = () => async (dispatch, getState) => {};
-export const readAlarm = () => async (dispatch, getState) => {};
-export const addAlarm = () => async (dispatch, getState) => {};
+export const fetchAlarm = () => async (dispatch, getState) => {
+  const mem_id = getState().members.mem_info.mem_id;
+
+  const response = await apis.get(`/alarm/${mem_id}`);
+  dispatch({ type: FETCH_ALARMS, payload: response.data.data });
+};
+export const readAlarm = alarm_id => async dispatch => {
+  apis.delete(`/alarm/${alarm_id}`);
+  dispatch({ type: READ_ALARM, payload: alarm_id });
+};
+export const addAlarm = (alarm_text, alarm_url, mem_id) => async (
+  dispatch,
+  getState
+) => {
+  if (mem_id !== getState().members.mem_info.mem_id) {
+    apis.post(`/alarm`, { alarm_text, alarm_url, mem_id });
+  }
+};
+
+export const readAllAlarm = () => async (dispatch, getState) => {
+  const mem_id = getState().members.mem_info.mem_id;
+  await apis.delete(`/alarm/deleteAll/${mem_id}`);
+  dispatch({ type: READ_ALL_ALARM });
+};

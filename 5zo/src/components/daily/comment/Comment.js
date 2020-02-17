@@ -14,7 +14,7 @@ class Comment extends React.Component {
   }
 
   renderComments = () => {
-    const { comments, list_id } = this.props;
+    const { comments, list_id, user_id, date } = this.props;
 
     if (comments[list_id]) {
       const commentsArray = Object.values(comments[list_id]);
@@ -42,7 +42,12 @@ class Comment extends React.Component {
       return orderdComments.map(comment => {
         return (
           <div>
-            <CommentItem comment={comment} cardlist_id={list_id} />
+            <CommentItem
+              user_id={user_id}
+              comment={comment}
+              date={date}
+              cardlist_id={list_id}
+            />
             <Divider variant="inset" component="li" />
           </div>
         );
@@ -51,19 +56,19 @@ class Comment extends React.Component {
   };
 
   handleAddComment = comment_contents => {
-    const { addComment, list_id } = this.props;
+    const { addComment, list_id, user_id, date } = this.props;
     const comment_reply = 0;
     if (comment_contents) {
-      addComment(list_id, comment_contents, comment_reply);
+      addComment(list_id, comment_contents, comment_reply, user_id, date);
     }
   };
   render() {
-    const { list_id } = this.props;
+    const { list_id, user_id } = this.props;
     return (
       <div>
         <List>{this.renderComments()}</List>
         <div style={{ width: "95%", marginTop: "1em", float: "right" }}>
-          <CommentForm onSubmit={this.handleAddComment} />
+          <CommentForm onSubmit={this.handleAddComment} user_id={user_id} />
         </div>
       </div>
     );

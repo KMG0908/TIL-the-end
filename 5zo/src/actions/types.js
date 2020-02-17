@@ -98,4 +98,5 @@ export const PUT_COMMENT = "PUT_COMMENT";
 
 export const FETCH_ALARMS = "FETCH_ALARMS";
 export const READ_ALARM = "READ_ALARM";
+export const READ_ALL_ALARM = "READ_ALL_ALARM";
 export const ADD_ALARM = "ADD_ALARM";
