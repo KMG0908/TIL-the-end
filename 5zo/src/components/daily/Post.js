@@ -189,7 +189,11 @@ const Post = props => {
         {renderTags(props)}
         <Grid container direction="row" justify="center" alignItems="center">
           <Grid item style={{ width: "90%" }}>
-            <Comment list_id={props.list_id} />
+            <Comment
+              list_id={props.list_id}
+              user_id={props.user_id}
+              date={props.date}
+            />
           </Grid>
         </Grid>
       </div>

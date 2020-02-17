@@ -4,17 +4,17 @@ import Heatmap from "components/heatmap/Heatmap";
 import Daily from "./Daily";
 import storage from "lib/storage";
 import { connect } from "react-redux";
-import { fetchDailyLists, setEditModeList } from "../../actions";
+import { fetchDailyLists, setEditModeList, fetchAlarm } from "../../actions";
 import Button from "@material-ui/core/Button";
 import { createMuiTheme } from "@material-ui/core/styles";
 
 import { ThemeProvider } from "@material-ui/styles";
 const GlobalTheme = createMuiTheme({
   palette: {
-    secondary: {
-      main: storage.get("loggedInfo").mem_color,
-      contrastText: "white"
-    }
+    // secondary: {
+    //   main: storage.get("loggedInfo").mem_color,
+    //   contrastText: "white"
+    // }
   }
 });
 
@@ -60,6 +60,9 @@ class Main extends React.Component {
   componentDidMount() {
     this.props.setEditModeList(null);
     this.props.fetchDailyLists(this.state.user_id, this.state.date);
+    if (this.props.members.mem_info) {
+      this.props.fetchAlarm();
+    }
   }
   onHandleDate(date) {
     if (this.state.user_id === storage.get("loggedInfo").mem_id) {
@@ -187,9 +190,11 @@ function shiftDate(date, numDays) {
   return newDate;
 }
 const mapStateToProps = state => {
-  return {};
+  return { members: state.members };
 };
 
-export default connect(mapStateToProps, { fetchDailyLists, setEditModeList })(
-  Main
-);
+export default connect(mapStateToProps, {
+  fetchDailyLists,
+  setEditModeList,
+  fetchAlarm
+})(Main);

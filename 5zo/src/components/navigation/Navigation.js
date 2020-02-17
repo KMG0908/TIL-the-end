@@ -11,7 +11,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Divider from "@material-ui/core/Divider";
-import { fade } from "@material-ui/core/styles";
 
 import { SidebarList, WithTitle } from "./SidebarList";
 import storage from "lib/storage";
@@ -25,8 +24,12 @@ import Menu from "@material-ui/core/Menu";
 import { withRouter } from "react-router-dom";
 import TitleBreadcumbs from "./TitleBreadcumbs";
 
+import Notifications from "./Notificiatons";
 import { Background } from "devextreme-react/vector-map";
 import history from "../../history";
+
+import Badge from "@material-ui/core/Badge";
+import NotificationsIcon from "@material-ui/icons/Notifications";
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
@@ -106,6 +109,8 @@ function Navigation(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const [notificationMenu, setNotify] = React.useState(false);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -132,7 +137,6 @@ function Navigation(props) {
     history.push("/mypage");
     setAnchorEl(null);
   };
-  console.log(props.members.mem_info);
 
   const login = () => {
     history.push("/login");
@@ -147,9 +151,9 @@ function Navigation(props) {
     setAnchorEl(null);
   };
   const admin = () => {
-    history.push('/admin')
+    history.push("/admin");
     setAnchorEl(null);
-  }
+  };
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -162,9 +166,13 @@ function Navigation(props) {
             : "#94C9A9"
         }}
         position="fixed"
-        className={props.mem_info ? clsx(classes.appBar, {
-          [classes.appBarShift]: open
-        }) : ""}
+        className={
+          props.mem_info
+            ? clsx(classes.appBar, {
+                [classes.appBarShift]: open
+              })
+            : ""
+        }
       >
         <Toolbar className={classes.toolbar}>
           {props.members.mem_info ? (
@@ -183,6 +191,34 @@ function Navigation(props) {
             <WithTitle />
           </Typography>
           <div>
+            <IconButton onClick={() => setNotify(true)} color="inherit">
+              <Badge
+                badgeContent={
+                  Object.values(props.alarms) ? Object.values(props.alarms).length : 0
+                }
+                color="secondary"
+              >
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <Menu
+              id="menu-appbar3"
+              anchorEl={notificationMenu}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right"
+              }}
+              open={notificationMenu}
+              onClose={() => setNotify(false)}
+            >
+              <Notifications />
+            </Menu>
+
             <IconButton
               className={classes.menuRight}
               aria-label="account of current user"
@@ -210,22 +246,20 @@ function Navigation(props) {
             >
               {props.mem_info ? (
                 <>
-                  {props.mem_info.mem_id === 'admin' ?
+                  {props.mem_info.mem_id === "admin" ? (
                     <MenuItem onClick={admin}>Admin</MenuItem>
-                    :
-                    null
-                  }
+                  ) : null}
                   {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
                   <MenuItem onClick={myPage}>My Page</MenuItem>
                   {/* <MenuItem onClick={mySetting}>My Setting</MenuItem> */}
                   <MenuItem onClick={logout}>Logout</MenuItem>
                 </>
               ) : (
-                  <>
-                    <MenuItem onClick={login}>Sign In</MenuItem>
-                    <MenuItem onClick={regist}>Sign Up</MenuItem>
-                  </>
-                )}
+                <>
+                  <MenuItem onClick={login}>Sign In</MenuItem>
+                  <MenuItem onClick={regist}>Sign Up</MenuItem>
+                </>
+              )}
             </Menu>
           </div>
         </Toolbar>
@@ -247,8 +281,8 @@ function Navigation(props) {
                 {theme.direction === "ltr" ? (
                   <ChevronLeftIcon />
                 ) : (
-                    <ChevronRightIcon />
-                  )}
+                  <ChevronRightIcon />
+                )}
               </IconButton>
             </div>
             <Divider />
@@ -258,9 +292,13 @@ function Navigation(props) {
         </>
       ) : null}
       <main
-        className={props.mem_info ? clsx(classes.content, {
-          [classes.contentShift]: open
-        }) : classes.content_before_login}
+        className={
+          props.mem_info
+            ? clsx(classes.content, {
+                [classes.contentShift]: open
+              })
+            : classes.content_before_login
+        }
       >
         <div className={classes.drawerHeader} />
         {props.children}
@@ -271,7 +309,8 @@ function Navigation(props) {
 
 const mapStateToProps = state => {
   return {
-    members: state.members
+    members: state.members,
+    alarms: state.alarms
   };
 };
 

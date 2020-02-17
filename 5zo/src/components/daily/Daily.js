@@ -17,14 +17,13 @@ const styles = theme => ({
       opacity: "0.8"
     }
   },
-  go_dashboard:{
-    textAlign: 'right',
-    marginRight: '16px',
-    marginTop: '12px',
-    marginBottom: '-16px'
+  go_dashboard: {
+    textAlign: "right",
+    marginRight: "16px",
+    marginTop: "12px",
+    marginBottom: "-16px"
   }
 });
-
 
 class Daily extends React.Component {
   renderPost() {
@@ -33,11 +32,18 @@ class Daily extends React.Component {
       const board_lists = this.props.boards[board_id].board_lists;
       return board_lists.map(list_id => {
         if (this.props.cardLists[list_id]) {
-          return <Post user_id={this.props.user_id} list_id={list_id} key={list_id} />;
+          return (
+            <Post
+              user_id={this.props.user_id}
+              list_id={list_id}
+              key={list_id}
+              date={this.props.date}
+            />
+          );
         }
       });
     }
-  };
+  }
   render() {
     const { classes } = this.props;
     return (
@@ -48,7 +54,12 @@ class Daily extends React.Component {
             this.props.onHandleDate(changedDate);
           }}
         />
-        <div style={{display: this.props.boardDict[this.props.date] ? '' : 'none'}} className={classes.go_dashboard}>
+        <div
+          style={{
+            display: this.props.boardDict[this.props.date] ? "" : "none"
+          }}
+          className={classes.go_dashboard}
+        >
           <Tooltip title="Dashboard에서 확인하기">
             <Icon
               button
@@ -74,4 +85,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(Daily));
+export default withStyles(styles, { withTheme: true })(
+  connect(mapStateToProps)(Daily)
+);
