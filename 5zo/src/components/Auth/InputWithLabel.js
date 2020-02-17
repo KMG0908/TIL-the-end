@@ -12,9 +12,6 @@ const Wrapper = styled.div`
 `;
 
 const useStyles = makeStyles(() => ({
-  Focus: {
-    border: '1px solid #94C9A9 !important'
-  },
   textField: {
     width : '100%'
   }
