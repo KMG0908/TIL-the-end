@@ -189,10 +189,10 @@ public class MemberServiceImpl implements MemberService {
 				return member;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else {
+				e.printStackTrace();
 				throw new MemberException("회원 로그인 중 오류 발생");
 			}
 		}

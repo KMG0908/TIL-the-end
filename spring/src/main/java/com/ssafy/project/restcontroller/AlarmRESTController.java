@@ -40,9 +40,9 @@ public class AlarmRESTController {
 		return handler.success(alarm.getAlarm_id() + "번 알람이 생성되었습니다.");
 	}
 
-	@DeleteMapping("/api/alarm")
+	@DeleteMapping("/api/alarm/{alarm_id}")
 	@ApiOperation("알람 삭제, 알람을 받는 대상인 사용자가 삭제하는 기능")
-	public ResponseEntity<Map<String, Object>> deleteAlarm(@RequestBody int alarm_id) {
+	public ResponseEntity<Map<String, Object>> deleteAlarm(@PathVariable int alarm_id) {
 		service.deleteAlarm(alarm_id);
 		return handler.success("알람이 정상적으로 삭제되었습니다.");
 	}
