@@ -113,4 +113,4 @@ const mapStatetoProps = state => {
     };
 };
 
-export default connect(mapStatetoProps, { findPw, findPwFailReset, findPwSuccessReset, matchIdEmail, matchIdEmailSuccessReset })(FindPwPage);
+export default withStyles(styles, {withTheme : true})(connect(mapStatetoProps, { findPw, findPwFailReset, findPwSuccessReset, matchIdEmail, matchIdEmailSuccessReset })(FindPwPage));

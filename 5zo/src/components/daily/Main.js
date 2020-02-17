@@ -4,7 +4,7 @@ import Heatmap from "components/heatmap/Heatmap";
 import Daily from "./Daily";
 import storage from "lib/storage";
 import { connect } from "react-redux";
-import { fetchDailyLists, setEditModeList, fetchAlarm } from "../../actions";
+import { fetchDailyLists, setEditModeList } from "../../actions";
 import Button from "@material-ui/core/Button";
 import { createMuiTheme } from "@material-ui/core/styles";
 
@@ -14,7 +14,7 @@ class Main extends React.Component {
   GlobalTheme = createMuiTheme({
     palette: {
       secondary: {
-        main: storage.get("loggedInfo") ? storage.get("loggedInfo").mem_color : "#ffffff",
+        main: storage.get("loggedInfo") ? storage.get('loggedInfo').mem_color : '#FFFFFF',
         contrastText: "white"
       }
     }
@@ -22,9 +22,13 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
 
+    console.log('Main - user_id')
     let user_id = this.props.match.params.user_id;
+    console.log('params')
+    console.log(user_id)
     if (!user_id) user_id = storage.get("loggedInfo").mem_id;
-    
+    console.log('storage')
+    console.log(user_id)
     let lastDay = new Date();
 
     let date = this.props.match.params.date;
@@ -61,11 +65,10 @@ class Main extends React.Component {
     this.onHandleDate = this.onHandleDate.bind(this);
   }
   componentDidMount() {
+    console.log('componentDidMount')
     this.props.setEditModeList(null);
+    console.log(this.state.user_id)
     this.props.fetchDailyLists(this.state.user_id, this.state.date);
-    if (this.props.members.mem_info) {
-      this.props.fetchAlarm();
-    }
   }
   onHandleDate(date) {
     if (this.state.user_id === storage.get("loggedInfo").mem_id) {
@@ -100,7 +103,7 @@ class Main extends React.Component {
   }
   setHeatMap(year) {
     let local_date = false;
-  
+
     if (year == 2020) {
       this.state.bu1 = "secondary";
       this.state.bu2 = "white";
@@ -126,9 +129,7 @@ class Main extends React.Component {
     }
   }
   render() {
-   
-    const now_user_id =
-      this.props.match.params.user_id || storage.get("loggedInfo").mem_id;
+    const now_user_id = this.props.match.params.user_id || storage.get("loggedInfo").mem_id;
     if (
       this.state.user_id !==
       (this.props.match.params.user_id || storage.get("loggedInfo").mem_id)
@@ -137,6 +138,7 @@ class Main extends React.Component {
         user_id: now_user_id
       });
     }
+
     return (
       <>
         <UserInfo user_id={this.state.user_id}></UserInfo>
@@ -193,11 +195,11 @@ function shiftDate(date, numDays) {
   return newDate;
 }
 const mapStateToProps = state => {
-  return { members: state.members };
+  return {
+
+  };
 };
 
-export default connect(mapStateToProps, {
-  fetchDailyLists,
-  setEditModeList,
-  fetchAlarm
-})(Main);
+export default connect(mapStateToProps, { fetchDailyLists, setEditModeList })(
+  Main
+);

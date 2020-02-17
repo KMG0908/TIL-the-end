@@ -86,9 +86,12 @@ class App extends React.Component {
                 component={Daily}
               ></Route>
               <Route path="/search" exact component={NewSearch}></Route>
-              {this.props.members.mem_info.mem_id === "admin" ? (
-                <Route path="/admin" component={AdminPage}></Route>
-              ) : null}
+              {
+                this.props.members.mem_info.mem_id === 'admin' ?
+                  <Route path='/admin' component={AdminPage}></Route>
+                  :
+                  null
+              }
 
               <Route component={Redirecting} />
             </Switch>

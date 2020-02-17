@@ -8,17 +8,14 @@ import {
   findId
 } from "actions";
 import {
-  AuthWrapper,
-  AuthContent,
   InputWithLabel,
   AuthButton,
-  RightAlignedLink,
-  TextWithLabel
 } from ".";
 import history from "../../history";
 import Paper from "@material-ui/core/Paper";
-import { withStyles } from "@material-ui/core/styles";
 import { isEmail } from "validator";
+import { withStyles } from "@material-ui/core/styles";
+
 
 import { isThisSecond } from "date-fns";
 // import classes from "*.module.css";
@@ -121,10 +118,10 @@ const mapStatetoProps = state => {
   };
 };
 
-export default connect(mapStatetoProps, {
+export default withStyles(styles, {withTheme : true} )(connect(mapStatetoProps, {
   findId,
   findIdFailReset,
   findIdSuccessReset,
   existEmail,
   existEmailSuccessReset
-})(FindIdPage);
+})(FindIdPage));

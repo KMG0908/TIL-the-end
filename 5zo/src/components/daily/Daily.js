@@ -18,10 +18,10 @@ const styles = theme => ({
     }
   },
   go_dashboard: {
-    textAlign: 'right',
-    marginRight: '16px',
-    marginTop: '12px',
-    marginBottom: '-16px'
+    textAlign: "right",
+    marginRight: "16px",
+    marginTop: "12px",
+    marginBottom: "-16px"
   }
 });
 
