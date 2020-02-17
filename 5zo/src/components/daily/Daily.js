@@ -17,7 +17,7 @@ const styles = theme => ({
       opacity: "0.8"
     }
   },
-  go_dashboard:{
+  go_dashboard: {
     textAlign: 'right',
     marginRight: '16px',
     marginTop: '12px',
@@ -43,12 +43,13 @@ class Daily extends React.Component {
     return (
       <Container>
         <DatePicker
+          user_id={this.props.user_id}
           date={this.props.date}
           onChangeDate={changedDate => {
             this.props.onHandleDate(changedDate);
           }}
         />
-        <div style={{display: this.props.boardDict[this.props.date] ? '' : 'none'}} className={classes.go_dashboard}>
+        <div style={{ display: this.props.boardDict[this.props.date] ? '' : 'none' }} className={classes.go_dashboard}>
           <Tooltip title="Dashboard에서 확인하기">
             <Icon
               button

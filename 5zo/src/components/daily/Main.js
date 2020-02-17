@@ -9,16 +9,16 @@ import Button from "@material-ui/core/Button";
 import { createMuiTheme } from "@material-ui/core/styles";
 
 import { ThemeProvider } from "@material-ui/styles";
-const GlobalTheme = createMuiTheme({
-  palette: {
-    secondary: {
-      main: storage.get("loggedInfo") ? storage.get("loggedInfo").mem_color : "#ffffff",
-      contrastText: "white"
-    }
-  }
-});
 
 class Main extends React.Component {
+  GlobalTheme = createMuiTheme({
+    palette: {
+      secondary: {
+        main: storage.get("loggedInfo") ? storage.get("loggedInfo").mem_color : "#ffffff",
+        contrastText: "white"
+      }
+    }
+  });
   constructor(props) {
     super(props);
 
@@ -97,7 +97,7 @@ class Main extends React.Component {
   }
   setHeatMap(year) {
     let local_date = false;
-
+  
     if (year == 2020) {
       this.state.bu1 = "secondary";
       this.state.bu2 = "white";
@@ -123,6 +123,7 @@ class Main extends React.Component {
     }
   }
   render() {
+   
     const now_user_id =
       this.props.match.params.user_id || storage.get("loggedInfo").mem_id;
     if (
@@ -133,12 +134,11 @@ class Main extends React.Component {
         user_id: now_user_id
       });
     }
-
     return (
       <>
         <UserInfo user_id={this.state.user_id}></UserInfo>
         <div align="center">
-          <ThemeProvider theme={GlobalTheme}>
+          <ThemeProvider theme={this.GlobalTheme}>
             <Button
               variant="contained"
               color={this.state.bu1}
