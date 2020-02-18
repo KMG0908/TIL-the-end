@@ -18,6 +18,15 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import history from "../../../history";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles(theme => ({
+  linkText: {
+    "&:hover": {
+      cursor: "pointer"
+    }
+  }
+}));
 
 function CommentItem({
   members,
@@ -57,6 +66,7 @@ function CommentItem({
     history.push(`/daily/${comment.mem_id}`);
   };
 
+  const classes = useStyles();
   const renderItem = () => {
     return (
       <>
@@ -66,13 +76,9 @@ function CommentItem({
         <ListItemText
           primary={
             <>
-              <Button
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-              >
+              <span className={classes.linkText} onClick={handleClick}>
                 {comment.mem_nick} {`@${comment.mem_id}`}{" "}
-              </Button>
+              </span>
               <Typography
                 variant="caption"
                 display="inline"
@@ -125,8 +131,12 @@ function CommentItem({
               color="textSecondary"
               gutterBottom
             >
-              <span onClick={setModeEditing}>수정</span>{" "}
-              <span onClick={handleDelete}>삭제</span>
+              <span onClick={setModeEditing} className={classes.linkText}>
+                수정
+              </span>{" "}
+              <span onClick={handleDelete} className={classes.linkText}>
+                삭제
+              </span>
             </Typography>
           ) : null}
         </ListItemSecondaryAction>

@@ -207,7 +207,7 @@ class List extends React.Component {
           .slice(0, chipsWithouthash.length - 1)
           .includes(chipsWithouthash[chipsWithouthash.length - 1])
       ) {
-        this.props.addTag(this.props.cardlist_id, chips[chips.length - 1]);
+        this.props.addTag(this.props.cardlist_id, chipsWithouthash[chipsWithouthash.length - 1]);
       }
     } else {
       listTags.forEach(tag => {
