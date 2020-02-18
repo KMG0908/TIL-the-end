@@ -192,14 +192,14 @@ function Navigation(props) {
           </Typography>
           <div>
             <IconButton onClick={() => setNotify(true)} color="inherit">
-              <Badge
-                badgeContent={
-                  Object.values(props.alarms) ? Object.values(props.alarms).length : 0
-                }
-                color="secondary"
-              >
-                <NotificationsIcon />
-              </Badge>
+              {Object.values(props.alarms).length > 0 ? (
+                <Badge
+                  badgeContent={Object.values(props.alarms).length}
+                  color="secondary"
+                >
+                  <NotificationsIcon />
+                </Badge>
+              ) : null}
             </IconButton>
             <Menu
               id="menu-appbar3"

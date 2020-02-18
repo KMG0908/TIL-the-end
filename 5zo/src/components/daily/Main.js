@@ -4,7 +4,12 @@ import Heatmap from "components/heatmap/Heatmap";
 import Daily from "./Daily";
 import storage from "lib/storage";
 import { connect } from "react-redux";
-import { fetchDailyLists, setEditModeList, fetchDailyListReset } from "../../actions";
+import {
+  fetchDailyLists,
+  setEditModeList,
+  fetchDailyListReset,
+  fetchAlarm
+} from "../../actions";
 import Button from "@material-ui/core/Button";
 import { createMuiTheme } from "@material-ui/core/styles";
 
@@ -14,20 +19,22 @@ class Main extends React.Component {
   GlobalTheme = createMuiTheme({
     palette: {
       secondary: {
-        main: storage.get("loggedInfo") ? storage.get('loggedInfo').mem_color : '#FFFFFF',
+        main: storage.get("loggedInfo")
+          ? storage.get("loggedInfo").mem_color
+          : "#FFFFFF",
         contrastText: "white"
       }
     }
   });
   constructor(props) {
     super(props);
-    const params = this.props.match.params
-    const login_id = storage.get("loggedInfo").mem_id
-    const user_id = params.user_id ? params.user_id : login_id
+    const params = this.props.match.params;
+    const login_id = storage.get("loggedInfo").mem_id;
+    const user_id = params.user_id ? params.user_id : login_id;
 
     let lastDay = new Date();
-    let date = params.date
-    if (!date) date = new Date()
+    let date = params.date;
+    if (!date) date = new Date();
     else
       date = new Date(
         date.substr(0, 4),
@@ -47,15 +54,15 @@ class Main extends React.Component {
       lastDay.setDate(lastDay.getDate() - 1);
       lastDay = this.date_to_str(lastDay, "-");
     }
-    this.state = ({
+    this.state = {
       user_id: user_id,
       date: date,
       cur_date: lastDay,
       bu1: "secondary",
       bu2: "white",
-      bu3: "white",
-    })
-    this.props.fetchDailyListReset()
+      bu3: "white"
+    };
+    this.props.fetchDailyListReset();
     this.props.fetchDailyLists(user_id, date);
 
     this.onHandleDate = this.onHandleDate.bind(this);
@@ -119,15 +126,21 @@ class Main extends React.Component {
       });
     }
   }
+  componentDidMount() {
+    const login_id = storage.get("loggedInfo").mem_id;
+    if (login_id) {
+      this.props.fetchAlarm(login_id);
+    }
+  }
 
   componentDidUpdate() {
-    const params = this.props.match.params
-    const login_id = storage.get("loggedInfo").mem_id
-    const user_id = params.user_id ? params.user_id : login_id
+    const params = this.props.match.params;
+    const login_id = storage.get("loggedInfo").mem_id;
+    const user_id = params.user_id ? params.user_id : login_id;
 
     let lastDay = new Date();
-    let date = params.date
-    if (!date) date = new Date()
+    let date = params.date;
+    if (!date) date = new Date();
     else
       date = new Date(
         date.substr(0, 4),
@@ -154,18 +167,18 @@ class Main extends React.Component {
         cur_date: lastDay,
         bu1: "secondary",
         bu2: "white",
-        bu3: "white",
-      })
-      this.props.fetchDailyListReset()
+        bu3: "white"
+      });
+      this.props.fetchDailyListReset();
       this.props.fetchDailyLists(user_id, date);
+      this.props.fetchAlarm();
     }
   }
 
   render() {
-
     return (
       <>
-        <UserInfo user_id={this.state.user_id} ></UserInfo>
+        <UserInfo user_id={this.state.user_id}></UserInfo>
         <div align="center">
           <ThemeProvider theme={this.GlobalTheme}>
             <Button
@@ -220,11 +233,12 @@ function shiftDate(date, numDays) {
   return newDate;
 }
 const mapStateToProps = state => {
-  return {
-
-  };
+  return {};
 };
 
-export default connect(mapStateToProps, { fetchDailyLists, setEditModeList, fetchDailyListReset })(
-  Main
-);
+export default connect(mapStateToProps, {
+  fetchDailyLists,
+  setEditModeList,
+  fetchDailyListReset,
+  fetchAlarm
+})(Main);
