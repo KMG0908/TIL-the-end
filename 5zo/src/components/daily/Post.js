@@ -139,7 +139,6 @@ const Post = props => {
   };
 
   const loggedUser = storage.get("loggedInfo").mem_id;
-
   return (
     <Paper className={classes.paper}>
       <div
@@ -178,6 +177,7 @@ const Post = props => {
         >
           <LockIcon></LockIcon>
         </div>
+
         <Typography variant="h1" className={classes.title}>
           {props.cardLists[props.list_id].cardlist_name}
         </Typography>

@@ -47,35 +47,38 @@ class MemberCard extends Component {
       this.props.memberUpdate(this.props.member_)
       this.props.memberReset()
     }
-    return (
-      <ExpansionPanel style={{width : 600, marginBottom : 5}} >
-        <ExpansionPanelSummary>
-          <Avatar component={'span'} style={{marginRight : 10}} alt="Remy Sharp" src={this.props.member ? this.props.member.mem_thumb : ''} />
-          <Typography style={{fontSize:25}}> {this.props.member ? this.props.member.mem_id : null}</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails style={{display : 'inline-block' , width : '100%'}}>
-          <div>
-            <div id="image_div">
-              <img id="profile_image" src={this.props.member ? this.props.member.mem_thumb : null} key={new Date().getTime()} style={{ borderRadius: '50%' }}></img>
+    const member = (this.props.member)
+    if(member){
+      return (
+        <ExpansionPanel style={{width : 600, marginBottom : 5}} >
+          <ExpansionPanelSummary>
+            <Avatar component={'span'} style={{marginRight : 10}} alt="Remy Sharp" src={member.mem_thumb} />
+            <Typography style={{fontSize:25}}> {member.mem_id}</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails style={{display : 'inline-block' , width : '100%'}}>
+            <div>
+              <div id="image_div">
+                <img id="profile_image" src={member.mem_thumb} key={new Date().getTime()} style={{ borderRadius: '50%' }}></img>
+              </div>
+              <TextWithLabel label="아이디" name="ID" value={member.mem_id} />
+              <TextWithLabel label="이메일" name="email" value={member.mem_email} type="email" />
+              <TextWithLabel label="닉네임" name="nick" value={member.mem_nick} />
+              <TextWithLabel label="소개글" name="intro" value={member.mem_self_intro} />
+              {this.state.checked ?
+                <Label> 글 권한 X </Label>
+                :
+                <Label> 글 권한 O </Label>
+              }
+              <Switch
+                checked={this.state.checked}
+                onChange={this.handleChange}
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
             </div>
-            <TextWithLabel label="아이디" name="ID" value={this.props.member ? this.props.member.mem_id : ''} />
-            <TextWithLabel label="이메일" name="email" value={this.props.member ? this.props.member.mem_email : ''} type="email" />
-            <TextWithLabel label="닉네임" name="nick" value={this.props.member ? this.props.member.mem_nick : ''} />
-            <TextWithLabel label="소개글" name="intro" value={this.props.member ? this.props.member.mem_self_intro : ''} />
-            {this.state.checked ?
-              <Label> 글 권한 X </Label>
-              :
-              <Label> 글 권한 O </Label>
-            }
-            <Switch
-              checked={this.state.checked}
-              onChange={this.handleChange}
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
-            />
-          </div>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    );
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      );
+    }
   }
 }
 const mapStatetoProps = state => {
