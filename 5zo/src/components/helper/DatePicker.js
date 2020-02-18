@@ -95,7 +95,6 @@ class DatePicker extends React.Component {
   handleMonthChange = date => {
     const firstDate = new Date(date.getFullYear(), date.getMonth(), 2);
     const lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
-    console.log(firstDate);
     this.props.getDailyTask(
       this.props.user_id,
       firstDate,
