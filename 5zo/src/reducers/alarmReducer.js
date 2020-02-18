@@ -2,7 +2,8 @@ import {
   ADD_ALARM,
   FETCH_ALARMS,
   READ_ALARM,
-  READ_ALL_ALARM
+  READ_ALL_ALARM,
+  LOGOUT
 } from "../actions/types";
 import _ from "lodash";
 
@@ -17,6 +18,8 @@ export default (state = {}, action) => {
     case READ_ALARM:
       return _.omit(state, action.payload);
     case READ_ALL_ALARM:
+      return {};
+    case LOGOUT:
       return {};
     default:
       return state;

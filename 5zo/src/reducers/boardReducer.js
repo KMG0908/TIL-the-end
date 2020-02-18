@@ -4,7 +4,8 @@ import {
   DELETE_LIST,
   FETCH_DAILY_LIST,
   FETCH_TODO_LIST,
-  GET_DAILY_CAL
+  GET_DAILY_CAL,
+  LOGOUT
 } from "../actions/types";
 import _ from "lodash";
 
@@ -42,7 +43,9 @@ export default (state = {}, action) => {
         [board_id]: board
       };
     }
-
+    case LOGOUT: {
+      return {};
+    }
     case DELETE_LIST: {
       const { board } = action.payload;
       return { ...state, [board.board_id]: board };
