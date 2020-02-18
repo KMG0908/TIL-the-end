@@ -1,7 +1,7 @@
 import React from "react";
 import { Router, Route, Redirect, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { setLoggedInfo, fetchAlarm } from "actions";
+import { setLoggedInfo } from "actions";
 
 import Navigation from "./navigation/Navigation";
 import Main from "./main/Main";
@@ -86,12 +86,9 @@ class App extends React.Component {
                 component={Daily}
               ></Route>
               <Route path="/search" exact component={NewSearch}></Route>
-              {
-                this.props.members.mem_info.mem_id === 'admin' ?
-                  <Route path='/admin' component={AdminPage}></Route>
-                  :
-                  null
-              }
+              {this.props.members.mem_info.mem_id === "admin" ? (
+                <Route path="/admin" component={AdminPage}></Route>
+              ) : null}
 
               <Route component={Redirecting} />
             </Switch>
@@ -115,5 +112,5 @@ const mapStatetoProps = state => {
   };
 };
 
-export default connect(mapStatetoProps, { setLoggedInfo, fetchAlarm })(App);
+export default connect(mapStatetoProps, { setLoggedInfo })(App);
 // export {App, withTitle};

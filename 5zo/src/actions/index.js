@@ -146,7 +146,6 @@ export const login = (loginId, loginPw) => async dispatch => {
     data.joinedDate = joinedDate;
     data.isAvailableWeek = isAvailableWeek;
     data.isAvailableMonth = isAvailableMonth;
-
     dispatch({ type: LOGIN, payload: data });
   } else {
     dispatch({ type: LOGIN_ERR, payload: data });
@@ -1091,9 +1090,8 @@ export const editComment = (
   // dispatch({ type: FETCH_COMMENTS, payload: comment });
 };
 
-export const fetchAlarm = () => async (dispatch, getState) => {
-  const mem_id = getState().members.mem_info.mem_id;
-
+export const fetchAlarm = id => async (dispatch, getState) => {
+  const mem_id = id ? id : getState().members.mem_info.mem_id;
   const response = await apis.get(`/alarm/${mem_id}`);
   dispatch({ type: FETCH_ALARMS, payload: response.data.data });
 };
