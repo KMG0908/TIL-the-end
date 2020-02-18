@@ -522,11 +522,11 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
   }
 };
 
-export const fetchDailyListReset = () => async dispatch =>{
+export const fetchDailyListReset = () => async dispatch => {
   dispatch({
-     type : GET_DAILY_TASK_RESET,
-  })
-}
+    type: GET_DAILY_TASK_RESET
+  });
+};
 
 export const fetchTodoLists = mem_id => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}/date/9999-12-31`);
@@ -720,9 +720,15 @@ export const sort = (
       const boardTo = getState().boards[droppableIdEnd];
       const cardlist = getState().cardLists[list_id];
       cardlist.board_id = droppableIdEnd;
+      console.log(droppableIdEnd);
+      console.log(cardlist.board_id);
+
       boardFrom.board_lists.splice(droppableIndexStart, 1);
       boardTo.board_lists.splice(droppableIndexEnd, 0, list_id);
-      apis.put("/cardlist", { ...cardlist });
+      apis.put("/cardlist", {
+        ...cardlist,
+        cardlist_cards: JSON.stringify(cardlist.cardlist_cards)
+      });
       let fromForm = new FormData();
       fromForm.append("board_id", droppableIdStart);
       fromForm.append("board_lists", JSON.stringify(boardFrom.board_lists));
@@ -916,7 +922,7 @@ export const getDailyTask = (mem_id, from, to) => async dispatch => {
     response = await apis.get(
       `/card/daily/private/${mem_id}/from/${start}/to/${end}`
     );
-  else{
+  else {
     to = shiftDate(new Date(), -1);
     end = date_to_str(to, "");
     response = await apis.get(
@@ -926,7 +932,6 @@ export const getDailyTask = (mem_id, from, to) => async dispatch => {
   dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
 };
 
-
 function shiftDate(date, numDays) {
   const newDate = new Date(date);
   newDate.setDate(newDate.getDate() + numDays);
@@ -935,16 +940,16 @@ function shiftDate(date, numDays) {
 
 export const getDailyCal = (mem_id, from) => async dispatch => {
   const start = 20190101;
-  let to, end
-  if(mem_id === storage.get("loggedInfo").mem_id){
+  let to, end;
+  if (mem_id === storage.get("loggedInfo").mem_id) {
     to = shiftDate(new Date(), 100);
     end = date_to_str(to, "");
-  }else{
+  } else {
     to = shiftDate(new Date(), -1);
     end = date_to_str(to, "");
   }
-  console.log('getDailycal  ')
-  console.log(end)
+  console.log("getDailycal  ");
+  console.log(end);
   let response, cardList, board, cardlist_id, cardlist;
   response = await apis.get(`/board/member/${mem_id}/from/${start}/to/${end}`);
   const board_data = response.data.data;
