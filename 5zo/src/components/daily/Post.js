@@ -23,7 +23,6 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
-
 const Label = styled.div`
     font-size : 1rem;
     color : ${oc.gray[6]};
@@ -207,11 +206,9 @@ const Post = props => {
         </div>
       </div>
       
-      <div id={content_id}>
+      <div id={content_id} >
         {renderSubPost(props)}
         {renderTags(props)}
-        <br/>
-        <br/>
         <ExpansionPanel style={{marginBottom : 5}} >
         <ExpansionPanelSummary>
           {/* <Avatar component={'span'} style={{marginRight : 10}} alt="Remy Sharp" src={this.props.member ? this.props.member.mem_thumb : ''} /> */}
@@ -219,7 +216,7 @@ const Post = props => {
         </ExpansionPanelSummary>
         <ExpansionPanelDetails style={{display : 'inline-block' , width : '100%'}}>
         <Grid container direction="row" justify="center" alignItems="center">
-          <Grid item style={{ width: "90%" }}>
+          <Grid item style={{ width: "100%" }}>
             <Comment
               list_id={props.list_id}
               user_id={props.user_id}

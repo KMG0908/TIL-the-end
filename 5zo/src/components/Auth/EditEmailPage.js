@@ -24,6 +24,7 @@ class EditEmailPage extends Component {
   }
   componentDidMount(){
     document.getElementById("pw").focus();
+    this.props.close();
   }
   componentWillUnmount(){
     this.props.checkPasswordReset();
@@ -106,6 +107,8 @@ class EditEmailPage extends Component {
       this.props.setLoggedInfo(loggedInfo);
 
       this.props.memInfoChangeReset();
+      alert(`이메일 변경이 완료되었습니다.`)
+      history.push("/")
     }
 
     if(document.getElementById("pw")){

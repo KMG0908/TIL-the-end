@@ -7,6 +7,8 @@ import { fetchComments, addComment } from "../../../actions";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import moment from "moment";
+import "./comment.css"
+
 class Comment extends React.Component {
   componentDidMount() {
     const { fetchComments, list_id } = this.props;
@@ -65,9 +67,9 @@ class Comment extends React.Component {
   render() {
     const { list_id, user_id } = this.props;
     return (
-      <div>
+      <div className="comment">
         <List>{this.renderComments()}</List>
-        <div style={{ width: "95%", marginTop: "1em", float: "right" }}>
+        <div style={{ width: "100%", marginTop: "1em", float: "right" }}>
           <CommentForm onSubmit={this.handleAddComment} user_id={user_id} />
         </div>
       </div>

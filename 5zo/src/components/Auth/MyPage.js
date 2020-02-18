@@ -17,6 +17,13 @@ const styles = theme => ({
   typography: {
     backgroundColor: "white",
     padding: "20px 0"
+  },
+  update: {
+    display : 'none',
+    backgroundColor: "blue",
+    cursor: 'pointer',
+    padding: '0.75rem 1.25rem',
+    color: 'white',
   }
 });
 
@@ -40,17 +47,40 @@ class MyPage extends Component {
 
     switch (this.state.value) {
       case 0:
-        component = <MyProfile></MyProfile>;
+        component = <MyProfile update={this.update} close={this.close}></MyProfile>;
         break;
       case 1:
-        component = <EditEmailPage></EditEmailPage>;
+        component = <EditEmailPage update={this.update} close={this.close}></EditEmailPage>;
         break;
       case 2:
-        component = <EditPasswordPage></EditPasswordPage>;
+        component = <EditPasswordPage update={this.update} close={this.close}></EditPasswordPage>;
         break;
     }
 
     return component;
+  }
+  update(e, color){
+    document.getElementById("update").style.display = "block"
+
+    switch(e){
+      case "profile":
+        console.log(color);
+        document.getElementById("update").style.backgroundColor = color;
+        document.getElementById("update").innerHTML = "프로필이 변경되었습니다."
+        break;
+      case "email":
+        document.getElementById("update").innerHTML = "이메일이 변경되었습니다."
+        break;
+      case "password":
+        document.getElementById("update").innerHTML = "비밀번호가 변경되었습니다."
+        break;
+      default:
+        this.close();
+        break;
+    }
+  }
+  close(){
+    document.getElementById("update").style.display = "none"
   }
   render() {
     const { classes } = this.props;
@@ -69,6 +99,7 @@ class MyPage extends Component {
             <Tab label="Password" />
           </Tabs>
         </Paper>
+        <Typography component="div" id="update" className={classes.update} onClick={this.close}></Typography>
         <Typography component="div" className={classes.typography}>
           {this.setComponent()}
         </Typography>
