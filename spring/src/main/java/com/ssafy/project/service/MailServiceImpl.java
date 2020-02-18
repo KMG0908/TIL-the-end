@@ -98,12 +98,12 @@ public class MailServiceImpl implements MailService {
 			// helper.addInline("emailPic.png", file);
 			javaMailSender.send(message);
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof MemberException) {
 				throw (MemberException) e;
 			} else if (e instanceof MessagingException) {
 //				throw (MessagingException)e;
 			} else {
+				e.printStackTrace();
 				throw new MailException("메일 발송에 실패하였습니다");
 			}
 		}

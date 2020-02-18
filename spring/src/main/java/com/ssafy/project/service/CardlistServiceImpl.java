@@ -40,10 +40,10 @@ public class CardlistServiceImpl implements CardlistService {
 			}
 			return cardlist;
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof CardlistException) {
 				throw (CardlistException) e;
 			} else {
+				e.printStackTrace();
 				throw new CardlistException(cardlist_id + "번 카드 리스트 조회 중 오류 발생");
 			}
 		}

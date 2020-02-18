@@ -35,10 +35,10 @@ public class CardServiceImpl implements CardService {
 			}
 			return card;
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof CardException) {
 				throw (CardException) e;
 			} else {
+				e.printStackTrace();
 				throw new CardException(card_id + "번 카드 조회 중 오류 발생");
 			}
 		}

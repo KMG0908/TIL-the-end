@@ -40,14 +40,14 @@ public class TagServiceImpl implements TagService {
 		try {
 			Tag tag = dao.search(tag_id);
 			if (tag == null) {
-				throw new TagException("존재하지 않는 태그 번호입니다");
+				throw new TagException(tag_id + "는 존재하지 않는 태그 번호입니다");
 			}
 			return tag;
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof TagException) {
 				throw (TagException) e;
 			} else {
+				e.printStackTrace();
 				throw new TagException(tag_id + "번 태그 조회 중 오류 발생");
 			}
 		}
