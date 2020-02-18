@@ -147,7 +147,6 @@ export const login = (loginId, loginPw) => async dispatch => {
     data.isAvailableWeek = isAvailableWeek;
     data.isAvailableMonth = isAvailableMonth;
     dispatch({ type: LOGIN, payload: data });
-    fetchAlarm(loginId);
   } else {
     dispatch({ type: LOGIN_ERR, payload: data });
   }
@@ -1093,9 +1092,7 @@ export const editComment = (
 
 export const fetchAlarm = id => async (dispatch, getState) => {
   const mem_id = id ? id : getState().members.mem_info.mem_id;
-  console.log(id);
   const response = await apis.get(`/alarm/${mem_id}`);
-  console.log(response);
   dispatch({ type: FETCH_ALARMS, payload: response.data.data });
 };
 export const readAlarm = alarm_id => async dispatch => {
