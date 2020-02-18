@@ -29,8 +29,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-import { makeStyles } from "@material-ui/styles";
-
 function CommentItem({
   members,
   comment,
