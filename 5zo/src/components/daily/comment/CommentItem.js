@@ -8,6 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ReplyIcon from "@material-ui/icons/Reply";
+import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
 import { Link } from "@material-ui/core";
 
 import { connect } from "react-redux";
@@ -18,6 +19,8 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import history from "../../../history";
+
+import { makeStyles } from '@material-ui/styles';
 
 function CommentItem({
   members,
@@ -61,11 +64,13 @@ function CommentItem({
     return (
       <>
         <ListItemAvatar>
-          <Avatar src={comment.mem_thumb}></Avatar>
+          <Avatar src={comment.mem_thumb} onClick={handleClick} className="user_image"></Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={
-            <>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+            <div style={{flexGrow: 1}}>
+
               <Button
                 aria-controls="simple-menu"
                 aria-haspopup="true"
@@ -81,10 +86,23 @@ function CommentItem({
               >
                 {renderTime(comment.comment_time)}
               </Typography>
-            </>
+              </div>
+              {comment.mem_id === members.mem_info.mem_id ? (
+              <Typography
+                variant="caption"
+                display="inline"
+                color="textSecondary"
+                gutterBottom
+              >
+
+                <span onClick={setModeEditing} style={{cursor: 'pointer', marginBottom: 0}}>수정</span>{" "}
+                <span onClick={handleDelete} style={{cursor: 'pointer',  marginBottom: 0, marginRight: '10px'}}>삭제</span>
+              </Typography>
+            ) : null}
+            </div>
           }
           secondary={
-            <React.Fragment>
+            <React.Fragment className="written_comment">
               <Typography component="span" variant="body2" color="textPrimary">
                 {mode === "editing" ? (
                   <span onClick={e => e.stopPropagation()}>
@@ -117,19 +135,6 @@ function CommentItem({
             유저 페이지로
           </MenuItem>
         </Menu>
-        <ListItemSecondaryAction>
-          {comment.mem_id === members.mem_info.mem_id ? (
-            <Typography
-              variant="caption"
-              display="inline"
-              color="textSecondary"
-              gutterBottom
-            >
-              <span onClick={setModeEditing}>수정</span>{" "}
-              <span onClick={handleDelete}>삭제</span>
-            </Typography>
-          ) : null}
-        </ListItemSecondaryAction>
       </>
     );
   };
@@ -167,18 +172,19 @@ function CommentItem({
       setMode(false);
     }
   };
+
   return (
     <>
-      <ListItem onClick={setModeCommenting}>
+      <ListItem onClick={setModeCommenting} className={comment.comment_reply? "reply" : ""}>
         {comment.comment_reply ? (
           <ListItemIcon>
-            <ReplyIcon />
+            <SubdirectoryArrowRightIcon style={{color: "rgba(0, 0, 0, 0.3)"}} />
           </ListItemIcon>
         ) : null}
         {comment.comment_deleted ? "삭제된 글 입니다." : renderItem()}
       </ListItem>
       {mode === "commenting" ? (
-        <div style={{ width: "90%", marginTop: "1em", float: "right" }}>
+        <div style={{ width: "100%", float: "right" }}>
           <CommentForm
             inputRef={refs}
             comment_contents={`@${comment.mem_id} `}

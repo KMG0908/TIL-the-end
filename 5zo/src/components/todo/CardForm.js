@@ -10,6 +10,8 @@ import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import Button from "@material-ui/core/Button";
 
+import "./suneditor.css"
+
 const styles = theme => ({
   paper: {
     textAlign: "left",
@@ -35,11 +37,12 @@ const styles = theme => ({
     }
   },
   collapseCard: {
-    extAlign: "left",
     padding: theme.spacing(1),
     marginBottom: theme.spacing(1),
     color: theme.palette.text.secondary,
-    textAlign: "left"
+    textAlign: "left",
+    whiteSpace: "normal",
+    marginTop: theme.spacing(-2)
   },
   button: {
     float: "right",
@@ -93,6 +96,7 @@ class CardForm extends React.Component {
             <SunEditor
               lang="ko"
               enable={true}
+              showToolbar={true}
               onChange={this.handleChange}
               setContents={
                 this.props.card.card_contents
@@ -117,12 +121,38 @@ class CardForm extends React.Component {
               }}
             />
           ) : (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: this.props.card.card_contents
+            <SunEditor
+              lang="ko"
+              disable={true}
+              showToolbar={false}
+              setContents={
+                this.props.card.card_contents
+                  ? `${this.props.card.card_contents}`
+                  : ""
+              }
+              setOptions={{
+                height: "auto",
+                stickyToolbar: 50,
+                placeholder: "오늘 공부한 내용을 입력해주세요",
+                resizingBar: false,
+                buttonList: [
+                  ["font", "fontSize", "formatBlock"],
+                  ["bold", "underline", "italic", "strike"],
+                  ["fontColor", "hiliteColor", "textStyle"],
+                  ["removeFormat"],
+                  ["outdent", "indent"],
+                  ["align", "horizontalRule", "list", "lineHeight"],
+                  ["table", "link", "image", "video"],
+                  ["fullScreen", "preview", "showBlocks"]
+                ]
               }}
             />
-          )}
+              // <div
+              //   dangerouslySetInnerHTML={{
+              //     __html: this.props.card.card_contents
+              //   }}
+              // />
+            )}
 
           {this.props.editModeCard === this.props.card.card_id ? (
             <Button

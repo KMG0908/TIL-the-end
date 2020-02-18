@@ -272,11 +272,7 @@ class List extends React.Component {
               ) : null}
               <Typography
                 className={classes.typography}
-                variant={
-                  this.props.editModeList === this.props.cardlist_id
-                    ? "h2"
-                    : "h6"
-                }
+                variant={"h6"}
               >
                 {this.props.title}
               </Typography>
