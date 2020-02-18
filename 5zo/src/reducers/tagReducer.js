@@ -3,7 +3,8 @@ import {
   GET_ALL_TAG,
   FETCH_TAG,
   ADD_TAG,
-  DELETE_TAG
+  DELETE_TAG,
+  LOGOUT
 } from "actions/types";
 import _ from "lodash";
 
@@ -38,7 +39,8 @@ export default (state = {}, action) => {
           })
         )
       };
-
+    case LOGOUT:
+      return {};
     default:
       return state;
   }
