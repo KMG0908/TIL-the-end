@@ -23,6 +23,7 @@ class EditPasswordPage extends Component {
     this.props.editPasswordFailReset()
     this.props.editPasswordSuccessReset()
     document.getElementById("old_pw").focus();
+    this.props.close();
   }
   keyDown(e) {
     if (e.keyCode === 13) this.editPassword();
@@ -79,7 +80,7 @@ class EditPasswordPage extends Component {
     if (this.props.edit_password_success) {
       this.props.editPasswordFailReset()
       this.props.editPasswordSuccessReset()
-      alert(`비밀번호 수정 완료`)
+      alert(`비밀번호 변경이 완료되었습니다.`)
       history.push("/")
     }
     return (

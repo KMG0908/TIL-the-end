@@ -49,7 +49,9 @@ class MyProfile extends Component {
     this.editMyinfo = this.editMyinfo.bind(this)
     this.cancelEditMyinfo = this.cancelEditMyinfo.bind(this)
   }
-
+  componentDidMount(){
+    this.props.close();
+  }
   onSelectFile = e => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
@@ -157,14 +159,15 @@ class MyProfile extends Component {
   setProfileImg = () => {
     document.getElementById("profile_image").src = this.state.croppedImageUrl;
     this.handleClose();
-
   }
   handleClose = () => {
     this.setState({
       open: false
     })
   };
-
+  update(){
+    console.log(this.props)
+  }
   render() {
     const { crop, croppedImageUrl, src } = this.state
     if (this.props.mem_info_change) {
@@ -175,6 +178,7 @@ class MyProfile extends Component {
 
       this.props.editMyinfoErrReset();
       this.props.memInfoChangeReset();
+      this.props.update("profile", this.state.color);
     }
 
     let image;
@@ -230,7 +234,7 @@ class MyProfile extends Component {
               <Grid item>공개</Grid>
             </Grid>
           </div>
-          <Label>카드리스트 기본 색</Label>
+          <Label>테마 색</Label>
           <ColorPicker value={this.state.color} handleChangeColor={this.handleChangeColor}></ColorPicker>
           <br /><br />
           <AuthButton onClick={this.editMyinfo}> Update My Profile </AuthButton>

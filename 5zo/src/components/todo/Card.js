@@ -21,7 +21,6 @@ const styles = theme => ({
     padding: theme.spacing(1),
     marginBottom: theme.spacing(1),
     color: theme.palette.text.secondary,
-    minHeight: "60px",
     display: "flex"
   },
   delete: {
@@ -135,7 +134,7 @@ class Card extends React.Component {
                   <Typography
                     variant={
                       this.props.editModeList === this.props.cardlist_id
-                        ? "h3"
+                        ? "h6"
                         : "body1"
                     }
                   >

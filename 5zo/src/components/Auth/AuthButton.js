@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/styles';
+import storage from '../../lib/storage'
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles(() => ({
 function AuthButton({ children, onClick, onSubmit, type, backgroundColor }){
   const classes = useStyles();
   return(
-    <Button variant="contained" style={{background : backgroundColor ? backgroundColor : 'rgb(148, 201, 169)'}} onClick={onClick} className={classes.button}>
+    <Button variant="contained" style={{background : backgroundColor ? backgroundColor : storage.get('loggedInfo') ? storage.get('loggedInfo').mem_color : 'rgb(148, 201, 169)'}} onClick={onClick} className={classes.button}>
       {children}
     </Button>
   );
