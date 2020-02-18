@@ -8,7 +8,7 @@ import {
 } from "@material-ui/pickers";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { setEditModeList, setEditModeCard, getDailyTask2 } from "../../actions";
+import { setEditModeList, setEditModeCard, getDailyTask } from "../../actions";
 
 import DateFnsUtils from "@date-io/date-fns";
 import format from "date-fns/format";
@@ -96,7 +96,7 @@ class DatePicker extends React.Component {
     const firstDate = new Date(date.getFullYear(), date.getMonth(), 2);
     const lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
     console.log(firstDate);
-    this.props.getDailyTask2(
+    this.props.getDailyTask(
       this.props.user_id,
       firstDate,
       lastDate
@@ -234,7 +234,7 @@ const mapStateToProps = state => {
 };
 
 export default withStyles(styles, { withTheme: true })(
-  connect(mapStateToProps, { getDailyTask2, setEditModeList, setEditModeCard })(
+  connect(mapStateToProps, { getDailyTask, setEditModeList, setEditModeCard })(
     DatePicker
   )
 );

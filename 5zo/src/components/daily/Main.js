@@ -4,7 +4,7 @@ import Heatmap from "components/heatmap/Heatmap";
 import Daily from "./Daily";
 import storage from "lib/storage";
 import { connect } from "react-redux";
-import { fetchDailyLists, setEditModeList } from "../../actions";
+import { fetchDailyLists, setEditModeList, fetchDailyListReset } from "../../actions";
 import Button from "@material-ui/core/Button";
 import { createMuiTheme } from "@material-ui/core/styles";
 
@@ -21,19 +21,14 @@ class Main extends React.Component {
   });
   constructor(props) {
     super(props);
+    const params = this.props.match.params
+    const login_id = storage.get("loggedInfo").mem_id
+    const user_id = params.user_id ? params.user_id : login_id
 
-    console.log('Main - user_id')
-    let user_id = this.props.match.params.user_id;
-    console.log('params')
-    console.log(user_id)
-    if (!user_id) user_id = storage.get("loggedInfo").mem_id;
-    console.log('storage')
-    console.log(user_id)
     let lastDay = new Date();
-
-    let date = this.props.match.params.date;
-    if (!date) date = new Date();
-    else  
+    let date = params.date
+    if (!date) date = new Date()
+    else
       date = new Date(
         date.substr(0, 4),
         date.substr(4, 2) * 1 - 1,
@@ -41,7 +36,7 @@ class Main extends React.Component {
       );
     date = this.date_to_str(date, "-");
 
-    if (user_id !== storage.get("loggedInfo").mem_id) {
+    if (user_id !== login_id) {
       if (date >= new Date().toISOString().split("T")[0]) {
         date = new Date();
         date.setDate(date.getDate() - 1);
@@ -52,24 +47,20 @@ class Main extends React.Component {
       lastDay.setDate(lastDay.getDate() - 1);
       lastDay = this.date_to_str(lastDay, "-");
     }
-
-    this.state = {
+    this.state = ({
+      user_id: user_id,
       date: date,
       cur_date: lastDay,
-      user_id: user_id,
       bu1: "secondary",
       bu2: "white",
-      bu3: "white"
-    };
+      bu3: "white",
+    })
+    this.props.fetchDailyListReset()
+    this.props.fetchDailyLists(user_id, date);
 
     this.onHandleDate = this.onHandleDate.bind(this);
   }
-  componentDidMount() {
-    console.log('componentDidMount')
-    this.props.setEditModeList(null);
-    console.log(this.state.user_id)
-    this.props.fetchDailyLists(this.state.user_id, this.state.date);
-  }
+
   onHandleDate(date) {
     if (this.state.user_id === storage.get("loggedInfo").mem_id) {
       this.setState({
@@ -128,20 +119,53 @@ class Main extends React.Component {
       });
     }
   }
-  render() {
-    const now_user_id = this.props.match.params.user_id || storage.get("loggedInfo").mem_id;
-    if (
-      this.state.user_id !==
-      (this.props.match.params.user_id || storage.get("loggedInfo").mem_id)
-    ) {
-      this.setState({
-        user_id: now_user_id
-      });
+
+  componentDidUpdate() {
+    const params = this.props.match.params
+    const login_id = storage.get("loggedInfo").mem_id
+    const user_id = params.user_id ? params.user_id : login_id
+
+    let lastDay = new Date();
+    let date = params.date
+    if (!date) date = new Date()
+    else
+      date = new Date(
+        date.substr(0, 4),
+        date.substr(4, 2) * 1 - 1,
+        date.substr(6, 2)
+      );
+    date = this.date_to_str(date, "-");
+
+    if (user_id !== login_id) {
+      if (date >= new Date().toISOString().split("T")[0]) {
+        date = new Date();
+        date.setDate(date.getDate() - 1);
+
+        date = this.date_to_str(date, "-");
+      }
+
+      lastDay.setDate(lastDay.getDate() - 1);
+      lastDay = this.date_to_str(lastDay, "-");
     }
+    if (!this.state.user_id || this.state.user_id !== user_id) {
+      this.setState({
+        user_id: user_id,
+        date: date,
+        cur_date: lastDay,
+        bu1: "secondary",
+        bu2: "white",
+        bu3: "white",
+      })
+      this.props.fetchDailyListReset()
+      this.props.fetchDailyLists(user_id, date);
+    }
+  }
+
+  render() {
 
     return (
       <>
-        <UserInfo user_id={this.state.user_id}></UserInfo>
+        <UserInfo user_id={this.state.user_id} ></UserInfo>
         <div align="center">
           <ThemeProvider theme={this.GlobalTheme}>
             <Button
@@ -176,6 +200,7 @@ class Main extends React.Component {
           </ThemeProvider>
         </div>
         <Heatmap
+          key={this.state.user_id + this.state.cur_date}
           user_id={this.state.user_id}
           onHandleDate={this.onHandleDate}
           cur_date={this.state.cur_date}
@@ -200,6 +225,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { fetchDailyLists, setEditModeList })(
+export default connect(mapStateToProps, { fetchDailyLists, setEditModeList, fetchDailyListReset })(
   Main
 );

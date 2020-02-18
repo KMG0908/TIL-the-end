@@ -61,7 +61,7 @@ import {
   GET_ALL_TAG,
   FETCH_TAG,
   GET_DAILY_TASK,
-  GET_DAILY_TASK2,
+  GET_DAILY_TASK_RESET,
   GET_DAILY_CAL,
   GET_DAILY_LIST,
   GET_OTHER_MEMBER,
@@ -101,7 +101,6 @@ export const getAllMember = () => async dispatch => {
     data.mem_id !== "admin" ? data_.push("@" + data.mem_id) : null
   );
   data_.sort();
-  console.log(data_);
   await dispatch({ type: GET_ALL_MEMBERS, payload: data_ });
 };
 
@@ -502,8 +501,7 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
     response.data.data[0].board_lists.map(async cardlist_id => {
       let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
       if (cardlist.data.state === "ok") {
-        console.log("392");
-        console.log(cardlist.data.data);
+        // console.log(cardlist.data.data);
         if (own || (!own && cardlist.data.data.cardlist_secret === false)) {
           dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
           cardlist.data.data.cardlist_cards.map(async card_id => {
@@ -523,6 +521,12 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
     });
   }
 };
+
+export const fetchDailyListReset = () => async dispatch =>{
+  dispatch({
+     type : GET_DAILY_TASK_RESET,
+  })
+}
 
 export const fetchTodoLists = mem_id => async dispatch => {
   const response = await apis.get(`/board/member/${mem_id}/date/9999-12-31`);
@@ -906,39 +910,41 @@ export const getDailyTask = (mem_id, from, to) => async dispatch => {
   if (mem_id === storage.get("loggedInfo").mem_id) own = true;
 
   const start = date_to_str(from, "");
-  const end = date_to_str(to, "");
+  let end = date_to_str(to, "");
   let response;
   if (own)
     response = await apis.get(
       `/card/daily/private/${mem_id}/from/${start}/to/${end}`
     );
-  else
+  else{
+    to = shiftDate(new Date(), -1);
+    end = date_to_str(to, "");
     response = await apis.get(
       `/card/daily/public/${mem_id}/from/${start}/to/${end}`
     );
+  }
   dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
 };
 
-export const getDailyTask2 = (mem_id, from, to) => async dispatch => {
-  let own = false;
-  if (mem_id === storage.get("loggedInfo").mem_id) own = true;
 
-  const start = date_to_str(from, "");
-  const end = date_to_str(to, "");
-  let response;
-  if (own)
-    response = await apis.get(
-      `/card/daily/private/${mem_id}/from/${start}/to/${end}`
-    );
-  else
-    response = await apis.get(
-      `/card/daily/public/${mem_id}/from/${start}/to/${end}`
-    );
-  dispatch({ type: GET_DAILY_TASK2, payload: response.data.data });
-};
-export const getDailyCal = (mem_id, from, to) => async dispatch => {
+function shiftDate(date, numDays) {
+  const newDate = new Date(date);
+  newDate.setDate(newDate.getDate() + numDays);
+  return newDate;
+}
+
+export const getDailyCal = (mem_id, from) => async dispatch => {
   const start = 20190101;
-  const end = date_to_str(to, "");
+  let to, end
+  if(mem_id === storage.get("loggedInfo").mem_id){
+    to = shiftDate(new Date(), 100);
+    end = date_to_str(to, "");
+  }else{
+    to = shiftDate(new Date(), -1);
+    end = date_to_str(to, "");
+  }
+  console.log('getDailycal  ')
+  console.log(end)
   let response, cardList, board, cardlist_id, cardlist;
   response = await apis.get(`/board/member/${mem_id}/from/${start}/to/${end}`);
   const board_data = response.data.data;

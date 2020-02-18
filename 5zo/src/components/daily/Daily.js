@@ -7,6 +7,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { Icon } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Post from "./Post";
+import storage from "lib/storage";
 
 const styles = theme => ({
   icon: {
@@ -61,16 +62,23 @@ class Daily extends React.Component {
           }}
           className={classes.go_dashboard}
         >
-          <Tooltip title="Dashboard에서 확인하기">
-            <Icon
-              button
-              component={Link}
-              className={classes.icon}
-              to={`/dashboard/${this.props.date.replace(/-/gi, "")}`}
-            >
-              open_in_new
+
+          {storage.get("loggedInfo").mem_id === this.props.user_id ?
+            <Tooltip title="Dashboard에서 확인하기">
+              <Icon
+                button
+                component={Link}
+                className={classes.icon}
+                to={`/dashboard/${this.props.date.replace(/-/gi, "")}`}
+              >
+                open_in_new
             </Icon>
-          </Tooltip>
+            </Tooltip>
+            :
+            null
+          }
+
+
         </div>
         {this.renderPost()}
       </Container>

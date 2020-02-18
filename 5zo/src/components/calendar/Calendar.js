@@ -28,11 +28,6 @@ function date_to_str(format, separator) {
   );
 }
 
-function shiftDate(date, numDays) {
-  const newDate = new Date(date);
-  newDate.setDate(newDate.getDate() + numDays);
-  return newDate;
-}
 class Event extends React.Component {
   constructor(props) {
     super(props);
@@ -51,12 +46,10 @@ class Event extends React.Component {
     this.setState({ showModal: false });
   }
   componentDidMount() {
-    let endDate = shiftDate(today, 100);
     if (this.props.members.mem_info) {
       this.props.getDailyCal(
         this.props.members.mem_info.mem_id,
         this.props.members.mem_info.mem_reg_date,
-        endDate
       );
     }
   }
