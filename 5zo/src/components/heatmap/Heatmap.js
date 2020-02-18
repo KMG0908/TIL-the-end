@@ -41,6 +41,7 @@ class Heatmap extends React.Component {
   }
   componentDidMount() {
     const user_id = this.props.user_id;
+    console.log('heatmap - mount :: ' + user_id)
 
     const lastDay = new Date(this.props.cur_date);
     this.props.getDailyTask(user_id, shiftDate(lastDay, -1000), lastDay);

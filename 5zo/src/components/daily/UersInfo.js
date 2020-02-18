@@ -67,8 +67,11 @@ class UserInfo extends React.Component {
     }
   }
   render() {
-
-    console.log('render  ' + this.state.checked)
+    if(this.props.info){
+      if(this.props.user_id !== this.props.info.mem_id){
+        this.props.getOtherMember(this.props.user_id)
+      }
+    }
     return (
       <>
         {this.setInfo()}

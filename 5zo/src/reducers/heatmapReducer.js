@@ -1,4 +1,4 @@
-import { GET_DAILY_TASK } from "actions/types";
+import { GET_DAILY_TASK, GET_DAILY_TASK_RESET } from "actions/types";
 import _ from "lodash";
 export default (state = {}, action) => {
   switch (action.type) {
@@ -9,6 +9,10 @@ export default (state = {}, action) => {
           ? _.unionWith(state.info, action.payload, _.isEqual)
           : action.payload
       };
+    case GET_DAILY_TASK_RESET:
+      return{
+        ... state , info : undefined
+      }
     default:
       return state;
   }
