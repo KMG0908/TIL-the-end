@@ -912,16 +912,22 @@ export const getDailyTask = (mem_id, from, to) => async dispatch => {
   const start = date_to_str(from, "");
   let end = date_to_str(to, "");
   let response;
-  if (own)
+  if (own){
+  console.log('본인')
+  console.log(`/card/daily/private/${mem_id}/from/${start}/to/${end}`)
     response = await apis.get(
       `/card/daily/private/${mem_id}/from/${start}/to/${end}`
     );
+}
   else{
-    to = shiftDate(new Date(), -1);
+    to = shiftDate(new Date(),-1);
     end = date_to_str(to, "");
+    console.log('타인')
+    console.log(`/card/daily/public/${mem_id}/from/${start}/to/${end}`)
     response = await apis.get(
       `/card/daily/public/${mem_id}/from/${start}/to/${end}`
     );
+    console.log(response.data.data)
   }
   dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
 };
@@ -954,7 +960,7 @@ export const getDailyCal = (mem_id, from) => async dispatch => {
     board = board_data[i];
     response = await apis.get(`/board/${board_data[i].board_id}`);
     let cardList_id_string = response.data.data;
-    console.log(cardList_id_string);
+    // console.log(cardList_id_string);
 
     cardList_id_string = cardList_id_string.replace("[", "");
     cardList_id_string = cardList_id_string.replace("]", "");
@@ -964,12 +970,12 @@ export const getDailyCal = (mem_id, from) => async dispatch => {
       .map(cardList =>
         cardList === "" ? null : cardlist_id_array.push(Number(cardList))
       );
-    console.log("cardList_id_string ");
-    console.log(cardList_id_string);
-    console.log(cardlist_id_array);
+    // console.log("cardList_id_string ");
+    // console.log(cardList_id_string);
+    // console.log(cardlist_id_array);
     for (let j = 0; j < cardlist_id_array.length; j++) {
       cardlist_id = cardlist_id_array[j];
-      console.log(cardlist_id);
+      // console.log(cardlist_id);
       response = await apis.get(`/cardlist/${cardlist_id}`);
       cardlist = response.data.data;
       cardlist.date = board.board_date;
