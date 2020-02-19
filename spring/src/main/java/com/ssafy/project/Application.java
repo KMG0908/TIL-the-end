@@ -7,6 +7,7 @@ import java.util.Locale;
 //import javax.annotation.PostConstruct;
 
 import org.apache.catalina.connector.Connector;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -84,7 +85,7 @@ public class Application implements WebMvcConfigurer {
 				.title("TIL THE END PROJECT REST API")
 				.description("프론트에서 사용할 수 있는 api입니다.")
 				.license("5zo company")
-				.version("0.2.9")
+				.version("0.2.10")
 				.build();
 	}
 
@@ -167,5 +168,4 @@ public class Application implements WebMvcConfigurer {
         return connector;
     } //출처: https://engkimbs.tistory.com/756 [새로비]
 
-	
 }
