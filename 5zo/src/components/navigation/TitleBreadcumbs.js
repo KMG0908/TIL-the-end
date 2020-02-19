@@ -26,7 +26,9 @@ const useStyles = makeStyles(theme => ({
 
 const breadcumbspliter = props => {
   const mem_info  = storage.get("loggedInfo")
-  props.fetchAlarm(mem_info.mem_id)
+  if(mem_info){
+    props.fetchAlarm(mem_info.mem_id)
+  }
   return props.location.pathname.split("/").map((bread,index) => {
     if (bread) {
       return <StyledLink style={{textTransform: 'none'}} to={props.location.pathname.split("/").slice(0,index+1).join("/")}>{bread}</StyledLink>;
