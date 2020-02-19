@@ -24,11 +24,11 @@ function CommentForm(props) {
         <ListItemIcon style={{display: props.inputRef? "flex" : "none"}}>
           <SubdirectoryArrowRightIcon style={{color: "rgba(0, 0, 0, 0.3)"}} />
         </ListItemIcon>
-        <div className="comment_window">
+        <div className={props.inputRef? "reply_window" : "comment_window"}>
           <form style={{ width: "100%", height: "100%", marginRight: '10px', display: 'flex', alignItems: 'center'}}>
             <Input
               inputRef={props.inputRef}
-              style={{ width: "91%", height: "100%", wordBreak: "break-all" }}
+              style={{ width: "93%", height: "100%", wordBreak: "break-all" }}
               placeholder="격려의 댓글을 달아주세요^^"
               onChange={e => setCommentContents(e.target.value)}
               value={comment_contents}

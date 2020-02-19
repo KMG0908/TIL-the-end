@@ -22,7 +22,7 @@ class Main extends React.Component {
         main: storage.get("loggedInfo")
           ? storage.get("loggedInfo").mem_color
           : "#FFFFFF",
-        contrastText: "white"
+        contrastText: "#FFFFFF"
       }
     }
   });
@@ -59,8 +59,8 @@ class Main extends React.Component {
       date: date,
       cur_date: lastDay,
       bu1: "secondary",
-      bu2: "white",
-      bu3: "white"
+      bu2: "#FFFFFF",
+      bu3: "#FFFFFF"
     };
     this.props.fetchDailyListReset();
     this.props.fetchDailyLists(user_id, date);
@@ -104,23 +104,23 @@ class Main extends React.Component {
 
     if (year == 2020) {
       this.state.bu1 = "secondary";
-      this.state.bu2 = "white";
-      this.state.bu3 = "white";
+      this.state.bu2 = "#FFFFFF";
+      this.state.bu3 = "#FFFFFF";
       local_date = new Date();
       this.setState({
         cur_date: local_date
       });
     } else if (year == 2019) {
       this.state.bu2 = "secondary";
-      this.state.bu1 = "white";
-      this.state.bu3 = "white";
+      this.state.bu1 = "#FFFFFF";
+      this.state.bu3 = "#FFFFFF";
       this.setState({
         cur_date: new Date("december 31 2019")
       });
     } else {
       this.state.bu3 = "secondary";
-      this.state.bu2 = "white";
-      this.state.bu1 = "white";
+      this.state.bu2 = "#FFFFFF";
+      this.state.bu1 = "#FFFFFF";
       this.setState({
         cur_date: new Date("december 31 2018")
       });
@@ -166,8 +166,8 @@ class Main extends React.Component {
         date: date,
         cur_date: lastDay,
         bu1: "secondary",
-        bu2: "white",
-        bu3: "white"
+        bu2: "#FFFFFF",
+        bu3: "#FFFFFF"
       });
       this.props.fetchDailyListReset();
       this.props.fetchDailyLists(user_id, date);
@@ -179,8 +179,8 @@ class Main extends React.Component {
     return (
       <>
         <UserInfo user_id={this.state.user_id}></UserInfo>
-        <div align="center">
           <ThemeProvider theme={this.GlobalTheme}>
+        <div align="center">
             <Button
               variant="contained"
               color={this.state.bu1}
@@ -210,19 +210,19 @@ class Main extends React.Component {
               {" "}
               2018{" "}
             </Button>
-          </ThemeProvider>
         </div>
         <Heatmap
           key={this.state.user_id + this.state.cur_date}
           user_id={this.state.user_id}
           onHandleDate={this.onHandleDate}
           cur_date={this.state.cur_date}
-        ></Heatmap>
+          ></Heatmap>
         <Daily
           user_id={this.state.user_id}
           date={this.state.date}
           onHandleDate={this.onHandleDate}
-        ></Daily>
+          ></Daily>
+          </ThemeProvider>
       </>
     );
   }

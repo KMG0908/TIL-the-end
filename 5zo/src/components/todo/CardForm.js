@@ -130,6 +130,7 @@ class CardForm extends React.Component {
                   ? `${this.props.card.card_contents}`
                   : ""
               }
+              onChange={this.handleChange}
               setOptions={{
                 height: "auto",
                 stickyToolbar: 50,

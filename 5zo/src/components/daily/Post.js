@@ -208,25 +208,28 @@ const Post = props => {
       
       <div id={content_id} >
         {renderSubPost(props)}
-        {renderTags(props)}
-        <ExpansionPanel style={{marginBottom : 5}} >
-        <ExpansionPanelSummary>
-          {/* <Avatar component={'span'} style={{marginRight : 10}} alt="Remy Sharp" src={this.props.member ? this.props.member.mem_thumb : ''} /> */}
-          <Typography > 댓글</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails style={{display : 'inline-block' , width : '100%'}}>
-        <Grid container direction="row" justify="center" alignItems="center">
-          <Grid item style={{ width: "100%" }}>
-            <Comment
-              list_id={props.list_id}
-              user_id={props.user_id}
-              date={props.date}
-            />
-          </Grid>
-        </Grid>
+        <div style={{marginTop : props.tags[props.list_id] ? "-25px" : "0"}}>{renderTags(props)}</div>
+        <div style={{marginTop: "25px"}}>
+          <ExpansionPanel style={{marginBottom : 5}} >
+          <ExpansionPanelSummary>
+            {/* <Avatar component={'span'} style={{marginRight : 10}} alt="Remy Sharp" src={this.props.member ? this.props.member.mem_thumb : ''} /> */}
+            <Typography > 댓글</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails style={{display : 'inline-block' , width : '100%'}}>
+            <Grid container direction="row" justify="center" alignItems="center">
+              <Grid item style={{ width: "100%" }}>
+                <Comment
+                  list_id={props.list_id}
+                  user_id={props.user_id}
+                  date={props.date}
+                />
+              </Grid>
+            </Grid>
 
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </div>
+        
       </div>
     </Paper>
   );

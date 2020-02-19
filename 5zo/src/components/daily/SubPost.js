@@ -4,16 +4,15 @@ import { Typography } from "@material-ui/core";
 import "typeface-roboto";
 import { connect } from "react-redux";
 import Content from "./Content";
+import storage from "../../lib/storage"
 
 const useStyles = makeStyles(theme => ({
   subPost: {
-    '&:not(:last-child)': {
-      marginBottom: '25px'
-    }
+    marginBottom: '25px'
   },
   title: {
-    borderBottom: '1px solid #5F806C',
-    borderLeft: '5px solid #5F806C',
+    borderBottom: `1px solid ${storage.get('loggedInfo').mem_color}`,
+    borderLeft: `5px solid ${storage.get('loggedInfo').mem_color}`,
     color: '#2d3434',
     fontSize: '18px',
     margin: 0,

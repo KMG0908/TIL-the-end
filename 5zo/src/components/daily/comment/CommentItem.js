@@ -87,7 +87,7 @@ function CommentItem({
                   aria-haspopup="true"
                   onClick={handleClick}
                 >
-                  {comment.mem_nick} {`@${comment.mem_id}`}{" "}
+                  {comment.mem_nick}<span style={{color: "#808080", opacity: ".8", marginLeft: "5px"}}>{`@${comment.mem_id}`}</span>{" "}
                 </Button>
                 <Typography
                   variant="caption"
@@ -205,12 +205,12 @@ function CommentItem({
       >
         {comment.comment_reply ? (
           <ListItemIcon>
-            <SubdirectoryArrowRightIcon
+            <SubdirectoryArrowRightIcon className={comment.comment_deleted? "": "not_deleted"}
               style={{ color: "rgba(0, 0, 0, 0.3)" }}
             />
           </ListItemIcon>
         ) : null}
-        {comment.comment_deleted ? "삭제된 글 입니다." : renderItem()}
+        {comment.comment_deleted ? <div style={{alignSelf: "center"}}>삭제된 글 입니다.</div> : renderItem()}
       </ListItem>
       {mode === "commenting" ? (
         <div style={{ width: "100%", float: "right" }}>

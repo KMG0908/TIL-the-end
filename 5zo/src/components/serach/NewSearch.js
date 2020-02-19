@@ -84,7 +84,6 @@ class NewSearch extends Component {
   end = () => (
     <div className="end" key={1}>
       {" "}
-      불러올 데이터가 없습니다.{" "}
     </div>
   );
 
