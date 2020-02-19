@@ -114,7 +114,6 @@ const Post = props => {
   const [commentState, setCommentState] = React.useState(false)
 
   const csChange = () => {
-    console.log('클릭')
     setCommentState(view => !view)
   }
 
@@ -138,8 +137,6 @@ const Post = props => {
       );
     }
     cardList_cards_string = cardList_cards_string.concat("]");
-    console.log('카드리스트 스트링')
-    console.log(cardList_cards_string)
     const response = await apis.put(`/cardlist`, {
       board_id: cardList.board_id,
       cardlist_cards: cardList_cards_string,
@@ -155,106 +152,113 @@ const Post = props => {
   };
 
   const loggedUser = storage.get("loggedInfo").mem_id;
-  return (
-    <Paper className={classes.paper}>
-      <div
-        id={title_id}
-        className={
-          !props.cardLists[props.list_id].cardlist_cards.length &&
-            !props.tags[props.list_id]
-            ? classes.noContent
-            : classes.showBorder
-        }
-        onClick={function () {
-          if (document.getElementById(icon_id).style.display !== "none") {
-            const icon = document.getElementById(icon_id).childNodes[0]
-              .childNodes[0];
-            if (icon.getAttribute("d") === "M7 14l5-5 5 5z") {
-              icon.setAttribute("d", "M7 10l5 5 5-5z");
-              document.getElementById(title_id).className = classes.showBorder;
-              document.getElementById(content_id).className =
-                classes.showContent;
-            } else {
-              icon.setAttribute("d", "M7 14l5-5 5 5z");
-              document.getElementById(title_id).className = classes.category;
-              document.getElementById(content_id).className =
-                classes.hideContent;
-            }
-          }
-        }}
-      >
-        <div
-          style={{
-            display: props.cardLists[props.list_id].cardlist_secret
-              ? "inline-block"
-              : "none"
-          }}
-          className={classes.lock}
-        >
-          <LockIcon></LockIcon>
-        </div>
-
-        <Typography variant="h1" className={classes.title}>
-          {props.cardLists[props.list_id].cardlist_name}
-        </Typography>
-
-        {props.user_id === loggedUser || "admin" === loggedUser ? (
-          <>
-            {state.checked ? <span> 비공개 </span> : <span> 공개</span>}
-            <Switch
-              checked={state.checked}
-              onChange={handleChange("checked")}
-              onClick={handleClick}
-              inputProps={{ "aria-label": "secondary checkbox" }}
-            />
-          </>
-        ) : null}
-        <div
-          style={{
-            display:
+  if(props.cardLists[props.list_id]){
+    if(props.cardLists[props.list_id].cardlist_cards.length == 0){
+      return null
+    }else{
+      return (
+        <Paper className={classes.paper}>
+          <div
+            id={title_id}
+            className={
               !props.cardLists[props.list_id].cardlist_cards.length &&
                 !props.tags[props.list_id]
-                ? "none"
-                : "inline-block"
-          }}
-          id={icon_id}
-        >
-          <ArrowDropDownIcon></ArrowDropDownIcon>
-        </div>
-      </div>
-
-      <div id={content_id} >
-        {renderSubPost(props)}
-        {renderTags(props)}
-        <FormControlLabel 
-          control={<span> </span>} 
-          label= {commentState ?
-            props.comments[props.list_id] ? `댓글 ( ${Object.keys(props.comments[props.list_id]).length} ) ▲`  : null
-          :
-            props.comments[props.list_id] ? `댓글 ( ${Object.keys(props.comments[props.list_id]).length} ) ▼` : null
-          } 
-          onClick={csChange}
-          style={{
-            marginLeft : '1px'
-          }}
-        />
-        <div className={classes.container}>
-          <Collapse in={commentState} style={{ display: 'inline-block', width: '100%' }}>
-            <Grid container direction="row" justify="center" alignItems="center">
-              <Grid item style={{ width: "100%" }}>
-                <Comment
-                  list_id={props.list_id}
-                  user_id={props.user_id}
-                  date={props.date}
+                ? classes.noContent
+                : classes.showBorder
+            }
+            onClick={function () {
+              if (document.getElementById(icon_id).style.display !== "none") {
+                const icon = document.getElementById(icon_id).childNodes[0]
+                  .childNodes[0];
+                if (icon.getAttribute("d") === "M7 14l5-5 5 5z") {
+                  icon.setAttribute("d", "M7 10l5 5 5-5z");
+                  document.getElementById(title_id).className = classes.showBorder;
+                  document.getElementById(content_id).className =
+                    classes.showContent;
+                } else {
+                  icon.setAttribute("d", "M7 14l5-5 5 5z");
+                  document.getElementById(title_id).className = classes.category;
+                  document.getElementById(content_id).className =
+                    classes.hideContent;
+                }
+              }
+            }}
+          >
+            <div
+              style={{
+                display: props.cardLists[props.list_id].cardlist_secret
+                  ? "inline-block"
+                  : "none"
+              }}
+              className={classes.lock}
+            >
+              <LockIcon></LockIcon>
+            </div>
+    
+            <Typography variant="h1" className={classes.title}>
+              {props.cardLists[props.list_id].cardlist_name}
+            </Typography>
+    
+            {props.user_id === loggedUser || "admin" === loggedUser ? (
+              <>
+                {state.checked ? <span> 비공개 </span> : <span> 공개</span>}
+                <Switch
+                  checked={state.checked}
+                  onChange={handleChange("checked")}
+                  onClick={handleClick}
+                  inputProps={{ "aria-label": "secondary checkbox" }}
                 />
-              </Grid>
-            </Grid>
-          </Collapse>
-        </div>
-        <br/>
-      </div>
-    </Paper>
-  );
+              </>
+            ) : null}
+            <div
+              style={{
+                display:
+                  !props.cardLists[props.list_id].cardlist_cards.length &&
+                    !props.tags[props.list_id]
+                    ? "none"
+                    : "inline-block"
+              }}
+              id={icon_id}
+            >
+              <ArrowDropDownIcon></ArrowDropDownIcon>
+            </div>
+          </div>
+    
+          <div id={content_id} >
+            {renderSubPost(props)}
+            {renderTags(props)}
+            <div/>
+            <FormControlLabel 
+              control={<span> </span>} 
+              label= {commentState ?
+                props.comments[props.list_id] ? `댓글 ( ${Object.keys(props.comments[props.list_id]).length} ) ▲`  : null
+              :
+                props.comments[props.list_id] ? `댓글 ( ${Object.keys(props.comments[props.list_id]).length} ) ▼` : null
+              } 
+              onClick={csChange}
+              style={{
+                marginLeft : '1px',
+                marginTop : '20px'
+              }}
+            />
+            <div className={classes.container}>
+              <Collapse in={commentState} style={{ display: 'inline-block', width: '100%' }}>
+                <Grid container direction="row" justify="center" alignItems="center">
+                  <Grid item style={{ width: "100%" }}>
+                    <Comment
+                      list_id={props.list_id}
+                      user_id={props.user_id}
+                      date={props.date}
+                    />
+                  </Grid>
+                </Grid>
+              </Collapse>
+            </div>
+          </div>
+        </Paper>
+      );
+    }
+  }
 };
 
 const mapStateToProps = state => {
