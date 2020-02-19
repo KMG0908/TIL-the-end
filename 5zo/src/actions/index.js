@@ -918,20 +918,15 @@ export const getDailyTask = (mem_id, from, to) => async dispatch => {
   let end = date_to_str(to, "");
   let response;
   if (own) {
-    console.log("본인");
-    console.log(`/card/daily/private/${mem_id}/from/${start}/to/${end}`);
     response = await apis.get(
       `/card/daily/private/${mem_id}/from/${start}/to/${end}`
     );
   } else {
     to = shiftDate(new Date(), -1);
     end = date_to_str(to, "");
-    console.log("타인");
-    console.log(`/card/daily/public/${mem_id}/from/${start}/to/${end}`);
     response = await apis.get(
       `/card/daily/public/${mem_id}/from/${start}/to/${end}`
     );
-    console.log(response.data.data);
   }
   dispatch({ type: GET_DAILY_TASK, payload: response.data.data });
 };
