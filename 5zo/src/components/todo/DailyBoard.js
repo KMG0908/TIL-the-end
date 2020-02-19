@@ -117,6 +117,10 @@ class DailyBoard extends React.Component {
       });
     }
   }
+  toDaily = () =>{
+    this.props.setEditModeList(null);
+    history.push(`/daily/${this.props.members.mem_info.mem_id}/${this.state.date.replace(/-/gi, "")}`);
+  }
   render() {
     const { classes } = this.props;
     const { date } = this.state;
@@ -146,9 +150,7 @@ class DailyBoard extends React.Component {
                     component={Link}
                     className={classes.icon}
                     style={{}}
-                    to={`/daily/${
-                      this.props.members.mem_info.mem_id
-                    }/${this.state.date.replace(/-/gi, "")}`}
+                    onClick={this.toDaily}
                   >
                     open_in_new
                   </Icon>

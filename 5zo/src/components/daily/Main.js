@@ -179,8 +179,8 @@ class Main extends React.Component {
     return (
       <>
         <UserInfo user_id={this.state.user_id}></UserInfo>
-          <ThemeProvider theme={this.GlobalTheme}>
-        <div align="center">
+        <ThemeProvider theme={this.GlobalTheme}>
+          <div align="center">
             <Button
               variant="contained"
               color={this.state.bu1}
@@ -210,19 +210,19 @@ class Main extends React.Component {
               {" "}
               2018{" "}
             </Button>
-        </div>
-        <Heatmap
-          key={this.state.user_id + this.state.cur_date}
-          user_id={this.state.user_id}
-          onHandleDate={this.onHandleDate}
-          cur_date={this.state.cur_date}
+          </div>
+          <Heatmap
+            key={this.state.user_id + this.state.cur_date}
+            user_id={this.state.user_id}
+            onHandleDate={this.onHandleDate}
+            cur_date={this.state.cur_date}
           ></Heatmap>
-        <Daily
-          user_id={this.state.user_id}
-          date={this.state.date}
-          onHandleDate={this.onHandleDate}
+          <Daily
+            user_id={this.state.user_id}
+            date={this.state.date}
+            onHandleDate={this.onHandleDate}
           ></Daily>
-          </ThemeProvider>
+        </ThemeProvider>
       </>
     );
   }

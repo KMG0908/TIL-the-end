@@ -14,6 +14,7 @@ import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import styled from 'styled-components';
 import oc from 'open-color';
+import { withStyles } from '@material-ui/core/styles';
 
 const Label = styled.div`
     font-size : 1rem;
@@ -21,6 +22,19 @@ const Label = styled.div`
     margin-bottom : 0.25rem;
     text-align : left;
 `;
+
+let UserSwitch = withStyles({
+  switchBase: {
+    '&$checked': {
+      color: storage.get('loggedInfo').mem_color,
+    },
+    '&$checked + $track': {
+      backgroundColor: storage.get('loggedInfo').mem_color,
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
 
 class MyProfile extends Component {
   constructor(props) {
@@ -179,6 +193,19 @@ class MyProfile extends Component {
       this.props.editMyinfoErrReset();
       this.props.memInfoChangeReset();
       this.props.update("profile", this.state.color);
+
+      UserSwitch = withStyles({
+        switchBase: {
+          '&$checked': {
+            color: storage.get('loggedInfo').mem_color,
+          },
+          '&$checked + $track': {
+            backgroundColor: storage.get('loggedInfo').mem_color,
+          },
+        },
+        checked: {},
+        track: {},
+      })(Switch);
     }
 
     let image;
@@ -225,10 +252,9 @@ class MyProfile extends Component {
             <Grid component="label" container alignItems="center" spacing={1} style={{width: '163px'}}>
               <Grid item>비공개</Grid>
               <Grid item>
-                <Switch
+                <UserSwitch
                   checked={!this.state.checked}
                   onChange={this.handleChangeChecked}
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
                 />
               </Grid>
               <Grid item>공개</Grid>
