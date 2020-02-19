@@ -7,11 +7,18 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from "@material-ui/core/styles";
 import { isEmail } from "validator";
 
+
 const styles = theme => ({
-  paper: {
-    padding: '20px'
-  }
-});
+    paper: {
+      position: 'absolute',
+      padding : 40,
+      top: '50%',
+      left: '50%',
+      width : '25%',
+      transform: 'translate(-50%, -50%)'
+    }
+  });
+  
 
 
 class FindPwPage extends Component {

@@ -12,7 +12,7 @@ class NewCard extends Component {
   render() {
     const moveDetail = (e) => {
       console.log(cardList.board_date)
-      history.push(`/daily/${cardList.mem_id}/${cardList.board_date.replace(/-/gi,'')}`)
+      history.push(`/daily/${cardList.mem_id}/${cardList.board_date.replace(/-/gi, '')}`)
     }
     const styles = {
       root: {
@@ -20,7 +20,7 @@ class NewCard extends Component {
         marginBottom: 12,
         marginTop: 12,
         minWidth: this.props.widthPer,
-        cursor : 'pointer'
+        cursor: 'pointer'
       },
       user: {
         fontSize: 14,
@@ -34,15 +34,16 @@ class NewCard extends Component {
       date: {
         textAlign: 'right',
       },
-      avatar : {
+      avatar: {
         display: 'flex',
-        display : 'inline-block'
+        display: 'inline-block',
+        float: 'left'
       }
     };
     let cardList = this.props.cardList
     if (cardList) {
       return (
-        <Card style={styles.root} variant="outlined" onClick ={moveDetail}>
+        <Card style={styles.root} variant="outlined" onClick={moveDetail}>
           <CardContent>
             <Typography style={styles.user} color="textSecondary">
               <Avatar style={styles.avatar} component={'span'} alt="Remy Sharp" src={cardList.mem_thumb}/>
@@ -53,7 +54,7 @@ class NewCard extends Component {
             </Typography>
             <Typography variant="h5" component="h2">
               {cardList.cardlist_name}
-              </Typography>
+            </Typography>
             <Typography style={styles.tags} color="textSecondary">
               {cardList.tag_name.split(',').map(tag => tag !== '' ? `#${tag}  ` : ``)}
             </Typography>

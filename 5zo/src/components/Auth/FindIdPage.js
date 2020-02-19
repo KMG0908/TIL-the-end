@@ -19,11 +19,18 @@ import { withStyles } from "@material-ui/core/styles";
 
 import { isThisSecond } from "date-fns";
 // import classes from "*.module.css";
+
 const styles = theme => ({
   paper: {
-    padding: "20px"
+    position: 'absolute',
+    padding : 40,
+    top: '50%',
+    left: '50%',
+    width : '25%',
+    transform: 'translate(-50%, -50%)'
   }
 });
+
 
 class FindIdPage extends Component {
   constructor(props) {
