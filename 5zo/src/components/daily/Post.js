@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { } from "../../actions";
 import Paper from "@material-ui/core/Paper";
 import { Typography, FormControlLabel } from "@material-ui/core";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import LockIcon from "@material-ui/icons/Lock";
 import "typeface-roboto";
 import SubPost from "./SubPost";
@@ -173,14 +173,12 @@ const Post = props => {
                   .childNodes[0];
                 if (icon.getAttribute("d") === "M7 14l5-5 5 5z") {
                   icon.setAttribute("d", "M7 10l5 5 5-5z");
-                  document.getElementById(title_id).className = classes.showBorder;
-                  document.getElementById(content_id).className =
-                    classes.showContent;
+                  document.getElementById(title_id).className = classes.category;
+                  document.getElementById(content_id).className = classes.hideContent;
                 } else {
                   icon.setAttribute("d", "M7 14l5-5 5 5z");
-                  document.getElementById(title_id).className = classes.category;
-                  document.getElementById(content_id).className =
-                    classes.hideContent;
+                  document.getElementById(title_id).className = classes.showBorder;
+                  document.getElementById(content_id).className = classes.showContent;
                 }
               }
             }}
@@ -222,13 +220,13 @@ const Post = props => {
               }}
               id={icon_id}
             >
-              <ArrowDropDownIcon></ArrowDropDownIcon>
+              <ArrowDropUpIcon></ArrowDropUpIcon>
             </div>
           </div>
     
           <div id={content_id} >
             {renderSubPost(props)}
-            {renderTags(props)}
+            <div style={{marginTop: "-20px"}}>{renderTags(props)}</div>
             <div/>
             <FormControlLabel 
               control={<span> </span>} 
@@ -240,7 +238,7 @@ const Post = props => {
               onClick={csChange}
               style={{
                 marginLeft : '1px',
-                marginTop : '20px'
+                marginTop : "20px"
               }}
             />
             <div className={classes.container}>
