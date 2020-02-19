@@ -245,20 +245,23 @@ function Navigation(props) {
               onClose={handleClose}
             >
               {props.mem_info ? (
-                <>
-                  {props.mem_info.mem_id === "admin" ? (
+                
+                [
+                  props.mem_info.mem_id === "admin" ? (
                     <MenuItem onClick={admin}>Admin</MenuItem>
-                  ) : null}
-                  {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
+                  ) : null
+                  ,
                   <MenuItem onClick={myPage}>My Page</MenuItem>
-                  {/* <MenuItem onClick={mySetting}>My Setting</MenuItem> */}
+                  ,
                   <MenuItem onClick={logout}>Logout</MenuItem>
-                </>
+                ]
+               
               ) : (
-                <>
+                [
                   <MenuItem onClick={login}>Sign In</MenuItem>
+                  ,
                   <MenuItem onClick={regist}>Sign Up</MenuItem>
-                </>
+                ]
               )}
             </Menu>
           </div>

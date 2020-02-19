@@ -27,13 +27,9 @@ const renderTime = time => {
 
 class Notifications extends React.Component {
   state = { notificationMenu: false };
-  componentDidMount = () => {
-    const { members, fetchAlarm } = this.props;
-    if (members.mem_info) {
-      fetchAlarm(members.mem_info.mem_id);
-    }
-  };
+  componentDidUpdate = () => { };
   onClickItem = (alarm_url, alarm_id) => {
+
     this.props.readAlarm(alarm_id);
     history.push(alarm_url);
   };
@@ -89,7 +85,6 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  fetchAlarm,
   readAlarm,
   readAllAlarm
 })(Notifications);

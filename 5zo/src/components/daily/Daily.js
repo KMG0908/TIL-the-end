@@ -90,7 +90,7 @@ const mapStateToProps = state => {
   return {
     boards: state.boards,
     boardDict: state.boardDict,
-    cardLists: state.cardLists
+    cardLists: state.cardLists,
   };
 };
 

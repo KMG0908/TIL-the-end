@@ -18,7 +18,8 @@ const styles = theme => ({
     top: '50%',
     left: '50%',
     width : '25%',
-    transform: 'translate(-50%, -50%)'
+    minWidth : 400,
+    transform: 'translate(-50%, -50%)',
   }
 });
 
@@ -107,7 +108,7 @@ class Login extends Component {
       history.push('/');
     }
     return (
-      <div style={{ textAlign: 'center', }}>
+      <div style={{ textAlign: 'center', minWidth : 500}}>
         <div style={{ display: 'inline-block' }}>
           <Paper className={classes.paper}>
             <InputWithLabel label="아이디" id="loginId" name="loginId" onChange={this.handleChange} onKeyDown={this.keyDown} />

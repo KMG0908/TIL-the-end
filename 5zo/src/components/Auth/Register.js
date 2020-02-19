@@ -13,6 +13,7 @@ const styles = theme => ({
   render: {
     padding : 40,
     width : '100%',
+    minWidth : 400,
   },
   regist : {
     position: 'absolute',
@@ -21,6 +22,7 @@ const styles = theme => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width : '25%',
+    minWidth : 400,
   }
 
 });

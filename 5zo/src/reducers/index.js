@@ -10,7 +10,6 @@ import searchReducer from "./searchReducer";
 import tagReducer from "./tagReducer";
 import heatmapReducer from "./heatmapReducer";
 import calendarReducer from "./calendarReducer";
-import calendarListReducer from "./calendarListReducer";
 import editModeList from "./editModeList";
 import editModeCard from "./editModeCard";
 import commentReducer from "./commentReducer";
@@ -27,7 +26,6 @@ export default combineReducers({
   tag: tagReducer,
   heatmaps: heatmapReducer,
   dailyCalendar: calendarReducer,
-  listCalendar: calendarListReducer,
   editModeList: editModeList,
   editModeCard: editModeCard,
   comments: commentReducer,
