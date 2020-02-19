@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { register, registerReset } from "../../actions";
-import { AuthWrapper, AuthWrapper_tmp, AuthContent, InputWithLabel, AuthButton } from '../Auth';
+import { InputWithLabel, AuthButton } from '../Auth';
 import PasswordWithLabel from './PasswordWithLabel';
 import { isEmail, matches } from "validator";
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from "@material-ui/core/styles";
 import history from '../../history'
 
+
 const styles = theme => ({
-  paper: {
-    padding: '20px'
+  render: {
+    padding : 40,
+    width : '100%',
+  },
+  regist : {
+    position: 'absolute',
+    padding : 40,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width : '25%',
   }
+
 });
 
 class Register extends Component {
@@ -141,23 +152,20 @@ class Register extends Component {
       alert('회원가입 완료')
       history.push("/login")
     }
-
     return (
       <div style={{ textAlign: 'center' }}>
-      <div style={{ display: 'inline-block', width: 500 }}>
-        <Paper className={classes.paper}>
-          {/* <AuthContent title="회원가입" id="register"> */}
-            <InputWithLabel label="아이디" id="loginId" name="loginId" maxLength="20" onChange={this.handleChange} onKeyDown={this.keyDown}/>
-            <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" maxLength="16" onChange={this.handleChange}  onKeyDown={this.keyDown}/>
+        <div style={{ display: 'inline-block' }}>
+          <Paper className={ this.props.regist ? classes.regist : classes.render }>
+            <InputWithLabel label="아이디" id="loginId" name="loginId" onChange={this.handleChange} onKeyDown={this.keyDown}/>
+            <PasswordWithLabel label="비밀번호" id="loginPw" name="loginPw" onChange={this.handleChange}  onKeyDown={this.keyDown}/>
             <InputWithLabel label="이메일" id="email" name="email" type="email" onChange={this.handleChange} onKeyDown={this.keyDown}/>
             <InputWithLabel label="닉네임" id="nick" name="nick" onChange={this.handleChange} onKeyDown={this.keyDown}/>
             <input type="text" className={this.props.register_err? "error_" : "none"} readOnly disabled value={this.props.register_err}/>
             <AuthButton onClick={this.register}> 회원가입 </AuthButton>
 
-            {this.props.location.pathname === "/" ? null : <AuthButton onClick={this.cancelRegister}> 취소 </AuthButton>}
-          {/* </AuthContent> */}
-        </Paper>
-      </div>
+            {this.props.regist ? <AuthButton onClick={this.cancelRegister}> 취소 </AuthButton> : null }
+          </Paper>
+        </div>
       </div>
     );
   }

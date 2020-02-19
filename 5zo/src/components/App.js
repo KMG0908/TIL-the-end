@@ -12,7 +12,7 @@ import Statistics from "./statistics/Statistics";
 import TagPage from "./tags/Tags";
 import Todo from "./todo/Todo";
 import history from "../history";
-import Register from "./Auth/Register";
+import RegisterPage from "./Auth/RegisterPage";
 import Login from "./Auth/Login";
 import storage from "lib/storage";
 import MyPage from "./Auth/MyPage";
@@ -48,7 +48,7 @@ class App extends React.Component {
           <>
             <Switch>
               <Route path="/login" exact component={Login} />
-              <Route path="/register" exact component={Register} />
+              <Route path="/register" exact component={RegisterPage} />
               <Route path="/find-id" exact component={FindIdPage} />
               <Route path="/find-pw" exact component={FindPwPage} />
               <Route path="/" component={Body} />
