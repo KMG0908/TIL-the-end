@@ -2,9 +2,9 @@ import React from "react";
 import apis from "../../apis/apis";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import {} from "../../actions";
+import { } from "../../actions";
 import Paper from "@material-ui/core/Paper";
-import { Typography } from "@material-ui/core";
+import { Typography, FormControlLabel } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import LockIcon from "@material-ui/icons/Lock";
 import "typeface-roboto";
@@ -13,15 +13,15 @@ import Tag from "./Tag";
 import Comment from "./comment/Comment";
 import Switch from "@material-ui/core/Switch";
 import storage from "lib/storage";
-import { Flex } from "react-landing-page";
 import { Grid } from "@material-ui/core";
 import styled from 'styled-components';
 import oc from 'open-color';
-import {TextWithLabel} from '../Auth'
+import Collapse from '@material-ui/core/Collapse';
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import { red } from "@material-ui/core/colors";
 
 const Label = styled.div`
     font-size : 1rem;
@@ -73,7 +73,15 @@ const useStyles = makeStyles(theme => ({
   lock: {
     marginTop: "4px",
     marginRight: "2px"
-  }
+  },
+  container: {
+    display: 'flex',
+  },
+  polygon: {
+    fill: theme.palette.common.white,
+    stroke: theme.palette.divider,
+    strokeWidth: 1,
+  },
 }));
 
 const renderSubPost = props => {
@@ -99,8 +107,17 @@ const Post = props => {
   const content_id = `content${props.list_id}`;
 
   const [state, setState] = React.useState({
-    checked: props.cardLists[props.list_id].cardlist_secret
+    checked: props.cardLists[props.list_id].cardlist_secret,
   });
+
+  //
+  const [commentState, setCommentState] = React.useState(false)
+
+  const csChange = () => {
+    console.log('클릭')
+    setCommentState(view => !view)
+  }
+
   const handleChange = name => async e => {
     e.stopPropagation();
     setState({ ...state, checked: e.target.checked });
@@ -112,9 +129,9 @@ const Post = props => {
     cardList.cardlist_cards.map(
       card => (cardList_cards_string = cardList_cards_string.concat(card + ","))
     );
-    if(cardList_cards_string.length === 1){
-      
-    }else{
+    if (cardList_cards_string.length === 1) {
+
+    } else {
       cardList_cards_string = cardList_cards_string.substr(
         0,
         cardList_cards_string.length - 1
@@ -144,11 +161,11 @@ const Post = props => {
         id={title_id}
         className={
           !props.cardLists[props.list_id].cardlist_cards.length &&
-          !props.tags[props.list_id]
+            !props.tags[props.list_id]
             ? classes.noContent
             : classes.showBorder
         }
-        onClick={function() {
+        onClick={function () {
           if (document.getElementById(icon_id).style.display !== "none") {
             const icon = document.getElementById(icon_id).childNodes[0]
               .childNodes[0];
@@ -196,7 +213,7 @@ const Post = props => {
           style={{
             display:
               !props.cardLists[props.list_id].cardlist_cards.length &&
-              !props.tags[props.list_id]
+                !props.tags[props.list_id]
                 ? "none"
                 : "inline-block"
           }}
@@ -205,28 +222,36 @@ const Post = props => {
           <ArrowDropDownIcon></ArrowDropDownIcon>
         </div>
       </div>
-      
+
       <div id={content_id} >
         {renderSubPost(props)}
         {renderTags(props)}
-        <ExpansionPanel style={{marginBottom : 5}} >
-        <ExpansionPanelSummary>
-          {/* <Avatar component={'span'} style={{marginRight : 10}} alt="Remy Sharp" src={this.props.member ? this.props.member.mem_thumb : ''} /> */}
-          <Typography > 댓글</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails style={{display : 'inline-block' , width : '100%'}}>
-        <Grid container direction="row" justify="center" alignItems="center">
-          <Grid item style={{ width: "100%" }}>
-            <Comment
-              list_id={props.list_id}
-              user_id={props.user_id}
-              date={props.date}
-            />
-          </Grid>
-        </Grid>
-
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+        <FormControlLabel 
+          control={<span> </span>} 
+          label= {commentState ?
+            props.comments[props.list_id] ? `댓글 ( ${Object.keys(props.comments[props.list_id]).length} ) ▲`  : null
+          :
+            props.comments[props.list_id] ? `댓글 ( ${Object.keys(props.comments[props.list_id]).length} ) ▼` : null
+          } 
+          onClick={csChange}
+          style={{
+            marginLeft : '1px'
+          }}
+        />
+        <div className={classes.container}>
+          <Collapse in={commentState} style={{ display: 'inline-block', width: '100%' }}>
+            <Grid container direction="row" justify="center" alignItems="center">
+              <Grid item style={{ width: "100%" }}>
+                <Comment
+                  list_id={props.list_id}
+                  user_id={props.user_id}
+                  date={props.date}
+                />
+              </Grid>
+            </Grid>
+          </Collapse>
+        </div>
+        <br/>
       </div>
     </Paper>
   );
@@ -236,7 +261,8 @@ const mapStateToProps = state => {
   return {
     cardLists: state.cardLists,
     cards: state.cards,
-    tags: state.tag
+    tags: state.tag,
+    comments : state.comments
   };
 };
 
