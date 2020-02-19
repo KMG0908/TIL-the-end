@@ -26,7 +26,8 @@ class NewCard extends Component {
         fontSize: 14,
         textAlign: 'left',
         verticalAlign: 'middle',
-        display: 'inline-block'
+        display: 'flex',
+        alignItems: 'center'
       },
       tags: {
       },
@@ -44,11 +45,9 @@ class NewCard extends Component {
       return (
         <Card style={styles.root} variant="outlined" onClick={moveDetail}>
           <CardContent>
-            <Typography style={styles.user} color="textSecondary" >
-              <div style={{ display : 'inline-block'}}>
-                  <Avatar style={styles.avatar } component={'span'} alt="Remy Sharp" src={cardList.mem_thumb} />
-                  <div style={{float:"left", height: '30px',  marginTop: '10px', marginLeft : '5px'}}>{cardList.mem_id}</div>
-              </div>
+            <Typography style={styles.user} color="textSecondary">
+              <Avatar style={styles.avatar} component={'span'} alt="Remy Sharp" src={cardList.mem_thumb}/>
+              <span style={{marginLeft: '10px'}}>@{cardList.mem_id}</span>
             </Typography>
             <Typography variant="body2" component="p" style={styles.date}>
               {cardList.board_date}

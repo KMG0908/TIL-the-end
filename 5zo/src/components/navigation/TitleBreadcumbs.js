@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 const breadcumbspliter = props => {
   return props.location.pathname.split("/").map((bread,index) => {
     if (bread) {
-      return <StyledLink to={props.location.pathname.split("/").slice(0,index+1).join("/")}>{bread}</StyledLink>;
+      return <StyledLink style={{textTransform: 'none'}} to={props.location.pathname.split("/").slice(0,index+1).join("/")}>{bread}</StyledLink>;
     }
   });
 };

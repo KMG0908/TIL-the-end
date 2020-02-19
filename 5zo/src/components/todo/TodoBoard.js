@@ -113,7 +113,8 @@ class TodoBoard extends React.Component {
         <Typography
           variant="h4"
           style={{
-            whiteSpace: "nowrap"
+            whiteSpace: "nowrap",
+            paddingLeft: "10px"
           }}
         >
           What I will learn in the future
@@ -127,7 +128,8 @@ class TodoBoard extends React.Component {
         <Typography
           variant="body"
           style={{
-            whiteSpace: "nowrap"
+            whiteSpace: "nowrap",
+            paddingLeft: "10px"
           }}
         >
           앞으로 공부하고 싶은 것들을 계획하세요.

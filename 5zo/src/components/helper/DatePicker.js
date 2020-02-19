@@ -16,6 +16,7 @@ import koLocale from "date-fns/locale/ko";
 import _ from "lodash";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import moment from "moment";
 
 function date_to_str(format, separator) {
   let year = format.getFullYear();
@@ -104,11 +105,13 @@ class DatePicker extends React.Component {
 
   handleDateChange = date => {
     // this.setState({ selectedDate: date });
-    let isoDate = date.toISOString().split("T")[0];
-    this.props.onChangeDate(isoDate);
-    if (isoDate > today) {
-      this.props.setEditModeList(null);
-      this.props.setEditModeCard(null);
+    if(moment(date).isValid()){
+      let isoDate = date.toISOString().split("T")[0];
+      this.props.onChangeDate(isoDate);
+      if (isoDate > today) {
+        this.props.setEditModeList(null);
+        this.props.setEditModeCard(null);
+      }
     }
   };
   toNextDate = () => {

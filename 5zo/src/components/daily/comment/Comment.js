@@ -69,7 +69,7 @@ class Comment extends React.Component {
     return (
       <div className="comment">
         <List>{this.renderComments()}</List>
-        <div style={{ width: "100%", marginTop: "1em", float: "right" }}>
+        <div style={{ width: "100%", float: "right" }}>
           <CommentForm onSubmit={this.handleAddComment} user_id={user_id} />
         </div>
       </div>
