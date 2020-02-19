@@ -30,17 +30,9 @@ class Daily extends React.Component {
   renderPost() {
     if (this.props.boardDict[this.props.date]) {
       const board_id = this.props.boardDict[this.props.date];
-      console.log('date')
-      console.log(this.props.date)
-      console.log('board_id : ' + board_id)
       const board_lists = this.props.boards[board_id].board_lists;
-      console.log('Daily====================')
       return board_lists.map(list_id => {
         if (this.props.cardLists[list_id]) {
-          console.log(`user : ${this.props.user_id}`)
-          console.log(`list : ${list_id}`)
-          console.log(`date : ${this.props.date}`)
-          console.log('----------------------------------------------------')
           return (
             <Post
               user_id={this.props.user_id}
