@@ -107,7 +107,7 @@ const Post = props => {
   const content_id = `content${props.list_id}`;
 
   const [state, setState] = React.useState({
-    checked: props.cardLists[props.list_id].cardlist_secret,
+    checked: !(props.cardLists[props.list_id].cardlist_secret),
   });
 
   //
@@ -119,9 +119,10 @@ const Post = props => {
 
   const handleChange = name => async e => {
     e.stopPropagation();
+    // checked : 공개, unchecked : 비공개
     setState({ ...state, checked: e.target.checked });
     const cardList = props.cardLists[props.list_id];
-    cardList.cardlist_secret = e.target.checked;
+    cardList.cardlist_secret = !(e.target.checked);
     // card 배열 String 으로
     let cardList_cards_string = "[";
 
@@ -144,7 +145,7 @@ const Post = props => {
       cardlist_heart: cardList.cardlist_heard,
       cardlist_id: cardList.cardlist_id,
       cardlist_name: cardList.cardlist_name,
-      cardlist_secret: e.target.checked
+      cardlist_secret: !(e.target.checked)
     });
   };
   const handleClick = e => {
@@ -200,15 +201,16 @@ const Post = props => {
             </Typography>
     
             {props.user_id === loggedUser || "admin" === loggedUser ? (
-              <>
-                {state.checked ? <span> 비공개 </span> : <span> 공개</span>}
+              <div>
+                비공개
                 <Switch
                   checked={state.checked}
                   onChange={handleChange("checked")}
                   onClick={handleClick}
                   inputProps={{ "aria-label": "secondary checkbox" }}
                 />
-              </>
+                공개
+              </div>
             ) : null}
             <div
               style={{
