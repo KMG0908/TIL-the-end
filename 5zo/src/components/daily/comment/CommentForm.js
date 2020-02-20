@@ -20,6 +20,7 @@ function CommentForm(props) {
 
   const handleSubmit = event => {
     event.preventDefault();
+    // event.stopPropagation()
     props.onSubmit(comment_contents);
     setCommentContents(props.comment_contents ? props.comment_contents : "");
   };
@@ -32,7 +33,6 @@ function CommentForm(props) {
     }else{
       setCommentContents(value)
     }
-
   }
 
   return (
@@ -53,7 +53,12 @@ function CommentForm(props) {
               multiline
               autoFocus = {true}
               inputProps={{maxLength:200}}
-              onBlur = {props.onblur}
+              onBlur = {props.onBlur}
+              onFocus = { e=> {
+                const value = e.target.value
+                e.target.value = ""
+                e.target.value = value
+              }}
             />
             <Button variant="outlined" className="comment_register" onClick={handleSubmit}>등록</Button>
           </form>

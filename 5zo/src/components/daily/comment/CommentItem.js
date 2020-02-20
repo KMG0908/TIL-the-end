@@ -195,14 +195,17 @@ function CommentItem({
       : comment.comment_id;
     if (comment_contents) {
       addComment(cardlist_id, comment_contents, comment_reply, user_id, date);
+      console.log('onreplying')
       setMode(false);
     }
   };
 
-  const onblurFun = () => {
-    console.log('onblur')
-    setMode(false);
+  const onblurFun = (e) => {
+    setTimeout(() => {
+      setMode(false);
+    }, 100);
   }
+
 
   return (
     <>
@@ -226,7 +229,7 @@ function CommentItem({
             // comment_contents={`@${comment.mem_id} `}
             mem_id = {comment.mem_id}
             onSubmit={onReplying}
-            onblur={onblurFun}
+            onBlur = {onblurFun}
           />
         </div>
       ) : null}

@@ -131,7 +131,6 @@ class Main extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('did update')
     const params = this.props.match.params;
     const login_id = storage.get("loggedInfo").mem_id;
     const user_id = params.user_id ? params.user_id : login_id;
