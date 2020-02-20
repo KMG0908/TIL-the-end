@@ -41,6 +41,17 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void insertMember(String id, String pw, String email, String nick) {
 		try {
+
+			if (id == null) {
+				throw new MemberException("아이디를 입력하지 않았습니다.");
+			} else if (pw == null) {
+				throw new MemberException("비밀번호를 입력하지 않았습니다.");
+			} else if (email == null) {
+				throw new MemberException("비밀번호를 입력하지 않았습니다.");
+			} else if (nick == null) {
+				throw new MemberException("비밀번호를 입력하지 않았습니다.");
+			}
+
 			if (dao.countId(id) == 1) {
 				throw new MemberException("동일한 아이디가 존재합니다");
 			} else if (dao.countEmail(email) == 1) {
@@ -76,6 +87,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<Member> searchByIdLike(String mem_id) {
 		try {
+			if (mem_id == null) {
+				throw new MemberException("아이디를 입력하지 않았습니다.");
+			}
 			return dao.searchByIdLike(mem_id);
 		} catch (Exception e) {
 			throw new MemberException("회원 아이디 검색 중 오류 발생");
@@ -94,6 +108,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member search(String mem_id) {
 		try {
+			if (mem_id == null) {
+				throw new MemberException("아이디를 입력하지 않았습니다.");
+			}
 			Member member = dao.search(mem_id);
 			if (member == null) {
 				throw new MemberException("등록되지 않은 회원입니다.");
@@ -132,14 +149,16 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 	}
-	
+
 	@Override
 	public void updateEmail(String mem_id, String mem_email) {
 		try {
-		
-			if(dao.countSNSByEmail(mem_email) != 0) {
+			if (mem_id == null) {
+				throw new MemberException("아이디를 입력하지 않았습니다.");
+			}
+			if (dao.countSNSByEmail(mem_email) != 0) {
 				throw new MemberException("sns 회원은 이메일 변경이 불가능합니다");
-			} else if(dao.countEmail(mem_email) != 0) {
+			} else if (dao.countEmail(mem_email) != 0) {
 				throw new MemberException("해당 이메일은 사용중입니다");
 			} else {
 				dao.updateEmail(mem_id, mem_email);
@@ -158,6 +177,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void deleteMember(String mem_id) {
 		try {
+			if (mem_id == null) {
+				throw new MemberException("아이디를 입력하지 않았습니다.");
+			}
 			dao.deleteMember(mem_id);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -168,6 +190,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void hidecardlists(String mem_id) {
 		try {
+			if (mem_id == null) {
+				throw new MemberException("아이디를 입력하지 않았습니다.");
+			}
 			dao.hidecardlists(mem_id);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -178,15 +203,20 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member login(String mem_id, String mem_pw) {
 		try {
-			Member member = dao.search(mem_id);
-			if (member.getMem_id() == null) {
+			if (mem_id == null) {
+				throw new MemberException("아이디를 입력하지 않았습니다.");
+			} else if (mem_pw == null) {
+				throw new MemberException("비밀번호를 입력하지 않았습니다.");
+			}
+			
+			if (dao.countId(mem_id) == 0) {
 				throw new MemberException("등록되지 않은 회원입니다.");
 			} else if (dao.getAuth(mem_id) == 3) {
 				throw new MemberException("탈퇴한 회원입니다.");
 			} else if (!dao.findpw(mem_id).equals(pwdEncrypt(mem_pw))) {
 				throw new MemberException("잘못된 비밀번호입니다.");
 			} else {
-				return member;
+				return dao.search(mem_id);
 			}
 		} catch (Exception e) {
 			if (e instanceof MemberException) {
@@ -201,6 +231,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void patchpassword(String mem_id, String old_pw, String new_pw) {
 		try {
+			if (mem_id == null) {
+				throw new MemberException("아이디를 입력하지 않았습니다.");
+			}
 
 			if (!dao.findpw(mem_id).equals(pwdEncrypt(old_pw))) {
 				throw new MemberException("현재 비밀번호가 틀립니다");

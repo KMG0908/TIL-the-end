@@ -22,7 +22,8 @@ public class BoardServiceImpl implements BoardService {
 			dao.insertBoard(board);			
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new BoardException("보드 생성 중 오류 발생, board_lists의 json 형식은 [\"1\",2] 또는 {\"key\" : \"value\"}입니다.");
+//			throw new BoardException("보드 생성 중 오류 발생, board_lists의 json 형식은 [\"1\",2] 또는 {\"key\" : \"value\"}입니다.");
+			throw new BoardException("보드 생성 중 오류 발생");
 		}
 	}
 
@@ -118,10 +119,10 @@ public class BoardServiceImpl implements BoardService {
 			paramsMap.put("start_page", start_page);			
 			return dao.boardPage(paramsMap);
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof BoardException) {
 				throw (BoardException) e;
 			}else {
+				e.printStackTrace();
 				throw new BoardException("보드 " + page_number + "페이지 조회 중 오류 발생");				
 			}
 		}

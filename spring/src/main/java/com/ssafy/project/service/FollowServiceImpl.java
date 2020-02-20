@@ -33,10 +33,10 @@ public class FollowServiceImpl implements FollowService {
 			}
 			dao.insertFollow(follow);
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof FollowException) {
 				throw (FollowException) e;
 			} else {
+				e.printStackTrace();
 				throw new FollowException(String.format("%s의 %s 팔로우 중 오류 발생", follow.getMem_from(), follow.getMem_to()));
 			}
 		}

@@ -27,10 +27,10 @@ public class HeartServiceImpl implements HeartService {
 				dao.insertHeart(heart);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			if (e instanceof HeartException) {
 				throw (HeartException) e;
 			} else {
+				e.printStackTrace();
 				throw new HeartException(String.format("%s가 %d번 글에 좋아요 표시하는 중 오류 발생", heart.getMem_id(), heart.getCardlist_id()));
 			}
 		}
