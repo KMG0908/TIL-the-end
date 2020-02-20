@@ -10,7 +10,12 @@ import Button from "@material-ui/core/Button";
 
 function CommentForm(props) {
   const [comment_contents, setCommentContents] = React.useState(
-    props.comment_contents ? props.comment_contents : ""
+    props.comment_contents ? 
+      props.comment_contents : 
+      ( props.mem_id ?
+          `@${props.mem_id} ` :
+          ""
+      )
   );
 
   const handleSubmit = event => {
@@ -18,6 +23,18 @@ function CommentForm(props) {
     props.onSubmit(comment_contents);
     setCommentContents(props.comment_contents ? props.comment_contents : "");
   };
+
+  const handleChange = event => {
+    const value = event.target.value
+    const originValue = props.mem_id ? `@${props.mem_id} ` : ""
+    if(value.length < originValue.length){
+      setCommentContents(originValue)
+    }else{
+      setCommentContents(value)
+    }
+
+  }
+
   return (
     <div className={props.inputRef? "write_reply" : ""}>
       <ListItem>
@@ -30,7 +47,7 @@ function CommentForm(props) {
               inputRef={props.inputRef}
               style={{ width: "93%", height: "100%", wordBreak: "break-all" }}
               placeholder="격려의 댓글을 달아주세요^^"
-              onChange={e => setCommentContents(e.target.value)}
+              onChange={handleChange}
               value={comment_contents}
               disableUnderline
               multiline

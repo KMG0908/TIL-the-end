@@ -216,7 +216,8 @@ function CommentItem({
         <div style={{ width: "100%", float: "right" }}>
           <CommentForm
             inputRef={refs}
-            comment_contents={`@${comment.mem_id} `}
+            // comment_contents={`@${comment.mem_id} `}
+            mem_id = {comment.mem_id}
             onSubmit={onReplying}
           />
         </div>
