@@ -31,7 +31,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: "'Viga', 'Godo', 'San-serif'",
+    fontFamily: "'Viga', 'Godo', 'sans-serif'",
   },
 });
 

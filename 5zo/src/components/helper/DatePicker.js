@@ -71,7 +71,7 @@ const theme = color =>
       primary: { main: color }
     },
     typography: {
-      fontFamily: "'Viga', 'Godo', 'San-serif'",
+      fontFamily: "'Viga', 'Godo', 'sans-serif'",
     }
   });
 
@@ -173,6 +173,7 @@ class DatePicker extends React.Component {
                 value={new Date(this.props.date)}
                 onChange={this.handleDateChange}
                 onMonthChange={this.handleMonthChange}
+                onYearChange={this.handleYearChange}
                 KeyboardButtonProps={{
                   "aria-label": "change date"
                 }}

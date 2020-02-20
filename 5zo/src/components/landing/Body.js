@@ -15,6 +15,7 @@ import intro2 from "./Font/intro2.PNG"
 import intro3 from "./Font/intro3.PNG"
 import intro4 from "./Font/intro4.PNG"
 import { containCrop } from "react-image-crop";
+import "./landing.css"
 
 import ReactPlayer from 'react-player'
 class Body extends React.Component {
@@ -28,7 +29,7 @@ class Body extends React.Component {
     }
     render() {
         return (
-            <Provider>
+            <Provider className="landing">
                 <Hero  backgroundImage="https://cdn.pixabay.com/photo/2016/04/12/22/35/watercolour-1325656_1280.jpg">
                     
                     <Flex mt={3}>

@@ -26,7 +26,7 @@ class Main extends React.Component {
       }
     },
     typography: {
-      fontFamily: "'Viga', 'Godo', 'San-serif'",
+      fontFamily: "'Viga', 'Godo', 'sans-serif'",
     }
   });
   constructor(props) {
