@@ -197,7 +197,7 @@ const Post = props => {
             <Typography variant="h1" className={classes.title}>
               {props.cardLists[props.list_id].cardlist_name}
             </Typography>
-    
+            {/* <div style={{display: "flex", alignItems: "center"}}> */}
             {props.user_id === loggedUser || "admin" === loggedUser ? (
               <div>
                 비공개
@@ -216,13 +216,15 @@ const Post = props => {
                   !props.cardLists[props.list_id].cardlist_cards.length &&
                     !props.tags[props.list_id]
                     ? "none"
-                    : "inline-block"
+                    : "flex"
+                , alignItems: "center"
               }}
               id={icon_id}
             >
               <ArrowDropUpIcon></ArrowDropUpIcon>
             </div>
           </div>
+          {/* </div> */}
     
           <div id={content_id} >
             {renderSubPost(props)}

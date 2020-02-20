@@ -1,3 +1,3 @@
-.sun-editor{border: 0;}
-.sun-editor-editable{padding: 3px;}
+.sun-editor{border: 0; font-family: 'Viga', 'Godo', 'San-serif';}
+.sun-editor-editable{padding: 3px; font-family: 'Viga', 'Godo', 'San-serif';}
 .sun-editor .se-wrapper .se-wrapper-inner{min-height: 0;}

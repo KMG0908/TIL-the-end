@@ -23,6 +23,7 @@ import Chips from "../serach/ChipLibrary/Chips";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteModal from "../helper/DeleteModal";
+import "./todo.css"
 
 const styles = theme => ({
   root: {

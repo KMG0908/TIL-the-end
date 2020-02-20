@@ -27,6 +27,15 @@ import EditPasswordPage from "./Auth/EditPasswordPage";
 import Body from "./landing/Body";
 import NewMySetting from "./Auth/NewMySetting";
 import AdminPage from "./Admin/AdminPage";
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: "'Viga', 'Godo', 'San-serif'",
+  },
+});
+
+
 class App extends React.Component {
   initializeUserInfo = async () => {
     const loggedInfo = storage.get("loggedInfo");
@@ -100,7 +109,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Router history={history}>{this.drawRouter()}</Router>
+        <MuiThemeProvider theme={theme}>
+          <Router history={history}>{this.drawRouter()}</Router>
+        </MuiThemeProvider>
       </div>
     );
   }

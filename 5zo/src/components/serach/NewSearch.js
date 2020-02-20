@@ -6,6 +6,7 @@ import NewCard from "./NewCard";
 import apis from "../../apis/apis";
 import InfiniteScroll from "react-infinite-scroller";
 import queryString from "query-string";
+import "./search.css"
 
 const widthPer = 600;
 
@@ -93,7 +94,7 @@ class NewSearch extends Component {
       <>
         <div style={{ position: "relative", textAlign: "center" }}>
           <div style={{ display: "inline-block", width: widthPer }}>
-            <div style={{ textAlign: "left" }}>
+            <div style={{ textAlign: "left" }} className="chips">
               <Chips
                 value={this.state.chips}
                 placeholder={`태그 : # + tag , 유저 : @ + user_id , 검색 키워드 : keyword`}
