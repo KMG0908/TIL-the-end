@@ -68,8 +68,6 @@ function CommentItem({
     history.push(`/daily/${comment.mem_id}`);
   };
 
-  
-
   const classes = useStyles();
   const renderItem = () => {
     return (
@@ -143,6 +141,7 @@ function CommentItem({
                     <CommentForm
                       comment_contents={comment.comment_contents}
                       onSubmit={onEditing}
+                      onBlur={onblurFun}
                     />
                   </span>
                 ) : (
@@ -182,12 +181,13 @@ function CommentItem({
   };
 
   const refs = React.useRef();
-  const setModeCommenting = () => {
-    if (mode === "commenting") {
+  const setModeCommenting = e => {
+    e.stopPropagation();
+    if (mode === "commenting" || mode === "closed") {
       setMode(false);
     } else if (!comment.comment_deleted) {
       setMode("commenting");
-    } 
+    }
   };
 
   const onEditing = comment_contents => {
@@ -203,17 +203,15 @@ function CommentItem({
       : comment.comment_id;
     if (comment_contents) {
       addComment(cardlist_id, comment_contents, comment_reply, user_id, date);
-      console.log('onreplying')
+      console.log("onreplying");
       setMode(false);
     }
   };
 
-  const onblurFun = (e) => {
-    setTimeout(() => {
-      setMode(false);
-    }, 100);
-  }
-
+  const onblurFun = e => {
+    e.stopPropagation();
+    setMode("closed");
+  };
 
   return (
     <>
@@ -239,10 +237,9 @@ function CommentItem({
         <div style={{ width: "100%", float: "right" }}>
           <CommentForm
             inputRef={refs}
-            // comment_contents={`@${comment.mem_id} `}
-            mem_id = {comment.mem_id}
+            mem_id={comment.mem_id}
             onSubmit={onReplying}
-            onBlur = {onblurFun}
+            onBlur={onblurFun}
           />
         </div>
       ) : null}
