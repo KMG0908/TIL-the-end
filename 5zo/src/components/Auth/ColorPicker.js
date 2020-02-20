@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { TwitterPicker } from "react-color";
 import { PhotoshopPicker } from 'react-color';
 import reactCSS from 'reactcss'
-import { SketchPicker } from 'react-color'
 import { CompactPicker } from 'react-color'
-import Button from '@material-ui/core/Button';
 import "./color.css"
 import Dialog from '@material-ui/core/Dialog';
 import PaletteIcon from '@material-ui/icons/Palette';

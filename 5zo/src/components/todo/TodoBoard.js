@@ -143,14 +143,14 @@ class TodoBoard extends React.Component {
           >
             {provided => (
               <ListsContainer
-                container
+                container={true}
                 spacing={2}
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
                 {this.RenderList()}
                 {provided.placeholder}
-                <Box item className={classes.addList} elevation={0}>
+                <Box item={true} className={classes.addList} elevation={0}>
                   <TrelloCreate
                     date={date}
                     board_id={this.props.boardDict[date]}

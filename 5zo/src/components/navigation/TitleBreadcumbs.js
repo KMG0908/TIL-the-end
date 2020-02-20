@@ -8,28 +8,18 @@ import storage from "lib/storage";
 import { fetchAlarm } from "../../actions";
 import { connect } from "react-redux";
 
-import { makeStyles } from "@material-ui/core/styles";
-
 const StyledLink = styled(Link)`
   text-decoration: inherit;
   color: white;
   text-transform: capitalize;
+  textTransform: "none";
 `;
-
-const useStyles = makeStyles(theme => ({
-  link: {
-    textDecoration: "inherit",
-    color: "white",
-    textTransform: "capitalize"
-  }
-}));
 
 const breadcumbspliter = props => {
   return props.location.pathname.split("/").map((bread, index) => {
     if (bread) {
       return (
         <StyledLink
-          style={{ textTransform: "none" }}
           to={props.location.pathname
             .split("/")
             .slice(0, index + 1)
@@ -62,7 +52,7 @@ function TitleBreadcumbs(props) {
   );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = () => {
   return {};
 };
 export default withRouter(

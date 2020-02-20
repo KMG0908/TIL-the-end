@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { TagCloud } from 'react-tagcloud'
 
 import 'd3-transition';
@@ -6,7 +6,6 @@ import { select } from 'd3-selection';
 
 import ReactWordcloud from 'react-wordcloud';
 
-import words_ from './words';
 
 import history from '../../history'
 

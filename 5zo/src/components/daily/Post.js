@@ -2,7 +2,6 @@ import React from "react";
 import apis from "../../apis/apis";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { } from "../../actions";
 import Paper from "@material-ui/core/Paper";
 import { Typography, FormControlLabel } from "@material-ui/core";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
@@ -14,22 +13,7 @@ import Comment from "./comment/Comment";
 import Switch from "@material-ui/core/Switch";
 import storage from "lib/storage";
 import { Grid } from "@material-ui/core";
-import styled from 'styled-components';
-import oc from 'open-color';
 import Collapse from '@material-ui/core/Collapse';
-
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import { red } from "@material-ui/core/colors";
-
-const Label = styled.div`
-    font-size : 1rem;
-    color : ${oc.gray[6]};
-    margin-bottom : 0.25rem;
-    text-align : left;
-`;
-
 
 const useStyles = makeStyles(theme => ({
   paper: {

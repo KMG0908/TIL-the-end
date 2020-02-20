@@ -8,8 +8,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import TodayIcon from "@material-ui/icons/Today";
 import EventIcon from '@material-ui/icons/Event';
 import SearchIcon from '@material-ui/icons/Search';
-import EqualizerIcon from '@material-ui/icons/Equalizer';
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import TitleComponent from "./TitleComponent";
 import { Link } from "react-router-dom";
 
@@ -28,9 +26,9 @@ const WithTitle = ({ component: Component, title }) => {
   };
 };
 
-const CalendarComponent = WithTitle({ component: Link, title: 'Calendar' });
-const TodoComponent = WithTitle({ component: Link, title: 'Todo' });
-const StatisticsComponent = WithTitle({ component: Link, title: 'Statistics' });
+// const CalendarComponent = WithTitle({ component: Link, title: 'Calendar' });
+// const TodoComponent = WithTitle({ component: Link, title: 'Todo' });
+// const StatisticsComponent = WithTitle({ component: Link, title: 'Statistics' });
 
 
 const SidebarList = (props) => {

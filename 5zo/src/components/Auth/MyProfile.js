@@ -79,7 +79,7 @@ class MyProfile extends Component {
     this.makeClientCrop(crop);
   };
 
-  onCropChange = (crop, percentCrop) => {
+  onCropChange = (crop) => {
     this.setState({ crop });
   };
 
@@ -127,6 +127,9 @@ class MyProfile extends Component {
         this.setState({
           intro: value
         });
+        break
+      default:
+
     }
   }
   keyDown(e) {
@@ -180,7 +183,7 @@ class MyProfile extends Component {
   };
   update() {}
   render() {
-    const { crop, croppedImageUrl, src } = this.state;
+    const { crop, src } = this.state;
 
     let UserSwitch = withStyles({
       switchBase: {

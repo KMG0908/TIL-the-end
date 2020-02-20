@@ -8,7 +8,6 @@ import MemberCard from "./MemberCard";
 import { getAllMemberData } from "../../actions";
 const widthPer = 600;
 
-const limit = 10;
 class AdminPage extends Component {
   constructor(props) {
     super(props);
@@ -68,7 +67,6 @@ class AdminPage extends Component {
         <br />
         <div style={{ position: "relative", textAlign: "center" }}>
           <div
-            key={`${query.keyword}${query.limit}${query.page}`}
             style={{ display: "inline-block", width: widthPer }}
           >
             {this.props.memberList
