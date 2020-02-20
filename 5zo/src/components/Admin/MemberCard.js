@@ -22,7 +22,6 @@ class MemberCard extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props.member)
     this.state = {
       checked: props.member ? (props.member.mem_auth === 1 ? false : true ) : false
     }

@@ -60,10 +60,6 @@ class NewSearch extends Component {
       `/search/global/cardlist/by/${keywords_string}?limit=${limit}&page=${page}`
     );
     const data = response.data.data;
-    console.log(
-      `/search/global/cardlist/by/${keywords_string}?limit=${limit}&page=${page}`
-    );
-    console.log(data);
     if (data.length != 0) {
       this.setState({
         cardLists: cardLists.concat(response.data.data),

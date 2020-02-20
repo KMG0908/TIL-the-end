@@ -26,11 +26,6 @@ export default (state = {}, action) => {
         mem_tags: _.union(state.mem_tags, [action.payload.tag])
       };
     case DELETE_TAG:
-      console.log(
-        _.omitBy(state[action.payload.cardlist_id], {
-          tag_id: action.payload.tag_id
-        })
-      );
       return {
         ...state,
         [action.payload.cardlist_id]: Object.values(

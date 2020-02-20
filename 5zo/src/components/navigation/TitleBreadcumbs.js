@@ -46,7 +46,6 @@ function TitleBreadcumbs(props) {
   const mem_info = storage.get("loggedInfo");
   React.useEffect(() => {
     if (mem_info) {
-      console.log("Abc");
       props.fetchAlarm(mem_info.mem_id);
     }
   });

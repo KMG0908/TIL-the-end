@@ -73,7 +73,6 @@ class DailyBoard extends React.Component {
     const { date } = this.state;
     if (this.props.boardDict[date]) {
       const { classes } = this.props;
-      // console.log(this.props.boards);
 
       const board_lists = Array.isArray(
         this.props.boards[this.props.boardDict[date]].board_lists
@@ -117,16 +116,21 @@ class DailyBoard extends React.Component {
       });
     }
   }
-  toDaily = () =>{
+  toDaily = () => {
     this.props.setEditModeList(null);
-    history.push(`/daily/${this.props.members.mem_info.mem_id}/${this.state.date.replace(/-/gi, "")}`);
-  }
+    history.push(
+      `/daily/${this.props.members.mem_info.mem_id}/${this.state.date.replace(
+        /-/gi,
+        ""
+      )}`
+    );
+  };
   render() {
     const { classes } = this.props;
     const { date } = this.state;
-    if(this.props.members.mem_info.mem_auth === 2){
-      alert('글 쓰기 권한이 없습니다.')
-      history.push('/')
+    if (this.props.members.mem_info.mem_auth === 2) {
+      alert("글 쓰기 권한이 없습니다.");
+      history.push("/");
     }
     return (
       <Box style={{ overflow: "hidden" }}>
