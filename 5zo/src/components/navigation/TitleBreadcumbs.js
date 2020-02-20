@@ -5,7 +5,7 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import storage from "lib/storage";
-import {fetchAlarm} from "../../actions" 
+import { fetchAlarm } from "../../actions";
 import { connect } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -25,18 +25,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const breadcumbspliter = props => {
-  const mem_info  = storage.get("loggedInfo")
-  if(mem_info){
-    props.fetchAlarm(mem_info.mem_id)
-  }
-  return props.location.pathname.split("/").map((bread,index) => {
+  return props.location.pathname.split("/").map((bread, index) => {
     if (bread) {
-      return <StyledLink style={{textTransform: 'none'}} to={props.location.pathname.split("/").slice(0,index+1).join("/")}>{bread}</StyledLink>;
+      return (
+        <StyledLink
+          style={{ textTransform: "none" }}
+          to={props.location.pathname
+            .split("/")
+            .slice(0, index + 1)
+            .join("/")}
+        >
+          {bread}
+        </StyledLink>
+      );
     }
   });
 };
 
 function TitleBreadcumbs(props) {
+  const mem_info = storage.get("loggedInfo");
+  React.useEffect(() => {
+    if (mem_info) {
+      console.log("Abc");
+      props.fetchAlarm(mem_info.mem_id);
+    }
+  });
   return (
     <div>
       <Breadcrumbs
@@ -50,11 +63,9 @@ function TitleBreadcumbs(props) {
   );
 }
 
-
-
 const mapStateToProps = state => {
-  return {
-    alarms: state.alarms
-  };
+  return {};
 };
-export default withRouter(connect(mapStateToProps, {fetchAlarm})(TitleBreadcumbs));
+export default withRouter(
+  connect(mapStateToProps, { fetchAlarm })(TitleBreadcumbs)
+);
