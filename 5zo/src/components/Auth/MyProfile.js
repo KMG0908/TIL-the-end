@@ -23,19 +23,6 @@ const Label = styled.div`
     text-align : left;
 `;
 
-let UserSwitch = withStyles({
-  switchBase: {
-    '&$checked': {
-      color: storage.get('loggedInfo').mem_color,
-    },
-    '&$checked + $track': {
-      backgroundColor: storage.get('loggedInfo').mem_color,
-    },
-  },
-  checked: {},
-  track: {},
-})(Switch);
-
 class MyProfile extends Component {
   constructor(props) {
     super(props);
@@ -184,6 +171,20 @@ class MyProfile extends Component {
   }
   render() {
     const { crop, croppedImageUrl, src } = this.state
+
+    let UserSwitch = withStyles({
+      switchBase: {
+        '&$checked': {
+          color: storage.get('loggedInfo').mem_color,
+        },
+        '&$checked + $track': {
+          backgroundColor: storage.get('loggedInfo').mem_color,
+        },
+      },
+      checked: {},
+      track: {},
+    })(Switch);
+
     if (this.props.mem_info_change) {
       const loggedInfo = this.props.mem_info_change;
       console.log(this.props.mem_info_change)
