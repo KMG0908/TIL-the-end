@@ -5,7 +5,7 @@ import { AuthButton } from '.';
 import { matches } from "validator";
 import PasswordWithLabel from './PasswordWithLabel';
 import history from '../../history'
-import FindInfoLink from './FindInfoLink';
+
 class EditPasswordPage extends Component {
   constructor(props) {
     super(props);

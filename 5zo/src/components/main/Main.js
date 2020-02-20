@@ -1,9 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { fetchMembers } from "../../actions";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import Favlist from "./Favlist";
 import Listing from "./Listing";
 import Heatmap from "../heatmap/Heatmap";
 class Main extends React.Component {

@@ -1,12 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import { deleteCard, editCard, setEditModeCard } from "../../actions";
-import Icon from "@material-ui/core/Icon";
 
 import Collapse from "@material-ui/core/Collapse";
-import SunEditor, { buttonList } from "suneditor-react";
+import SunEditor from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import Button from "@material-ui/core/Button";
 

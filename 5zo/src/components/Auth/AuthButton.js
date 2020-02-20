@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
 function AuthButton({ children, onClick, onSubmit, type, backgroundColor }){
   const classes = useStyles();
   return(
-    <Button variant="contained" style={{background : backgroundColor ? backgroundColor : storage.get('loggedInfo') ? storage.get('loggedInfo').mem_color : 'rgb(148, 201, 169)'}} onClick={onClick} className={classes.button}>
+    <Button variant="contained" style={{background : backgroundColor ? backgroundColor : storage.get('loggedInfo') ? storage.get('loggedInfo').mem_color : '#0C797D'}} onClick={onClick} className={classes.button}>
       {children}
     </Button>
   );

@@ -57,7 +57,7 @@ class MemberCard extends Component {
           <ExpansionPanelDetails style={{display : 'inline-block' , width : '100%'}}>
             <div>
               <div id="image_div">
-                <img id="profile_image" src={member.mem_thumb} key={new Date().getTime()} style={{ borderRadius: '50%' }}></img>
+                <img id="profile_image" src={member.mem_thumb} key={new Date().getTime()} style={{ borderRadius: '50%' }} alt="profile_image"></img>
               </div>
               <TextWithLabel label="아이디" name="ID" value={member.mem_id} />
               <TextWithLabel label="이메일" name="email" value={member.mem_email} type="email" />

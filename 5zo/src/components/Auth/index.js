@@ -1,5 +1,4 @@
 export { default as AuthWrapper } from './AuthWrapper';
-export { default as AuthWrapper_tmp } from './AuthWrapper_tmp';
 export { default as AuthContent } from './AuthContent';
 export { default as InputWithLabel } from './InputWithLabel';
 export { default as TextWithLabel } from './TextWithLabel';

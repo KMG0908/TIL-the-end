@@ -6,7 +6,6 @@ import "react-calendar-heatmap/dist/styles.css";
 import ReactTooltip from "react-tooltip";
 import "./heatmap.css";
 import moment from "moment";
-import storage from "lib/storage";
 
 class Heatmap extends React.Component {
   constructor(props) {
@@ -32,11 +31,11 @@ class Heatmap extends React.Component {
     var b = Math.abs((rgb & 0xff) + v);
     if (b > 255) b = b - (b - 255);
     r = Number(r < 0 || isNaN(r)) ? 0 : (r > 255 ? 255 : r).toString(16);
-    if (r.length == 1) r = "0" + r;
+    if (r.length === 1) r = "0" + r;
     g = Number(g < 0 || isNaN(g)) ? 0 : (g > 255 ? 255 : g).toString(16);
-    if (g.length == 1) g = "0" + g;
+    if (g.length === 1) g = "0" + g;
     b = Number(b < 0 || isNaN(b)) ? 0 : (b > 255 ? 255 : b).toString(16);
-    if (b.length == 1) b = "0" + b;
+    if (b.length === 1) b = "0" + b;
     return "#" + r + g + b;
   }
   componentDidMount() {
@@ -57,7 +56,7 @@ class Heatmap extends React.Component {
     };
   };
   handleClick = value => {
-    if (value.count == 0) {
+    if (value.count === 0) {
       return null;
     }
     this.props.onHandleDate(value.date);
@@ -68,7 +67,6 @@ class Heatmap extends React.Component {
     let lastDay = new Date(this.props.cur_date);
 
     if (this.props.board_info) {
-      const state = this.props.board_info;
       let data = [];
       let def_color = this.props.members.mem_info.mem_color;
       this.state.col1 = this.getTintedColor(def_color, 60);
@@ -104,7 +102,7 @@ class Heatmap extends React.Component {
             transformDayElement={(element, value) => {
               let color;
               if (!value) {
-              } else if (value.count == 0) {
+              } else if (value.count === 0) {
                 color = "#eeeeee";
               } else if (value.count <= 3) {
                 color = this.state.col1;
@@ -142,19 +140,6 @@ class Heatmap extends React.Component {
   render() {
     return <div>{this.setHeatMap()}</div>;
   }
-}
-
-function dateDiff(date1, date2) {
-  date1 = new Date(date1);
-  date2 = new Date(date2);
-
-  date1 = new Date(date1.getFullYear(), date1.getMonth() + 1, date1.getDate());
-  date2 = new Date(date2.getFullYear(), date2.getMonth() + 1, date2.getDate());
-
-  var diff = Math.abs(date2.getTime() - date1.getTime());
-  diff = Math.ceil(diff / (1000 * 3600 * 24));
-
-  return diff - 1;
 }
 
 function date_to_str(format, separator) {

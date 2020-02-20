@@ -1,6 +1,5 @@
 import React from "react";
 import styled from 'styled-components';
-import oc from 'open-color';
 import {shadow} from 'lib/styleUtil';
 import { Link } from 'react-router-dom';
 
@@ -27,14 +26,6 @@ const LogoWrapper = styled.div`
     align-items : center;
     justify-content : center;
 `;
-
-const Logo = styled(Link)`
-    color : white;
-    font-family : 'Rajdhani';
-    font-size : 2.4rem;
-    letter-spacing : 5px;
-    text-decoration : none;
-`
 
 const Contents = styled.div`
     background : white;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { matchIdEmail, matchIdEmailSuccessReset, findPwFailReset, findPwSuccessReset, findPw } from "actions";
-import { AuthWrapper, AuthContent, InputWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
+import { InputWithLabel, AuthButton } from '.';
 import history from '../../history'
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from "@material-ui/core/styles";
@@ -29,7 +29,6 @@ class FindPwPage extends Component {
         this.state = {
           mem_id: '',
             email: '',
-            mem_id : '',
         }
 
         this.handleChange = this.handleChange.bind(this)
