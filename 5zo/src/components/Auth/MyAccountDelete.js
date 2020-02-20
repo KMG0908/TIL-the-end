@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { deleteAccountErrReset, deleteAccount, logout, deleteAccountSuccessReset } from "actions";
-import { AuthWrapper, AuthContent, PasswordWithLabel, AuthButton, RightAlignedLink, TextWithLabel } from '.';
+import { AuthWrapper, AuthContent, PasswordWithLabel, AuthButton } from '.';
 import storage from 'lib/storage';
 import history from '../../history'
 class MyAccountDelete extends Component {

@@ -72,12 +72,10 @@ import {
   EDIT_EMAIL_RESET,
   FETCH_ALARMS,
   READ_ALARM,
-  ADD_ALARM,
+  // ADD_ALARM,
   READ_ALL_ALARM
 } from "./types";
 import moment from "moment";
-import { DisplayFormat } from "devextreme-react/date-box";
-import { isEmail, matches } from "validator";
 import storage from "lib/storage";
 
 export const fetchMembers = () => async dispatch => {
@@ -359,7 +357,7 @@ export const editPassword = (mem_id, old_pw, new_pw) => async (
     old_pw,
     new_pw
   });
-  if (response.data.state == "ok") {
+  if (response.data.state === "ok") {
     dispatch({ type: EDIT_PASSWORD_SUCCESS });
   } else {
     dispatch({ type: EDIT_PASSWORD_FAIL, payload: response.data.data });
@@ -552,7 +550,7 @@ export const addList = (board_id, cardlist_name, board_date) => async (
     cardlist_secret,
     cardlist_color
   });
-  if (response.data.state == "ok") {
+  if (response.data.state === "ok") {
     const cardlist_id = response.data.data;
 
     const card = await apis.get(`/cardlist/${cardlist_id}`);
@@ -616,14 +614,14 @@ export const addCard = (cardlist_id, card_name) => async (
     });
     const cardList = getState().cardLists[cardlist_id];
     const cardlist_cards = JSON.stringify(cardList.cardlist_cards);
-    const cardlist_name = cardList.cardlist_name;
+    // const cardlist_name = cardList.cardlist_name;
     await apis.put("/cardlist", { ...cardList, cardlist_cards });
   }
 };
 
 export const editCard = card => async dispatch => {
   const response = await apis.put(`/card`, { ...card });
-  if (response.data.state == "ok") {
+  if (response.data.state === "ok") {
     dispatch({ type: EDIT_CARD, payload: card });
   }
 };
@@ -711,7 +709,7 @@ export const sort = (
 
 export const fetchStatisticsMember = mem_id => async (dispatch, getState) => {
   if (!getState().statistics.mem_info) {
-    const response = await apis.get(`/member/${mem_id}`);
+    await apis.get(`/member/${mem_id}`);
     //const joinedDate = moment(response.data.data.mem_reg_date.replace(/-/gi, '/'));
     const joinedDate = moment("2019/02/03");
     var isAvailableWeek = true;
@@ -829,7 +827,7 @@ function date_to_str(format, separator) {
 export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
   let response;
   if (type === undefined) type = "card";
-  if (type == "member") {
+  if (type === "member") {
     response = await apis.get(`/member/searchById/${keyword}`);
   } else {
     response = await apis.get(`/search/global/${type}/by/${keyword}`);
@@ -910,7 +908,7 @@ export const getDailyCal = (mem_id, from) => async dispatch => {
     to = shiftDate(new Date(), -1);
     end = date_to_str(to, "");
   }
-  let response, cardList, board, cardlist_id, cardlist;
+  let response, board, cardlist_id, cardlist;
   response = await apis.get(`/board/member/${mem_id}/from/${start}/to/${end}`);
   const board_data = response.data.data;
   let app = [];
@@ -965,7 +963,7 @@ export const deleteTag = (cardlist_id, tag_id) => async (
   dispatch,
   getState
 ) => {
-  const response = await apis.delete(`/cardlist_tag/${tag_id}`);
+  await apis.delete(`/cardlist_tag/${tag_id}`);
   dispatch({
     type: DELETE_TAG,
     payload: { cardlist_id, tag_id }
@@ -989,7 +987,7 @@ export const addComment = (
 ) => async (dispatch, getState) => {
   const comment_secret = 0;
   const { mem_id } = getState().members.mem_info;
-  const response = await apis.post(`/comment`, {
+  await apis.post(`/comment`, {
     cardlist_id,
     comment_contents,
     comment_reply,
@@ -1020,7 +1018,7 @@ export const addComment = (
 };
 
 export const deleteComment = (cardlist_id, comment_id) => async dispatch => {
-  const response = await apis.delete(`/comment/${comment_id}`);
+  await apis.delete(`/comment/${comment_id}`);
   dispatch({ type: DELETE_COMMENT, payload: { cardlist_id, comment_id } });
 };
 
@@ -1031,7 +1029,7 @@ export const editComment = (
 ) => async (dispatch, getState) => {
   const comment = getState().comments[cardlist_id][comment_id];
   comment.comment_contents = comment_contents;
-  const response = await apis.put(`/comment/${comment_id}`, {
+  await apis.put(`/comment/${comment_id}`, {
     comment_id,
     comment_secret: comment.comment_secret,
     comment_contents

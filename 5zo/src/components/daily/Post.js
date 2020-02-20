@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     display: "block"
   },
   hideContent: {
-    display: "none"
+    display: "none",
   },
   lock: {
     marginTop: "4px",
@@ -96,9 +96,14 @@ const Post = props => {
 
   //
   const [commentState, setCommentState] = React.useState(false)
+  const [postState, setPostState] = React.useState(false);
 
   const csChange = () => {
     setCommentState(view => !view)
+  }
+
+  const psChange = () => {
+    setPostState(view => !view)
   }
 
   const handleChange = name => async e => {
@@ -122,7 +127,7 @@ const Post = props => {
       );
     }
     cardList_cards_string = cardList_cards_string.concat("]");
-    const response = await apis.put(`/cardlist`, {
+    await apis.put(`/cardlist`, {
       board_id: cardList.board_id,
       cardlist_cards: cardList_cards_string,
       cardlist_color: cardList.cardlist_color,
@@ -138,7 +143,7 @@ const Post = props => {
 
   const loggedUser = storage.get("loggedInfo").mem_id;
   if(props.cardLists[props.list_id]){
-    if(props.cardLists[props.list_id].cardlist_cards.length == 0){
+    if(props.cardLists[props.list_id].cardlist_cards.length === 0){
       return null
     }else{
       return (

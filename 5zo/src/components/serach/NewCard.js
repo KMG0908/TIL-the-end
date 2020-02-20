@@ -6,9 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import history from "../../history";
 class NewCard extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const moveDetail = e => {
       history.push(
@@ -36,7 +33,6 @@ class NewCard extends Component {
       },
       avatar: {
         display: "flex",
-        display: "inline-block",
         float: "left"
       }
     };

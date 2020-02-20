@@ -3,13 +3,10 @@ import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ReplyIcon from "@material-ui/icons/Reply";
 import SubdirectoryArrowRightIcon from "@material-ui/icons/SubdirectoryArrowRight";
-import { Link } from "@material-ui/core";
 
 import { connect } from "react-redux";
 import { addComment, deleteComment, editComment } from "../../../actions";
@@ -19,15 +16,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import history from "../../../history";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles(theme => ({
-  linkText: {
-    "&:hover": {
-      cursor: "pointer"
-    }
-  }
-}));
+import "moment/locale/ko"
 
 function CommentItem({
   members,
@@ -68,7 +57,7 @@ function CommentItem({
     history.push(`/daily/${comment.mem_id}`);
   };
 
-  const classes = useStyles();
+  // const classes = useStyles();
   const renderItem = () => {
     return (
       <>
@@ -191,7 +180,6 @@ function CommentItem({
   };
 
   const onEditing = comment_contents => {
-    const comment_reply = comment.comment_reply;
     if (comment_contents) {
       editComment(comment.cardlist_id, comment.comment_id, comment_contents);
       setMode(false);
@@ -203,7 +191,6 @@ function CommentItem({
       : comment.comment_id;
     if (comment_contents) {
       addComment(cardlist_id, comment_contents, comment_reply, user_id, date);
-      console.log("onreplying");
       setMode(false);
     }
   };
@@ -228,7 +215,7 @@ function CommentItem({
           </ListItemIcon>
         ) : null}
         {comment.comment_deleted ? (
-          <div style={{ alignSelf: "center" }}>삭제된 글 입니다.</div>
+          <div style={{ alignSelf: "center" }}>삭제된 댓글 입니다.</div>
         ) : (
           renderItem()
         )}

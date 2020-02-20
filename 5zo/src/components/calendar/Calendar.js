@@ -53,7 +53,7 @@ class Event extends React.Component {
   }
 
   onSlotChange(slotInfo) {
-    var endDate = moment(slotInfo.end.toLocaleString()).format(
+   moment(slotInfo.end.toLocaleString()).format(
       "YYYY-MM-DDm:ss"
     );
   }
@@ -111,7 +111,7 @@ class Event extends React.Component {
       dateFormat: "DD",
       monthHeaderFormat: " YYYY년 MM월"
     };
-    const { classes } = this.props;
+    // const { classes } = this.props;
     if (this.props.daily.info) {
       const app = this.props.daily.info;
       const data = [];

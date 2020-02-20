@@ -4,17 +4,16 @@ import Login from "../Auth/Login";
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import {
-    Provider, Heading, Subhead, Flex, Box, Image
+    Provider, Heading, Subhead, Flex, Box
 } from 'rebass'
 import {
-    Hero, PricingTier, CallToAction, Testimony
+    Hero
 } from 'react-landing-page'
 import "./FontIndex.css"
 import intro1 from "./Font/intro1.PNG"
 import intro2 from "./Font/intro2.PNG"
 import intro3 from "./Font/intro3.PNG"
 import intro4 from "./Font/intro4.PNG"
-import { containCrop } from "react-image-crop";
 import "./landing.css"
 
 import ReactPlayer from 'react-player'
@@ -53,7 +52,7 @@ class Body extends React.Component {
                             <Flex alignItems='flex-start' width={[1, 1, 1 / 2]} p={3}>
                                 <Box width={[1, 1, 1 / 2]} p={4}>
                                     <div>
-                                        <img src={intro1} height="250" width="300"></img>
+                                        <img src={intro1} height="250" width="300" alt="intro1"></img>
                                     </div>
                                 </Box>
                             </Flex>
@@ -69,7 +68,7 @@ class Body extends React.Component {
                             <Flex alignItems='flex-start' width={[1, 1, 1 / 2]} p={3}>
                                 <Box width={[1, 1, 1 / 2]} p={4}>
                                     <div>
-                                        <img src={intro2} height="250" width="300"></img>
+                                        <img src={intro2} height="250" width="300" alt="intro2"></img>
                                     </div>
                                 </Box>
                             </Flex>
@@ -84,7 +83,7 @@ class Body extends React.Component {
                             <Flex alignItems='flex-start' width={[1, 1, 1 / 2]} p={3}>
                                 <Box width={[1, 1, 1 / 2]} p={4}>
                                     <div>
-                                        <img src={intro3} height="250" width="300"></img>
+                                        <img src={intro3} height="250" width="300" alt="intro3"></img>
                                     </div>
                                 </Box>
                             </Flex>
@@ -100,7 +99,7 @@ class Body extends React.Component {
                             <Flex alignItems='flex-start' width={[1, 1, 1 / 2]} p={3}>
                                 <Box width={[1, 1, 1 / 2]} p={4}>
                                     <div>
-                                        <img src={intro4} height="250" width="300"></img>
+                                        <img src={intro4} height="250" width="300" alt="intro4"></img>
                                     </div>
                                 </Box>
                             </Flex>

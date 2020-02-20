@@ -1,11 +1,6 @@
 import React from "react";
-import Badge from "@material-ui/core/Badge";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import IconButton from "@material-ui/core/IconButton";
 import { connect } from "react-redux";
-import { fetchAlarm, readAlarm, readAllAlarm } from "../../actions";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import { readAlarm, readAllAlarm } from "../../actions";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
 import styled from "styled-components";

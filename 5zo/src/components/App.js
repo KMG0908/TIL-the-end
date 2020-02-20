@@ -4,12 +4,9 @@ import { connect } from "react-redux";
 import { setLoggedInfo } from "actions";
 
 import Navigation from "./navigation/Navigation";
-import Main from "./main/Main";
 import Calendar from "./calendar/Calendar";
 import DefLand from "./landing/DefLand";
 import LandingPage from "./landing/LandingPage";
-import Statistics from "./statistics/Statistics";
-import TagPage from "./tags/Tags";
 import Todo from "./todo/Todo";
 import history from "../history";
 import RegisterPage from "./Auth/RegisterPage";
@@ -17,15 +14,11 @@ import Login from "./Auth/Login";
 import storage from "lib/storage";
 import MyPage from "./Auth/MyPage";
 import MyAccountDelete from "./Auth/MyAccountDelete";
-import Imgur from "./image_test/Imgur";
 import Daily from "./daily/Main";
 import Redirecting from "./redirectingPage/RedirectBody";
 import NewSearch from "./serach/NewSearch";
 import FindIdPage from "./Auth/FindIdPage";
 import FindPwPage from "./Auth/FindPwPage";
-import EditPasswordPage from "./Auth/EditPasswordPage";
-import Body from "./landing/Body";
-import NewMySetting from "./Auth/NewMySetting";
 import AdminPage from "./Admin/AdminPage";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
@@ -74,19 +67,11 @@ class App extends React.Component {
             <Switch>
               <Route path="/" exact component={Daily} />
               <Route path="/calendar" exact component={Calendar} />
-              <Route path="/statistics/:user_id" exact component={Statistics} />
-              <Route path="/tags" exact component={TagPage} />
               <Route path="/dashboard" exact component={Todo} />
               <Route path="/dashboard/:date" component={Todo} />
               <Route path="/login" exact component={Login} />
-
               <Route path="/mypage" exact component={MyPage} />
               <Route path="/mypage/delete" exact component={MyAccountDelete} />
-
-              {/* test */}
-              <Route path="/my-setting" exact component={NewMySetting} />
-
-              <Route path="/imgur" exact component={Imgur}></Route>
               <Route path="/daily" exact component={Daily}></Route>
               <Route path="/daily/:user_id" exact component={Daily}></Route>
               <Route

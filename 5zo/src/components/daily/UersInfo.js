@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { getOtherMember } from "../../actions";
 import "./userInfo.css";
 import history from "../../history";
-import Switch from "@material-ui/core/Switch";
-import storage from "lib/storage";
 import apis from "../../apis/apis";
 
 class UserInfo extends React.Component {
@@ -26,17 +24,13 @@ class UserInfo extends React.Component {
     this.setState({
       checked: e.target.checked
     });
-    const response = await apis.patch(
+    await apis.patch(
       `/member/postdef/${this.props.info.mem_id}`
     );
   };
 
   setInfo() {
-    if (this.props.info && this.props.info.mem_id == this.props.user_id) {
-      const reg_date = new Date(this.props.info.mem_reg_date);
-      const year = reg_date.getFullYear();
-      const month = reg_date.getMonth() + 1;
-      const date = reg_date.getDate();
+    if (this.props.info && this.props.info.mem_id === this.props.user_id) {
       let image;
       if (this.props.info.mem_thumb) image = this.props.info.mem_thumb;
       else
@@ -44,12 +38,12 @@ class UserInfo extends React.Component {
           "https://www.gravatar.com/avatar/bc05615a975020a24c81da899a113e23?d=mm&s=90";
       image = image.replace("blob:", "");
 
-      const login_id = storage.get("loggedInfo").mem_id;
+      // const login_id = storage.get("loggedInfo").mem_id;
 
       return (
         <div>
           <div className="user_image">
-            <img src={image} style={{ width: "100%", height: "100%" }}></img>
+            <img src={image} style={{ width: "100%", height: "100%" }} alt="image"></img>
           </div>
           <div className="user_info">
             <span className="user_nick">{this.props.info.mem_nick}</span>

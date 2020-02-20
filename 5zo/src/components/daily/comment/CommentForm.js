@@ -1,9 +1,6 @@
 import React from "react";
 import Input from "@material-ui/core/Input";
-import { addComment } from "../../../actions";
-import { connect } from "react-redux";
 import SubdirectoryArrowRightIcon from "@material-ui/icons/SubdirectoryArrowRight";
-import Divider from "@material-ui/core/Divider";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItem from "@material-ui/core/ListItem";
 import Button from "@material-ui/core/Button";

@@ -5,16 +5,6 @@ import { connect } from "react-redux";
 import { fetchStatisticsData } from 'actions';
 import MyCloud from "./MyCloud";
 
-const tagButtons = (tags) => tags.map((tag) =>
-  <Link to={`/search/${tag.tag_name}?type=tag`} key={'link_'+tag.tag_name+tag.tag_id}>
-    <Button
-      variant="contained"
-      key={'button_'+tag.tag_name}>
-      {tag.tag_name}
-    </Button>
-  </Link>
-);
-
 class TagPage extends Component {
   componentDidMount(){
     // this.props.memTag(this.props.mem_info.mem_id, '20000101','20200203')

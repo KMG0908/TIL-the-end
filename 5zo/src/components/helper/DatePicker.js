@@ -17,6 +17,7 @@ import _ from "lodash";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import moment from "moment";
+import storage from "lib/storage";
 
 function date_to_str(format, separator) {
   let year = format.getFullYear();
@@ -62,7 +63,7 @@ const styles = theme => ({
   }
 });
 
-const selectedDays = [1, 2, 3, 12];
+// const selectedDays = [1, 2, 3, 12];
 const today = new Date().toISOString().split("T")[0];
 
 const theme = color =>
@@ -76,10 +77,7 @@ const theme = color =>
   });
 
 class DatePicker extends React.Component {
-  state = { selectedDate: new Date() };
-  constructor(props){
-    super(props);
-  }
+  state = { selectedDate: new Date(), open: false, yearChange: false };
   componentDidMount() {
     if (this.props.date) {
       const date = new Date(this.props.date);
@@ -96,11 +94,17 @@ class DatePicker extends React.Component {
     }
     return null;
   }
+  handleYearChange = date => {
+    this.setState({yearChange : true})
+  }
   handleMonthChange = date => {
+    this.setState({yearChange : false})
+    let user_id = this.props.user_id;
+    if(!user_id) user_id = storage.get('loggedInfo').mem_id;
     const firstDate = new Date(date.getFullYear(), date.getMonth(), 2);
     const lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
     this.props.getDailyTask(
-      this.props.user_id,
+      user_id,
       firstDate,
       lastDate
     );
@@ -108,8 +112,9 @@ class DatePicker extends React.Component {
 
   handleDateChange = date => {
     // this.setState({ selectedDate: date });
+    this.setState({open : false})
     if(moment(date).isValid()){
-      let isoDate = date.toISOString().split("T")[0];
+      // let isoDate = date.toISOString().split("T")[0];
       date = date_to_str(date, "-")
       this.props.onChangeDate(date);
       if (date > today) {
@@ -184,8 +189,8 @@ class DatePicker extends React.Component {
                   isInCurrentMonth,
                   dayComponent
                 ) => {
-                  const isSelected =
-                    isInCurrentMonth && selectedDays.includes(day.getDate());
+                  // const isSelected =
+                  //   isInCurrentMonth && selectedDays.includes(day.getDate());
                   const days = _.mapKeys(this.props.boardInfo, "board_date");
 
                   return (

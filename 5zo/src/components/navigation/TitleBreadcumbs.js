@@ -11,8 +11,7 @@ import { connect } from "react-redux";
 const StyledLink = styled(Link)`
   text-decoration: inherit;
   color: white;
-  text-transform: capitalize;
-  textTransform: "none";
+  text-transform: none;
 `;
 
 const breadcumbspliter = props => {
@@ -20,6 +19,7 @@ const breadcumbspliter = props => {
     if (bread) {
       return (
         <StyledLink
+          key={index}
           to={props.location.pathname
             .split("/")
             .slice(0, index + 1)

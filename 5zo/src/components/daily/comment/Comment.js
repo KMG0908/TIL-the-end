@@ -6,7 +6,6 @@ import { fetchComments, addComment } from "../../../actions";
 
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
-import moment from "moment";
 import "./comment.css"
 
 class Comment extends React.Component {
@@ -56,6 +55,7 @@ class Comment extends React.Component {
         return (
           <div>
             <CommentItem
+              key={comment.comment_id}
               user_id={user_id}
               comment={comment}
               date={date}
@@ -77,7 +77,7 @@ class Comment extends React.Component {
     }
   };
   render() {
-    const { list_id, user_id } = this.props;
+    const { user_id } = this.props;
     return (
       <div className="comment">
         <List>{this.renderComments()}</List>

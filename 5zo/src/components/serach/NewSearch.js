@@ -61,7 +61,7 @@ class NewSearch extends Component {
       `/search/global/cardlist/by/${keywords_string}?limit=${limit}&page=${page}`
     );
     const data = response.data.data;
-    if (data.length != 0) {
+    if (data.length !== 0) {
       this.setState({
         cardLists: cardLists.concat(response.data.data),
         page: this.state.page + 1

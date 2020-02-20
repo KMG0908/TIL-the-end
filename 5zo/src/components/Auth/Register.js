@@ -78,7 +78,7 @@ class Register extends Component {
       return;
     }
 
-    if (!matches(this.state.loginId, /^[a-z0-9_\-]{5,20}$/)) {
+    if (!matches(this.state.loginId, /^[a-z0-9_-]{5,20}$/)) {
       document.getElementById("loginId_msg").value = '5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.';
       document.getElementById("loginId_msg").classList.add("error");
       document.getElementById("loginId").focus();
@@ -140,7 +140,7 @@ class Register extends Component {
     history.push("/")
   }
   keyDown(e){
-    if(e.keyCode == 13) this.register();
+    if(e.keyCode === 13) this.register();
     if(e.target.id === "loginPw" && e.keyCode === 9) {
       document.getElementById("email").focus();
       e.preventDefault();
