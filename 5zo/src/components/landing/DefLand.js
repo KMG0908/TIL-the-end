@@ -8,7 +8,6 @@ class DefLand extends React.Component {
     render() {
         return (
             <div>
-                <Header />
                 <Body location={this.props.location} />
                 <Footer />
             </div>
