@@ -55,7 +55,7 @@ function TitleBreadcumbs(props) {
         separator={<NavigateNextIcon fontSize="small" />}
         aria-label="breadcrumb"
       >
-        <StyledLink to={"/"}>Today I Learn</StyledLink>
+        <StyledLink to={"/"}>TIL the end</StyledLink>
         {breadcumbspliter(props)}
       </Breadcrumbs>
     </div>

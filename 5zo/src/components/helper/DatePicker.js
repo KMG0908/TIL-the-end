@@ -69,6 +69,9 @@ const theme = color =>
   createMuiTheme({
     palette: {
       primary: { main: color }
+    },
+    typography: {
+      fontFamily: "'Viga', 'Godo', 'San-serif'",
     }
   });
 

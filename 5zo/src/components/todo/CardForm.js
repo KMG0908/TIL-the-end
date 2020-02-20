@@ -117,7 +117,8 @@ class CardForm extends React.Component {
                   ["align", "horizontalRule", "list", "lineHeight"],
                   ["table", "link", "image", "video"],
                   ["fullScreen", "preview", "showBlocks"]
-                ]
+                ],
+                font: ['Arial', 'tahoma', 'Courier New,Courier','Roboto','PlayfairDisplay','Dancing Script','Great Vibes', 'Godo', 'Viga'],
               }}
             />
           ) : (
@@ -145,7 +146,8 @@ class CardForm extends React.Component {
                   ["align", "horizontalRule", "list", "lineHeight"],
                   ["table", "link", "image", "video"],
                   ["fullScreen", "preview", "showBlocks"]
-                ]
+                ],
+                font: ['Arial', 'tahoma', 'Courier New,Courier','Roboto','PlayfairDisplay','Dancing Script','Great Vibes', 'Godo', 'Viga'],
               }}
             />
               // <div
