@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
 import { getLoggedInfo } from "../../actions";
 import { NavLink } from 'react-router-dom'
 

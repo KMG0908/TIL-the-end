@@ -9,11 +9,9 @@ import { getLoggedInfo } from "../../actions";
 import { connect } from "react-redux";
 import Container from "@material-ui/core/Container";
 import history from "../../history";
-import BigCalendar from "react-big-calendar-like-google";
 import DatePicker from "../helper/DatePicker";
 
 const localizer = momentLocalizer(moment);
-const today = new Date();
 
 function date_to_str(format, separator) {
   let year = format.getFullYear();

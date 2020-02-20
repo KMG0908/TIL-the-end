@@ -25,7 +25,6 @@ import { withRouter } from "react-router-dom";
 import TitleBreadcumbs from "./TitleBreadcumbs";
 
 import Notifications from "./Notificiatons";
-import { Background } from "devextreme-react/vector-map";
 import history from "../../history";
 
 import Badge from "@material-ui/core/Badge";
@@ -146,10 +145,10 @@ function Navigation(props) {
     history.push("/register");
     setAnchorEl(null);
   };
-  const mySetting = () => {
-    history.push("/my-setting");
-    setAnchorEl(null);
-  };
+  // const mySetting = () => {
+  //   history.push("/my-setting");
+  //   setAnchorEl(null);
+  // };
   const admin = () => {
     history.push("/admin");
     setAnchorEl(null);
@@ -188,7 +187,7 @@ function Navigation(props) {
           ) : null}
           <Typography variant="h6" noWrap className={classes.title}>
             <TitleBreadcumbs />
-            <WithTitle />
+            {<WithTitle />}
           </Typography>
           <div>
             <IconButton onClick={() => setNotify(true)} color="inherit">
@@ -247,19 +246,19 @@ function Navigation(props) {
                 
                 [
                   props.mem_info.mem_id === "admin" ? (
-                    <MenuItem onClick={admin}>Admin</MenuItem>
+                    <MenuItem key={0} onClick={admin}>Admin</MenuItem>
                   ) : null
                   ,
-                  <MenuItem onClick={myPage}>My Page</MenuItem>
+                  <MenuItem  key={1} onClick={myPage}>My Page</MenuItem>
                   ,
-                  <MenuItem onClick={logout}>Logout</MenuItem>
+                  <MenuItem  key={2} onClick={logout}>Logout</MenuItem>
                 ]
                
               ) : (
                 [
-                  <MenuItem onClick={login}>Sign In</MenuItem>
+                  <MenuItem  key={3} onClick={login}>Sign In</MenuItem>
                   ,
-                  <MenuItem onClick={regist}>Sign Up</MenuItem>
+                  <MenuItem  key={4} onClick={regist}>Sign Up</MenuItem>
                 ]
               )}
             </Menu>

@@ -105,26 +105,26 @@ class Main extends React.Component {
   setHeatMap(year) {
     let local_date = false;
 
-    if (year == 2020) {
-      this.state.bu1 = "secondary";
-      this.state.bu2 = "#FFFFFF";
-      this.state.bu3 = "#FFFFFF";
+    if (year === 2020) {
       local_date = new Date();
-      this.setState({
+        this.setState({
+          bu1 : "secondary",
+          bu2 : "#FFFFFF",
+          bu3 :  "#FFFFFF",
         cur_date: local_date
       });
-    } else if (year == 2019) {
-      this.state.bu2 = "secondary";
-      this.state.bu1 = "#FFFFFF";
-      this.state.bu3 = "#FFFFFF";
+    } else if (year === 2019) {
       this.setState({
+        bu1 : "#FFFFFF",
+        bu2 : "secondary",
+        bu3 :  "#FFFFFF",
         cur_date: new Date("december 31 2019")
       });
     } else {
-      this.state.bu3 = "secondary";
-      this.state.bu2 = "#FFFFFF";
-      this.state.bu1 = "#FFFFFF";
       this.setState({
+        bu1 : "#FFFFFF",
+        bu2 : "#FFFFFF",
+        bu3 :  "secondary",
         cur_date: new Date("december 31 2018")
       });
     }
@@ -225,11 +225,11 @@ class Main extends React.Component {
     );
   }
 }
-function shiftDate(date, numDays) {
-  const newDate = new Date(date);
-  newDate.setDate(newDate.getDate() + numDays);
-  return newDate;
-}
+// function shiftDate(date, numDays) {
+//   const newDate = new Date(date);
+//   newDate.setDate(newDate.getDate() + numDays);
+//   return newDate;
+// }
 const mapStateToProps = state => {
   return {};
 };

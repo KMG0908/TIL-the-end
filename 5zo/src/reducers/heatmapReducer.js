@@ -10,9 +10,7 @@ export default (state = {}, action) => {
           : action.payload
       };
     case GET_DAILY_TASK_RESET:
-      return{
-        ... state , info : undefined
-      }
+      return _.omit(state, "info");
     default:
       return state;
   }

@@ -10,8 +10,6 @@ import "./Imgur.css";
 
 dotenv.config();
 
-let editor;
-
 class Imgur extends React.Component {
   componentDidMount() {
     const editor = suneditor.create("sample", {

@@ -101,7 +101,7 @@ class Chips extends Component {
     let { value, getChipValue, getSuggestionValue } = this.props;
 
     return suggestions
-      .filter(suggestion => !value.some(chip => getChipValue(chip) == getSuggestionValue(suggestion)));
+      .filter(suggestion => !value.some(chip => getChipValue(chip) === getSuggestionValue(suggestion)));
   }
 
   callFetchSuggestions = (fetchSuggestions, value, canceled) => {
@@ -161,7 +161,7 @@ class Chips extends Component {
 
   render() {
 
-    const { loading, value, suggestions } = this.state;
+    const { loading, value} = this.state;
     const { placeholder, renderLoading } = this.props;
     const themr = themeable(this.props.theme);
 
