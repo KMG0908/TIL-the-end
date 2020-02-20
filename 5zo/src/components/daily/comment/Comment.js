@@ -15,6 +15,17 @@ class Comment extends React.Component {
     fetchComments(list_id);
   }
 
+  state = {
+    reply : null
+  }
+
+
+  changeReply = (comment_id) => {
+    this.setState({
+      reply : comment_id
+    })
+  }
+
   renderComments = () => {
     const { comments, list_id, user_id, date } = this.props;
 
@@ -49,6 +60,7 @@ class Comment extends React.Component {
               comment={comment}
               date={date}
               cardlist_id={list_id}
+              changeReply= {this.changeReply}
             />
             <Divider variant="inset" component="li" />
           </div>

@@ -51,7 +51,9 @@ function CommentForm(props) {
               value={comment_contents}
               disableUnderline
               multiline
+              autoFocus = {true}
               inputProps={{maxLength:200}}
+              onBlur = {props.onblur}
             />
             <Button variant="outlined" className="comment_register" onClick={handleSubmit}>등록</Button>
           </form>

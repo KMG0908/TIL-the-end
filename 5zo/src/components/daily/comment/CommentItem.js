@@ -67,6 +67,8 @@ function CommentItem({
     history.push(`/daily/${comment.mem_id}`);
   };
 
+  
+
   const classes = useStyles();
   const renderItem = () => {
     return (
@@ -177,7 +179,7 @@ function CommentItem({
       setMode(false);
     } else if (!comment.comment_deleted) {
       setMode("commenting");
-    }
+    } 
   };
 
   const onEditing = comment_contents => {
@@ -196,6 +198,11 @@ function CommentItem({
       setMode(false);
     }
   };
+
+  const onblurFun = () => {
+    console.log('onblur')
+    setMode(false);
+  }
 
   return (
     <>
@@ -219,6 +226,7 @@ function CommentItem({
             // comment_contents={`@${comment.mem_id} `}
             mem_id = {comment.mem_id}
             onSubmit={onReplying}
+            onblur={onblurFun}
           />
         </div>
       ) : null}
