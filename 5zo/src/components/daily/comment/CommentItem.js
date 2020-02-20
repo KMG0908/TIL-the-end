@@ -41,7 +41,8 @@ function CommentItem({
 }) {
   const [mode, setMode] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleDelete = () => {
+  const handleDelete = event => {
+    event.stopPropagation();
     deleteComment(cardlist_id, comment.comment_id);
   };
 
@@ -87,7 +88,14 @@ function CommentItem({
                   aria-haspopup="true"
                   onClick={handleClick}
                 >
-                  {comment.mem_nick}<span style={{color: "#808080", opacity: ".8", marginLeft: "5px"}}>{`@${comment.mem_id}`}</span>{" "}
+                  {comment.mem_nick}
+                  <span
+                    style={{
+                      color: "#808080",
+                      opacity: ".8",
+                      marginLeft: "5px"
+                    }}
+                  >{`@${comment.mem_id}`}</span>{" "}
                 </Button>
                 <Typography
                   variant="caption"
@@ -205,12 +213,17 @@ function CommentItem({
       >
         {comment.comment_reply ? (
           <ListItemIcon>
-            <SubdirectoryArrowRightIcon className={comment.comment_deleted? "": "not_deleted"}
+            <SubdirectoryArrowRightIcon
+              className={comment.comment_deleted ? "" : "not_deleted"}
               style={{ color: "rgba(0, 0, 0, 0.3)" }}
             />
           </ListItemIcon>
         ) : null}
-        {comment.comment_deleted ? <div style={{alignSelf: "center"}}>삭제된 글 입니다.</div> : renderItem()}
+        {comment.comment_deleted ? (
+          <div style={{ alignSelf: "center" }}>삭제된 글 입니다.</div>
+        ) : (
+          renderItem()
+        )}
       </ListItem>
       {mode === "commenting" ? (
         <div style={{ width: "100%", float: "right" }}>
