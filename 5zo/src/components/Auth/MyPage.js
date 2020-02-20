@@ -11,7 +11,7 @@ import EditEmailPage from "./EditEmailPage";
 const styles = theme => ({
   paper: {
     flexGrow: 1,
-    position: 'relative',
+    position: "relative",
     zIndex: 1
   },
   typography: {
@@ -19,11 +19,11 @@ const styles = theme => ({
     padding: "20px 0"
   },
   update: {
-    display : 'none',
+    display: "none",
     backgroundColor: "blue",
-    cursor: 'pointer',
-    padding: '0.75rem 1.25rem',
-    color: 'white',
+    cursor: "pointer",
+    padding: "0.75rem 1.25rem",
+    color: "white"
   }
 });
 
@@ -47,40 +47,54 @@ class MyPage extends Component {
 
     switch (this.state.value) {
       case 0:
-        component = <MyProfile update={this.update} close={this.close}></MyProfile>;
+        component = (
+          <MyProfile update={this.update} close={this.close}></MyProfile>
+        );
         break;
       case 1:
-        component = <EditEmailPage update={this.update} close={this.close}></EditEmailPage>;
+        component = (
+          <EditEmailPage
+            update={this.update}
+            close={this.close}
+          ></EditEmailPage>
+        );
         break;
       case 2:
-        component = <EditPasswordPage update={this.update} close={this.close}></EditPasswordPage>;
+        component = (
+          <EditPasswordPage
+            update={this.update}
+            close={this.close}
+          ></EditPasswordPage>
+        );
         break;
     }
 
     return component;
   }
-  update(e, color){
-    document.getElementById("update").style.display = "block"
+  update(e, color) {
+    document.getElementById("update").style.display = "block";
 
-    switch(e){
+    switch (e) {
       case "profile":
-        console.log(color);
         document.getElementById("update").style.backgroundColor = color;
-        document.getElementById("update").innerHTML = "프로필이 변경되었습니다."
+        document.getElementById("update").innerHTML =
+          "프로필이 변경되었습니다.";
         break;
       case "email":
-        document.getElementById("update").innerHTML = "이메일이 변경되었습니다."
+        document.getElementById("update").innerHTML =
+          "이메일이 변경되었습니다.";
         break;
       case "password":
-        document.getElementById("update").innerHTML = "비밀번호가 변경되었습니다."
+        document.getElementById("update").innerHTML =
+          "비밀번호가 변경되었습니다.";
         break;
       default:
         this.close();
         break;
     }
   }
-  close(){
-    document.getElementById("update").style.display = "none"
+  close() {
+    document.getElementById("update").style.display = "none";
   }
   render() {
     const { classes } = this.props;
@@ -99,7 +113,12 @@ class MyPage extends Component {
             <Tab label="Password" />
           </Tabs>
         </Paper>
-        <Typography component="div" id="update" className={classes.update} onClick={this.close}></Typography>
+        <Typography
+          component="div"
+          id="update"
+          className={classes.update}
+          onClick={this.close}
+        ></Typography>
         <Typography component="div" className={classes.typography}>
           {this.setComponent()}
         </Typography>

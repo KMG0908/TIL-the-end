@@ -126,12 +126,8 @@ class Main extends React.Component {
       });
     }
   }
-  componentDidMount() {
-    console.log('did mount')
-  }
 
   componentDidUpdate() {
-    console.log('did update')
     const params = this.props.match.params;
     const login_id = storage.get("loggedInfo").mem_id;
     const user_id = params.user_id ? params.user_id : login_id;
@@ -158,12 +154,16 @@ class Main extends React.Component {
       lastDay.setDate(lastDay.getDate() - 1);
       lastDay = this.date_to_str(lastDay, "-");
     }
-    if (!this.state.user_id || !this.state.date|| this.state.user_id !== user_id || this.state.date !== date) {
+    if (
+      !this.state.user_id ||
+      !this.state.date ||
+      this.state.user_id !== user_id ||
+      this.state.date !== date
+    ) {
       this.setState({
         user_id: user_id,
         date: date,
-        cur_date: lastDay,
-        
+        cur_date: lastDay
       });
       this.props.fetchDailyListReset();
       this.props.fetchDailyLists(user_id, date);

@@ -41,7 +41,6 @@ class Heatmap extends React.Component {
   }
   componentDidMount() {
     const user_id = this.props.user_id;
-    console.log('heatmap - mount :: ' + user_id)
 
     const lastDay = new Date(this.props.cur_date);
     this.props.getDailyTask(user_id, shiftDate(lastDay, -1000), lastDay);
@@ -69,7 +68,7 @@ class Heatmap extends React.Component {
     let lastDay = new Date(this.props.cur_date);
 
     if (this.props.board_info) {
-      const state = this.props.board_info
+      const state = this.props.board_info;
       let data = [];
       let def_color = this.props.members.mem_info.mem_color;
       this.state.col1 = this.getTintedColor(def_color, 60);

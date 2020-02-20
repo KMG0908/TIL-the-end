@@ -191,24 +191,18 @@ export const logout = () => async dispatch => {
 
 export const deleteAccount = (mem_id, mem_pw) => async dispatch => {
   let response;
-  console.log(`mem_id : ${mem_id} , mem_pw : ${mem_pw}`);
   response = await apis.post(`/member/login`, {
     mem_id: mem_id,
     mem_pw: mem_pw
   });
-  console.log("deleteAccount");
-  console.log(response);
   if (response.data.state === "ok") {
     response = await apis.delete(`/member/${mem_id}`);
     if (response.data.state === "ok") {
       dispatch({ type: DELETE_ACCOUNT_SUCCESS });
     } else {
-      console.log("회원탈퇴오류");
       dispatch({ type: DELETE_ACCOUNT_ERR, payload: "회원 탈퇴 실패" });
     }
   } else {
-    console.log("회원탈퇴실패 - 비밀번호 틀림");
-
     dispatch({ type: DELETE_ACCOUNT_ERR, payload: "비밀번호 틀림" });
   }
 };
@@ -287,8 +281,6 @@ export const editMyinfo = (
   thumb,
   intro
 ) => async dispatch => {
-  console.log("index");
-  console.log(thumb);
   if (!nowPw) {
     dispatch({ type: EDIT_MYINFO_ERR, payload: "비밀번호를 입력해주세요." });
   }
@@ -339,13 +331,10 @@ export const editMyDefSecret = (mem_id, checked) => async (
   getState
 ) => {
   const response = await apis.patch(`/member/postdef/${mem_id}`);
-  console.log(response);
   const data = response.data.data;
 
   if (data) {
     const user = (await apis.get(`/member/${mem_id}`)).data.data;
-    console.log("user");
-    console.log(user);
     dispatch({ type: EDIT_MYINFO, payload: user });
   } else {
     dispatch({ type: EDIT_MY_COLOR_FAIL });
@@ -356,13 +345,9 @@ export const editMyColor = (mem_id, color) => async (dispatch, getState) => {
   const response = await apis.patch(`/member/${mem_id}/color/${color_encode}`);
 
   const data = response.data.data;
-  console.log("data");
-  console.log(data);
 
   if (data) {
     const user = (await apis.get(`/member/${mem_id}`)).data.data;
-    console.log("user");
-    console.log(user);
     dispatch({ type: EDIT_MYINFO, payload: user });
   } else {
     dispatch({ type: EDIT_MY_COLOR_FAIL });
@@ -428,10 +413,8 @@ export const findIdFailReset = () => async (dispatch, getState) => {
 export const existEmail = email => async dispatch => {
   const response = await apis.get(`/email/countEmail/${email}`);
   if (response.data.data === 1) {
-    console.log("이메일 존재O");
     dispatch({ type: EXIST_EMAIL_SUCCESS });
   } else {
-    console.log("이메일 존재X");
     dispatch({ type: EXIST_EMAIL_FAIL });
   }
 };
@@ -500,7 +483,6 @@ export const fetchDailyLists = (mem_id, board_date) => async dispatch => {
     response.data.data[0].board_lists.map(async cardlist_id => {
       let cardlist = await apis.get(`/cardlist/${cardlist_id}`);
       if (cardlist.data.state === "ok") {
-        // console.log(cardlist.data.data);
         if (own || (!own && cardlist.data.data.cardlist_secret === false)) {
           dispatch({ type: FETCH_LIST, payload: [cardlist.data.data] });
           cardlist.data.data.cardlist_cards.map(async card_id => {
@@ -587,7 +569,6 @@ export const addList = (board_id, cardlist_name, board_date) => async (
     const board = getState().boards[board_id];
     const board_lists = JSON.stringify(board.board_lists);
     let form = new FormData();
-    console.log(board_lists);
     form.append("board_id", board_id);
     form.append("board_lists", board_lists);
     await apis.patch(`board/${board_id}`, form);
@@ -608,9 +589,7 @@ export const deleteList = (list_id, board_id) => async (dispatch, getState) => {
   await apis.delete(`/cardlist/${list_id}`);
 
   const board = getState().boards[board_id];
-  console.log(board.board_lists);
   board.board_lists = board.board_lists.filter(listId => listId !== list_id);
-  console.log(JSON.stringify(board.board_lists));
 
   let form = new FormData();
   form.append("board_id", board_id);
@@ -719,8 +698,6 @@ export const sort = (
       const boardTo = getState().boards[droppableIdEnd];
       const cardlist = getState().cardLists[list_id];
       cardlist.board_id = droppableIdEnd;
-      console.log(droppableIdEnd);
-      console.log(cardlist.board_id);
 
       boardFrom.board_lists.splice(droppableIndexStart, 1);
       boardTo.board_lists.splice(droppableIndexEnd, 0, list_id);
@@ -807,7 +784,6 @@ export const fetchStatisticsData = (
   const responseData = response.data.data;
 
   for (let i = 0; i < responseData.length; i++) {
-    console.log(responseData[i].board_date + " " + responseData[i].board_id);
     dates.push(date_to_str(new Date(moment(responseData[i].board_date)), "-"));
     dailyTask.push(responseData[i].board_id);
   }
@@ -860,8 +836,6 @@ function date_to_str(format, separator) {
 
 export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
   let response;
-  console.log("searchKeyword");
-  console.log(`keyword : ${keyword} , type : ${type}`);
   if (type === undefined) type = "card";
   if (type == "member") {
     response = await apis.get(`/member/searchById/${keyword}`);
@@ -869,8 +843,6 @@ export const searchKeyword = (keyword, type) => async (dispatch, getState) => {
     response = await apis.get(`/search/global/${type}/by/${keyword}`);
   }
   const cards = response.data.data;
-  console.log("cards");
-  console.log(cards);
   dispatch({ type: SEARCH_KEYWORD, payload: cards });
 };
 
@@ -882,7 +854,6 @@ export const searchCardlist = (keywords, page, limit) => async (
   keywords.map(
     keyword => (keywords_string += encodeURIComponent(keyword) + ",")
   );
-  console.log("keywords : " + keywords_string);
 
   if (!limit) limit = 5;
   if (!page) page = 1;
@@ -947,18 +918,14 @@ export const getDailyCal = (mem_id, from) => async dispatch => {
     to = shiftDate(new Date(), -1);
     end = date_to_str(to, "");
   }
-  console.log("getDailycal  ");
-  console.log(end);
   let response, cardList, board, cardlist_id, cardlist;
   response = await apis.get(`/board/member/${mem_id}/from/${start}/to/${end}`);
   const board_data = response.data.data;
-  console.log(response.data.data);
   let app = [];
   for (let i = 0; i < board_data.length; i++) {
     board = board_data[i];
     response = await apis.get(`/board/${board_data[i].board_id}`);
     let cardList_id_string = response.data.data;
-    // console.log(cardList_id_string);
 
     cardList_id_string = cardList_id_string.replace("[", "");
     cardList_id_string = cardList_id_string.replace("]", "");
@@ -968,12 +935,8 @@ export const getDailyCal = (mem_id, from) => async dispatch => {
       .map(cardList =>
         cardList === "" ? null : cardlist_id_array.push(Number(cardList))
       );
-    // console.log("cardList_id_string ");
-    // console.log(cardList_id_string);
-    // console.log(cardlist_id_array);
     for (let j = 0; j < cardlist_id_array.length; j++) {
       cardlist_id = cardlist_id_array[j];
-      // console.log(cardlist_id);
       response = await apis.get(`/cardlist/${cardlist_id}`);
       cardlist = response.data.data;
       cardlist.date = board.board_date;
@@ -985,7 +948,6 @@ export const getDailyCal = (mem_id, from) => async dispatch => {
 
 export const getDailyList = board_li => async (dispatch, getState) => {
   const response = await apis.get(`/board/${board_li}`);
-  console.log(response.data.data);
   dispatch({ type: GET_DAILY_LIST, payload: response.data.data });
 };
 
