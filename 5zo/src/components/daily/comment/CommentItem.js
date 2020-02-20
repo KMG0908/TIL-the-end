@@ -68,6 +68,8 @@ function CommentItem({
     history.push(`/daily/${comment.mem_id}`);
   };
 
+  
+
   const classes = useStyles();
   const renderItem = () => {
     return (
@@ -185,7 +187,7 @@ function CommentItem({
       setMode(false);
     } else if (!comment.comment_deleted) {
       setMode("commenting");
-    }
+    } 
   };
 
   const onEditing = comment_contents => {
@@ -201,9 +203,17 @@ function CommentItem({
       : comment.comment_id;
     if (comment_contents) {
       addComment(cardlist_id, comment_contents, comment_reply, user_id, date);
+      console.log('onreplying')
       setMode(false);
     }
   };
+
+  const onblurFun = (e) => {
+    setTimeout(() => {
+      setMode(false);
+    }, 100);
+  }
+
 
   return (
     <>
@@ -229,8 +239,10 @@ function CommentItem({
         <div style={{ width: "100%", float: "right" }}>
           <CommentForm
             inputRef={refs}
-            comment_contents={`@${comment.mem_id} `}
+            // comment_contents={`@${comment.mem_id} `}
+            mem_id = {comment.mem_id}
             onSubmit={onReplying}
+            onBlur = {onblurFun}
           />
         </div>
       ) : null}
