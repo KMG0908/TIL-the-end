@@ -53,17 +53,17 @@ class App extends React.Component {
   drawRouter() {
     if (!this.props.members.mem_info) {
       return (
-        <Navigation>
+        <LandingPage>
           <>
             <Switch>
               <Route path="/login" exact component={Login} />
               <Route path="/register" exact component={RegisterPage} />
               <Route path="/find-id" exact component={FindIdPage} />
               <Route path="/find-pw" exact component={FindPwPage} />
-              <Route path="/" component={Body} />
+              <Route path="/" component={DefLand} />
             </Switch>
           </>
-        </Navigation>
+        </LandingPage>
       );
     } else {
       // 로그인했을 때

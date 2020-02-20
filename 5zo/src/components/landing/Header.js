@@ -30,17 +30,16 @@ class Header extends React.Component {
             <Relative pb={5} >
                 <CssBaseline />
                 <ElevationScroll {...this.props}>
-                    <AppBar style={{ background: '#94C9A9' }}>
-                        <Flex is="header" p={3} bg="#94C9A9" color="white">
+                    <AppBar style={{ background: '#0C797D' }}>
+                        <Flex is="header" p={3} bg="#0C797D" color="white">
                             <NavLink href="/" fontSize={3}>Today I learned</NavLink>
                             <NavLink href="/login" ml='auto'>Sign in</NavLink>
-                            <Button bg="#94C9A9" border="1px solid #e7e7e7" borderRadius="5px">
+                            <Button bg="#0C797D" border="1px solid #e7e7e7" borderRadius="5px">
                                 <NavLink href="/register" ml='auto'>Sign up</NavLink>
                             </Button>
                         </Flex>
                     </AppBar>
                 </ElevationScroll>
-
             </Relative>
         )
     }
