@@ -67,6 +67,7 @@ class Main extends React.Component {
     };
     this.props.fetchDailyListReset();
     this.props.fetchDailyLists(user_id, date);
+    this.props.setEditModeList(null);
 
     this.onHandleDate = this.onHandleDate.bind(this);
   }
