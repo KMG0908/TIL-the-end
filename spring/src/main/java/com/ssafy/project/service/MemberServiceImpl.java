@@ -208,17 +208,15 @@ public class MemberServiceImpl implements MemberService {
 			} else if (mem_pw == null) {
 				throw new MemberException("비밀번호를 입력하지 않았습니다.");
 			}
-
-			Member member = dao.search(mem_id);
-
-			if (member.getMem_id() == null) {
+			
+			if (dao.countId(mem_id) == 0) {
 				throw new MemberException("등록되지 않은 회원입니다.");
 			} else if (dao.getAuth(mem_id) == 3) {
 				throw new MemberException("탈퇴한 회원입니다.");
 			} else if (!dao.findpw(mem_id).equals(pwdEncrypt(mem_pw))) {
 				throw new MemberException("잘못된 비밀번호입니다.");
 			} else {
-				return member;
+				return dao.search(mem_id);
 			}
 		} catch (Exception e) {
 			if (e instanceof MemberException) {
