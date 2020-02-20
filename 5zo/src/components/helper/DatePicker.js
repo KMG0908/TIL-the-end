@@ -110,8 +110,9 @@ class DatePicker extends React.Component {
     // this.setState({ selectedDate: date });
     if(moment(date).isValid()){
       let isoDate = date.toISOString().split("T")[0];
-      this.props.onChangeDate(isoDate);
-      if (isoDate > today) {
+      date = date_to_str(date, "-")
+      this.props.onChangeDate(date);
+      if (date > today) {
         this.props.setEditModeList(null);
         this.props.setEditModeCard(null);
       }
@@ -166,7 +167,7 @@ class DatePicker extends React.Component {
                     : ["year", "month", "date"]
                 }
                 variant="inline"
-                format={mode === "calendar" ? "yyyy년 M월" : "yyyy년 MM월 dd일"}
+                format={mode === "calendar" ? "yyyy년 MM월" : "yyyy년 MM월 dd일"}
                 margin="normal"
                 id="date-picker-inline"
                 label={mode === "calendar" ? "년 월" : "날짜"}
