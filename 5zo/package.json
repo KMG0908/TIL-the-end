@@ -18,7 +18,7 @@
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
     "@y0c/react-datepicker": "^1.0.1",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "canvasjs": "^1.8.3",
     "date-fns": "^2.9.0",
     "devextreme": "^19.2.5",
